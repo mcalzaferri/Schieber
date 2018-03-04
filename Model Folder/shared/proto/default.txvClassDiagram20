@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhjecpa1d0jsqlc4">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="__options" value="option.nlayout.recursive=true"/>
+		<reference referencedUin="jdt:e_class:src:shared.proto.JoinGameMessage">
+			<property name="bounds" value="206,285,131,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.JoinGameMessage:ToServerMessage">
+				<property name="sourceAnchor" value="271,290"/>
+				<property name="targetAnchor" value="271,230"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.ToPlayerMessage">
+			<property name="bounds" value="870,145,123,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.ToPlayerMessage:Message">
+				<property name="sourceAnchor" value="936,150"/>
+				<property name="targetAnchor" value="616,90"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.YourTurnMessage">
+			<property name="bounds" value="683,285,164,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value=""/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.YourTurnMessage:ToPlayerMessage">
+				<property name="sourceAnchor" value="770,290"/>
+				<property name="targetAnchor" value="915,230"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.ToServerMessage">
+			<property name="bounds" value="200,145,127,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.ToServerMessage:Message">
+				<property name="sourceAnchor" value="268,150"/>
+				<property name="targetAnchor" value="589,90"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.MoveStatusMessage">
+			<property name="bounds" value="1024,285,143,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.MoveStatusMessage:ToPlayerMessage">
+				<property name="sourceAnchor" value="1100,290"/>
+				<property name="targetAnchor" value="956,230"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.GameOverMessage">
+			<property name="bounds" value="867,285,137,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.GameOverMessage:ToPlayerMessage">
+				<property name="sourceAnchor" value="936,290"/>
+				<property name="targetAnchor" value="936,230"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.HandOutCardsMessage">
+			<property name="bounds" value="507,285,156,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.HandOutCardsMessage:ToPlayerMessage">
+				<property name="sourceAnchor" value="590,290"/>
+				<property name="targetAnchor" value="895,230"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.ChooseGameModeMessage">
+			<property name="bounds" value="1187,285,181,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="collapsedCompartments" value=""/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.ChooseGameModeMessage:ToPlayerMessage">
+				<property name="sourceAnchor" value="1282,290"/>
+				<property name="targetAnchor" value="977,230"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.PlaceCardMessage">
+			<property name="bounds" value="357,285,130,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.PlaceCardMessage:ToServerMessage">
+				<property name="sourceAnchor" value="427,290"/>
+				<property name="targetAnchor" value="301,230"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.ChosenGameModeMessage">
+			<property name="bounds" value="5,285,181,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:shared.proto.ChosenGameModeMessage:ToServerMessage">
+				<property name="sourceAnchor" value="100,290"/>
+				<property name="targetAnchor" value="238,230"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.proto.Message">
+			<property name="bounds" value="558,5,80,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+	</view>
+</nodeSet>

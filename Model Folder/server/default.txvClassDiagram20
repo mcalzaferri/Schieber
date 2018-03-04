@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhjecp7ei3bbn37u">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="__options" value="option.nlayout.recursive=true"/>
+		<reference referencedUin="jdt:e_class:src:server.GameLogic">
+			<property name="bounds" value="249,5,200,227"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:server.GameLogic:com">
+				<property name="sourceAnchor" value="254,123"/>
+				<property name="targetAnchor" value="174,123"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.Player">
+			<property name="bounds" value="56,255,113,168"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.Communication">
+			<property name="bounds" value="5,42,164,152"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+	</view>
+</nodeSet>
