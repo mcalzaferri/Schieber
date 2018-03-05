@@ -1,5 +1,5 @@
 # Schieber
-# Informationsquellen
+## Informationsquellen
 :spades: Kompletter Java Client mit Bot -> https://github.com/webplatformz/challenge-client-java/tree/master/src/main/java/com/zuehlke/jasschallenge
 
 :clubs: Kompletter JavaScript Server, Client und Bot -> https://github.com/webplatformz/challenge
@@ -12,10 +12,14 @@
 
 :clubs: Jass Model (Nützlich für Klassenmodell) -> https://github.com/Fredericson/jass-schieber-model
 
-# Personen
+:diamonds: .md Syntax https://help.github.com/categories/writing-on-github/
 
-Product Owner -> Antonio Rosolia as AR
+:hearts: Emojis https://www.webpagefx.com/tools/emoji-cheat-sheet/
 
-Scrum Master -> Johannes Neyer as JN
+## Personen
 
-8 Team Members -> Alli
+:underage: Product Owner -> Antonio Rosolia as AR
+
+:underage: Scrum Master -> Johannes Neyer as JN
+
+:underage: 8 Team Members -> Alli
