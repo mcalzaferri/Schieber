@@ -18,8 +18,6 @@
 
 ## Personen
 
-:underage: Product Owner -> Antonio Rosolia as AR
-
-:underage: Scrum Master -> Johannes Neyer as JN
-
-:underage: 8 Team Members -> Alli
+- Product Owner -> Antonio Rosolia as AR
+- Scrum Master -> Johannes Neyer as JN
+- 8 Team Members -> Alli
