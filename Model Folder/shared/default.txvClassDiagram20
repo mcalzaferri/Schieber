@@ -20,15 +20,15 @@
 			</reference>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:shared.CardValue">
-			<property name="bounds" value="35,15,124,345"/>
+			<property name="bounds" value="35,15,122,345"/>
 			<property name="location_set_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:shared.CardColor">
-			<property name="bounds" value="175,15,144,190"/>
+			<property name="bounds" value="175,15,143,190"/>
 			<property name="location_set_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:shared.GameMode">
-			<property name="bounds" value="375,15,144,190"/>
+			<property name="bounds" value="375,15,143,190"/>
 			<property name="location_set_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="design:view:::V1hexuhjecpa1d0jsqlc4">
@@ -39,6 +39,34 @@
 			<property name="bounds" value="535,269,208,181"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Weis">
+			<property name="bounds" value="69,292,114,152"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:shared.Weis:originCard">
+				<property name="sourceAnchor" value="188,394"/>
+				<property name="targetAnchor" value="240,394"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:shared.Weis:type">
+				<property name="sourceAnchor" value="188,300"/>
+				<property name="targetAnchor" value="193,300"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.WeisType">
+			<property name="bounds" value="188,-4,99,302"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Trumpf">
+			<property name="bounds" value="5,5,164,268"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:shared.Trumpf:gameMode">
+				<property name="sourceAnchor" value="174,115"/>
+				<property name="targetAnchor" value="380,115"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:shared.Trumpf:trumpfColor">
+				<property name="sourceAnchor" value="174,128"/>
+				<property name="targetAnchor" value="179,128"/>
+			</reference>
 		</reference>
 	</view>
 </nodeSet>
