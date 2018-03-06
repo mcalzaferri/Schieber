@@ -19,3 +19,4 @@
 | BroadcastChosenCard |  |
 | BroadcastEndRound |  |
 | BroadcastEndGame |  |
+|  | UnregisterPlayer |
