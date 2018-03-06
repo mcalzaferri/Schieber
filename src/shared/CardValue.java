@@ -19,12 +19,40 @@ public enum CardValue {
 	private final int UneufeScore;
 	private final int ObenabeScore;
 	
-	public CardValue(int DefaultValue, int TrumpfValue, int GeneralScore, int TrumpfScore, int UneufeScore, int ObenabeScore){
+	//Konstruktoren
+	CardValue(int DefaultValue, int TrumpfValue, int GeneralScore, int TrumpfScore, int UneufeScore, int ObenabeScore){
 		this.DefaultValue = DefaultValue;
 		this.TrumpfValue = TrumpfValue;
 		this.GeneralScore = GeneralScore;
 		this.TrumpfScore = TrumpfScore;
 		this.UneufeScore = UneufeScore;
 		this.ObenabeScore = ObenabeScore;
+	}
+	//Methoden
+	//TODO
+	
+	//Getters und Setters
+	public int getDefaultValue() {
+		return DefaultValue;
+	}
+
+	public int getTrumpfValue() {
+		return TrumpfValue;
+	}
+
+	public int getGeneralScore() {
+		return GeneralScore;
+	}
+
+	public int getTrumpfScore() {
+		return TrumpfScore;
+	}
+
+	public int getUneufeScore() {
+		return UneufeScore;
+	}
+
+	public int getObenabeScore() {
+		return ObenabeScore;
 	}
 }
