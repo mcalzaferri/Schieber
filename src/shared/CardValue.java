@@ -19,7 +19,7 @@ public enum CardValue {
 	private final int UneufeScore;
 	private final int ObenabeScore;
 	
-	CardValue(int DefaultValue, int TrumpfValue, int GeneralScore, int TrumpfScore, int UneufeScore, int ObenabeScore){
+	public CardValue(int DefaultValue, int TrumpfValue, int GeneralScore, int TrumpfScore, int UneufeScore, int ObenabeScore){
 		this.DefaultValue = DefaultValue;
 		this.TrumpfValue = TrumpfValue;
 		this.GeneralScore = GeneralScore;
