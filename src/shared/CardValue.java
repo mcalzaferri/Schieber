@@ -4,7 +4,7 @@ public enum CardValue {
 	//(	Defaultvalue, 	Trumpfvalue, 	GeneralScore, 	TrumpfScore, 	UneufeScore, 	ObenabeScore)
 	SECHS(	6,		6,		0,		0,		0,		11),
 	SIEBEN(	7,		7,		0,		0,		0,		0),
-	ACHT(	8,		8,		0,		0,		0,		8),
+	ACHT(	8,		8,		0,		0,		8,		8),
 	NEUN(	9,		15,		0,		14,		0,		0),
 	ZEHN(	10,		10,		10,		10,		10,		10),
 	UNDER(	11,		16,		2,		20,		2,		2),
