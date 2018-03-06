@@ -6,9 +6,9 @@ public enum CardColor {
 	SCHILTE(2),
 	SCHELLE(2);
 	
-	private final int TrumpfMultiplicator;
+	private final int ScoreMultiplicator;
 	
-	public CardColor(int TrumpfMultiplicator){
-		this.TrumpfMultiplicator = TrumpfMultiplicator;	
+	public CardColor(int ScoreMultiplicator){
+		this.ScoreMultiplicator = ScoreMultiplicator;	
 	}
 }
