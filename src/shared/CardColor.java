@@ -6,9 +6,19 @@ public enum CardColor {
 	SCHILTE(2),
 	SCHELLE(2);
 	
+	//Datenfelder
 	private final int ScoreMultiplicator;
 	
-	public CardColor(int ScoreMultiplicator){
+	//Konstruktoren
+	CardColor(int ScoreMultiplicator){
 		this.ScoreMultiplicator = ScoreMultiplicator;	
 	}
+	
+	//Methoden
+	
+	//Getter und Setter
+	public int getScoreMultiplicator(){
+		return ScoreMultiplicator;
+	}
+	
 }
