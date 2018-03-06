@@ -10,8 +10,8 @@ public enum Trumpf {
 	UNEUFE(GameMode.UNEUFE,null);
 	
 	//Datenfelder
-	private GameMode gameMode;
-	private CardColor trumpfColor;
+	private final GameMode gameMode;
+	private final CardColor trumpfColor;
 	
 	//Konstruktoren
 	Trumpf(GameMode gameMode, CardColor trumpfColor){
