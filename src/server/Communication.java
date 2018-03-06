@@ -1,10 +1,13 @@
 package server;
 
 import shared.proto.*;
+import shared.*;
 
-public class Communication {
-	private int port;
-	public ToServerMessage receive() {
+public class ServerCommunication extends Communication {
+	public ServerCommunication(int port) {
+		super(null, port);
+	}
+	public Message receive() {
 		return null;
 	}
 	public void broadcast(ToPlayerMessage m){
@@ -13,10 +16,10 @@ public class Communication {
 	public void send(ToPlayerMessage m, Player p){
 		
 	}
-	public void open(){
-		// dosomething
+	public void open() {
+		
 	}
-	public void close(){
+	public void close() {
 		
 	}
 }

@@ -15,12 +15,13 @@
 			</reference>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:server.Player">
-			<property name="bounds" value="56,255,113,168"/>
+			<property name="bounds" value="135,295,113,168"/>
 			<property name="location_set_by_user" value="true"/>
 		</reference>
-		<reference referencedUin="jdt:e_class:src:server.Communication">
-			<property name="bounds" value="5,42,164,152"/>
+		<reference referencedUin="jdt:e_class:src:server.ServerCommunication">
+			<property name="bounds" value="5,42,164,190"/>
 			<property name="location_set_by_user" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 	</view>
 </nodeSet>

@@ -23,7 +23,7 @@
 			</reference>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:shared.proto.YourTurnMessage">
-			<property name="bounds" value="683,285,164,80"/>
+			<property name="bounds" value="683,285,126,80"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="collapsedCompartments" value=""/>
 			<reference referencedUin="jdt:l_gnt:src:shared.proto.YourTurnMessage:ToPlayerMessage">
@@ -66,7 +66,7 @@
 		<reference referencedUin="jdt:e_class:src:shared.proto.ChooseGameModeMessage">
 			<property name="bounds" value="1187,285,181,80"/>
 			<property name="location_set_by_user" value="true"/>
-			<property name="collapsedCompartments" value=""/>
+			<property name="collapsedCompartments" value="Property20"/>
 			<reference referencedUin="jdt:l_gnt:src:shared.proto.ChooseGameModeMessage:ToPlayerMessage">
 				<property name="sourceAnchor" value="1282,290"/>
 				<property name="targetAnchor" value="977,230"/>
