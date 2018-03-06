@@ -12,47 +12,47 @@ public enum CardValue {
 	KOENIG(	13,		13,		4,		4,		4,		4),
 	ASS(	14,		14,		11,		11,		11,		0);
 	
-	private final int DefaultValue;
-	private final int TrumpfValue;
-	private final int GeneralScore;
-	private final int TrumpfScore;
-	private final int UneufeScore;
-	private final int ObenabeScore;
+	private final int defaultValue;
+	private final int trumpfValue;
+	private final int generalScore;
+	private final int trumpfScore;
+	private final int uneufeScore;
+	private final int obenabeScore;
 	
 	//Konstruktoren
-	CardValue(int DefaultValue, int TrumpfValue, int GeneralScore, int TrumpfScore, int UneufeScore, int ObenabeScore){
-		this.DefaultValue = DefaultValue;
-		this.TrumpfValue = TrumpfValue;
-		this.GeneralScore = GeneralScore;
-		this.TrumpfScore = TrumpfScore;
-		this.UneufeScore = UneufeScore;
-		this.ObenabeScore = ObenabeScore;
+	CardValue(int defaultValue, int trumpfValue, int generalScore, int trumpfScore, int uneufeScore, int obenabeScore){
+		this.defaultValue = defaultValue;
+		this.trumpfValue = trumpfValue;
+		this.generalScore = generalScore;
+		this.trumpfScore = trumpfScore;
+		this.uneufeScore = uneufeScore;
+		this.obenabeScore = obenabeScore;
 	}
 	//Methoden
 	//TODO
 	
 	//Getters und Setters
 	public int getDefaultValue() {
-		return DefaultValue;
+		return defaultValue;
 	}
 
 	public int getTrumpfValue() {
-		return TrumpfValue;
+		return trumpfValue;
 	}
 
 	public int getGeneralScore() {
-		return GeneralScore;
+		return generalScore;
 	}
 
 	public int getTrumpfScore() {
-		return TrumpfScore;
+		return trumpfScore;
 	}
 
 	public int getUneufeScore() {
-		return UneufeScore;
+		return uneufeScore;
 	}
 
 	public int getObenabeScore() {
-		return ObenabeScore;
+		return obenabeScore;
 	}
 }

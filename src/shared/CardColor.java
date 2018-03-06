@@ -7,18 +7,18 @@ public enum CardColor {
 	SCHELLE(2);
 	
 	//Datenfelder
-	private final int ScoreMultiplicator;
+	private final int scoreMultiplicator;
 	
 	//Konstruktoren
-	CardColor(int ScoreMultiplicator){
-		this.ScoreMultiplicator = ScoreMultiplicator;	
+	CardColor(int scoreMultiplicator){
+		this.scoreMultiplicator = scoreMultiplicator;	
 	}
 	
 	//Methoden
 	
 	//Getter und Setter
 	public int getScoreMultiplicator(){
-		return ScoreMultiplicator;
+		return scoreMultiplicator;
 	}
 	
 }

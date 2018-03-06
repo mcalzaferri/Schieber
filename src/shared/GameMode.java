@@ -7,18 +7,18 @@ public enum GameMode {
 	UNEUFE(3);
 	
 	//Datenfelder
-	private final int ScoreMultiplicator;
+	private final int scoreMultiplicator;
 	
 	//Konstruktoren
-	GameMode(int ScoreMultiplicator){
-		this.ScoreMultiplicator = ScoreMultiplicator;
+	GameMode(int scoreMultiplicator){
+		this.scoreMultiplicator = scoreMultiplicator;
 	}
 	
 	//Methoden
 	
 	//Getter und Setter
 	public int getScoreMultiplicator(){
-		return ScoreMultiplicator;
+		return scoreMultiplicator;
 	}
 	
 	
