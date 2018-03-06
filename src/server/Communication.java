@@ -14,7 +14,7 @@ public class Communication {
 		
 	}
 	public void open(){
-		
+		// dosomething
 	}
 	public void close(){
 		
