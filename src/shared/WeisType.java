@@ -9,9 +9,7 @@ public enum WeisType {
 	SIEBENBLATT(200),
 	ACHTBLATT(250),
 	NEUNBLATT(300),
-	VIERGLEICHE(100),
-	VIERNELL(150),
-	VIERBAUERN(200);
+	VIERGLEICHE(100);
 	
 	//Datenfelder
 	private final int score;
@@ -24,7 +22,13 @@ public enum WeisType {
 	//Methoden
 		
 	//Getter und Setter
-	public int getScore() {
-		return score;
+	public int getScore(CardValue cardValue) {
+		if (this == VIERGLEICHE && cardValue == CardValue.NEUN) {
+			return 150;
+		}else if(this == VIERGLEICHE && cardValue == CardValue.UNDER) {
+			return 200;
+		}else {
+			return score;
+		}
 	}
 }
