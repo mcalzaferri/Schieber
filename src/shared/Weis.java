@@ -5,7 +5,13 @@ public class Weis {
 	private final WeisType type;
 	private final Card originCard;
 	
-	//Konstruktoren	
+	//Konstruktoren
+	public Weis(WeisType type) {
+		//Nur für VIERNELL, VIERBAUREN UND STOECK
+		this.type = type;
+		this.originCard = null;
+	}
+	
 	public Weis(WeisType type, Card originCard) {
 		this.type = type;
 		this.originCard = originCard;
