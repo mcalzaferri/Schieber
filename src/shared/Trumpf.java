@@ -11,18 +11,18 @@ public enum Trumpf {
 	
 	//Datenfelder
 	private GameMode gameMode;
-	private CardColor cardColor;
+	private CardColor trumpfColor;
 	
 	//Konstruktoren
-	Trumpf(GameMode gameMode, CardColor cardColor){
+	Trumpf(GameMode gameMode, CardColor trumpfColor){
 		this.gameMode = gameMode;
-		this.cardColor = cardColor;
+		this.trumpfColor = trumpfColor;
 	}
 	
 	//Methoden
 	public int getScoreMultiplicator(){
 		if(gameMode == GameMode.TRUMPF) {
-			return gameMode.getScoreMultiplicator() * cardColor.getScoreMultiplicator();
+			return gameMode.getScoreMultiplicator() * trumpfColor.getScoreMultiplicator();
 		}else {
 			return gameMode.getScoreMultiplicator();
 		}
@@ -33,7 +33,7 @@ public enum Trumpf {
 		return gameMode;
 	}
 	
-	public CardColor getCardColor() {
-		return cardColor;
+	public CardColor getTrumpfColor() {
+		return trumpfColor;
 	}
 }
