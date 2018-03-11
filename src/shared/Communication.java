@@ -21,4 +21,8 @@ public class Communication {
 	public void close() {
 		
 	}
+	
+	public void waitForMessage() {
+		
+	}
 }

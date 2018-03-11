@@ -41,7 +41,7 @@
 			<property name="bounds_setted_by_user" value="true"/>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:shared.Weis">
-			<property name="bounds" value="69,292,114,152"/>
+			<property name="bounds" value="69,292,114,243"/>
 			<property name="location_set_by_user" value="true"/>
 			<reference referencedUin="jdt:l_ast:src:shared.Weis:originCard">
 				<property name="sourceAnchor" value="188,394"/>
@@ -50,6 +50,10 @@
 			<reference referencedUin="jdt:l_ast:src:shared.Weis:type">
 				<property name="sourceAnchor" value="188,300"/>
 				<property name="targetAnchor" value="193,300"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:shared.Weis:trumpf">
+				<property name="sourceAnchor" value="124,297"/>
+				<property name="targetAnchor" value="124,278"/>
 			</reference>
 		</reference>
 		<reference referencedUin="jdt:e_class:src:shared.WeisType">
@@ -67,6 +71,26 @@
 				<property name="sourceAnchor" value="174,128"/>
 				<property name="targetAnchor" value="179,128"/>
 			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Team">
+			<property name="bounds" value="298,573,80,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Score">
+			<property name="bounds" value="387,532,80,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Player">
+			<property name="bounds" value="387,433,80,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V1hexuhjemk7nimxvogue">
+			<property name="bounds" value="387,224,103,91"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.CardList">
+			<property name="bounds" value="387,334,80,80"/>
+			<property name="location_set_by_user" value="true"/>
 		</reference>
 	</view>
 </nodeSet>
