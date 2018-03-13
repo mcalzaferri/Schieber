@@ -1,12 +1,6 @@
 package client;
 
-import shared.Card;
-import shared.CardList;
-import shared.Player;
-import shared.Score;
-import shared.Team;
-import shared.Trumpf;
-import shared.Weis;
+import shared.*;
 import shared.client.*;
 
 public class ClientController extends AbstractClient{
@@ -26,11 +20,11 @@ public class ClientController extends AbstractClient{
 		this.view.addObserver(new ViewObserver() {
 
 			@Override
-			public void btnConnectClick() {
+			public void btnConnectClick(ServerAddress serverAddress) {
 				// TODO Auto-generated method stub
 				
 			}
-
+			
 			@Override
 			public void btnDisconnectClick() {
 				// TODO Auto-generated method stub
@@ -45,6 +39,12 @@ public class ClientController extends AbstractClient{
 
 			@Override
 			public void btnCardClick(Card card) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void btnRestartClick() {
 				// TODO Auto-generated method stub
 				
 			}

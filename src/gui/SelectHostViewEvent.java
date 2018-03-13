@@ -3,7 +3,7 @@ package gui;
 import java.awt.AWTEvent;
 import java.awt.Event;
 
-import client.ServerAddress;
+import shared.ServerAddress;
 
 public class SelectHostViewEvent extends AWTEvent{
 	private ServerAddress serverAddress;
