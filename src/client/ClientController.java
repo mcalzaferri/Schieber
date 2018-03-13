@@ -1,62 +1,27 @@
 package client;
 
-import shared.Card;
-import shared.CardList;
-import shared.Player;
-import shared.Score;
-import shared.Team;
-import shared.Trumpf;
-import shared.Weis;
+import shared.*;
 import shared.client.*;
 
-public class ClientController extends AbstractClient{
+public class ClientController extends AbstractClient implements ViewObserver{
 	//Fields
 	ClientModel model;
-	ClientViewInterface view;
+	AbstractClientView view;
 	
 	//Constructor
-	public ClientController(ClientModel model, ClientViewInterface view) {
+	public ClientController(ClientModel model, AbstractClientView view) {
 		this.model = model;
 		this.view = view;
-		addObserverToView();
+		view.addObserver(this);
 	}
 	
 	//Methods
-	private void addObserverToView() {
-		this.view.addObserver(new ViewObserver() {
-
-			@Override
-			public void btnConnectClick() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void btnDisconnectClick() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void btnTrumpfClick(Trumpf trumpf) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void btnCardClick(Card card) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
-	}
 	
-	//Inherited Methods
+	//Inherited methods from AbstractClient
 	@Override
 	public void setTrumpf(Trumpf trumpf) {
 		// TODO Auto-generated method stub
-		
+		model.setTrumpf(trumpf);
 	}
 
 	@Override
@@ -94,4 +59,40 @@ public class ClientController extends AbstractClient{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	//Inherited methods from ViewObserver
+
+	@Override
+	public void btnConnectClick(ServerAddress serverAddress) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	@Override
+	public void btnRestartClick() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	@Override
+	public void btnDisconnectClick() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	@Override
+	public void btnTrumpfClick(Trumpf trumpf) {
+		// TODO Auto-generated method stub
+	}
+	
+
+	@Override
+	public void btnCardClick(Card card) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
