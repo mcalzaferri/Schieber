@@ -7,15 +7,50 @@ public class Card {
 	
 	//Constructors
 	public Card(CardColor c, CardValue v) {
-		color = c;
-		value = v;
+		this.color = c;
+		this.value = v;
 	}
 	
 	//Methods
-	public Card getCardById(int cardId) {
+	public static Card getCardById(int cardId) {
 		int colorId = cardId/10;
 		int valueId = cardId%10;
 		return new Card(CardColor.getColorById(colorId),CardValue.getValueById(valueId));
+	}
+	
+	/**Compares this card to another. 
+	 * The method will always return 1 if the card is from another color unless that color is trump
+	 * @param card The card which this is compared to
+	 * @return <0 if less, =0 if equal >0 if greater then card
+	 */
+	public int compareTo(Card card, Trump trump) {
+		switch(trump) {
+		case SCHILTE:
+		case ROSE:
+		case EICHEL:
+		case SCHELLE:
+			if(this.color == trump.getTrumpfColor()) {
+				if(card.color == trump.getTrumpfColor() && card.value.getTrumpValue() > this.value.getTrumpValue()) {
+					return -1;
+				}
+				return 1;
+			}else if(card.color == trump.getTrumpfColor()) {
+				return -1;
+			}
+			//No trump -> handle the same way as Obenabe
+		case OBENABE:
+			if(this.color == card.color)
+				return this.value.compareTo(card.value);
+			else
+				return 1;
+		case UNEUFE:
+			if(this.color == card.color)
+				return this.value.compareTo(card.value) * -1;
+			else
+				return 1;
+		default:
+				return 0;
+		}
 	}
 	
 	//Getter and Setter
