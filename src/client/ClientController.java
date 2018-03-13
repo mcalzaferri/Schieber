@@ -9,7 +9,8 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	AbstractClientView view;
 	
 	//Constructor
-	public ClientController(ClientModel model, AbstractClientView view) {
+	public ClientController(ClientCommunicationInterface com, ClientModel model, AbstractClientView view) {
+		super(com);
 		this.model = model;
 		this.view = view;
 		view.addObserver(this);
@@ -20,20 +21,12 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	//Inherited methods from AbstractClient
 	@Override
 	public void setTrump(Trump trump) {
-		// TODO Auto-generated method stub
 		model.setTrump(trump);
-	}
-
-	@Override
-	public void moveCardToDeck(Player source, Card card) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void updateDeck(CardList deck) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -60,11 +53,16 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		
 	}
 	
+	@Override
+	protected void setActivePlayer(Player activePlayer) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	//Inherited methods from ViewObserver
-
 	@Override
 	public void btnConnectClick(ServerAddress serverAddress) {
-		// TODO Auto-generated method stub
+		super.connect(serverAddress);
 		
 	}
 	
@@ -78,21 +76,20 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void btnDisconnectClick() {
-		// TODO Auto-generated method stub
+		super.disconnect();
 		
 	}
 	
 
 	@Override
 	public void btnTrumpClick(Trump trump) {
-		// TODO Auto-generated method stub
+		super.publishChosenTrump(trump);
 	}
 	
 
 	@Override
 	public void btnCardClick(Card card) {
-		// TODO Auto-generated method stub
+		super.publishChosenCard(card);
 		
 	}
-
 }

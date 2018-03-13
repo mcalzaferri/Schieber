@@ -3,31 +3,43 @@ package shared.client;
 import shared.*;
 
 public abstract class AbstractClient {
+	//Fields
+	private ClientCommunicationInterface com;
 	
-	//Methoden	
-	public abstract void setTrump(Trump trump);
-	
-	public abstract void moveCardToDeck(Player source, Card card);
-	
-	//Should be called after moveCardToDeck to make sure that the Deck is correct
-	public abstract void updateDeck(CardList deck);
-	
-	public abstract void updateHand(CardList hand);
-	
-	protected void publishWeis(Weis weis) {
-		
+	//Constructors
+	public AbstractClient(ClientCommunicationInterface com) {
+		this.com = com;
 	}
 	
-	protected void publishStich(Player winner) {
-		
-	}
+	//Methods for Server -> Client
+	protected abstract void setTrump(Trump trump);
 	
-	public abstract void updateScore(Score score);
+	protected abstract void setActivePlayer(Player activePlayer);
 	
-	public abstract Card chooseCard();	//fkaiser: needed for bots
+	protected abstract void updateDeck(CardList deck);
 	
-	public abstract void endRound();
+	protected abstract void updateHand(CardList hand);
 	
-	public abstract void endGame(Team winner);
+	protected abstract void updateScore(Score score);
+	
+	protected abstract void endRound();
+	
+	protected abstract void endGame(Team winner);
 
+	//Methods for Client -> Server
+	protected void publishChosenTrump(Trump trump) {
+		com.publishChosenTrump(trump);
+	}
+	
+	protected void publishChosenCard(Card card) {
+		com.publishChosenCard(card);
+	}
+	
+	protected boolean connect(ServerAddress serverAddress) {
+		return com.connect(serverAddress);
+	}
+	
+	protected void disconnect() {
+		com.disconnect();
+	}
 }
