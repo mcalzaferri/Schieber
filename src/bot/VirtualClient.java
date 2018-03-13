@@ -83,11 +83,6 @@ public class VirtualClient extends AbstractClient {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public void setMyTurn() {
-		this.moveCardToDeck(this, ki.getNextCard());
-	}
 
 	@Override
 	public void endRound() {
@@ -104,6 +99,11 @@ public class VirtualClient extends AbstractClient {
 		
 		//destroy intelligence = reset bot
 		this.ki = null;
+	}
+
+	@Override
+	public void moveCardToDeck(Player source, Card card) {
+		//TODO: fkaiser: check if needed for bots? discussed with Maurus "for animation reasosons"
 	}
 
 }
