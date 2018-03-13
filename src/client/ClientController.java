@@ -78,18 +78,6 @@ public class ClientController extends AbstractClient{
 	}
 
 	@Override
-	public void publishWeis(Weis weis) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void publishStich(Player winner) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void updateScore(Score score) {
 		// TODO Auto-generated method stub
 		

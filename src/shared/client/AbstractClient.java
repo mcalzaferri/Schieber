@@ -15,9 +15,13 @@ public abstract class AbstractClient {
 	
 	public abstract void updateHand(CardList hand);
 	
-	public abstract void publishWeis(Weis weis);
+	protected void publishWeis(Weis weis) {
+		
+	}
 	
-	public abstract void publishStich(Player winner);
+	protected void publishStich(Player winner) {
+		
+	}
 	
 	public abstract void updateScore(Score score);
 	
