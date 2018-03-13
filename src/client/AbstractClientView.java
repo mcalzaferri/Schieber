@@ -1,22 +1,18 @@
 package client;
 
 import shared.*;
+import shared.client.ClientModel;
 
 public abstract class AbstractClientView {
-	protected CardList hand;
-	protected CardList deck;
-	protected Trump trump;
-	protected Score score;
+	protected ClientModel data;
 	
-	public AbstractClientView(CardList hand, CardList deck, Trump trump, Score score) {
-		this.hand = hand;
-		this.deck = deck;
-		this.trump = trump;
-		this.score = score;
+	public AbstractClientView(ClientModel data) {
+		this.data = data;
 	}
 	
 	public abstract void addObserver(ViewObserver observer);
 	public abstract void changeView(ViewEnumeration view);
+	public abstract ViewEnumeration getCurrentView();
 	public abstract void updateView();
 	public abstract void updateScore(Score score);
 }

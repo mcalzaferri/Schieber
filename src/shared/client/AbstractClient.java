@@ -14,11 +14,25 @@ public abstract class AbstractClient {
 	//Methods for Server -> Client
 	protected abstract void setTrump(Trump trump);
 	
-	protected abstract void setActivePlayer(Player activePlayer);
+	/** Sets the seatId of the Client
+	 * @param seatId
+	 */
+	protected abstract void setSeat(int seatId);
 	
-	protected abstract void updateDeck(CardList deck);
+	/** Determines which seat is curently playing.
+	 * If activeSeatId == seatId use publishChosenCard() to finish turn
+	 * @param activeSeatId
+	 */
+	protected abstract void updateActiveSeat(int activeSeatId);
 	
-	protected abstract void updateHand(CardList hand);
+	/**Initialises trump selection process. Finish process with publishChosenTrump()
+	 * @param canSwitch determines wether the client can use "SCHIEBEN" or not
+	 */
+	protected abstract void requestTrump(boolean canSwitch);
+	
+	protected abstract void updateDeck(int[] deckCardIds);
+	
+	protected abstract void updateHand(int[] handCardIds);
 	
 	protected abstract void updateScore(Score score);
 	
@@ -35,6 +49,10 @@ public abstract class AbstractClient {
 		com.publishChosenCard(card);
 	}
 	
+	/**
+	 * @param serverAddress Adress to connect to
+	 * @return true if successfully connected
+	 */
 	protected boolean connect(ServerAddress serverAddress) {
 		return com.connect(serverAddress);
 	}
