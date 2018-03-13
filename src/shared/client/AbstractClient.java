@@ -4,11 +4,10 @@ import shared.*;
 
 public abstract class AbstractClient {
 	
-	
-	//Methoden
+	//Methoden	
 	public abstract void setTrumpf(Trumpf trumpf);
 	
-	public abstract void moveCardToDeck(Player source, Card card);
+	public abstract void moveCardToDeck(AbstractClient source, Card card);
 	
 	//Should be called after moveCardToDeck to make sure that the Deck is correct
 	public abstract void updateDeck(CardList deck);
@@ -25,7 +24,10 @@ public abstract class AbstractClient {
 	
 	public abstract void updateScore(Score score);
 	
+	public abstract void setMyTurn();	//fkaiser: needed for bots
+	
 	public abstract void endRound();
 	
 	public abstract void endGame(Team winner);
+
 }

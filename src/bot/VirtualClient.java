@@ -11,38 +11,38 @@ import shared.client.AbstractClient;
 import shared.proto.ChooseGameModeMessage;
 import shared.proto.JoinGameMessage;
 import shared.proto.Message;
+import shared.proto.PlaceCardMessage;
 import shared.proto.ToPlayerMessage;
 
 public class VirtualClient extends AbstractClient {
 
-	BotCommunication communication;
-	BotIntelligence ki;
+	BotCommunication com;
+	BotIntelligence ki = new BotIntelligence();
 	Boolean active = true;
 	
-	Thread receiver = new Thread(){
-        public void run(){
-            while(true){
-                try{
-                	
-                    communication.waitForMessage();
-                    Message message = communication.receive();
-                    ToPlayerMessage answer = ki.receive(message);
-                    communication.broadcast(answer);
-                    
-                    // Test
-                    System.out.println("still active");
-                   
-                } catch(Exception e){System.out.println("Exception: " + e.toString());}
-            }
-        }
-    };
+//TODO: fkaiser@lgassner: remove? will be handled in com-class, won't it?	
+//	Thread receiver = new Thread(){
+//        public void run(){
+//            while(true){
+//                try{  	
+//                    communication.waitForMessage();
+//                    Message message = communication.receive();
+//                    ToPlayerMessage answer = ki.receive(message);
+//                    communication.broadcast(answer);
+//                    
+//                    // Test
+//                    System.out.println("still active");
+//                   
+//                } catch(Exception e){System.out.println("Exception: " + e.toString());}
+//            }
+//        }
+//    };
 	
 	public VirtualClient(BotCommunication communication) {
 		super();
-		this.communication = communication;
-		communication.send(new JoinGameMessage());
-		receiver.start();
-		
+		this.com = communication;
+		communication.send(new JoinGameMessage(this));
+		//receiver.start();
 	}
 	
 	@Override
@@ -52,21 +52,18 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	public void moveCardToDeck(Player source, Card card) {
-		// TODO Auto-generated method stub
-		
+	public void moveCardToDeck(AbstractClient virtualClient, Card card) {
+		com.send(new PlaceCardMessage(this, card));
 	}
 
 	@Override
 	public void updateDeck(CardList deck) {
-		// TODO Auto-generated method stub
-		
+		ki.setDeck(deck);
 	}
 
 	@Override
 	public void updateHand(CardList hand) {
-		// TODO Auto-generated method stub
-		
+		ki.setHand(hand);
 	}
 
 	@Override
@@ -86,17 +83,27 @@ public class VirtualClient extends AbstractClient {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void setMyTurn() {
+		this.moveCardToDeck(this, ki.getNextCard());
+	}
 
 	@Override
 	public void endRound() {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 
 	@Override
 	public void endGame(Team winner) {
-		// TODO Auto-generated method stub
+		//disable bot
+		this.active = false;
 		
+		//TODO: fkaiser@lgassner: remove if not needed (if communication is handled outside this class then receiver is not needed)
+		///this.receiver.interrupt();
+		
+		//destroy intelligence = reset bot
+		this.ki = null;
 	}
 
 }
