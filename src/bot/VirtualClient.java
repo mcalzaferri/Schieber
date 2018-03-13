@@ -5,7 +5,7 @@ import shared.CardList;
 import shared.Player;
 import shared.Score;
 import shared.Team;
-import shared.Trumpf;
+import shared.Trump;
 import shared.Weis;
 import shared.client.AbstractClient;
 import shared.proto.ChooseGameModeMessage;
@@ -46,7 +46,7 @@ public class VirtualClient extends AbstractClient {
 	}
 	
 	@Override
-	public void setTrumpf(Trumpf trumpf) {
+	public void setTrump(Trump trump) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -5,7 +5,7 @@ import shared.*;
 public abstract class AbstractClient {
 	
 	//Methoden	
-	public abstract void setTrumpf(Trumpf trumpf);
+	public abstract void setTrump(Trump trump);
 	
 	public abstract void moveCardToDeck(Player source, Card card);
 	

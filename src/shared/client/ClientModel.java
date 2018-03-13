@@ -7,7 +7,7 @@ public class ClientModel {
 	private Team[] teams;
 	private CardList hand;
 	private CardList deck;
-	private Trumpf trumpf;
+	private Trump trump;
 	
 	//Constructors
 	
@@ -32,10 +32,10 @@ public class ClientModel {
 	public void setDeck(CardList deck) {
 		this.deck = deck;
 	}
-	public Trumpf getTrumpf() {
-		return trumpf;
+	public Trump getTrump() {
+		return trump;
 	}
-	public void setTrumpf(Trumpf trumpf) {
-		this.trumpf = trumpf;
+	public void setTrump(Trump trump) {
+		this.trump = trump;
 	}
 }

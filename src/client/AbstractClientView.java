@@ -5,10 +5,10 @@ import shared.*;
 public abstract class AbstractClientView {
 	protected CardList hand;
 	protected CardList deck;
-	protected Trumpf trump;
+	protected Trump trump;
 	protected Score score;
 	
-	public AbstractClientView(CardList hand, CardList deck, Trumpf trump, Score score) {
+	public AbstractClientView(CardList hand, CardList deck, Trump trump, Score score) {
 		this.hand = hand;
 		this.deck = deck;
 		this.trump = trump;

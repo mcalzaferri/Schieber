@@ -4,14 +4,14 @@ public class Weis implements Comparable<Weis>{
 	//Datenfelder
 	private final WeisType type;
 	private final Card originCard;
-	private final Trumpf trumpf;
+	private final Trump trump;
 	
 
 	//Konstruktoren	
-	public Weis(WeisType type, Card originCard, Trumpf trumpf) {
+	public Weis(WeisType type, Card originCard, Trump trump) {
 		this.type = type;
 		this.originCard = originCard;
-		this.trumpf = trumpf;
+		this.trump = trump;
 	}
 	
 	//Methoden
@@ -22,10 +22,10 @@ public class Weis implements Comparable<Weis>{
 		}else if(originCard.getValue().compareTo(o.getOriginCard().getValue()) != 0){
 			return originCard.getValue().compareTo(o.getOriginCard().getValue());
 		}else {
-			if(trumpf.getTrumpfColor() != null && originCard.getColor() != o.getOriginCard().getColor()) {
-				if(originCard.getColor() == trumpf.getTrumpfColor()) {
+			if(trump.getTrumpfColor() != null && originCard.getColor() != o.getOriginCard().getColor()) {
+				if(originCard.getColor() == trump.getTrumpfColor()) {
 					return 1;
-				}else if(o.getOriginCard().getColor() == trumpf.getTrumpfColor()) {
+				}else if(o.getOriginCard().getColor() == trump.getTrumpfColor()) {
 					return -1;
 				}
 			}

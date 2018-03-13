@@ -2,7 +2,7 @@ package client;
 
 public enum ViewEnumeration {
 	SELECTHOSTVIEW,
-	SELECTTRUMPFVIEW,
+	SELECTTRUMPVIEW,
 	PLAYVIEW,
 	GAMEOVERVIEW
 }

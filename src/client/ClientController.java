@@ -19,9 +19,9 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	
 	//Inherited methods from AbstractClient
 	@Override
-	public void setTrumpf(Trumpf trumpf) {
+	public void setTrump(Trump trump) {
 		// TODO Auto-generated method stub
-		model.setTrumpf(trumpf);
+		model.setTrump(trump);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	
 
 	@Override
-	public void btnTrumpfClick(Trumpf trumpf) {
+	public void btnTrumpClick(Trump trump) {
 		// TODO Auto-generated method stub
 	}
 	

@@ -2,17 +2,17 @@ package gui;
 
 import java.awt.AWTEvent;
 import java.awt.Event;
-import shared.Trumpf;
+import shared.Trump;
 
 public class TrumpViewEvent extends AWTEvent{
-	private Trumpf trumpf;
+	private Trump trump;
 	
-	public TrumpViewEvent(Event event, Trumpf trumpf) {
+	public TrumpViewEvent(Event event, Trump trump) {
 		super(event);
-		this.trumpf = trumpf;
+		this.trump = trump;
 	}
 
-	public Trumpf getTrumpf() {
-		return this.trumpf;
+	public Trump getTrumpf() {
+		return this.trump;
 	}
 }

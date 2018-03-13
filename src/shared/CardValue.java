@@ -13,18 +13,18 @@ public enum CardValue {
 	ASS(	14,		14,		11,		11,		11,		0);
 	
 	private final int defaultValue;
-	private final int trumpfValue;
+	private final int trumpValue;
 	private final int generalScore;
-	private final int trumpfScore;
+	private final int trumpScore;
 	private final int uneufeScore;
 	private final int obenabeScore;
 	
 	//Konstruktoren
-	CardValue(int defaultValue, int trumpfValue, int generalScore, int trumpfScore, int uneufeScore, int obenabeScore){
+	CardValue(int defaultValue, int trumpValue, int generalScore, int trumpScore, int uneufeScore, int obenabeScore){
 		this.defaultValue = defaultValue;
-		this.trumpfValue = trumpfValue;
+		this.trumpValue = trumpValue;
 		this.generalScore = generalScore;
-		this.trumpfScore = trumpfScore;
+		this.trumpScore = trumpScore;
 		this.uneufeScore = uneufeScore;
 		this.obenabeScore = obenabeScore;
 	}
@@ -36,16 +36,16 @@ public enum CardValue {
 		return defaultValue;
 	}
 
-	public int getTrumpfValue() {
-		return trumpfValue;
+	public int getTrumpValue() {
+		return trumpValue;
 	}
 
 	public int getGeneralScore() {
 		return generalScore;
 	}
 
-	public int getTrumpfScore() {
-		return trumpfScore;
+	public int getTrumpScore() {
+		return trumpScore;
 	}
 
 	public int getUneufeScore() {
