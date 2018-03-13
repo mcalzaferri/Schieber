@@ -6,19 +6,9 @@ public class Weis implements Comparable<Weis>{
 	private final Card originCard;
 	private final Trumpf trumpf;
 	
-<<<<<<< HEAD
-	//Konstruktoren
-	public Weis(WeisType type) {
-		//Nur für VIERNELL, VIERBAUREN UND STOECK
-		this.type = type;
-		this.originCard = null;
-	}
-	
-	public Weis(WeisType type, Card originCard) {
-=======
+
 	//Konstruktoren	
 	public Weis(WeisType type, Card originCard, Trumpf trumpf) {
->>>>>>> bb8d70a8076ee5751478b4184fe1bd1a6af88db2
 		this.type = type;
 		this.originCard = originCard;
 		this.trumpf = trumpf;
