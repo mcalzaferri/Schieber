@@ -42,16 +42,4 @@ public class Gui extends AbstractClientView{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public void updateView() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateScore(Score score) {
-		// TODO Auto-generated method stub
-		
-	}	
 }
