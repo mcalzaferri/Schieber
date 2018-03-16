@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import client.AbstractClientView;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import gui.playingView.PlayingFieldView;
 import shared.Card;
 import shared.CardList;
 import shared.Player;
@@ -13,6 +14,7 @@ import shared.Score;
 import shared.client.ClientModel;
 
 public class Gui extends AbstractClientView{
+	public static PictureFactory pictureFactory = new PictureFactory();
 	private ArrayList<ViewObserver> observers;
 	private SelectHostView selectHostView;
 	private PlayingFieldView playingFieldView;
