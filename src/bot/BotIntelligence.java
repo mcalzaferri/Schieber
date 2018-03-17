@@ -1,40 +1,68 @@
 package bot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import shared.Card;
 import shared.CardList;
 import shared.Player;
+import shared.Trump;
 import shared.proto.Message;
 import shared.proto.ToPlayerMessage;
 
-public class BotIntelligence {
+public abstract class BotIntelligence {
 	
-	private CardList cardsInHand;
-	private CardList cardsPlayed;								
-	private CardList deck;										//fkaiser: added, but cardsPlayed can be used							
-	private Player partner;
-	private int turn;
+	protected ArrayList<Card> cardsInHand;
+	protected ArrayList<Card> cardsPlayed;							
+	protected ArrayList<Card> deck;				//fkaiser: added, but cardsPlayed can be used							
+	protected Player partner;
+	protected int turn;
+	protected Trump trump;
 	
-	public void setHand(CardList currHand)
-	{
-		cardsInHand = currHand;
+	// common methods for any intelligence
+	/**
+	 * updates the cards in Hand
+	 * @param currHand, Array of card IDs
+	 */
+	public void setHand(int[] currHand) {
+		cardsInHand = getCardListByIds(currHand);
 	}
-	
-	public void setDeck(CardList currDeck)
+	/**
+	 * updates the trump color, meaning someone chose the trump
+	 * @param trump
+	 */
+	public void setTrump(Trump trump) {
+		this.trump = trump;	
+	}
+	/**
+	 * updates the Deck, meaning the already played cards
+	 * @param currDeck
+	 */
+	public void setDeck(int[] currDeck)
 	{
-		deck = currDeck;
+		deck = getCardListByIds(currDeck);
 		
 		//TODO: (fkaiser) add last Card of currDeck to cardsPlayed so no setcardPlayed-function is needed
 		//example:
 		//cardsPlayed.add(currDeck(IndexOfLastCard))
 		
 	}
-
-	public Card getNextCard() {
-		
-		//TODO: fkaiser getNextCard - for now randomly
-		return null;
+	
+	/**
+	 * auxiliary function to convert the integer arrays into ArrayLists which are easier to handle
+	 * @param cardIds
+	 * @return ArrayList<Card>
+	 */
+	private ArrayList<Card> getCardListByIds(int[] cardIds){
+		ArrayList<Card> list = new ArrayList<>();
+		for(int i : cardIds) {
+			list.add(Card.getCardById(i));
+		}
+		return list;
 	}
+	
+	// methods depending on strategy
+	public abstract Card getNextCard();
+	public abstract Trump selectTrump(boolean canSwitch);
 	
 }

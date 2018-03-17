@@ -2,8 +2,11 @@ package bot;
 
 import shared.Card;
 import shared.CardList;
+import shared.ClientCommunicationInterface;
+import shared.Communication;
 import shared.Player;
 import shared.Score;
+import shared.ServerAddress;
 import shared.Team;
 import shared.Trump;
 import shared.Weis;
@@ -16,94 +19,94 @@ import shared.proto.ToPlayerMessage;
 
 public class VirtualClient extends AbstractClient {
 
-	BotCommunication com;
-	BotIntelligence ki = new BotIntelligence();
-	Boolean active = true;
+	private ClientCommunicationInterface com;
+	private BotIntelligence ki = new IntelligenceRandom(); // set random intelligence by default
+	public Boolean active = true;
+	private int mySeatId;
+	private Score score;
 	
-//TODO: fkaiser@lgassner: remove? will be handled in com-class, won't it?	
-//	Thread receiver = new Thread(){
-//        public void run(){
-//            while(true){
-//                try{  	
-//                    communication.waitForMessage();
-//                    Message message = communication.receive();
-//                    ToPlayerMessage answer = ki.receive(message);
-//                    communication.broadcast(answer);
-//                    
-//                    // Test
-//                    System.out.println("still active");
-//                   
-//                } catch(Exception e){System.out.println("Exception: " + e.toString());}
-//            }
-//        }
-//    };
 	
-	public VirtualClient(BotCommunication communication) {
-		super();
+	public VirtualClient(ClientCommunicationInterface communication, ServerAddress address) {
+		super(communication);
 		this.com = communication;
-		communication.send(new JoinGameMessage(this));
-		//receiver.start();
-	}
+		
+		while(!super.connect(address)) {
+			// try to connect
+		}
 	
-	@Override
-	public void setTrump(Trump trump) {
-		// TODO Auto-generated method stub
-		
 	}
 
-	@Override
-	public void moveCardToDeck(AbstractClient virtualClient, Card card) {
-		com.send(new PlaceCardMessage(this, card));
-	}
 
 	@Override
-	public void updateDeck(CardList deck) {
-		ki.setDeck(deck);
-	}
-
-	@Override
-	public void updateHand(CardList hand) {
-		ki.setHand(hand);
-	}
-
-	@Override
-	public void publishWeis(Weis weis) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void publishStich(Player winner) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
+	// bot doesn't really care about score, but we still store it
 	public void updateScore(Score score) {
-		// TODO Auto-generated method stub
+		this.score = score;
 		
 	}
 
 	@Override
 	public void endRound() {
-		// TODO Auto-generated method stub	
+		// we could do some checks here, but otherwise not interesting for bot(?)
 	}
 
 	@Override
 	public void endGame(Team winner) {
+		super.disconnect();
 		//disable bot
 		this.active = false;
-		
-		//TODO: fkaiser@lgassner: remove if not needed (if communication is handled outside this class then receiver is not needed)
-		///this.receiver.interrupt();
-		
 		//destroy intelligence = reset bot
 		this.ki = null;
 	}
 
+
 	@Override
-	public void moveCardToDeck(Player source, Card card) {
-		//TODO: fkaiser: check if needed for bots? discussed with Maurus "for animation reasosons"
+	protected void setSeat(int seatId) {
+		mySeatId = seatId;
+		
 	}
+
+	@Override
+	protected void updateActiveSeat(int activeSeatId) {
+		if(activeSeatId == mySeatId) {
+			Card card = ki.getNextCard();
+			super.publishChosenCard(card);
+			
+		}
+		
+	}
+
+	@Override
+	protected void requestTrump(boolean canSwitch) {
+		Trump trump = ki.selectTrump(canSwitch);
+		super.publishChosenTrump(trump);
+		
+	}
+
+	@Override
+	protected void updateDeck(int[] deckCardIds) {
+		ki.setDeck(deckCardIds);
+		
+	}
+
+	@Override
+	protected void updateHand(int[] handCardIds) {
+		ki.setHand(handCardIds);
+		
+	}
+
+	@Override
+	protected void setTrump(Trump trump) {
+		ki.setTrump(trump);
+		
+	}
+	
+	/**
+	 * set strategy for the Schieber bot
+	 * @param intelligence
+	 */
+	public void setIntelligence(BotIntelligence intelligence) {
+		ki = intelligence;
+	}
+	
 
 }
