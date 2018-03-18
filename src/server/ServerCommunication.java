@@ -1,7 +1,7 @@
 package server;
 
-import shared.proto.*;
 import shared.*;
+import ch.ntb.jass.common.proto.*;
 
 public class ServerCommunication extends Communication {
 	public ServerCommunication(int port) {

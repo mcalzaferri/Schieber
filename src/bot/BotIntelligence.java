@@ -7,8 +7,7 @@ import shared.Card;
 import shared.CardList;
 import shared.Player;
 import shared.Trump;
-import shared.proto.Message;
-import shared.proto.ToPlayerMessage;
+import ch.ntb.jass.common.proto.*;
 
 public abstract class BotIntelligence {
 	

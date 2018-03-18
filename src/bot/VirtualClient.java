@@ -11,11 +11,6 @@ import shared.Team;
 import shared.Trump;
 import shared.Weis;
 import shared.client.AbstractClient;
-import shared.proto.ChooseGameModeMessage;
-import shared.proto.JoinGameMessage;
-import shared.proto.Message;
-import shared.proto.PlaceCardMessage;
-import shared.proto.ToPlayerMessage;
 
 public class VirtualClient extends AbstractClient {
 

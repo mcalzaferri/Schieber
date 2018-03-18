@@ -3,6 +3,7 @@ package server;
 import java.lang.reflect.Array;
 import java.util.Hashtable;
 import java.util.Map;
+import ch.ntb.jass.common.proto.*;
 import shared.*;
 
 public class GameLogic {
