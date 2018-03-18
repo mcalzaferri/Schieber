@@ -1,25 +1,16 @@
 package server;
 
-import shared.*;
+import java.io.IOException;
+import shared.Communication;
+import shared.Player;
 import ch.ntb.jass.common.proto.*;
 
 public class ServerCommunication extends Communication {
-	public ServerCommunication(int port) {
-		super(null, port);
+	public ServerCommunication() {
+		super();
 	}
-	public Message receive() {
-		return null;
-	}
-	public void broadcast(ToPlayerMessage m){
-		
-	}
-	public void send(ToPlayerMessage m, Player p){
-		
-	}
-	public void open() {
-		
-	}
-	public void close() {
-		
+
+	public void send(Player player, Message msg) throws IOException {
+		super.send(player.getSocketAddress(), msg);
 	}
 }
