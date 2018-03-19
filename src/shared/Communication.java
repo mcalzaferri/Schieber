@@ -17,12 +17,12 @@ public abstract class Communication {
 	}
 
 	/**
-	 * Blocking receive. The parameters are used to return the received message
-	 * and the address of the sender.
+	 * Blocking receive.
 	 * @throws IOException
 	 * @throws ClassNotFoundException
+	 * @return The received message.
 	 */
-	public void receive(Message msg, InetAddress peerAddress)
+	public InternalMessage internalReceive()
 			throws IOException, ClassNotFoundException {
 		receivePacket.setLength(receiveBuffer.length);
 
@@ -32,8 +32,10 @@ public abstract class Communication {
 		// deserialize message (will be replaced with json deserialization later)
 		ObjectInputStream objIn = new ObjectInputStream(
 				new ByteArrayInputStream(receivePacket.getData()));
-		msg = (Message)objIn.readObject();
-		peerAddress = receivePacket.getAddress();
+		InternalMessage msg = null;
+		msg.message = (Message)objIn.readObject();
+		msg.SenderAddress = receivePacket.getAddress();
+		return msg;
 	}
 
 	/**
