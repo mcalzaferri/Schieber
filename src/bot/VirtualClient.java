@@ -1,15 +1,11 @@
 package bot;
 
 import shared.Card;
-import shared.CardList;
 import shared.ClientCommunicationInterface;
-import shared.Communication;
-import shared.Player;
 import shared.Score;
 import shared.ServerAddress;
 import shared.Team;
 import shared.Trump;
-import shared.Weis;
 import shared.client.AbstractClient;
 
 public class VirtualClient extends AbstractClient {
@@ -28,15 +24,12 @@ public class VirtualClient extends AbstractClient {
 		while(!super.connect(address)) {
 			// try to connect
 		}
-	
 	}
-
 
 	@Override
 	// bot doesn't really care about score, but we still store it
 	public void updateScore(Score score) {
 		this.score = score;
-		
 	}
 
 	@Override
@@ -53,11 +46,9 @@ public class VirtualClient extends AbstractClient {
 		this.ki = null;
 	}
 
-
 	@Override
 	protected void setSeat(int seatId) {
 		mySeatId = seatId;
-		
 	}
 
 	@Override
@@ -65,9 +56,7 @@ public class VirtualClient extends AbstractClient {
 		if(activeSeatId == mySeatId) {
 			Card card = ki.getNextCard();
 			super.publishChosenCard(card);
-			
 		}
-		
 	}
 
 	@Override

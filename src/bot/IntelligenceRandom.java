@@ -20,7 +20,6 @@ public class IntelligenceRandom extends BotIntelligence {
 			int pick = random.nextInt(cardsInHand.size());
 			card = cardsInHand.remove(pick);
 			return card;
-			
 		}
 
 		/**

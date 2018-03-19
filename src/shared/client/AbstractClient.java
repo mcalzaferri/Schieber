@@ -19,14 +19,14 @@ public abstract class AbstractClient {
 	 */
 	protected abstract void setSeat(int seatId);
 	
-	/** Determines which seat is curently playing.
+	/** Determines which seat is currently playing.
 	 * If activeSeatId == seatId use publishChosenCard() to finish turn
 	 * @param activeSeatId
 	 */
 	protected abstract void updateActiveSeat(int activeSeatId);
 	
 	/**Initialises trump selection process. Finish process with publishChosenTrump()
-	 * @param canSwitch determines wether the client can use "SCHIEBEN" or not
+	 * @param canSwitch determines whether the client can use "SCHIEBEN" or not
 	 */
 	protected abstract void requestTrump(boolean canSwitch);
 	
@@ -50,7 +50,7 @@ public abstract class AbstractClient {
 	}
 	
 	/**
-	 * @param serverAddress Adress to connect to
+	 * @param serverAddress Address to connect to
 	 * @return true if successfully connected
 	 */
 	protected boolean connect(ServerAddress serverAddress) {
