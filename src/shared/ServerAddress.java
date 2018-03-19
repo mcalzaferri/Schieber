@@ -6,4 +6,9 @@ public class ServerAddress {
 	{
 		this.address = address;
 	}
+	
+	public int getServerAddress()
+	{
+		return address;
+	}
 }
