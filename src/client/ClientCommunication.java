@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 
 import ch.ntb.jass.common.proto.Message;
 import shared.Communication;
+import shared.InternalMessage;
 
 public class ClientCommunication extends Communication {
 	private InetSocketAddress serverAddress;
@@ -24,12 +25,12 @@ public class ClientCommunication extends Communication {
 		super.send(serverAddress, msg);
 	}
 
-	public void receive(Message msg) throws ClassNotFoundException, IOException {
-		InetAddress senderAddr = null;
-		super.receive(msg, senderAddr);
+	public Message receive() throws ClassNotFoundException, IOException {
+		InternalMessage msg = super.internalReceive();
 		// Discard messages that were not sent by the server.
-		if(!serverAddress.getAddress().equals(senderAddr)) {
-			msg = null;
+		if(!serverAddress.getAddress().equals(msg.SenderAddress)) {
+			return null;
 		}
+		return msg.message;
 	}
 }
