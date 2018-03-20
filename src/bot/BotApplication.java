@@ -7,7 +7,7 @@ public class BotApplication {
 
 	private static ClientCommunicationInterface communication;
 	private static final int port = 5555;
-	private static final ServerAddress address = new ServerAddress();
+	private static final ServerAddress address = new ServerAddress(port);
 	private static VirtualClient client;
 	
 	

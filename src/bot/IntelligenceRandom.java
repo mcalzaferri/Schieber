@@ -19,6 +19,7 @@ public class IntelligenceRandom extends BotIntelligence {
 			Card card;
 			int pick = random.nextInt(cardsInHand.size());
 			card = cardsInHand.remove(pick);
+			//TODO(Lukas): What happens if card is not accepted by server? When can the card be removed from the list?
 			return card;
 		}
 
