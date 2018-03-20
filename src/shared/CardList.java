@@ -1,6 +1,7 @@
 package shared;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class CardList extends ArrayList<Card>{
 	//Fields
@@ -18,6 +19,7 @@ public class CardList extends ArrayList<Card>{
 	public void updateData(int[] cardIds) {
 		//Remove all non existent cards
 		boolean exists;
+		ArrayList<Card> cardsToDelete = new ArrayList<>();
 		for(Card card : this) {
 			exists = false;
 			for(int id : cardIds) {
@@ -27,14 +29,24 @@ public class CardList extends ArrayList<Card>{
 				}
 			}
 			if(!exists)
-				super.remove(card);
+				cardsToDelete.add(card);
 		}
+		super.removeAll(cardsToDelete);
 		//Add all new cards
 		for(int id : cardIds) {
 			if(!contains(id)) {
 				this.add(id);
 			}
 		}
+	}
+	
+	public void sort() {
+		super.sort(new Comparator<Card>() {
+			@Override
+			public int compare(Card o1, Card o2) {
+				return o1.compareTo(o2, Trump.OBENABE);
+			}
+		});
 	}
 	
 	@Override
