@@ -9,7 +9,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	private AbstractClientView view;
 	
 	//Constructor
-	public ClientController(ClientCommunicationInterface com, ClientModel model, AbstractClientView view) {
+	public ClientController(ClientCommunication com, ClientModel model, AbstractClientView view) {
 		super(com);
 		this.model = model;
 		this.view = view;
@@ -147,5 +147,23 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	@Override
 	public void btnCardClick(Card card) {
 		super.publishChosenCard(card);
+	}
+
+	@Override
+	public void btnCloseWindowClick(ViewEnumeration view) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void connected() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void disconnected() {
+		// TODO Auto-generated method stub
+		
 	}
 }

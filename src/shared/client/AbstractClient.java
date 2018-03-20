@@ -1,13 +1,14 @@
 package shared.client;
 
+import client.ClientCommunication;
 import shared.*;
 
 public abstract class AbstractClient {
 	//Fields
-	private ClientCommunicationInterface com;
+	private ClientCommunication com;
 	
 	//Constructors
-	public AbstractClient(ClientCommunicationInterface com) {
+	public AbstractClient(ClientCommunication com) {
 		this.com = com;
 	}
 	
@@ -39,6 +40,10 @@ public abstract class AbstractClient {
 	protected abstract void endRound();
 	
 	protected abstract void endGame(Team winner);
+	
+	protected abstract void connected();
+	
+	protected abstract void disconnected();
 
 	//Methods for Client -> Server
 	protected void publishChosenTrump(Trump trump) {
@@ -53,8 +58,8 @@ public abstract class AbstractClient {
 	 * @param serverAddress Address to connect to
 	 * @return true if successfully connected
 	 */
-	protected boolean connect(ServerAddress serverAddress) {
-		return com.connect(serverAddress);
+	protected void connect(ServerAddress serverAddress) {
+		 com.connect(serverAddress);
 	}
 	
 	protected void disconnect() {
