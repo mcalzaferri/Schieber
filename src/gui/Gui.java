@@ -16,32 +16,73 @@ import shared.client.ClientModel;
 public class Gui extends AbstractClientView{
 	public static PictureFactory pictureFactory = new PictureFactory();
 	private ArrayList<ViewObserver> observers;
-	private SelectHostView selectHostView;
+	private StartView selectHostView;
 	private PlayingFieldView playingFieldView;
 	private TrumpView trumpView;
-	private GameOverView gameOverView;
+	private EndView gameOverView;
+	private AbstractView currentView;
 	
 	
 	public Gui(ClientModel data) {
+		//Init fields
 		super(data);
-		// TODO Auto-generated constructor stub
+		this.observers = new ArrayList<>();
+		this.selectHostView = new StartView(ViewEnumeration.SELECTHOSTVIEW, observers);
+		this.playingFieldView = new PlayingFieldView(ViewEnumeration.PLAYVIEW, observers, data);
+		this.trumpView = new TrumpView(ViewEnumeration.SELECTTRUMPVIEW, observers);
+		this.gameOverView = new EndView(ViewEnumeration.GAMEOVERVIEW, observers);
+		
+		//Init views
+		this.playingFieldView.setVisible(true);
+		this.currentView = this.playingFieldView;
+		
+		this.selectHostView.setVisible(false);
+		this.trumpView.setVisible(false);
+		this.gameOverView.setVisible(false);
 	}
 
 	@Override
 	public void addObserver(ViewObserver observer) {
-		// TODO Auto-generated method stub
-		
+		this.observers.add(observer);
 	}
 
 	@Override
 	public void changeView(ViewEnumeration view) {
-		// TODO Auto-generated method stub
+		if(this.currentView.getViewType().equals(view)) {
+			this.currentView.update();
+		}
+		switch(view) {
+		case GAMEOVERVIEW:
+			this.currentView.setVisible(false);
+			this.currentView = this.gameOverView;
+			this.currentView.setVisible(true);
+			break;
+		case PLAYVIEW:
+			this.currentView.setVisible(false);
+			this.currentView = this.playingFieldView;
+			this.currentView.setVisible(true);
+			
+			break;
+		case SELECTHOSTVIEW:
+			this.currentView.setVisible(false);
+			this.currentView = this.selectHostView;
+			this.currentView.setVisible(true);
+			
+			break;
+		case SELECTTRUMPVIEW:
+			this.currentView.setVisible(false);
+			this.currentView = this.trumpView;
+			this.currentView.setVisible(true);
+			
+			break;
+		default:
+			break;
 		
+		}
 	}
 
 	@Override
 	public ViewEnumeration getCurrentView() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.currentView.getViewType();
 	}
 }
