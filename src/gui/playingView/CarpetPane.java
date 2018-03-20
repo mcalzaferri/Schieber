@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import client.ViewObserver;
 import gui.Gui;
+import gui.PictureFactory.Pictures;
 import shared.Card;
 import shared.CardList;
 import shared.client.ClientModel;
@@ -41,6 +42,9 @@ public class CarpetPane extends JPanel{
 			try {
 				int index = 0;
 				BufferedImage img;
+				
+				img = Gui.pictureFactory.getPicture(Pictures.Carpet,this.getSize());
+				g.drawImage(img, 0, 0, null);
 				for(Card c : this.data.getDeck()) {				
 				img = Gui.pictureFactory.getPicture(c, new Dimension(50, 80));
 					switch(index) {

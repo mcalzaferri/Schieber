@@ -43,7 +43,7 @@ public class BlackBoardPane extends JPanel{
 	public void paint(Graphics g) {
 		super.paint(g);
 		try {
-			BufferedImage img = Gui.pictureFactory.getPicture(Pictures.BlackBoard, this.getPreferredSize());
+			BufferedImage img = Gui.pictureFactory.getPicture(Pictures.BlackBoard, this.getSize());
 			g.drawImage(img, 0, 0, null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
