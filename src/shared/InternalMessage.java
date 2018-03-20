@@ -1,9 +1,10 @@
 package shared;
 
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
+
 import ch.ntb.jass.common.proto.Message;
 
-public class InternalMessage extends Message {
-	public InetAddress SenderAddress = null;
+public class InternalMessage {
+	public InetSocketAddress senderAddress = null;
 	public Message message = null;
 }

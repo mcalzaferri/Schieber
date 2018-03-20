@@ -1,7 +1,6 @@
 package shared;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,8 +11,8 @@ public class Player /*extends EntityPlayer*/{
 	private List<Card> cards;	//cards on hand
 	private InetSocketAddress address;
 
-	public Player(String ip, int port) {
-		address = new InetSocketAddress(ip, port);
+	public Player(InetSocketAddress address) {
+		this.address = address;
 	}
 
 	public InetSocketAddress getSocketAddress() {

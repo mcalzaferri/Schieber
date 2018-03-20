@@ -1,7 +1,6 @@
 package client;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import ch.ntb.jass.common.proto.Message;
@@ -28,7 +27,7 @@ public class ClientCommunication extends Communication {
 	public Message receive() throws ClassNotFoundException, IOException {
 		InternalMessage msg = super.internalReceive();
 		// Discard messages that were not sent by the server.
-		if(!serverAddress.getAddress().equals(msg.SenderAddress)) {
+		if(!serverAddress.getAddress().equals(msg.senderAddress)) {
 			return null;
 		}
 		return msg.message;

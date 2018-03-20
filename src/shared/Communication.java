@@ -1,10 +1,19 @@
 package shared;
 
-import java.io.*;
-import java.net.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
+import java.net.SocketException;
+
 import ch.ntb.jass.common.proto.Message;
 
-public abstract class Communication {
+public class Communication {
 	protected final int port = 65000;	// listen port
 	private final int bufferSize = 60000;
 	private byte[] receiveBuffer;
@@ -28,14 +37,20 @@ public abstract class Communication {
 
 		// wait for message, blocking call
 		socket.receive(receivePacket);
+		System.out.println("Packet received");
 
 		// deserialize message (will be replaced with json deserialization later)
 		ObjectInputStream objIn = new ObjectInputStream(
 				new ByteArrayInputStream(receivePacket.getData()));
 		InternalMessage msg = null;
-		msg.message = (Message)objIn.readObject();
-		msg.SenderAddress = receivePacket.getAddress();
-		return msg;
+		try {
+			msg.message = (Message)objIn.readObject();
+			msg.senderAddress = (InetSocketAddress)receivePacket.getSocketAddress();
+			return msg;
+		} catch(InvalidClassException e) {
+			System.out.println("Invalid object received.");
+			return null;
+		}
 	}
 
 	/**
@@ -43,7 +58,7 @@ public abstract class Communication {
 	 * @param msg Message to send.
 	 * @throws IOException
 	 */
-	protected void send(InetSocketAddress peerAddress, Message msg) throws IOException {
+	public void send(InetSocketAddress peerAddress, Message msg) throws IOException {
 		// serialize message (will be replaced with JSON serialization later)
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		ObjectOutputStream objOut = new ObjectOutputStream(byteStream);
