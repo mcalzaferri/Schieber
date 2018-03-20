@@ -15,6 +15,10 @@ public class ClientModelTest extends ClientModel{
 			cards.add(this.createRandomCard());
 		}
 		this.setDeck(cards);
+		cards = new CardList();
+		for(int i = 0; i < 6; i++) {			
+			cards.add(this.createRandomCard());
+		}
 		this.setHand(cards);
 	}
 	
