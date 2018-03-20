@@ -7,7 +7,7 @@ public enum Trump {
 	SCHILTE(GameMode.TRUMPF,CardColor.SCHILTE),
 	SCHELLE(GameMode.TRUMPF,CardColor.SCHELLE),
 	OBENABE(GameMode.OBENABE,null),
-	UNEUFE(GameMode.UNDENUFE,null);
+	UNEUFE(GameMode.UNEUFE,null);
 	
 	//Datenfelder
 	private final GameMode gameMode;

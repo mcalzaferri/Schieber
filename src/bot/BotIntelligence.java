@@ -57,6 +57,15 @@ public abstract class BotIntelligence {
 		return list;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	private int[] getValueOnHand() {
+		int[] values = new int[4];
+		return values;
+	}
+	
 	// methods depending on strategy
 	public abstract Card getNextCard();
 	public abstract Trump selectTrump(boolean canSwitch);
