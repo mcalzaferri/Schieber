@@ -70,11 +70,6 @@ public class TrumpView extends AbstractView{
 		setSize(width,height);
 		setLocation(left,top);
 		
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent arg0) {
-				dispose();
-			}
-		});
 		
 		eichelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

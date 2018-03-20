@@ -13,7 +13,7 @@ import shared.ServerAddress;
 
 import javax.swing.*;
 
-public class StartView extends AbstractView{
+public class SelectHostView extends AbstractView{
 	
 	private JTextField serverIPText; 
 	private JButton startButton;
@@ -27,7 +27,7 @@ public class StartView extends AbstractView{
 
 
 
-	public StartView(ViewEnumeration viewType, ArrayList<ViewObserver> observers) {
+	public SelectHostView(ViewEnumeration viewType, ArrayList<ViewObserver> observers) {
 		super(viewType, observers);
 		// TODO Auto-generated constructor stub
 		setTitle("Spiel starten");
@@ -53,11 +53,7 @@ public class StartView extends AbstractView{
 		setSize(width,height);
 		setLocation(left,top);
 		
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent arg0) {
-				dispose();
-			}
-		});
+		
 		
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

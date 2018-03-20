@@ -12,7 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class EndView extends AbstractView{
+public class GameOverView extends AbstractView{
 
 	private JButton newRoundButton;
 	private JButton disconnectButton;
@@ -24,7 +24,7 @@ public class EndView extends AbstractView{
     private static final int left = 
     Toolkit.getDefaultToolkit().getScreenSize().width/2-width/2;
 	
-	public EndView(ViewEnumeration viewType, ArrayList<ViewObserver> observers) {
+	public GameOverView(ViewEnumeration viewType, ArrayList<ViewObserver> observers) {
 		super(viewType, observers);
 		setTitle("Spiel beendet");
 		
@@ -51,11 +51,6 @@ public class EndView extends AbstractView{
 			}
 		});
 		
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent arg0) {
-				dispose();
-			}
-		});
 		
 		endViewPanel.add(newRoundButton);
 		endViewPanel.add(disconnectButton);

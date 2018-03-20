@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import client.ViewEnumeration;
 import client.ViewObserver;
 import shared.Card;
 import shared.CardColor;
@@ -52,6 +53,12 @@ public class ViewableCardTest extends JFrame{
 			@Override
 			public void btnCardClick(Card card) {
 				System.out.println("Clicked");
+				
+			}
+
+			@Override
+			public void btnCloseWindowClick(ViewEnumeration view) {
+				// TODO Auto-generated method stub
 				
 			}
 			

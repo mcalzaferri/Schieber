@@ -6,6 +6,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import client.ViewEnumeration;
 import client.ViewObserver;
 import shared.Card;
 import shared.CardColor;
@@ -60,6 +61,12 @@ public class HandPaneTest extends JFrame{
 				cards.add(createRandomCard());
 				handPane.update();
 				repaint();
+			}
+
+			@Override
+			public void btnCloseWindowClick(ViewEnumeration view) {
+				// TODO Auto-generated method stub
+				
 			}
 			
 		});
