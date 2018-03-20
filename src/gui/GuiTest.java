@@ -11,13 +11,13 @@ import client.ViewEnumeration;
 
 public class GuiTest extends JFrame{
 	private AbstractClientView gui;
-	
+
 	public static void main(String[] args) {
 		GuiTest t = new GuiTest();
-
 	}
 	
 	public GuiTest() {
+		super();
 		this.gui = new Gui(new ClientModelTest());
 		this.initFrame();
 	}
@@ -25,7 +25,7 @@ public class GuiTest extends JFrame{
 	private void initFrame() {
 		this.setLayout(new FlowLayout());
 		
-		JComboBox box = new JComboBox();
+		JComboBox box = new JComboBox(ViewEnumeration.values());
 		JLabel label = new JLabel();
 		label.setText(gui.getCurrentView().toString());
 		box.addActionListener(new ActionListener() {
