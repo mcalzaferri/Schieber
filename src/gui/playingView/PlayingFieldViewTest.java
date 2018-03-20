@@ -63,6 +63,12 @@ public class PlayingFieldViewTest {
 				cards.add(createRandomCard());
 				pfv.update();
 			}
+
+			@Override
+			public void btnCloseWindowClick(ViewEnumeration view) {
+				// TODO Auto-generated method stub
+				
+			}
 			
 		});
 		this.data.setHand(cards);
