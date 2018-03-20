@@ -62,7 +62,9 @@ public abstract class BotIntelligence {
 	 * @return
 	 */
 	private int[] getValueOnHand() {
+		
 		int[] values = new int[4];
+			
 		return values;
 	}
 	
