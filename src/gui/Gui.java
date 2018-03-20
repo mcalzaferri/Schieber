@@ -16,10 +16,10 @@ import shared.client.ClientModel;
 public class Gui extends AbstractClientView{
 	public static PictureFactory pictureFactory = new PictureFactory();
 	private ArrayList<ViewObserver> observers;
-	private StartView selectHostView;
+	private SelectHostView selectHostView;
 	private PlayingFieldView playingFieldView;
 	private TrumpView trumpView;
-	private EndView gameOverView;
+	private GameOverView gameOverView;
 	private AbstractView currentView;
 	
 	
@@ -27,10 +27,10 @@ public class Gui extends AbstractClientView{
 		//Init fields
 		super(data);
 		this.observers = new ArrayList<>();
-		this.selectHostView = new StartView(ViewEnumeration.SELECTHOSTVIEW, observers);
+		this.selectHostView = new SelectHostView(ViewEnumeration.SELECTHOSTVIEW, observers);
 		this.playingFieldView = new PlayingFieldView(ViewEnumeration.PLAYVIEW, observers, data);
 		this.trumpView = new TrumpView(ViewEnumeration.SELECTTRUMPVIEW, observers);
-		this.gameOverView = new EndView(ViewEnumeration.GAMEOVERVIEW, observers);
+		this.gameOverView = new GameOverView(ViewEnumeration.GAMEOVERVIEW, observers);
 		
 		//Init views
 		this.playingFieldView.setVisible(true);
