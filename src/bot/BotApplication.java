@@ -10,7 +10,6 @@ import shared.ServerAddress;
 
 public class BotApplication {
 
-	private static ClientCommunicationInterface communication;
 	private static ClientCommunication communication2;
 	private static final int port = 5555;
 	private static final ServerAddress address = new ServerAddress(port);

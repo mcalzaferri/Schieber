@@ -1,29 +1,24 @@
 package bot;
 
+import java.util.ArrayList;
+
+import client.ClientCommunication;
 import shared.Card;
-import shared.ClientCommunicationInterface;
 import shared.Score;
-import shared.ServerAddress;
 import shared.Team;
 import shared.Trump;
+import shared.Weis;
 import shared.client.AbstractClient;
 
 public class VirtualClient extends AbstractClient {
 
-	private ClientCommunicationInterface com;
 	private BotIntelligence ki = new IntelligenceRandom(); // set random intelligence by default
-	public Boolean active = true;
+	public Boolean active;
 	private int mySeatId;
 	private Score score;
 	
-	
-	public VirtualClient(ClientCommunicationInterface communication, ServerAddress address) {
-		super(communication);
-		this.com = communication;
-		
-		while(!super.connect(address)) {
-			// try to connect
-		}
+	public VirtualClient(ClientCommunication com) {
+		super(com);
 	}
 
 	@Override
@@ -65,6 +60,16 @@ public class VirtualClient extends AbstractClient {
 		super.publishChosenTrump(trump);
 		
 	}
+	
+	//TODO: @Override
+	protected void requestWeis() {
+		//TODO: needed in AbstractClient?
+		ArrayList<Weis> weise = ki.getWeise();
+		for(Weis w : weise) {
+			// TODO: super.publishChosenWeis(w);
+		}
+		
+	}
 
 	@Override
 	protected void updateDeck(int[] deckCardIds) {
@@ -81,7 +86,6 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	protected void setTrump(Trump trump) {
 		ki.setTrump(trump);
-		
 	}
 	
 	/**
@@ -90,6 +94,18 @@ public class VirtualClient extends AbstractClient {
 	 */
 	public void setIntelligence(BotIntelligence intelligence) {
 		ki = intelligence;
+	}
+
+	@Override
+	protected void connected() {
+		active = true;
+		
+	}
+
+	@Override
+	protected void disconnected() {
+		active = false;
+		
 	}
 	
 

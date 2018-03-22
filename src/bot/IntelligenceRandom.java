@@ -1,5 +1,6 @@
 package bot;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import shared.Card;
@@ -13,13 +14,13 @@ public class IntelligenceRandom extends BotIntelligence {
 		Random random = new Random();
 		
 		/**
-		 * @return Randomly chosen Card from the hand
+		 * @return Randomly chosen Card from the allowed cards
 		 */
 		public Card getNextCard() {
 			Card card;
-			int pick = random.nextInt(cardsInHand.size());
-			card = cardsInHand.remove(pick);
-			//TODO(Lukas): What happens if card is not accepted by server? When can the card be removed from the list?
+			ArrayList<Card> allowedCards = getAllowedCards();
+			int pick = random.nextInt(allowedCards.size());
+			card = allowedCards.get(pick);
 			return card;
 		}
 

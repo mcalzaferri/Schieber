@@ -2,7 +2,7 @@ package shared;
 
 public enum CardValue {
 	//(	ID,		Defaultvalue, 	Trumpfvalue, 	GeneralScore, 	TrumpfScore, 	UneufeScore, 	ObenabeScore)
-	SECHS(	0,		6,		6,		0,		0,		0,		11),
+	SECHS(	0,		6,		6,		0,		0,		11,		0),
 	SIEBEN(	1,		7,		7,		0,		0,		0,		0),
 	ACHT(	2,		8,		8,		0,		0,		8,		8),
 	NEUN(	3,		9,		15,		0,		14,		0,		0),
@@ -10,7 +10,7 @@ public enum CardValue {
 	UNDER(	5,		11,		16,		2,		20,		2,		2),
 	OBER(	6,		12,		12,		3,		3,		3,		3),
 	KOENIG(	7,		13,		13,		4,		4,		4,		4),
-	ASS(	8,		14,		14,		11,		11,		11,		0);
+	ASS(	8,		14,		14,		11,		11,		0,		11);
 	
 	private final int id;
 	private final int defaultValue;
