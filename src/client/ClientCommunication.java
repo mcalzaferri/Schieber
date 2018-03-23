@@ -2,16 +2,14 @@ package client;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 
 import ch.ntb.jass.common.proto.*;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
-import shared.Card;
-import shared.Communication;
-import shared.InternalMessage;
-import shared.ServerAddress;
-import shared.Trump;
+import shared.*;
+
 
 public class ClientCommunication extends Communication {
 	private InetSocketAddress serverAddress;
@@ -54,6 +52,10 @@ public class ClientCommunication extends Communication {
 		//TODO msg.mode = trump.getGameMode();
 		//TODO send(msg);
 	}
+	public void publishChosenWiis(Weis[] wiis) {
+		
+	}
+	
 	public void disconnect() {
 		LeaveTableMessage msg = new LeaveTableMessage();
 		//TODO send(msg);

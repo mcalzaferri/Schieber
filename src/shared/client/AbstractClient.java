@@ -1,5 +1,8 @@
 package shared.client;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 import client.ClientCommunication;
 import shared.*;
 
@@ -31,9 +34,11 @@ public abstract class AbstractClient {
 	 */
 	protected abstract void requestTrump(boolean canSwitch);
 	
-	protected abstract void updateDeck(int[] deckCardIds);
+	protected abstract void requestWeis();
 	
-	protected abstract void updateHand(int[] handCardIds);
+	protected abstract void updateDeck(Card[] deckCards);
+	
+	protected abstract void updateHand(Card[] handCards);
 	
 	protected abstract void updateScore(Score score);
 	
@@ -52,6 +57,10 @@ public abstract class AbstractClient {
 	
 	protected void publishChosenCard(Card card) {
 		com.publishChosenCard(card);
+	}
+	
+	protected void publishChosenWeis(Weis[] wiis) {
+		com.publishChosenWiis(wiis);
 	}
 	
 	/**
