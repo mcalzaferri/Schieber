@@ -72,13 +72,15 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	protected void updateDeck(int[] deckCardIds) {
+	protected void updateDeck(Card[] deckCards) {
+		int[] deckCardIds = cardsToIds(deckCards);
 		ki.setDeck(deckCardIds);
 		
 	}
 
 	@Override
-	protected void updateHand(int[] handCardIds) {
+	protected void updateHand(Card[] handCards) {
+		int[] handCardIds = cardsToIds(handCards);
 		ki.setHand(handCardIds);
 		
 	}
@@ -106,6 +108,19 @@ public class VirtualClient extends AbstractClient {
 	protected void disconnected() {
 		active = false;
 		
+	}
+	
+	/**
+	 * auxiliary function to cope with changes on the AbstractClient Interface
+	 * @param Card[]
+	 * @return int[] IDs
+	 */
+	private int[] cardsToIds(Card[] cards) {
+		int[] ids = new int[cards.length];
+		for(int i=0; i<cards.length;i++) {
+			ids[i] = cards[i].getId();
+		}
+		return ids;
 	}
 	
 
