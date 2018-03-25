@@ -12,6 +12,15 @@ public class Card {
 	}
 	
 	//Methods
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Card) {
+			Card card = (Card)obj;
+			return (this.color == card.color && this.value == card.value);
+		}
+		return super.equals(obj);
+	}
+	
 	public static Card getCardById(int cardId) {
 		int colorId = cardId/10;
 		int valueId = cardId%10;
