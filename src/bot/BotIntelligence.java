@@ -3,6 +3,7 @@ package bot;
 import java.util.ArrayList;
 import shared.Card;
 import shared.CardColor;
+import shared.CardValue;
 import shared.Player;
 import shared.Trump;
 import shared.Weis;
@@ -71,11 +72,56 @@ public abstract class BotIntelligence {
 	public int[] getValueOnHand() {
 		
 		int[] values = new int[4];
+		int modifier;
 		for(Card c: cardsInHand) {
-			values[c.getColor().getId()-1]++;
-			// TODO: find meaningful values for different cards
+			switch(c.getValue()) {
+			case SECHS:
+				modifier = 5;
+				break;
+			case SIEBEN:
+				modifier = 6;
+				break;
+			case ACHT:
+				modifier = 7;
+				break;
+			case NEUN:
+				modifier = 14; // Nell
+				break;
+			case ZEHN:
+				modifier = 8;
+				break;
+			case UNDER:
+				modifier = 20; //Bauer
+				break;
+			case OBER:
+				modifier = 9;
+				break;
+			case KOENIG:
+				modifier = 10;
+				break;
+			case ASS:
+				modifier = 11;
+				break;
+			default:
+				modifier = 0; // shouldn't happen
+				break;
+				
+			}
+			values[c.getColor().getId()-1] += modifier;
 		}
 			
+		return values;
+	}
+	
+	/**
+	 * 
+	 * @return Array with number of cards from each colour
+	 */
+	public int[] getAmountOnHand() {
+		int[] values = new int[4];
+		for(Card c: cardsInHand) {
+			values[c.getColor().getId()-1]++;
+		}
 		return values;
 	}
 	
@@ -106,6 +152,19 @@ public abstract class BotIntelligence {
 			return allowedCards;
 			
 		}
+	}
+	
+	/**
+	 * auxiliary function to convert Card list to Array of IDs
+	 * @param List of Card
+	 * @return Integer Array of IDs
+	 */
+	protected int[] cardsToIds(ArrayList<Card> cards) {
+		int[] ids = new int[cards.size()];
+		for(int i=0; i<cards.size();i++) {
+			ids[i] = cards.get(i).getId();
+		}
+		return ids;
 	}
 	
 	// methods depending on strategy

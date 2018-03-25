@@ -5,37 +5,27 @@ import java.util.Arrays;
 import java.util.Random;
 
 import bot.BotIntelligence;
+import bot.IntelligenceNormal;
 import bot.IntelligenceRandom;
 import shared.Card;
 import shared.Trump;
 
 public class BotTest {
+	
+	static ArrayList<Integer> allCards;
+	static Random r;
 
 	public static void main(String[] args) {
 		
-		BotIntelligence bot = new IntelligenceRandom();
+		IntelligenceNormal bot = new IntelligenceNormal();
+		r = new Random();
+		allCards = new ArrayList<>();
 		
 		// Generate Random Hand
-		Random r = new Random();
-		ArrayList<Integer> allCards = new ArrayList<>();
-		for(int i = 10; i <= 18; i++) { // add all EICHEL
-			allCards.add(i);
-		}
-		for(int i = 20; i <= 28; i++) { // add all ROSE
-			allCards.add(i);
-		}
-		for(int i = 30; i <= 38; i++) { // add all SCHILTE
-			allCards.add(i);
-		}
-		for(int i = 40; i <= 48; i++) { // add all SCHELLE
-			allCards.add(i);
-		}
+		int[] testHand = generateRandomHand();
 		
-		int[] testHand = new int[9];
-		for(int i=0;i<9;i++) {
-			testHand[i] = allCards.remove(r.nextInt(allCards.size()));
-		}
-		Arrays.sort(testHand);
+		// Generate fixed hand
+		// int[] testHand = generateFixedHand();
 		
 		// print Hand
 		System.out.println("Cards on Hand");
@@ -47,7 +37,9 @@ public class BotTest {
 		System.out.println("----------------");
 		System.out.println();
 		
+
 		bot.setHand(testHand);
+
 		
 		// select Trump
 		Trump trump = bot.selectTrump(false);
@@ -104,7 +96,52 @@ public class BotTest {
 		System.out.println("---------------");
 		System.out.println(card.getColor() + " " + card.getValue());
 		System.out.println("---------------");
+		
 
 	}
+	
+	private static int[] generateFixedHand() {
+		for(int i = 10; i <= 18; i++) { // add all EICHEL
+			allCards.add(i);
+		}
+		for(int i = 20; i <= 28; i++) { // add all ROSE
+			allCards.add(i);
+		}
+		for(int i = 30; i <= 38; i++) { // add all SCHILTE
+			allCards.add(i);
+		}
+		for(int i = 40; i <= 48; i++) { // add all SCHELLE
+			allCards.add(i);
+		}
+		int[] testHand = new int[9];
+		for(int i=0;i<9;i++) {
+			testHand[i] = allCards.remove(0);
+		}
+		Arrays.sort(testHand);
+		return testHand;
+	}
+
+	private static int[] generateRandomHand() {
+		for(int i = 10; i <= 18; i++) { // add all EICHEL
+			allCards.add(i);
+		}
+		for(int i = 20; i <= 28; i++) { // add all ROSE
+			allCards.add(i);
+		}
+		for(int i = 30; i <= 38; i++) { // add all SCHILTE
+			allCards.add(i);
+		}
+		for(int i = 40; i <= 48; i++) { // add all SCHELLE
+			allCards.add(i);
+		}
+
+		int[] testHand = new int[9];
+		for(int i=0;i<9;i++) {
+			testHand[i] = allCards.remove(r.nextInt(allCards.size()));
+		}
+		Arrays.sort(testHand);
+		return testHand;
+	}
+	
 
 }

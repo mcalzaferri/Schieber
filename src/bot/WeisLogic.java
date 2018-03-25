@@ -3,8 +3,6 @@ package bot;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.print.attribute.IntegerSyntax;
-
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
