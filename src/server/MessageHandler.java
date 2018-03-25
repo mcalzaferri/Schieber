@@ -2,7 +2,6 @@ package server;
 
 import java.io.IOException;
 import java.net.SocketException;
-import java.util.Map;
 
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.JoinGameMessage;
@@ -14,7 +13,7 @@ import shared.Player;
 public class MessageHandler {
 	private GameLogic logic;
 	private Communication com;
-	
+
 	public MessageHandler(GameLogic logic) throws SocketException {
 		super();
 		this.logic = logic;
@@ -22,8 +21,8 @@ public class MessageHandler {
 		com.open();
 	}
 
-	private void send(Player player, Message msg) throws IOException {
-		com.send(player.getSocketAddress(), msg);
+	private void send(Message msg, Player player) throws IOException {
+		com.send(msg, player.getSocketAddress());
 	}
 
 	public void handleMessgages() throws ClassNotFoundException, IOException {
@@ -31,66 +30,72 @@ public class MessageHandler {
 			System.out.println("Waiting for Message...");
 			InternalMessage iMsg = com.internalReceive();
 			Message msg = iMsg.message;
-			System.out.println("Message received");
+			System.out.println(msg.getClass().getSimpleName() + " received");
 
 			if (msg instanceof JoinGameMessage) {
-				if (logic.getPlayers().size() < 4) {
-					logic.addPlayer(new Player(iMsg.senderAddress));
-					System.out.println("Message recieved: JoinGameMessage");
-					System.out.println("Player has been added");
+				if (logic.getPlayerCount() == 4) {
+					System.out.println("Warning: Table already full");
+					continue;
 				}
-				
-				if (logic.getPlayers().size() == 4) {
-					handOutCards();
-					ChooseGameModeMessage chooseGameMode = new ChooseGameModeMessage();
-					//com.send(chooseGameMode, logic.getPlayers());
-				}
-//			} else if (msg instanceof ChosenGameModeMessage) {
-//
-//				PickedGameModeMessage pickedGameMode = new PickedGameModeMessage();
-//				YourTurnMessage yourTurn = new YourTurnMessage();
-//
-//				com.broadcast(pickedGameMode);
-//				com.send(yourTurn);
-//
-//				System.out.println("Message recieved: ChosenGameModeMessage");
-//				System.out.println("Gamemode has been set");
-//			} else if (msg instanceof PlaceCardMessage) {
-//
-//				PlacedCardMessage placedCard = new PlacedCardMessage(((PlaceCardMessage) message).card);
-//				YourTurnMessage yourTurn = new YourTurnMessage();
-//
-//				com.broadcast(placedCard);
-//				com.send(yourTurn, player);
-//
-//				System.out.println("Message received: PlaceCardMessage");
-//				System.out.println("Card has been placed");
+				// TODO: add name field to JoinGameMessage?
+				logic.addPlayer(new Player(iMsg.senderAddress, "",
+						logic.getPlayerCount()));
+
+				handOutCards();
+
+				// request game mode from first player
+				send(new ChooseGameModeMessage(), logic.getPlayers().get(0));
+				// } else if (msg instanceof ChosenGameModeMessage) {
+				//
+				// PickedGameModeMessage pickedGameMode = new
+				// PickedGameModeMessage();
+				// YourTurnMessage yourTurn = new YourTurnMessage();
+				//
+				// com.broadcast(pickedGameMode);
+				// com.send(yourTurn);
+				//
+				// System.out.println("Message recieved:
+				// ChosenGameModeMessage");
+				// System.out.println("Gamemode has been set");
+				// } else if (msg instanceof PlaceCardMessage) {
+				//
+				// PlacedCardMessage placedCard = new
+				// PlacedCardMessage(((PlaceCardMessage) message).card);
+				// YourTurnMessage yourTurn = new YourTurnMessage();
+				//
+				// com.broadcast(placedCard);
+				// com.send(yourTurn, player);
+				//
+				// System.out.println("Message received: PlaceCardMessage");
+				// System.out.println("Card has been placed");
 			} else {
 				System.out.println("invalid Message received");
 			}
 		}
 	}
-	
+
+	/**
+	 * Stop message handler.
+	 */
+	public void stop() {
+		com.close();
+		// TODO: broadcast shutdown message?
+	}
+
 	/**
 	 * Hand out cards.
 	 */
 	public void handOutCards() {
-		// hand out cards
-		int j = 0;
-		for(Map.Entry<Integer, Player> entry : logic.getPlayers().entrySet()) {
-			//Player p = entry.getValue();
-			//Card[] cards = Arrays.copyOfRange(deck, 4*j, 4*j+3);
-			//p.putCards(cards);
-			//HandOutCardsMessage msg = new HandOutCardsMessage();
-			//msg.cards = cards;
-			//com.send(p, msg);
-			j++;
+		for (Player p : logic.getPlayers()) {
+			// HandOutCardsMessage msg = new HandOutCardsMessage();
+			// msg.cards = logic.getCardsForPlayer(p);
+			// com.send(msg, p);
 		}
 	}
-	
+
 	private void broadcastMessage(Message msg) throws IOException {
-		for(Map.Entry<Integer, Player> entry : logic.getPlayers().entrySet()) {
-			com.send(entry.getValue().getSocketAddress(), msg);
+		for (Player p : logic.getPlayers()) {
+			send(msg, p);
 		}
 	}
 }

@@ -58,7 +58,7 @@ public class Communication {
 	 * @param msg Message to send.
 	 * @throws IOException
 	 */
-	public void send(InetSocketAddress peerAddress, Message msg) throws IOException {
+	public void send(Message msg, InetSocketAddress peerAddress) throws IOException {
 		// serialize message (will be replaced with JSON serialization later)
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		ObjectOutputStream objOut = new ObjectOutputStream(byteStream);

@@ -4,13 +4,13 @@ public class Card {
 	//Fields
 	private CardColor color;
 	private CardValue value;
-	
+
 	//Constructors
 	public Card(CardColor c, CardValue v) {
 		this.color = c;
 		this.value = v;
 	}
-	
+
 	//Methods
 	@Override
 	public boolean equals(Object obj) {
@@ -20,13 +20,13 @@ public class Card {
 		}
 		return super.equals(obj);
 	}
-	
+
 	public static Card getCardById(int cardId) {
 		int colorId = cardId/10;
 		int valueId = cardId%10;
 		return new Card(CardColor.getColorById(colorId),CardValue.getValueById(valueId));
 	}
-	
+
 	/**Compares this card to another. 
 	 * The method will always return 1 if the card is from another color unless that color is trump
 	 * @param card The card which this is compared to
@@ -61,7 +61,7 @@ public class Card {
 				return 0;
 		}
 	}
-	
+
 	//Getter and Setter
 	public CardValue getValue() {
 		return value;
@@ -69,8 +69,13 @@ public class Card {
 	public CardColor getColor() {
 		return color;
 	}
-	
+
 	public int getId() {
 		return color.getId() * 10 + value.getId();
+	}
+
+	@Override
+	public String toString() {
+		return color + " " + value;
 	}
 }
