@@ -16,50 +16,50 @@ public abstract class AbstractClient {
 	}
 	
 	//Methods for Server -> Client
-	protected abstract void setTrump(Trump trump);
+	public abstract void setTrump(Trump trump);
 	
 	/** Sets the seatId of the Client
 	 * @param seatId
 	 */
-	protected abstract void setSeat(int seatId);
+	public abstract void setSeat(int seatId);
 	
 	/** Determines which seat is currently playing.
 	 * If activeSeatId == seatId use publishChosenCard() to finish turn
 	 * @param activeSeatId
 	 */
-	protected abstract void updateActiveSeat(int activeSeatId);
+	public abstract void updateActiveSeat(int activeSeatId);
 	
 	/**Initialises trump selection process. Finish process with publishChosenTrump()
 	 * @param canSwitch determines whether the client can use "SCHIEBEN" or not
 	 */
-	protected abstract void requestTrump(boolean canSwitch);
+	public abstract void requestTrump(boolean canSwitch);
 	
-	protected abstract void requestWeis();
+	public abstract void requestWeis();
 	
-	protected abstract void updateDeck(Card[] deckCards);
+	public abstract void updateDeck(Card[] deckCards);
 	
-	protected abstract void updateHand(Card[] handCards);
+	public abstract void updateHand(Card[] handCards);
 	
-	protected abstract void updateScore(Score score);
+	public abstract void updateScore(Score score);
 	
-	protected abstract void endRound();
+	public abstract void endRound();
 	
-	protected abstract void endGame(Team winner);
+	public abstract void endGame(Team winner);
 	
-	protected abstract void connected();
+	public abstract void connected();
 	
-	protected abstract void disconnected();
+	public abstract void disconnected();
 
 	//Methods for Client -> Server
-	protected void publishChosenTrump(Trump trump) {
+	public void publishChosenTrump(Trump trump) {
 		com.publishChosenTrump(trump);
 	}
 	
-	protected void publishChosenCard(Card card) {
+	public void publishChosenCard(Card card) {
 		com.publishChosenCard(card);
 	}
 	
-	protected void publishChosenWeis(Weis[] wiis) {
+	public void publishChosenWeis(Weis[] wiis) {
 		com.publishChosenWiis(wiis);
 	}
 	
@@ -67,11 +67,11 @@ public abstract class AbstractClient {
 	 * @param serverAddress Address to connect to
 	 * @return true if successfully connected
 	 */
-	protected void connect(ServerAddress serverAddress) {
+	public void connect(ServerAddress serverAddress) {
 		 com.connect(serverAddress);
 	}
 	
-	protected void disconnect() {
+	public void disconnect() {
 		com.disconnect();
 	}
 }
