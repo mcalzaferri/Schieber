@@ -14,6 +14,10 @@ import shared.*;
 public class ClientCommunication extends Communication {
 	private InetSocketAddress serverAddress;
 
+	protected ClientCommunication() {
+		serverAddress = null;
+	}
+	
 	public ClientCommunication(String serverIp) {
 		super();
 		serverAddress = new InetSocketAddress(serverIp, this.port);
@@ -27,7 +31,7 @@ public class ClientCommunication extends Communication {
 	 * @throws IOException
 	 */
 	private void send(Message msg) throws IOException {
-		super.send(serverAddress, msg);
+		super.send(msg, serverAddress);
 	}
 
 	private Message receive() throws ClassNotFoundException, IOException {
