@@ -82,8 +82,8 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param deckCardIds The ids of the cards which represent the current deck.
 	 */
 	@Override
-	protected void updateDeck(int[] deckCardIds) {
-		model.updateDeck(deckCardIds);
+	protected void updateDeck(Card[] deckCards) {
+		model.updateDeck(deckCards);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
 
@@ -92,8 +92,8 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param handCardIds The ids of the cards which represent all cards on the hand of this client.
 	 */
 	@Override
-	protected void updateHand(int[] handCardIds) {
-		model.updateHand(handCardIds);
+	protected void updateHand(Card[] handCards) {
+		model.updateHand(handCards);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
 	
@@ -163,6 +163,12 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	protected void disconnected() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void requestWeis() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -20,12 +20,12 @@ public class ClientModel {
 		//TODO
 	}
 	
-	public void updateHand(int[] handCardIds) {
-		hand.updateData(handCardIds);
+	public void updateHand(Card[] handCards) {
+		hand.updateData(handCards);
 	}
 	
-	public void updateDeck(int[] deckCardIds) {
-		deck.updateData(deckCardIds);
+	public void updateDeck(Card[] deckCards) {
+		deck.updateData(deckCards);
 	}
 	
 	//Getters and Setters
