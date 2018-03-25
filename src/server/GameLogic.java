@@ -1,5 +1,6 @@
 package server;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,6 +17,8 @@ public class GameLogic {
 	private GameMode mode;
 	private CardColor trumpf;
 	private ArrayList<Player> players;
+	private Player presentPlayer;
+	private int playerPointer = 0;
 	private Card[] deck;
 
 	public GameLogic() {
@@ -74,6 +77,21 @@ public class GameLogic {
 		}
 		players.add(p);
 		return true;
+	}
+	
+	public void removePlayer(Player p){		
+		players.remove(p.getId());
+	}
+	
+	/**
+	 * 
+	 * @return Gets the player, who is on the turn.
+	 */
+	public Player getPresentPlayer(){
+		if(playerPointer == players.size()){
+			playerPointer = 0;
+		}
+		return getPlayers().get(playerPointer++);
 	}
 
 	/**

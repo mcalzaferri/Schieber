@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.SocketException;
 
 import ch.ntb.jass.common.proto.Message;
-import ch.ntb.jass.common.proto.player_messages.JoinGameMessage;
-import ch.ntb.jass.common.proto.server_messages.ChooseGameModeMessage;
+import ch.ntb.jass.common.proto.player_messages.*;
+import ch.ntb.jass.common.proto.server_messages.*;
 import shared.Communication;
 import shared.InternalMessage;
 import shared.Player;
@@ -21,9 +21,6 @@ public class MessageHandler {
 		com.open();
 	}
 
-	private void send(Message msg, Player player) throws IOException {
-		com.send(msg, player.getSocketAddress());
-	}
 
 	public void handleMessgages() throws ClassNotFoundException, IOException {
 		while (true) {
@@ -44,30 +41,35 @@ public class MessageHandler {
 				handOutCards();
 
 				// request game mode from first player
-				send(new ChooseGameModeMessage(), logic.getPlayers().get(0));
-				// } else if (msg instanceof ChosenGameModeMessage) {
-				//
-				// PickedGameModeMessage pickedGameMode = new
-				// PickedGameModeMessage();
-				// YourTurnMessage yourTurn = new YourTurnMessage();
-				//
-				// com.broadcast(pickedGameMode);
-				// com.send(yourTurn);
-				//
-				// System.out.println("Message recieved:
-				// ChosenGameModeMessage");
-				// System.out.println("Gamemode has been set");
-				// } else if (msg instanceof PlaceCardMessage) {
-				//
-				// PlacedCardMessage placedCard = new
-				// PlacedCardMessage(((PlaceCardMessage) message).card);
-				// YourTurnMessage yourTurn = new YourTurnMessage();
-				//
-				// com.broadcast(placedCard);
-				// com.send(yourTurn, player);
-				//
-				// System.out.println("Message received: PlaceCardMessage");
-				// System.out.println("Card has been placed");
+				send(new ChooseGameModeMessage(), logic.getPlayers().get(0));			
+				
+			} else if (msg instanceof ChosenGameModeMessage) {
+
+				System.out.println("Message recieved: ChosenGameModeMessage");				
+				StartGameMessage startGameMessage = new StartGameMessage();
+				broadcastMessage(startGameMessage);			
+				
+				System.out.println("Game has started");				
+				YourTurnMessage yourTurnMessage = new YourTurnMessage();
+				send(yourTurnMessage, logic.getPresentPlayer());
+
+			} else if (msg instanceof PlaceCardMessage) {
+
+				System.out.println("Message received: PlaceCardMessage");
+				YourTurnMessage yourTurn = new YourTurnMessage();				
+				broadcastMessage(msg);
+				send(yourTurn, logic.getPresentPlayer());
+
+			} else if (msg instanceof LeaveTableMessage){
+
+				System.out.println("Message recieved: LeaveTableMessage");				
+				for (Player p : logic.getPlayers()) {
+					if(p.getSocketAddress().equals(iMsg.senderAddress)){
+						logic.removePlayer(p);
+						System.out.println("Player " + p.getId()+ " has left the game");				
+					}
+				}
+				
 			} else {
 				System.out.println("invalid Message received");
 			}
@@ -91,6 +93,10 @@ public class MessageHandler {
 			// msg.cards = logic.getCardsForPlayer(p);
 			// com.send(msg, p);
 		}
+	}
+
+	private void send(Message msg, Player player) throws IOException {
+		com.send(msg, player.getSocketAddress());
 	}
 
 	private void broadcastMessage(Message msg) throws IOException {
