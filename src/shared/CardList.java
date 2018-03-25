@@ -16,26 +16,26 @@ public class CardList extends ArrayList<Card>{
 		}
 	}
 
-	public void updateData(int[] cardIds) {
+	public void updateData(Card[] cards) {
 		//Remove all non existent cards
 		boolean exists;
 		ArrayList<Card> cardsToDelete = new ArrayList<>();
-		for(Card card : this) {
+		for(Card oldCard : this) {
 			exists = false;
-			for(int id : cardIds) {
-				if(id == card.getId()) {
+			for(Card newCard : cards) {
+				if(oldCard.equals(newCard)) {
 					exists = true;
 					continue;
 				}
 			}
 			if(!exists)
-				cardsToDelete.add(card);
+				cardsToDelete.add(oldCard);
 		}
 		super.removeAll(cardsToDelete);
 		//Add all new cards
-		for(int id : cardIds) {
-			if(!contains(id)) {
-				this.add(id);
+		for(Card card : cards) {
+			if(!contains(card)) {
+				this.add(card);
 			}
 		}
 	}
