@@ -42,12 +42,12 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	protected void setSeat(int seatId) {
+	public void setSeat(int seatId) {
 		mySeatId = seatId;
 	}
 
 	@Override
-	protected void updateActiveSeat(int activeSeatId) {
+	public void updateActiveSeat(int activeSeatId) {
 		if(activeSeatId == mySeatId) {
 			Card card = ki.getNextCard();
 			super.publishChosenCard(card);
@@ -55,14 +55,14 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	protected void requestTrump(boolean canSwitch) {
+	public void requestTrump(boolean canSwitch) {
 		Trump trump = ki.selectTrump(canSwitch);
 		super.publishChosenTrump(trump);
 		
 	}
 	
 	//TODO: @Override
-	protected void requestWeis() {
+	public void requestWeis() {
 		//TODO: needed in AbstractClient?
 		ArrayList<Weis> weise = ki.getWeise();
 		for(Weis w : weise) {
@@ -72,21 +72,21 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	protected void updateDeck(Card[] deckCards) {
+	public void updateDeck(Card[] deckCards) {
 		int[] deckCardIds = cardsToIds(deckCards);
 		ki.setDeck(deckCardIds);
 		
 	}
 
 	@Override
-	protected void updateHand(Card[] handCards) {
+	public void updateHand(Card[] handCards) {
 		int[] handCardIds = cardsToIds(handCards);
 		ki.setHand(handCardIds);
 		
 	}
 
 	@Override
-	protected void setTrump(Trump trump) {
+	public void setTrump(Trump trump) {
 		ki.setTrump(trump);
 	}
 	
@@ -99,13 +99,13 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	protected void connected() {
+	public void connected() {
 		active = true;
 		
 	}
 
 	@Override
-	protected void disconnected() {
+	public void disconnected() {
 		active = false;
 		
 	}

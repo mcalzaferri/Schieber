@@ -62,7 +62,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 *  @param seatId SeatId which was broadcasted for this Client.
 	 */
 	@Override
-	protected void setSeat(int seatId) {
+	public void setSeat(int seatId) {
 		model.setSeatId(seatId);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -72,7 +72,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 *  @param activeSeatId Currently active seat which was broadcasted by the server.
 	 */
 	@Override
-	protected void updateActiveSeat(int activeSeatId) {
+	public void updateActiveSeat(int activeSeatId) {
 		model.setActiveSeatId(activeSeatId);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -82,7 +82,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param deckCardIds The ids of the cards which represent the current deck.
 	 */
 	@Override
-	protected void updateDeck(Card[] deckCards) {
+	public void updateDeck(Card[] deckCards) {
 		model.updateDeck(deckCards);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -92,7 +92,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param handCardIds The ids of the cards which represent all cards on the hand of this client.
 	 */
 	@Override
-	protected void updateHand(Card[] handCards) {
+	public void updateHand(Card[] handCards) {
 		model.updateHand(handCards);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -102,7 +102,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param canSwich If true the Client has the opportunity to return the SCHIEBEN GameMode
 	 */
 	@Override
-	protected void requestTrump(boolean canSwitch) {
+	public void requestTrump(boolean canSwitch) {
 		model.setCanSwitch(canSwitch);
 		view.changeView(ViewEnumeration.SELECTTRUMPVIEW);
 	}
@@ -156,19 +156,19 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	}
 
 	@Override
-	protected void connected() {
+	public void connected() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void disconnected() {
+	public void disconnected() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void requestWeis() {
+	public void requestWeis() {
 		// TODO Auto-generated method stub
 		
 	}
