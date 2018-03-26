@@ -14,7 +14,7 @@ import java.net.SocketException;
 import ch.ntb.jass.common.proto.Message;
 
 public class Communication {
-	protected final int port = 65000;	// listen port
+	protected int port = 65000;	// default listen port
 	private final int bufferSize = 60000;
 	private byte[] receiveBuffer;
 	private DatagramSocket socket;
@@ -23,6 +23,11 @@ public class Communication {
 	public Communication() {
 		receiveBuffer = new byte[bufferSize];
 		receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
+	}
+
+	public Communication(int port) {
+		this();
+		this.port = port;
 	}
 
 	/**
@@ -42,13 +47,13 @@ public class Communication {
 		// deserialize message (will be replaced with json deserialization later)
 		ObjectInputStream objIn = new ObjectInputStream(
 				new ByteArrayInputStream(receivePacket.getData()));
-		InternalMessage msg = null;
+		InternalMessage msg = new InternalMessage();
 		try {
 			msg.message = (Message)objIn.readObject();
 			msg.senderAddress = (InetSocketAddress)receivePacket.getSocketAddress();
 			return msg;
 		} catch(InvalidClassException e) {
-			System.out.println("Invalid object received.");
+			System.err.println("Invalid object received.");
 			return null;
 		}
 	}
@@ -87,5 +92,14 @@ public class Communication {
 		if (socket != null) {
 			socket.close();
 		}
+	}
+
+	/**
+	 * Set receive timeout for socket.
+	 * @param tmo timeout in milliseconds
+	 * @throws SocketException
+	 */
+	public void setReceiveTimeout(int tmo) throws SocketException {
+		socket.setSoTimeout(tmo);
 	}
 }

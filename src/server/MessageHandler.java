@@ -6,7 +6,6 @@ import java.net.SocketException;
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.ChosenGameModeMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinGameMessage;
-import ch.ntb.jass.common.proto.player_messages.LeaveTableMessage;
 import ch.ntb.jass.common.proto.player_messages.PlaceCardMessage;
 import ch.ntb.jass.common.proto.player_messages.StartGameMessage;
 import ch.ntb.jass.common.proto.server_messages.ChooseGameModeMessage;
@@ -20,64 +19,61 @@ public class MessageHandler {
 	private Communication com;
 
 	public MessageHandler(GameLogic logic) throws SocketException {
-		super();
 		this.logic = logic;
 		com = new Communication();
 		com.open();
 	}
 
+	public MessageHandler(GameLogic logic, int port) throws SocketException {
+		this.logic = logic;
+		com = new Communication(port);
+		com.open();
+	}
 
-	public void handleMessgages() throws ClassNotFoundException, IOException {
+	public void run() throws ClassNotFoundException, IOException {
 		while (true) {
-			System.out.println("Waiting for Message...");
-			InternalMessage iMsg = com.internalReceive();
-			Message msg = iMsg.message;
-			System.out.println(msg.getClass().getSimpleName() + " received");
+			handleMessage();
+		}
+	}
 
-			if (msg instanceof JoinGameMessage) {
-				if (logic.getPlayerCount() == 4) {
-					System.out.println("Warning: Table already full");
-					continue;
-				}
-				// TODO: add name field to JoinGameMessage?
-				logic.addPlayer(new Player(iMsg.senderAddress, "",
-						logic.getPlayerCount()));
+	protected void handleMessage() throws ClassNotFoundException, IOException {
+		System.out.println("Waiting for Message...");
+		InternalMessage iMsg = com.internalReceive();
+		Message msg = iMsg.message;
+		System.out.println(msg.getClass().getSimpleName() + " received");
 
+		if (msg instanceof JoinGameMessage) {
+			// TODO: add name field to JoinGameMessage?
+			logic.addPlayer(new Player(iMsg.senderAddress, "",
+					logic.getPlayerCount()));
+
+			if (logic.getPlayerCount() == 4) {
 				handOutCards();
-
 				// request game mode from first player
 				send(new ChooseGameModeMessage(), logic.getPlayers().get(0));
-
-			} else if (msg instanceof ChosenGameModeMessage) {
-
-				System.out.println("Message recieved: ChosenGameModeMessage");
-				StartGameMessage startGameMessage = new StartGameMessage();
-				broadcastMessage(startGameMessage);
-
-				System.out.println("Game has started");
-				YourTurnMessage yourTurnMessage = new YourTurnMessage();
-				send(yourTurnMessage, logic.getPresentPlayer());
-
-			} else if (msg instanceof PlaceCardMessage) {
-
-				System.out.println("Message received: PlaceCardMessage");
-				YourTurnMessage yourTurn = new YourTurnMessage();
-				broadcastMessage(msg);
-				send(yourTurn, logic.getPresentPlayer());
-
-			} else if (msg instanceof LeaveTableMessage){
-
-				System.out.println("Message recieved: LeaveTableMessage");
-				for (Player p : logic.getPlayers()) {
-					if(p.getSocketAddress().equals(iMsg.senderAddress)){
-						logic.removePlayer(p);
-						System.out.println("Player " + p.getId()+ " has left the game");
-					}
-				}
-
-			} else {
-				System.out.println("invalid Message received");
+				// TODO: change game state
 			}
+		} else if (msg instanceof ChosenGameModeMessage) {
+			StartGameMessage startGameMessage = new StartGameMessage();
+//				broadcastMessage(startGameMessage);
+
+			System.out.println("Game has started");
+			YourTurnMessage yourTurnMessage = new YourTurnMessage();
+			send(yourTurnMessage, logic.getPresentPlayer());
+
+		} else if (msg instanceof PlaceCardMessage) {
+			YourTurnMessage yourTurn = new YourTurnMessage();
+			broadcastMessage(msg);
+			send(yourTurn, logic.getPresentPlayer());
+//			} else if (msg instanceof LeaveTableMessage) {
+//				for (Player p : logic.getPlayers()) {
+//					if(p.getSocketAddress().equals(iMsg.senderAddress)){
+//						logic.removePlayer(p);
+//						System.out.println("Player " + p.getId()+ " has left the game");
+//					}
+//				}
+//			} else {
+			System.err.println("Unkown message!");
 		}
 	}
 
@@ -108,5 +104,9 @@ public class MessageHandler {
 		for (Player p : logic.getPlayers()) {
 			send(msg, p);
 		}
+	}
+
+	public void setReceiveTimeout(int tmo) throws SocketException {
+		com.setReceiveTimeout(tmo);
 	}
 }

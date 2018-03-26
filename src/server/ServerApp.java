@@ -17,6 +17,6 @@ public class ServerApp {
 			}
 		});
 
-		msgHandler.handleMessgages();
+		msgHandler.run();
 	}
 }

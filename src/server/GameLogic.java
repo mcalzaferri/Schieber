@@ -25,8 +25,8 @@ public class GameLogic {
 	}
 
 	/**
-	 * Start a new Game. Creates a new list for players and a new shuffled deck
-	 * of cards.
+	 * Start a new Game.
+	 * Creates a new list for players and a new shuffled deck of cards.
 	 */
 	public void startGame() {
 		players = new ArrayList<>();
@@ -34,7 +34,7 @@ public class GameLogic {
 		deck = new Card[36];
 		for (int i = 0; i < deck.length; i++) {
 			deck[i] = new Card(CardColor.getColorById(i / 9 + 1),
-					CardValue.getValueById(i % 9));
+			                   CardValue.getValueById(i % 9));
 		}
 
 		// Fisher–Yates shuffle
@@ -53,39 +53,38 @@ public class GameLogic {
 
 	/**
 	 * Return cards that will be handed out.
-	 *
 	 * @return array with nine cards
 	 */
 	public Card[] getCardsForPlayer(Player p) {
 		Card[] cards = Arrays.copyOfRange(deck, 9 * p.getId(),
-				9 * p.getId() + 8);
+		                                        9 * p.getId() + 8);
 		p.putCards(cards);
 		return cards;
 	}
 
 	/**
 	 * Add player to game.
-	 *
 	 * @param p player to be added
 	 * @return false if table is full (4 players), true otherwise
 	 */
 	public boolean addPlayer(Player p) {
 		if (players.size() == 4) {
+			System.err.println("Can't add player: Table full!");
 			return false;
 		}
 		players.add(p);
 		return true;
 	}
 
-	public void removePlayer(Player p){
-		players.remove(p.getId());
-	}
+//	public void removePlayer(Player p){
+//		players.remove(p.getId());
+//	}
 
 	/**
-	 *
-	 * @return Gets the player, who is on the turn.
+	 * Get player whose turn it is.
+	 * @return player that has to take action
 	 */
-	public Player getPresentPlayer(){
+	public Player getPresentPlayer() {
 		if(playerPointer == players.size()){
 			playerPointer = 0;
 		}
@@ -93,8 +92,8 @@ public class GameLogic {
 	}
 
 	/**
-	 * Place a card. After the fourth card has been placed the round is over.
-	 *
+	 * Place a card.
+	 * After the fourth card has been placed the round is over.
 	 * @return false if move is invalid, true otherwise
 	 */
 	public boolean placeCard(Card c) {
