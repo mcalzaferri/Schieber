@@ -1,6 +1,5 @@
 package server;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,8 +66,7 @@ public class GameLogic {
 	/**
 	 * Add player to game.
 	 *
-	 * @param p
-	 *            player to be added
+	 * @param p player to be added
 	 * @return false if table is full (4 players), true otherwise
 	 */
 	public boolean addPlayer(Player p) {
@@ -78,13 +76,13 @@ public class GameLogic {
 		players.add(p);
 		return true;
 	}
-	
-	public void removePlayer(Player p){		
+
+	public void removePlayer(Player p){
 		players.remove(p.getId());
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return Gets the player, who is on the turn.
 	 */
 	public Player getPresentPlayer(){
