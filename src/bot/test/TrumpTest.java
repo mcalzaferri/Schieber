@@ -1,4 +1,4 @@
-package botTest;
+package bot.test;
 
 import bot.IntelligenceNormal;
 import shared.CardColor;
