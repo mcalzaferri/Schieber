@@ -23,17 +23,17 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	// bot doesn't really care about score, but we still store it
-	public void updateScore(Score score) {
+	public void doUpdateScore(Score score) {
 		this.score = score;
 	}
 
 	@Override
-	public void endRound() {
+	public void doEndRound() {
 		// we could do some checks here, but otherwise not interesting for bot(?)
 	}
 
 	@Override
-	public void endGame(Team winner) {
+	public void doEndGame(Team winner) {
 		super.disconnect();
 		//disable bot
 		this.active = false;
@@ -42,12 +42,12 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	public void setSeat(int seatId) {
+	public void doSetSeat(int seatId) {
 		mySeatId = seatId;
 	}
 
 	@Override
-	public void updateActiveSeat(int activeSeatId) {
+	public void doUpdateActiveSeat(int activeSeatId) {
 		if(activeSeatId == mySeatId) {
 			Card card = ki.getNextCard();
 			super.publishChosenCard(card);
@@ -55,14 +55,14 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	public void requestTrump(boolean canSwitch) {
+	public void doRequestTrump(boolean canSwitch) {
 		Trump trump = ki.selectTrump(canSwitch);
 		super.publishChosenTrump(trump);
 		
 	}
 	
 	//TODO: @Override
-	public void requestWeis() {
+	public void doRequestWeis() {
 		//TODO: needed in AbstractClient?
 		ArrayList<Weis> weise = ki.getWeise();
 		for(Weis w : weise) {
@@ -72,21 +72,21 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	public void updateDeck(Card[] deckCards) {
+	public void doUpdateDeck(Card[] deckCards) {
 		int[] deckCardIds = cardsToIds(deckCards);
 		ki.setDeck(deckCardIds);
 		
 	}
 
 	@Override
-	public void updateHand(Card[] handCards) {
+	public void doUpdateHand(Card[] handCards) {
 		int[] handCardIds = cardsToIds(handCards);
 		ki.setHand(handCardIds);
 		
 	}
 
 	@Override
-	public void setTrump(Trump trump) {
+	public void doSetTrump(Trump trump) {
 		ki.setTrump(trump);
 	}
 	
@@ -99,13 +99,13 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	public void connected() {
+	public void doConnected() {
 		active = true;
 		
 	}
 
 	@Override
-	public void disconnected() {
+	public void doDisconnected() {
 		active = false;
 		
 	}

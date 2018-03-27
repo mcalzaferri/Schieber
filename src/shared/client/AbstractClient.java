@@ -9,46 +9,70 @@ import shared.*;
 public abstract class AbstractClient {
 	//Fields
 	private ClientCommunication com;
+	protected ClientModel model;
 	
 	//Constructors
-	public AbstractClient(ClientCommunication com) {
+	public AbstractClient(ClientCommunication com, ClientModel model) {
 		this.com = com;
+		this.model = model;
 	}
 	
-	//Methods for Server -> Client
-	public abstract void setTrump(Trump trump);
+	public AbstractClient(ClientCommunication com) {
+		this(com, new ClientModel());
+	}
+	
+	//Methods for Communication -> Client
+	//server_info_messages
+	private void chosenGameModeInfoMessageReceived() {};
+	private void endOfRoundMessageReceived() {};
+	private void gameOverMessageReceived() {};
+	private void gameStartedInfoMessageReceived() {};
+	private void newRoundInfoMessageReceived() {};
+	private void playerJoinedInfoMessageReceived() {};
+	private void playerLeftInfoMessageReceived() {};
+	private void playerLeftTableInfoMessageReceived() {};
+	private void turnInfoMessageReceived() {};
+	//server_messages
+	private void chooseGameModeMessageReceived() {};
+	private void handOutCardsMessageReceived() {};
+	private void wrongCardMessageReceived() {};
+	private void yourTurnMessageReceived() {};
+	
+	
+	//Template methods for Server -> Client
+	public abstract void doSetTrump(Trump trump);
 	
 	/** Sets the seatId of the Client
 	 * @param seatId
 	 */
-	public abstract void setSeat(int seatId);
+	public abstract void doSetSeat(int seatId);
 	
 	/** Determines which seat is currently playing.
 	 * If activeSeatId == seatId use publishChosenCard() to finish turn
 	 * @param activeSeatId
 	 */
-	public abstract void updateActiveSeat(int activeSeatId);
+	public abstract void doUpdateActiveSeat(int activeSeatId);
 	
 	/**Initialises trump selection process. Finish process with publishChosenTrump()
 	 * @param canSwitch determines whether the client can use "SCHIEBEN" or not
 	 */
-	public abstract void requestTrump(boolean canSwitch);
+	public abstract void doRequestTrump(boolean canSwitch);
 	
-	public abstract void requestWeis();
+	public abstract void doRequestWeis();
 	
-	public abstract void updateDeck(Card[] deckCards);
+	public abstract void doUpdateDeck(Card[] deckCards);
 	
-	public abstract void updateHand(Card[] handCards);
+	public abstract void doUpdateHand(Card[] handCards);
 	
-	public abstract void updateScore(Score score);
+	public abstract void doUpdateScore(Score score);
 	
-	public abstract void endRound();
+	public abstract void doEndRound();
 	
-	public abstract void endGame(Team winner);
+	public abstract void doEndGame(Team winner);
 	
-	public abstract void connected();
+	public abstract void doConnected();
 	
-	public abstract void disconnected();
+	public abstract void doDisconnected();
 
 	//Methods for Client -> Server
 	public void publishChosenTrump(Trump trump) {

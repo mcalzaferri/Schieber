@@ -97,32 +97,32 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 					int id = Integer.parseInt(labelText);
 					trump = Trump.getById(id);
 				}catch(Exception e) {}
-				client.setTrump(trump);
+				client.doSetTrump(trump);
 			}
 		});
 		endOfRound.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				client.endRound();
+				client.doEndRound();
 			}
 		});
 		gameOver.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				client.endGame(null);//TODO
+				client.doEndGame(null);//TODO
 			}
 		});
 		gameStartedInfo.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				client.updateActiveSeat(1);//TODO Redundant with newRound?!
+				client.doUpdateActiveSeat(1);//TODO Redundant with newRound?!
 			}
 		});
 		newRoundInfo.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				client.setSeat(0);
-				client.updateActiveSeat(1);//TODO What is it good for?
+				client.doSetSeat(0);
+				client.doUpdateActiveSeat(1);//TODO What is it good for?
 			}
 		});
 		playerJoinedInfo.setSimulationRowListener(new SimulationRowListener() {
@@ -156,7 +156,7 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 				try {
 					canSwitch = Boolean.parseBoolean(labelText);
 				}catch(Exception e) {}
-				client.requestTrump(canSwitch);
+				client.doRequestTrump(canSwitch);
 			}
 		});
 		handOutCards.setSimulationRowListener(new SimulationRowListener() {
@@ -171,7 +171,7 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 				}
 				Card[] cardArray = new Card[cardList.size()];
 				cardArray = cardList.toArray(cardArray);
-				client.updateHand(cardArray);
+				client.doUpdateHand(cardArray);
 			}
 		});
 		wrongCard.setSimulationRowListener(new SimulationRowListener() {
@@ -184,8 +184,8 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 			@Override
 			public void actionPerformed(String labelText) {
 				// TODO Implent something in AbstractClient to handle this better.
-				client.setSeat(1);
-				client.updateActiveSeat(1);
+				client.doSetSeat(1);
+				client.doUpdateActiveSeat(1);
 			}
 		});
 	}

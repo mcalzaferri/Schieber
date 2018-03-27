@@ -5,13 +5,11 @@ import shared.client.*;
 
 public class ClientController extends AbstractClient implements ViewObserver{
 	//Fields
-	private ClientModel model;
 	private AbstractClientView view;
 	
 	//Constructor
 	public ClientController(ClientCommunication com, ClientModel model, AbstractClientView view) {
-		super(com);
-		this.model = model;
+		super(com, model);
 		this.view = view;
 		view.addObserver(this);
 	}
@@ -24,7 +22,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param trump Trump which was broadcasted
 	 */
 	@Override
-	public void setTrump(Trump trump) {
+	public void doSetTrump(Trump trump) {
 		model.setTrump(trump);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -33,7 +31,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param score New score which was broadcasted.
 	 */
 	@Override
-	public void updateScore(Score score) {
+	public void doUpdateScore(Score score) {
 		model.updateScore(score);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -42,7 +40,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * 
 	 */
 	@Override
-	public void endRound() {
+	public void doEndRound() {
 		model.setActiveSeatId(0);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -51,7 +49,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 *  @param winner Winnerteam
 	 */
 	@Override
-	public void endGame(Team winner) {
+	public void doEndGame(Team winner) {
 		model.setActiveSeatId(0);
 		model.setTrump(null);
 		view.changeView(ViewEnumeration.GAMEOVERVIEW);
@@ -62,7 +60,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 *  @param seatId SeatId which was broadcasted for this Client.
 	 */
 	@Override
-	public void setSeat(int seatId) {
+	public void doSetSeat(int seatId) {
 		model.setSeatId(seatId);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -72,7 +70,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 *  @param activeSeatId Currently active seat which was broadcasted by the server.
 	 */
 	@Override
-	public void updateActiveSeat(int activeSeatId) {
+	public void doUpdateActiveSeat(int activeSeatId) {
 		model.setActiveSeatId(activeSeatId);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -82,7 +80,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param deckCardIds The ids of the cards which represent the current deck.
 	 */
 	@Override
-	public void updateDeck(Card[] deckCards) {
+	public void doUpdateDeck(Card[] deckCards) {
 		model.updateDeck(deckCards);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -92,7 +90,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param handCardIds The ids of the cards which represent all cards on the hand of this client.
 	 */
 	@Override
-	public void updateHand(Card[] handCards) {
+	public void doUpdateHand(Card[] handCards) {
 		model.updateHand(handCards);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
@@ -102,7 +100,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param canSwich If true the Client has the opportunity to return the SCHIEBEN GameMode
 	 */
 	@Override
-	public void requestTrump(boolean canSwitch) {
+	public void doRequestTrump(boolean canSwitch) {
 		model.setCanSwitch(canSwitch);
 		view.changeView(ViewEnumeration.SELECTTRUMPVIEW);
 	}
@@ -156,19 +154,19 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	}
 
 	@Override
-	public void connected() {
+	public void doConnected() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void disconnected() {
+	public void doDisconnected() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void requestWeis() {
+	public void doRequestWeis() {
 		// TODO Auto-generated method stub
 		
 	}
