@@ -47,7 +47,7 @@ public class ClientCommunication extends Communication {
 	private Message receive() throws ClassNotFoundException, IOException {
 		InternalMessage msg = super.internalReceive();
 		// Discard messages that were not sent by the server.
-		if (!serverAddress.getAddress().equals(msg.senderAddress)) {
+		if (!serverAddress.equals(msg.senderAddress)) {
 			return null;
 		}
 		return msg.message;
@@ -80,7 +80,7 @@ public class ClientCommunication extends Communication {
 	/**
 	 * @param serverAddress Address of the Game Server
 	 */
-	// TODO REV: Isn't server IP is already set in the constructor? What is the
+	// TODO REV: Isn't server IP already set in the constructor? What is the
 	// ServerAddress class for?
 	public void connect(ServerAddress serverAddress) {
 		JoinGameMessage msg = new JoinGameMessage();
