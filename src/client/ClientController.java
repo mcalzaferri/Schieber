@@ -23,7 +23,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doSetTrump(Trump trump) {
-		model.setTrump(trump);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
 
@@ -32,7 +31,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateScore(Score score) {
-		model.updateScore(score);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
 
@@ -41,7 +39,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doEndRound() {
-		model.setActiveSeatId(0);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
 
@@ -50,8 +47,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doEndGame(Team winner) {
-		model.setActiveSeatId(0);
-		model.setTrump(null);
 		view.changeView(ViewEnumeration.GAMEOVERVIEW);
 	}
 	
@@ -61,7 +56,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doSetSeat(int seatId) {
-		model.setSeatId(seatId);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
 
@@ -71,7 +65,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateActiveSeat(int activeSeatId) {
-		model.setActiveSeatId(activeSeatId);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
 
@@ -81,7 +74,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateDeck(Card[] deckCards) {
-		model.updateDeck(deckCards);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
 
@@ -91,7 +83,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateHand(Card[] handCards) {
-		model.updateHand(handCards);
 		view.changeView(ViewEnumeration.PLAYVIEW);
 	}
 	
@@ -101,7 +92,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doRequestTrump(boolean canSwitch) {
-		model.setCanSwitch(canSwitch);
 		view.changeView(ViewEnumeration.SELECTTRUMPVIEW);
 	}
 	

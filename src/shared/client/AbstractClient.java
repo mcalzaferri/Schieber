@@ -1,8 +1,5 @@
 package shared.client;
 
-import java.awt.List;
-import java.util.ArrayList;
-
 import client.ClientCommunication;
 import shared.*;
 
@@ -23,56 +20,72 @@ public abstract class AbstractClient {
 	
 	//Methods for Communication -> Client
 	//server_info_messages
-	private void chosenGameModeInfoMessageReceived() {};
-	private void endOfRoundMessageReceived() {};
-	private void gameOverMessageReceived() {};
-	private void gameStartedInfoMessageReceived() {};
-	private void newRoundInfoMessageReceived() {};
-	private void playerJoinedInfoMessageReceived() {};
-	private void playerLeftInfoMessageReceived() {};
-	private void playerLeftTableInfoMessageReceived() {};
-	private void turnInfoMessageReceived() {};
+	public void chosenTrumpInfoMessageReceived(Trump trump) {
+		model.setTrump(trump);
+		doSetTrump(model.getTrump());
+	};
+	public void endOfRoundMessageReceived() {
+		model.setActiveSeatId(0);
+		doEndRound();
+	};
+	public void gameOverMessageReceived(Team winner) {
+		model.setActiveSeatId(0);
+		model.setTrump(null);
+		doEndGame(winner);
+	};
+	public void gameStartedInfoMessageReceived() {};
+	public void newRoundInfoMessageReceived() {};
+	public void playerJoinedInfoMessageReceived() {};
+	public void playerLeftInfoMessageReceived() {};
+	public void playerLeftTableInfoMessageReceived() {};
+	public void turnInfoMessageReceived(Card laidCard) {};
 	//server_messages
-	private void chooseGameModeMessageReceived() {};
-	private void handOutCardsMessageReceived() {};
-	private void wrongCardMessageReceived() {};
-	private void yourTurnMessageReceived() {};
+	public void chooseTrumpMessageReceived(boolean canSwitch) {
+		model.setCanSwitch(canSwitch);
+		doRequestTrump(canSwitch);
+	};
+	public void handOutCardsMessageReceived(Card[] cards) {
+		model.getHand().updateData(cards);
+		doUpdateHand(cards);
+	};
+	public void wrongCardMessageReceived() {};
+	public void yourTurnMessageReceived(Card[] validCards) {};
 	
 	
 	//Template methods for Server -> Client
-	public abstract void doSetTrump(Trump trump);
+	protected abstract void doSetTrump(Trump trump);
 	
 	/** Sets the seatId of the Client
 	 * @param seatId
 	 */
-	public abstract void doSetSeat(int seatId);
+	protected abstract void doSetSeat(int seatId);
 	
 	/** Determines which seat is currently playing.
 	 * If activeSeatId == seatId use publishChosenCard() to finish turn
 	 * @param activeSeatId
 	 */
-	public abstract void doUpdateActiveSeat(int activeSeatId);
+	protected abstract void doUpdateActiveSeat(int activeSeatId);
 	
 	/**Initialises trump selection process. Finish process with publishChosenTrump()
 	 * @param canSwitch determines whether the client can use "SCHIEBEN" or not
 	 */
-	public abstract void doRequestTrump(boolean canSwitch);
+	protected abstract void doRequestTrump(boolean canSwitch);
 	
-	public abstract void doRequestWeis();
+	protected abstract void doRequestWeis();
 	
-	public abstract void doUpdateDeck(Card[] deckCards);
+	protected abstract void doUpdateDeck(Card[] deckCards);
 	
-	public abstract void doUpdateHand(Card[] handCards);
+	protected abstract void doUpdateHand(Card[] handCards);
 	
-	public abstract void doUpdateScore(Score score);
+	protected abstract void doUpdateScore(Score score);
 	
-	public abstract void doEndRound();
+	protected abstract void doEndRound();
 	
-	public abstract void doEndGame(Team winner);
+	protected abstract void doEndGame(Team winner);
 	
-	public abstract void doConnected();
+	protected abstract void doConnected();
 	
-	public abstract void doDisconnected();
+	protected abstract void doDisconnected();
 
 	//Methods for Client -> Server
 	public void publishChosenTrump(Trump trump) {

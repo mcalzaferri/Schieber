@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import client.ClientCommunication;
-import client.ClientController;
 import shared.Card;
 import shared.ServerAddress;
 import shared.Trump;
@@ -97,56 +96,55 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 					int id = Integer.parseInt(labelText);
 					trump = Trump.getById(id);
 				}catch(Exception e) {}
-				client.doSetTrump(trump);
+				client.chosenTrumpInfoMessageReceived(trump);
 			}
 		});
 		endOfRound.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				client.doEndRound();
+				client.endOfRoundMessageReceived();
 			}
 		});
 		gameOver.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				client.doEndGame(null);//TODO
+				client.gameOverMessageReceived(null);//TODO
 			}
 		});
 		gameStartedInfo.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				client.doUpdateActiveSeat(1);//TODO Redundant with newRound?!
+				client.gameStartedInfoMessageReceived();
 			}
 		});
 		newRoundInfo.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				client.doSetSeat(0);
-				client.doUpdateActiveSeat(1);//TODO What is it good for?
+				client.newRoundInfoMessageReceived();
 			}
 		});
 		playerJoinedInfo.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				// TODO Implent something in AbstractClient to handle this.
+				client.playerJoinedInfoMessageReceived();
 			}
 		});
 		playerLeftInfo.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				// TODO Implent something in AbstractClient to handle this.
+				client.playerLeftInfoMessageReceived();
 			}
 		});
 		playerLeftTableInfo.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				// TODO Implent something in AbstractClient to handle this.
+				client.playerLeftTableInfoMessageReceived();
 			}
 		});
 		turnInfo.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				// TODO Implent something in AbstractClient to handle this.
+				client.turnInfoMessageReceived(null);//TODO
 			}
 		});
 		chooseGameMode.setSimulationRowListener(new SimulationRowListener() {
@@ -156,7 +154,7 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 				try {
 					canSwitch = Boolean.parseBoolean(labelText);
 				}catch(Exception e) {}
-				client.doRequestTrump(canSwitch);
+				client.chooseTrumpMessageReceived(canSwitch);
 			}
 		});
 		handOutCards.setSimulationRowListener(new SimulationRowListener() {
@@ -171,21 +169,19 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 				}
 				Card[] cardArray = new Card[cardList.size()];
 				cardArray = cardList.toArray(cardArray);
-				client.doUpdateHand(cardArray);
+				client.handOutCardsMessageReceived(cardArray);
 			}
 		});
 		wrongCard.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				// TODO Implent something in AbstractClient to handle this.
+				client.wrongCardMessageReceived();
 			}
 		});
 		yourTurn.setSimulationRowListener(new SimulationRowListener() {
 			@Override
 			public void actionPerformed(String labelText) {
-				// TODO Implent something in AbstractClient to handle this better.
-				client.doSetSeat(1);
-				client.doUpdateActiveSeat(1);
+				client.yourTurnMessageReceived(null);//TODO
 			}
 		});
 	}
