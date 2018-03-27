@@ -24,6 +24,7 @@ public class HandPane extends JPanel{
 		this.observers = observers;
 		this.setLayout(new FlowLayout());	
 		this.setPreferredSize(new Dimension(500, 100));
+		this.setMinimumSize(this.getPreferredSize());
 		this.update();
 	}
 	
