@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhjf9qxrsr4hhso5">
+		<property name="$defaultDiagram" value="true"/>
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="__options" value="option.nlayout.recursive=true"/>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.server_messages.HandOutCardsMessage">
+			<property name="bounds" value="151,5,156,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.server_messages.WrongCardMessage">
+			<property name="bounds" value="5,125,139,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.server_messages.ChooseGameModeMessage">
+			<property name="bounds" value="5,245,181,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+	</view>
+</nodeSet>

@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.net.SocketException;
 
 import ch.ntb.jass.common.proto.Message;
+import ch.ntb.jass.common.proto.YourTurnMessage;
 import ch.ntb.jass.common.proto.player_messages.ChosenGameModeMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinGameMessage;
 import ch.ntb.jass.common.proto.player_messages.PlaceCardMessage;
 import ch.ntb.jass.common.proto.player_messages.StartGameMessage;
 import ch.ntb.jass.common.proto.server_messages.ChooseGameModeMessage;
-import ch.ntb.jass.common.proto.server_messages.YourTurnMessage;
 import shared.Communication;
 import shared.InternalMessage;
 import shared.Player;
