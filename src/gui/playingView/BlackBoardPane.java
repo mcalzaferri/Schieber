@@ -31,6 +31,7 @@ public class BlackBoardPane extends JPanel{
 		this.font = new Font("MV Boli" ,Font.PLAIN,36);
 		this.setBackground(Color.BLACK);
 		this.setPreferredSize(new Dimension(150, 100));
+		this.setMinimumSize(this.getPreferredSize());
 		this.update();
 	}
 	

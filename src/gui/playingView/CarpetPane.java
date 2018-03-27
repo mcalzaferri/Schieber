@@ -27,6 +27,7 @@ public class CarpetPane extends JPanel{
 		this.observers = observers;
 		this.setBackground(Color.green);
 		this.setPreferredSize(new Dimension(500, 500));
+		this.setMinimumSize(this.getPreferredSize());
 		this.update();
 	}
 	

@@ -2,6 +2,7 @@ package gui.playingView;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.Writer;
 import java.util.ArrayList;
 
 import client.ViewEnumeration;
@@ -23,6 +24,7 @@ public class PlayingFieldView extends AbstractView{
 	}
 	
 	private void layoutView() {
+		this.setMinimumSize(this.getBounds().getSize());
 		this.setLayout(new BorderLayout());
 		this.add(this.hand, BorderLayout.SOUTH);
 		this.add(this.blackBoard, BorderLayout.EAST);
