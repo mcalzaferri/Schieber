@@ -257,7 +257,7 @@ public class IntelligenceNormal extends BotIntelligence {
 		
 		Arrays.sort(ids);
 		boolean last = false;
-		int noOfCards = 0;
+		int noOfCards = 1;
 		for(int i = 1; i<10; i++) {
 			if(i==9) {
 				last = true;	// final round for checking

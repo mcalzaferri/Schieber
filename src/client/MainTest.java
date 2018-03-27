@@ -1,5 +1,8 @@
 package client;
 
+import bot.BotIntelligence;
+import bot.IntelligenceNormal;
+import bot.VirtualClient;
 import client.ClientController;
 import client.test.ClientCommunicationSimulator;
 import gui.ClientModelTest;
@@ -14,7 +17,14 @@ public class MainTest {
 		Gui gui = new Gui(model);
 		ClientCommunicationSimulator com = new ClientCommunicationSimulator();
 		ClientController controller = new ClientController(com, model, gui);
-		com.setClient(controller);
+		
+		/* Test Bot
+		BotIntelligence ki = new IntelligenceNormal();
+		VirtualClient bot = new VirtualClient(com);
+		bot.setIntelligence(ki);
+		com.setClient(bot);
+		*/
+	
 	}
 
 }
