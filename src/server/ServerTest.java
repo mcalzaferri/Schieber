@@ -7,34 +7,34 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import client.ClientCommunication;
 
-class ServerTest {
+public class ServerTest {
 	MessageHandler msgHandler;
 	GameLogic logic;
 	ClientCommunication cCom;
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 	}
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 	}
 
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		logic = new GameLogic();
 		msgHandler = new MessageHandler(logic, 65000);
 		msgHandler.setReceiveTimeout(100);
 
-		ClientCommunication cCom = new ClientCommunication(
+		cCom = new ClientCommunication(
 				new InetSocketAddress("localhost", 65000), 64000);
 		cCom.open();
 		cCom.setReceiveTimeout(100);
@@ -42,14 +42,14 @@ class ServerTest {
 		logic.startGame();
 	}
 
-	@AfterEach
-	void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		msgHandler.stop();
 		cCom.close();
 	}
 
 	@Test
-	void testPlayerJoin() throws ClassNotFoundException, IOException {
+	public void testPlayerJoin() throws ClassNotFoundException, IOException {
 		// cCom.connect();
 		try {
 			msgHandler.handleMessage();
