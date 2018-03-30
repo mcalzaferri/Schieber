@@ -136,9 +136,9 @@ public class IntelligenceNormal extends BotIntelligence {
 		int[] combinedValues = new int[6];
 		for(int i = 0; i<6; i++) {
 			if(i<4) {
-				combinedValues[i] = sichereStich[i]*values[i];
+				combinedValues[i] = (sichereStich[i]+1)*values[i]; // even with 0 sichere stich the color can be good
 			} else {
-				combinedValues[i] = sichereStich[i]*obenabeUndenufeMultiplicator;
+				combinedValues[i] = (sichereStich[i])*obenabeUndenufeMultiplicator;
 			}
 		}
 		int maxCombinedValue = combinedValues[5];

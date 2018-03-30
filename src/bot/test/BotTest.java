@@ -101,16 +101,16 @@ public class BotTest {
 	}
 	
 	private static int[] generateFixedHand() {
-		for(int i = 10; i <= 18; i++) { // add all EICHEL
+		for(int i = 11; i <= 19; i++) { // add all EICHEL
 			allCards.add(i);
 		}
-		for(int i = 20; i <= 28; i++) { // add all ROSE
+		for(int i = 21; i <= 29; i++) { // add all ROSE
 			allCards.add(i);
 		}
-		for(int i = 30; i <= 38; i++) { // add all SCHILTE
+		for(int i = 31; i <= 39; i++) { // add all SCHILTE
 			allCards.add(i);
 		}
-		for(int i = 40; i <= 48; i++) { // add all SCHELLE
+		for(int i = 41; i <= 49; i++) { // add all SCHELLE
 			allCards.add(i);
 		}
 		int[] testHand = new int[9];
@@ -122,16 +122,16 @@ public class BotTest {
 	}
 
 	private static int[] generateRandomHand() {
-		for(int i = 10; i <= 18; i++) { // add all EICHEL
+		for(int i = 11; i <= 19; i++) { // add all EICHEL
 			allCards.add(i);
 		}
-		for(int i = 20; i <= 28; i++) { // add all ROSE
+		for(int i = 21; i <= 29; i++) { // add all ROSE
 			allCards.add(i);
 		}
-		for(int i = 30; i <= 38; i++) { // add all SCHILTE
+		for(int i = 31; i <= 39; i++) { // add all SCHILTE
 			allCards.add(i);
 		}
-		for(int i = 40; i <= 48; i++) { // add all SCHELLE
+		for(int i = 41; i <= 49; i++) { // add all SCHELLE
 			allCards.add(i);
 		}
 

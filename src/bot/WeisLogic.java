@@ -117,7 +117,7 @@ public class WeisLogic {
 		int[] noOfCards = new int[9];
 		ArrayList<CardValue> vierGliche = new ArrayList<>();
 		for(int i = 0; i < 9; i++) {
-			noOfCards[cardsInHand.get(i).getId()%10]++;
+			noOfCards[(cardsInHand.get(i).getId()-1)%10]++;
 		}
 		for(int i = 3; i < 9; i++) { // ignore 6,7,8 Card values
 			if(noOfCards[i] == 4){

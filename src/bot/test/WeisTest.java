@@ -14,7 +14,7 @@ public class WeisTest {
 		
 		// Test if stöck are correctly recognized
 		BotIntelligence bot = new IntelligenceRandom();
-		int[] hand = {10,11,12,13,14,15,16,17,18};
+		int[] hand = {11,12,13,14,15,16,17,18,19};
 		bot.setHand(hand); // give all EICHEL
 		bot.setTrump(Trump.EICHEL);
 		
@@ -26,7 +26,7 @@ public class WeisTest {
 		System.out.println();
 		
 		// Test if 4 gliche are correctly recognized
-		int[] hand2 = {10,20,30,40,15,25,35,45,46};
+		int[] hand2 = {11,21,31,41,15,25,35,45,46};
 		bot.setHand(hand2);
 		bot.setTrump(Trump.EICHEL);
 		
@@ -39,7 +39,7 @@ public class WeisTest {
 		System.out.println();
 		
 		// Test if Folgen are correctly recognized
-		int[] hand3 = {12,11,10,20,21,13,30,31,32};
+		int[] hand3 = {12,11,13,22,21,14,33,31,32};
 		bot.setHand(hand3);
 		bot.setTrump(Trump.ROSE);
 
