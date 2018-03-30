@@ -11,8 +11,8 @@ public class TrumpTest {
 		int[] hand = {29,21,22,23,24,25,26,27,28};
 		bot.setHand(hand);
 		
-		System.out.println(bot.getSichereStichUndenufeObenabe(false));
-		System.out.println(bot.getSichereStich(CardColor.ROSE));
+		System.out.println(bot.getSichereStichUndenufeObenabeBeginning(false));
+		System.out.println(bot.getSichereStichBeginning(CardColor.ROSE));
 
 	}
 

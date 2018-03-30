@@ -1,5 +1,6 @@
 package bot;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import shared.Card;
@@ -18,8 +19,22 @@ public class IntelligenceNormal extends BotIntelligence {
 
 	@Override
 	public Card getNextCard() {
-		// TODO implement (for now just something useful is returned to make test class work)
-		return new Card(CardColor.EICHEL, CardValue.SECHS);
+		
+		ArrayList<Card> allowedCards = getAllowedCards();
+		
+		if(deck.isEmpty()) { //I'm first to go
+			Card c = this.getSicherenStichDuringPlay(allowedCards);
+			if(c != null) {
+				return c;
+			} else {
+				// TODO check partner cards from Weise
+			}
+		} else {
+			// TODO add all further cases
+		}
+				
+		// fallback mode
+		return allowedCards.get(0);
 	}
 
 	@Override
@@ -27,12 +42,12 @@ public class IntelligenceNormal extends BotIntelligence {
 		int[] values = this.getValueOnHand();
 		int bestTrumpID = 3, maxValue = values[3];
 		
-		int[] sichereStich = {getSichereStich(CardColor.EICHEL),
-								getSichereStich(CardColor.ROSE),
-								getSichereStich(CardColor.SCHILTE),
-								getSichereStich(CardColor.SCHELLE),
-								getSichereStichUndenufeObenabe(false),
-								getSichereStichUndenufeObenabe(true)
+		int[] sichereStich = {getSichereStichBeginning(CardColor.EICHEL),
+								getSichereStichBeginning(CardColor.ROSE),
+								getSichereStichBeginning(CardColor.SCHILTE),
+								getSichereStichBeginning(CardColor.SCHELLE),
+								getSichereStichUndenufeObenabeBeginning(false),
+								getSichereStichUndenufeObenabeBeginning(true)
 		};
 		int bestStichID = 5, maxStichValue = sichereStich[5];
 		
@@ -176,7 +191,7 @@ public class IntelligenceNormal extends BotIntelligence {
 	 * @param true if undenufe
 	 * @return amount of sichere stich
 	 */
-	public int getSichereStichUndenufeObenabe(boolean undenufe) {
+	public int getSichereStichUndenufeObenabeBeginning(boolean undenufe) {
 		int[] ids = cardsToIds(cardsInHand);
 		int sichereStich = 0;
 		Arrays.sort(ids);
@@ -184,8 +199,8 @@ public class IntelligenceNormal extends BotIntelligence {
 		int noOfCards = 1;
 		boolean last = false;
 		if(undenufe) {
-			for(int i = 1; i<10; i++) {
-				if(i==9) {
+			for(int i = 1; i<ids.length+1; i++) {
+				if(i==ids.length) {
 					last = true;	// final round for checking
 				}
 				if(!last && (ids[i]-ids[i-1])==1) { //consecutive cards, suppress check of non-existent index
@@ -200,8 +215,8 @@ public class IntelligenceNormal extends BotIntelligence {
 				}
 		}
 		} else {
-			for(int i = 1; i<10; i++) {
-				if(i==9) {
+			for(int i = 1; i<ids.length+1; i++) {
+				if(i==ids.length) {
 					last = true;	// final round for checking
 				}
 				if(!last && (ids[i]-ids[i-1])==1) { //consecutive cards, suppress check of non-existent index
@@ -227,12 +242,12 @@ public class IntelligenceNormal extends BotIntelligence {
 	 * @param color
 	 * @return sichere stich if this color is chosen as Trumpf
 	 */
-	public int getSichereStich(CardColor color) {
+	public int getSichereStichBeginning(CardColor color) {
 		int[] ids = cardsToIds(cardsInHand);
 		int sichereStich = 0;
 		
 		//assign new values
-		for(int i = 0; i<9; i++) {
+		for(int i = 0; i<ids.length; i++) {
 			switch(ids[i]%10) {
 			case 0:
 			case 1:
@@ -258,7 +273,7 @@ public class IntelligenceNormal extends BotIntelligence {
 		Arrays.sort(ids);
 		boolean last = false;
 		int noOfCards = 1;
-		for(int i = 1; i<10; i++) {
+		for(int i = 1; i<ids.length+1; i++) {
 			if(i==9) {
 				last = true;	// final round for checking
 			}
@@ -274,6 +289,27 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 		}
 		return sichereStich;
+		
+	}
+	
+	/**
+	 * This function returns a card that is guaranteed to win
+	 * @param allowedCards
+	 * @return sicherer Stich, can return null!
+	 */
+	public Card getSicherenStichDuringPlay(ArrayList<Card> allowedCards) {
+		for(Card c : allowedCards) {
+			if(trump.getGameMode() == GameMode.TRUMPF) {
+				if(c.equals(maxCardsInPlay[4])) {
+					return c;
+				}
+			} else {
+				if(c.equals(maxCardsInPlay[c.getColor().getId()-1])) {
+					return c;
+				}
+			}
+		}
+		return null;
 		
 	}
 

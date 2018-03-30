@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import client.ClientCommunication;
 import shared.Card;
+import shared.Player;
 import shared.Score;
 import shared.Team;
 import shared.Trump;
@@ -29,7 +30,8 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	public void doEndRound() {
-		// we could do some checks here, but otherwise not interesting for bot(?)
+		// update max cards with knowledge from deck cards
+		ki.updateMaxCards();
 	}
 
 	@Override
@@ -44,44 +46,42 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	public void doSetSeat(int seatId) {
 		mySeatId = seatId;
+		ki.setSelfID(seatId);
+		ki.setPartnerID((seatId+2)%4);
 	}
 
 	@Override
 	public void doUpdateActiveSeat(int activeSeatId) {
+		ki.setActivePlayerID(activeSeatId);
 		if(activeSeatId == mySeatId) {
-			Card card = ki.getNextCard();
-			super.publishChosenCard(card);
+			super.publishChosenCard(ki.getNextCard());
 		}
 	}
 
 	@Override
 	public void doRequestTrump(boolean canSwitch) {
-		Trump trump = ki.selectTrump(canSwitch);
-		super.publishChosenTrump(trump);
+		super.publishChosenTrump(ki.selectTrump(canSwitch));
 		
 	}
 	
-	//TODO: @Override
+	@Override
 	public void doRequestWeis() {
-		//TODO: needed in AbstractClient?
-		ArrayList<Weis> weise = ki.getWeise();
-		for(Weis w : weise) {
-			// TODO: super.publishChosenWeis(w);
-		}
-		
+		super.publishChosenWeis((Weis[]) ki.getWeise().toArray()); 
+	}
+	
+	public void doShowWeis(Weis[] wiis, int playerID) {
+		ki.showWeis(wiis, playerID);
 	}
 
 	@Override
 	public void doUpdateDeck(Card[] deckCards) {
-		int[] deckCardIds = cardsToIds(deckCards);
-		ki.setDeck(deckCardIds);
+		ki.setDeck(cardsToIds(deckCards));
 		
 	}
 
 	@Override
 	public void doUpdateHand(Card[] handCards) {
-		int[] handCardIds = cardsToIds(handCards);
-		ki.setHand(handCardIds);
+		ki.setHand(cardsToIds(handCards));
 		
 	}
 

@@ -8,12 +8,12 @@ import shared.Player;
 public class KnownCard {
 	
 	private Card card;
-	private Player player;
+	private int playerID;
 	private boolean played;
 
-	public KnownCard(Card c, Player p, boolean pl) {
+	public KnownCard(Card c, int pid, boolean pl) {
 		card = c;
-		player = p;
+		playerID = pid;
 		played = pl;
 	}
 
@@ -21,8 +21,8 @@ public class KnownCard {
 		return card;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public int getPlayer() {
+		return playerID;
 	}
 
 	public boolean isPlayed() {

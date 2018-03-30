@@ -1,10 +1,12 @@
 package bot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
-import shared.Player;
+import shared.GameMode;
 import shared.Trump;
 import shared.Weis;
 
@@ -12,8 +14,11 @@ public abstract class BotIntelligence {
 	
 	protected ArrayList<Card> cardsInHand;
 	protected ArrayList<Card> cardsPlayed = new ArrayList<>();							
-	protected ArrayList<Card> deck;										
-	protected Player partner;
+	protected ArrayList<Card> deck;
+	 // store the current highest cards, EICHEL, ROSE, SCHILTE, SCHELLE, generally highest card
+	protected Card[] maxCardsInPlay = {Card.getCardById(19),Card.getCardById(29),Card.getCardById(39),Card.getCardById(49),null};
+	protected ArrayList<KnownCard> knownCards = new ArrayList<>();
+	protected int partnerID, selfID, activePlayerID;
 	protected int turn;
 	protected Trump trump;
 	
@@ -24,18 +29,31 @@ public abstract class BotIntelligence {
 	 */
 	public void setHand(int[] currHand) {
 		cardsInHand = getCardListByIds(currHand);
+		// add cards in Hand to knownCards
+		for(Card c : cardsInHand) {
+			knownCards.add(new KnownCard(c,selfID,false));
+		}
 	}
 	
 	/**
-	 * updates the trump color, meaning someone chose the trump
+	 * updates the trump colour, meaning someone chose the trump
 	 * @param trump
 	 */
 	public void setTrump(Trump trump) {
 		this.trump = trump;	
+		if (trump.getGameMode() == GameMode.TRUMPF) {
+			maxCardsInPlay[trump.getTrumpfColor().getId()-1] = new Card(trump.getTrumpfColor(),CardValue.UNDER);
+			maxCardsInPlay[4] = new Card(trump.getTrumpfColor(),CardValue.UNDER);
+		} else if (trump.getGameMode() == GameMode.UNEUFE) {
+			maxCardsInPlay[0] = new Card(CardColor.EICHEL, CardValue.SECHS);
+			maxCardsInPlay[1] = new Card(CardColor.ROSE, CardValue.SECHS);
+			maxCardsInPlay[2] = new Card(CardColor.SCHILTE, CardValue.SECHS);
+			maxCardsInPlay[3] = new Card(CardColor.SCHELLE, CardValue.SECHS);
+		}
 	}
 	
 	/**
-	 * updates the Deck, meaning the already played cards
+	 * updates the Deck, meaning the cards on the table
 	 * @param currDeck
 	 */
 	public void setDeck(int[] currDeck)
@@ -43,8 +61,11 @@ public abstract class BotIntelligence {
 		//refresh current deck "on table"
 		deck = getCardListByIds(currDeck);
 		
-		//add last played card to cardsPlayed
-		cardsPlayed.add(deck.get(deck.size() - 1));
+		//add last played card to cardsPlayed and knownCards
+		if(!deck.isEmpty()) {
+			cardsPlayed.add(deck.get(deck.size() - 1));
+			knownCards.add(new KnownCard(deck.get(deck.size() - 1), activePlayerID, true));
+		}
 	}
 	
 	public ArrayList<Weis> getWeise() {
@@ -58,6 +79,7 @@ public abstract class BotIntelligence {
 	 * @return ArrayList<Card>
 	 */
 	private ArrayList<Card> getCardListByIds(int[] cardIds){
+		Arrays.sort(cardIds); //sort the Cards on Hand
 		ArrayList<Card> list = new ArrayList<>();
 		for(int i : cardIds) {
 			list.add(Card.getCardById(i));
@@ -155,6 +177,109 @@ public abstract class BotIntelligence {
 	}
 	
 	/**
+	 * This function adds "gewiesene" Karten to our pool of known cards
+	 * @param wiis
+	 * @param player
+	 */
+	public void showWeis(Weis[] wiis, int playerID) {
+		int noOfCards;
+		boolean folge;
+		int originCardID;
+		for(Weis w : wiis) {
+			noOfCards = 0;
+			folge = true;
+			originCardID = w.getOriginCard().getId();
+			switch(w.getType()) {
+			case STOECK:
+				noOfCards = 2;
+				break;
+			case ACHTBLATT:
+				noOfCards = 8;
+				break;
+			case DREIBLATT:
+				noOfCards = 3;
+				break;
+			case FUENFBLATT:
+				noOfCards = 5;
+				break;
+			case NEUNBLATT:
+				noOfCards = 9;
+				break;
+			case SECHSBLATT:
+				noOfCards = 6;
+				break;
+			case SIEBENBLATT:
+				noOfCards = 7;
+				break;
+			case VIERBLATT:
+				noOfCards = 4;
+				break;
+			case VIERBAUERN:
+			case VIERGLEICHE:
+			case VIERNELL:
+				noOfCards = 4;
+				folge = false;				
+				break;
+			default:
+				break; 
+			}
+			if(folge) {
+				knownCards.add(new KnownCard(Card.getCardById(originCardID), playerID, false));
+				for(int i = 1; i<noOfCards; i++) {
+					knownCards.add(new KnownCard(Card.getCardById(originCardID+i), playerID, false));
+				}
+			} else {
+				knownCards.add(new KnownCard(Card.getCardById(originCardID), playerID, false));
+				for(int i = 1; i<noOfCards; i++) {
+					knownCards.add(new KnownCard(Card.getCardById(originCardID+i*10), playerID, false));
+				}
+			}
+		}
+		
+	}
+	
+	public void setActivePlayerID(int activeSeatId) {
+		activePlayerID = activeSeatId;
+	}
+	
+	public void setSelfID(int seatId) {
+		selfID = seatId;
+	}
+	
+	public void setPartnerID(int partnerID) {
+		this.partnerID = partnerID;
+	}
+	
+	/**
+	 * This function checks the deck and updates the current list of highest cards
+	 */
+	public void updateMaxCards() {
+		for(Card c : deck) {
+			int index = c.getColor().getId()-1;
+			if(c.equals(maxCardsInPlay[index])) {
+				if(c.getValue() == CardValue.SECHS) {
+					maxCardsInPlay[index] = null;
+				} else {
+					if(c.getColor() == trump.getTrumpfColor()) { // different logic for Trumpf
+						if(maxCardsInPlay[index].getValue() == CardValue.UNDER) { // Bauer
+							maxCardsInPlay[index] = Card.getCardById(c.getId()-2); // set to Nell
+						} else if (maxCardsInPlay[index].getValue() == CardValue.NEUN){ // Nell
+							maxCardsInPlay[index] = Card.getCardById(c.getId()+5); // set to Ass
+						} else {
+							maxCardsInPlay[index] = Card.getCardById(c.getId()-1);
+							if(maxCardsInPlay[index].getValue() == CardValue.UNDER || maxCardsInPlay[index].getValue() == CardValue.NEUN) {
+								maxCardsInPlay[index] = Card.getCardById(c.getId()-1);
+							}
+						}
+					} else {
+						maxCardsInPlay[index] = Card.getCardById(c.getId()-1);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
 	 * auxiliary function to convert Card list to Array of IDs
 	 * @param List of Card
 	 * @return Integer Array of IDs
@@ -170,6 +295,16 @@ public abstract class BotIntelligence {
 	// methods depending on strategy
 	public abstract Card getNextCard();
 	public abstract Trump selectTrump(boolean canSwitch);
+
+	
+
+	
+
+	
+
+	
+
+	
 
 	
 	
