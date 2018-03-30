@@ -16,24 +16,47 @@ public class IntelligenceNormal extends BotIntelligence {
 	private final int awesomeTrumpSelectThreshhold = 70; //equals a bit more than 75% of maximum value (90)
 	private final int goodTrumpSelectThresshold = 45; // equals 50%
 	private final int obenabeUndenufeMultiplicator = 25; // used for combined Value
+	private ArrayList<Card> winningCards = new ArrayList<>();
 
 	@Override
 	public Card getNextCard() {
 		
 		ArrayList<Card> allowedCards = getAllowedCards();
+		Card c = null;
 		
 		if(deck.isEmpty()) { //I'm first to go
-			Card c = this.getSicherenStichDuringPlay(allowedCards);
+			if(winningCards.isEmpty()) { //refresh winningCards List if necessary
+				winningCards = this.getSicherenStichDuringPlay(allowedCards);
+			}
+			if(!winningCards.isEmpty()) { // pick a card from the winning list
+				c = winningCards.remove(0);
+			}
 			if(c != null) {
 				return c;
-			} else {
-				// TODO check partner cards from Weise
+			} else { // check if partner has a winning card and play a card of this colour if possible
+				for(Card pc : this.getSicherenStichDuringPlay(partnerCards)) {
+					for(Card oc : allowedCards) {
+						if(pc.getColor() == oc.getColor()) {
+							return oc;
+						}
+					}
+				}
 			}
 		} else {
 			// TODO add all further cases
 		}
 				
-		// fallback mode
+	
+		// try not to play a card that the enemy surely wins
+		for(Card ec : this.getSicherenStichDuringPlay(enemyCards)) {
+			for(Card oc : allowedCards) {
+				if(ec.getColor() != oc.getColor()) {
+					return oc;
+				}
+			}
+		}
+		
+		// emergency fallback, play first card on hand
 		return allowedCards.get(0);
 	}
 
@@ -297,19 +320,20 @@ public class IntelligenceNormal extends BotIntelligence {
 	 * @param allowedCards
 	 * @return sicherer Stich, can return null!
 	 */
-	public Card getSicherenStichDuringPlay(ArrayList<Card> allowedCards) {
+	public ArrayList<Card> getSicherenStichDuringPlay(ArrayList<Card> allowedCards) {
+		ArrayList<Card> winningCards = new ArrayList<>();
 		for(Card c : allowedCards) {
 			if(trump.getGameMode() == GameMode.TRUMPF) {
 				if(c.equals(maxCardsInPlay[4])) {
-					return c;
+					winningCards.add(c);
 				}
 			} else {
 				if(c.equals(maxCardsInPlay[c.getColor().getId()-1])) {
-					return c;
+					winningCards.add(c);
 				}
 			}
 		}
-		return null;
+		return winningCards;
 		
 	}
 

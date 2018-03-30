@@ -18,6 +18,8 @@ public abstract class BotIntelligence {
 	 // store the current highest cards, EICHEL, ROSE, SCHILTE, SCHELLE, generally highest card
 	protected Card[] maxCardsInPlay = {Card.getCardById(19),Card.getCardById(29),Card.getCardById(39),Card.getCardById(49),null};
 	protected ArrayList<KnownCard> knownCards = new ArrayList<>();
+	protected ArrayList<Card> partnerCards = new ArrayList<>(); // known cards of our partner
+	protected ArrayList<Card> enemyCards = new ArrayList<>(); // known cards of our enemies
 	protected int partnerID, selfID, activePlayerID;
 	protected int turn;
 	protected Trump trump;
@@ -61,10 +63,12 @@ public abstract class BotIntelligence {
 		//refresh current deck "on table"
 		deck = getCardListByIds(currDeck);
 		
-		//add last played card to cardsPlayed and knownCards
+		//add last played card to cardsPlayed and knownCards, update partner cards and enemy cards
 		if(!deck.isEmpty()) {
 			cardsPlayed.add(deck.get(deck.size() - 1));
 			knownCards.add(new KnownCard(deck.get(deck.size() - 1), activePlayerID, true));
+			partnerCards.remove(deck.get(deck.size() - 1));
+			enemyCards.remove(deck.get(deck.size() - 1));
 		}
 	}
 	
@@ -223,15 +227,24 @@ public abstract class BotIntelligence {
 			default:
 				break; 
 			}
+			Card c = Card.getCardById(originCardID);
+			knownCards.add(new KnownCard(c, playerID, false));
+			boolean partner = (partnerID == playerID);
+			if(partner) { partnerCards.add(c); }
+			else { enemyCards.add(c); }
 			if(folge) {
-				knownCards.add(new KnownCard(Card.getCardById(originCardID), playerID, false));
 				for(int i = 1; i<noOfCards; i++) {
-					knownCards.add(new KnownCard(Card.getCardById(originCardID+i), playerID, false));
+					c = Card.getCardById(originCardID+i);
+					knownCards.add(new KnownCard(c, playerID, false));
+					if(partner) { partnerCards.add(c); }
+					else { enemyCards.add(c); }
 				}
 			} else {
-				knownCards.add(new KnownCard(Card.getCardById(originCardID), playerID, false));
 				for(int i = 1; i<noOfCards; i++) {
-					knownCards.add(new KnownCard(Card.getCardById(originCardID+i*10), playerID, false));
+					c = Card.getCardById(originCardID+i*10);
+					knownCards.add(new KnownCard(c, playerID, false));
+					if(partner) { partnerCards.add(c); }
+					else { enemyCards.add(c); }
 				}
 			}
 		}
