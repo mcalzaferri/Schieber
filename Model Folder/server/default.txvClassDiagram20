@@ -7,7 +7,7 @@
 		<property name="$metaclass" value="ClassDiagram20"/>
 		<property name="__options" value="option.nlayout.recursive=true"/>
 		<reference referencedUin="jdt:e_class:src:server.GameLogic">
-			<property name="bounds" value="249,5,200,227"/>
+			<property name="bounds" value="305,261,165,288"/>
 			<property name="location_set_by_user" value="true"/>
 			<reference referencedUin="jdt:l_ast:src:server.GameLogic:com">
 				<property name="sourceAnchor" value="254,123"/>
@@ -22,6 +22,38 @@
 			<property name="bounds" value="5,42,164,190"/>
 			<property name="location_set_by_user" value="true"/>
 			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V-b8dyjijeeemtkg5x9wku">
+			<property name="bounds" value="104,281,134,90"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.MessageHandler">
+			<property name="bounds" value="5,5,159,257"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:server.MessageHandler:logic">
+				<property name="sourceAnchor" value="169,266"/>
+				<property name="targetAnchor" value="310,266"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.ServerTest">
+			<property name="bounds" value="297,-4,181,182"/>
+			<property name="location_set_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:server.ServerTest:logic">
+				<property name="sourceAnchor" value="374,183"/>
+				<property name="targetAnchor" value="374,266"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:server.ServerTest:msgHandler">
+				<property name="sourceAnchor" value="302,96"/>
+				<property name="targetAnchor" value="169,96"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.ServerApp">
+			<property name="bounds" value="183,-4,95,80"/>
+			<property name="location_set_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="design:view:::V-b8dyjijfejjmjy-iy0mwi">
+			<property name="bounds" value="95,415,141,122"/>
+			<property name="location_set_by_user" value="true"/>
 		</reference>
 	</view>
 </nodeSet>

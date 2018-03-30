@@ -4,7 +4,7 @@
 <nodeSet  version="1.1">
 	<view uin="V-b8dyjijeeemtkg5x9wku">
 		<property name="$metaclass" value="ActivityDiagram20"/>
-		<property name="$name" value="Activity Diagram1"/>
+		<property name="$name" value="Activity Diagram"/>
 		<reference referencedUin="design:node:::-46k66rjeeephuo92p3qa">
 			<property name="bounds" value="380,320,880,1041"/>
 			<property name="location_set_by_user" value="true"/>
