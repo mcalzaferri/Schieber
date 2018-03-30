@@ -93,7 +93,7 @@ public abstract class AbstractClient {
 	 * This method tells the GUI and the Bot if Weis was published
 	 * @param Weis(e), which player did it
 	 */
-	//protected abstract void doShowWeis(Weis[] wiis, Player player)();
+	//protected abstract void doShowWeis(Weis[] wiis, int playerID)();
 
 	//Methods for Client -> Server
 	public void publishChosenTrump(Trump trump) {
