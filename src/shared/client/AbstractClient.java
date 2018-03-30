@@ -86,6 +86,14 @@ public abstract class AbstractClient {
 	protected abstract void doConnected();
 	
 	protected abstract void doDisconnected();
+	
+	//TODO: review proposal and accept/decline
+	//proposal Lukas
+	/**
+	 * This method tells the GUI and the Bot if Weis was published
+	 * @param Weis(e), which player did it
+	 */
+	//protected abstract void doShowWeis(Weis[] wiis, Player player)();
 
 	//Methods for Client -> Server
 	public void publishChosenTrump(Trump trump) {
