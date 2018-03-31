@@ -25,10 +25,10 @@ public class PlayingFieldView extends AbstractView{
 	
 	private void layoutView() {
 		this.setMinimumSize(this.getBounds().getSize());
-		this.setLayout(new BorderLayout());
-		this.add(this.hand, BorderLayout.SOUTH);
-		this.add(this.blackBoard, BorderLayout.EAST);
-		this.add(this.carpet, BorderLayout.CENTER);
+		this.setLayout(new PlayingFieldLayout());
+		this.add(this.hand, PlayingFieldLayout.HAND);
+		this.add(this.blackBoard, PlayingFieldLayout.BLACKBOARD);
+		this.add(this.carpet, PlayingFieldLayout.CARPET);
 		this.setVisible(true);
 		this.pack();
 	}

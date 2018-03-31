@@ -45,10 +45,10 @@ public class PlayingFieldLayout implements LayoutManager2{
 		Dimension blackboard = this.blackboard.getPreferredSize();
 		Dimension hand = this.hand.getPreferredSize();
 		
-		//Calculate minimum height
-		int height = Math.max(blackboard.height, carpet.height + hand.height);
-		//Calculate minimum width
-		int width = Math.max(carpet.width, hand.width) + blackboard.width;
+		//Calculate preferred height
+		int height = Math.max(blackboard.height, carpet.height) + hand.height;
+		//Calculate preferred width
+		int width = Math.max(carpet.width + blackboard.width, hand.width);
 		return new Dimension(width, height);
 	}
 	@Override
@@ -58,15 +58,9 @@ public class PlayingFieldLayout implements LayoutManager2{
 		Dimension hand = this.hand.getMinimumSize();
 		
 		//Calculate minimum height
-		int height = carpet.height + hand.height;
-		if(blackboard.height > height) {
-			height = blackboard.height;
-		}
+		int height = Math.max(blackboard.height, carpet.height) + hand.height;
 		//Calculate minimum width
-		int width = carpet.width;
-		if(hand.width > width) {
-			width = hand.width;
-		}
+		int width = Math.max(carpet.width + blackboard.width, hand.width);
 		return new Dimension(width, height);
 	}
 	
@@ -76,16 +70,25 @@ public class PlayingFieldLayout implements LayoutManager2{
 		Dimension act = parent.getSize();
 		Dimension min = this.minimumLayoutSize(parent);
 		
-		if(act.height < min.height) {
-			act.height = min.height;
-		}
-		if(act.width < min.width) {
-			act.width = min.width;
-		}
-		parent.setBounds(0, 0, act.width, act.height);
-		blackboard.setBounds(act.width * 2/3, 0, act.width * 1/3, act.height);
-		carpet.setBounds(0, 0, act.width * 2/3, act.height * 2/3);
-		hand.setBounds(0, 2/3*act.height, 2/3 * act.width, 1/3 * act.height);
+		//Scaling according to width
+		act.width = Math.max(act.width, min.width);
+		double scaling = (double)act.width/(double)min.width;
+		
+		//Set bounds
+		int x=0, y=0, w=(int)(scaling*min.width), h=(int)(scaling*min.height);
+		parent.setBounds(x, y, w, h);
+		
+		x = 0; y=0; 
+		w=(int)(scaling*carpet.getMinimumSize().width); h = (int)(scaling*carpet.getMinimumSize().height);
+		carpet.setBounds(0, 0, w, h);
+		
+		x = w; y = 0; 
+		w = (int)(scaling*blackboard.getMinimumSize().width); h = (int)(scaling*blackboard.getMinimumSize().height);
+		blackboard.setBounds(x, y, w, h);
+		
+		x = 0; y = (int)(scaling*(min.height - hand.getMinimumSize().height));
+		w = (int)(scaling*hand.getMinimumSize().width); h = (int)(scaling*hand.getMinimumSize().height);
+		hand.setBounds(x, y, w, h);
 		
 	}
 	@Override
