@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import client.ViewObserver;
@@ -22,7 +23,7 @@ public class HandPane extends JPanel{
 		super();
 		this.hand = hand;
 		this.observers = observers;
-		this.setLayout(new FlowLayout());	
+		this.setLayout(new HandLayout());	
 		this.setPreferredSize(new Dimension(500, 100));
 		this.setMinimumSize(this.getPreferredSize());
 		this.update();

@@ -44,11 +44,12 @@ public class HandLayout implements LayoutManager{
 		//SETS BOUNDS OF COMPONENTS
 		Dimension d = this.preferredLayoutSize(parent);
 		Dimension p = parent.getSize();
+
 		//Do the layout
 		if(d.getWidth() <= parent.getWidth()) {
 			int curWidth = (int) ((parent.getWidth() - d.getWidth())/2);
 			for(Component c : parent.getComponents()){
-				c.setBounds(curWidth, 0, c.getWidth(), c.getHeight());
+				c.setBounds(curWidth, 0, c.getPreferredSize().width, c.getPreferredSize().height);
 				curWidth += c.getWidth();
 			}
 		}
@@ -56,7 +57,7 @@ public class HandLayout implements LayoutManager{
 			int offset = (parent.getWidth() - parent.getComponent(parent.getComponentCount()-1).getWidth())/(parent.getComponentCount()-1);
 			for(int i = 0; i < parent.getComponentCount(); i++) {
 				Component c = parent.getComponent(i);
-				c.setBounds(i*offset, 0, c.getWidth(), c.getHeight());
+				c.setBounds(i*offset, 0, c.getPreferredSize().width, c.getPreferredSize().height);
 			}
 		}
 	}
