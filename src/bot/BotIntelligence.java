@@ -20,7 +20,10 @@ public abstract class BotIntelligence {
 	protected ArrayList<KnownCard> knownCards = new ArrayList<>();
 	protected ArrayList<Card> partnerCards = new ArrayList<>(); // known cards of our partner
 	protected ArrayList<Card> enemyCards = new ArrayList<>(); // known cards of our enemies
-	protected int partnerID, selfID, activePlayerID;
+	protected int partnerID, selfID, activePlayerID, enemyLeftID, enemyRightID;
+	protected boolean[] partnerOutOfColor = {false,false,false,false};
+	protected boolean[] enemyLeftOutOfColor = {false,false,false,false};
+	protected boolean[] enemyRightOutOfColor = {false,false,false,false};
 	protected int turn;
 	protected Trump trump;
 	
@@ -293,6 +296,48 @@ public abstract class BotIntelligence {
 	}
 	
 	/**
+	 * update lists to keep track of colors not available to partner/enemies
+	 * @param deck
+	 */
+	public void updateOutOfCardLists(int[] deckIDs) {
+		if(deckIDs.length>1) { // only makes sense after the first card
+			Card firstCard = Card.getCardById(deckIDs[0]);
+			Card lastCard = Card.getCardById(deckIDs[deckIDs.length-1]);
+			if(firstCard.getColor() == trump.getTrumpfColor()) { // first card is trump
+				if(firstCard.getColor() != lastCard.getColor()) {
+					if(activePlayerID == partnerID) {
+						partnerOutOfColor[firstCard.getColor().getId()-1] = true;
+					} else if (activePlayerID == enemyLeftID) {
+						enemyLeftOutOfColor[firstCard.getColor().getId()-1] = true;
+					} else if (activePlayerID == enemyRightID) {
+						enemyRightOutOfColor[firstCard.getColor().getId()-1] = true;
+					}
+				}
+			} else { // first card is not trump, but trump is always allowed
+				if((firstCard.getColor() != lastCard.getColor()) && (lastCard.getColor() != trump.getTrumpfColor())) {
+					if(activePlayerID == partnerID) {
+						partnerOutOfColor[firstCard.getColor().getId()-1] = true;
+					} else if (activePlayerID == enemyLeftID) {
+						enemyLeftOutOfColor[firstCard.getColor().getId()-1] = true;
+					} else if (activePlayerID == enemyRightID) {
+						enemyRightOutOfColor[firstCard.getColor().getId()-1] = true;
+					}
+				}
+			}
+		}
+		
+	}
+	
+	public void setEnemyLeftID(int leftEnemyID) {
+		this.enemyLeftID = leftEnemyID;
+	}
+	
+	public void setEnemyRightID(int rightEnemyID) {
+		this.enemyRightID = rightEnemyID;
+		
+	}
+	
+	/**
 	 * auxiliary function to convert Card list to Array of IDs
 	 * @param List of Card
 	 * @return Integer Array of IDs
@@ -308,6 +353,10 @@ public abstract class BotIntelligence {
 	// methods depending on strategy
 	public abstract Card getNextCard();
 	public abstract Trump selectTrump(boolean canSwitch);
+
+	
+
+	
 
 	
 

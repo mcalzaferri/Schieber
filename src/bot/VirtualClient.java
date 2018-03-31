@@ -48,6 +48,8 @@ public class VirtualClient extends AbstractClient {
 		mySeatId = seatId;
 		ki.setSelfID(seatId);
 		ki.setPartnerID((seatId+2)%4);
+		ki.setEnemyLeftID((seatId+1)%4);
+		ki.setEnemyRightID((seatId+3)%4);
 	}
 
 	@Override
@@ -76,6 +78,7 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	public void doUpdateDeck(Card[] deckCards) {
 		ki.setDeck(cardsToIds(deckCards));
+		ki.updateOutOfCardLists(cardsToIds(deckCards));
 		
 	}
 

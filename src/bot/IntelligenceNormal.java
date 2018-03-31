@@ -17,6 +17,7 @@ public class IntelligenceNormal extends BotIntelligence {
 	private final int goodTrumpSelectThresshold = 45; // equals 50%
 	private final int obenabeUndenufeMultiplicator = 25; // used for combined Value
 	private ArrayList<Card> winningCards = new ArrayList<>();
+	
 
 	@Override
 	public Card getNextCard() {
@@ -28,20 +29,48 @@ public class IntelligenceNormal extends BotIntelligence {
 			if(winningCards.isEmpty()) { //refresh winningCards List if necessary
 				winningCards = this.getSicherenStichDuringPlay(allowedCards);
 			}
-			if(!winningCards.isEmpty()) { // pick a card from the winning list
-				c = winningCards.remove(0);
+			for(Card wc : winningCards) {
+				if(wc.getColor() == trump.getTrumpfColor() && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) {
+					// Don't play trump card if enemy has none
+				} else {
+					c = winningCards.remove(0);
+					return c;
+				}
 			}
-			if(c != null) {
-				return c;
-			} else { // check if partner has a winning card and play a card of this colour if possible
-				for(Card pc : this.getSicherenStichDuringPlay(partnerCards)) {
-					for(Card oc : allowedCards) {
-						if(pc.getColor() == oc.getColor()) {
+			
+			// check if partner has a winning card and play a card of this colour if possible
+			for(Card pc : this.getSicherenStichDuringPlay(partnerCards)) {
+				for(Card oc : allowedCards) {
+					if(pc.getColor() == oc.getColor()) {
+						if(pc.getColor() == trump.getTrumpfColor() && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) {
+							// Don't play trump card if enemy has none
+						} else {
 							return oc;
 						}
 					}
 				}
 			}
+			
+			// play color owned by partner but not by enemies
+			for(Card oc : allowedCards) {
+				int ocID = oc.getColor().getId()-1;
+				if(!partnerOutOfColor[ocID] && enemyLeftOutOfColor[ocID] && enemyRightOutOfColor[ocID]) {
+					return oc;
+				}
+			}
+			
+			//play color owned by partner and not owned by one enemy (50% chance), make sure the enemy doesn't have the highest
+			for(Card oc : allowedCards) {
+				int ocID = oc.getColor().getId()-1;
+				if(!partnerOutOfColor[ocID] && (enemyLeftOutOfColor[ocID] || enemyRightOutOfColor[ocID])) {
+					for(Card ec : this.getSicherenStichDuringPlay(enemyCards)) {
+						if(ec.getColor() != oc.getColor()) {
+							return oc;
+						}
+					}
+				}
+			}
+			
 		} else {
 			// TODO add all further cases
 		}
@@ -56,7 +85,7 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 		}
 		
-		// emergency fallback, play first card on hand
+		// emergency fallback, play first allowed card on hand
 		return allowedCards.get(0);
 	}
 

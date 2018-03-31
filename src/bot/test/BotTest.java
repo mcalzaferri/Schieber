@@ -39,8 +39,11 @@ public class BotTest {
 		
 
 		bot.setHand(testHand);
+		bot.setSelfID(0);
+		bot.setEnemyLeftID(1);
+		bot.setPartnerID(2);
+		bot.setEnemyRightID(3);
 
-		
 		// select Trump
 		Trump trump = bot.selectTrump(false);
 		System.out.println("Trump");
@@ -50,24 +53,34 @@ public class BotTest {
 		System.out.println();
 		bot.setTrump(trump);
 		
-		// generate deck (some played cards)
-		final int testDeckSize = 3;
-		int[] deck = new int[testDeckSize];
-		for(int i=0;i<testDeckSize;i++) {
-			deck[i] = allCards.remove(r.nextInt(allCards.size()));
-		}
+		int card1ID = allCards.remove(r.nextInt(allCards.size()));
+		int card2ID = allCards.remove(r.nextInt(allCards.size()));
+		int card3ID = allCards.remove(r.nextInt(allCards.size()));
+		
+		bot.setActivePlayerID(1);
+		int[] deck1 = {card1ID};
+		bot.setDeck(deck1);
+		
+		bot.setActivePlayerID(2);
+		int[] deck2 = {card1ID,card2ID};
+		bot.setDeck(deck2);
+		
+		bot.setActivePlayerID(3);
+		int[] deck3 = {card1ID,card2ID,card3ID};
+		bot.setDeck(deck3);
+		
+		bot.setActivePlayerID(0);
 		
 		// print Deck
 		System.out.println("Cards on Table");
 		System.out.println("---------------");
-		for(int id : deck) {
+		for(int id : deck3) {
 			Card card = Card.getCardById(id);
 			System.out.println(card.getColor() + " " + card.getValue());
 		}
 		System.out.println("----------------");
 		System.out.println();
 		
-		bot.setDeck(deck);
 		ArrayList<Card> allowedCards = bot.getAllowedCards();
 		
 		// print allowed Cards
@@ -79,7 +92,7 @@ public class BotTest {
 		System.out.println("----------------");
 		System.out.println();
 		
-		// print values
+		/* print values
 		System.out.println("Cards on Hand by Color");
 		System.out.println("---------------");
 	    int[] values = bot.getValueOnHand();
@@ -89,10 +102,26 @@ public class BotTest {
 		System.out.println("SCHELLE: " + values[3]);
 		System.out.println("----------------");
 		System.out.println();
+		*/
 		
 		// play an allowed card
 		Card card = bot.getNextCard();
 		System.out.println("played card");
+		System.out.println("---------------");
+		System.out.println(card.getColor() + " " + card.getValue());
+		System.out.println("---------------");
+		
+		int[] deck4 = {card1ID,card2ID,card3ID,card.getId()};
+		bot.setDeck(deck4);
+		
+		//second turn
+		bot.setActivePlayerID(0);
+		int[] deck = {};
+		bot.setDeck(deck);
+		
+		// play an allowed card
+		card = bot.getNextCard();
+		System.out.println("played card 2");
 		System.out.println("---------------");
 		System.out.println(card.getColor() + " " + card.getValue());
 		System.out.println("---------------");
