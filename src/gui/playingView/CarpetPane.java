@@ -20,14 +20,15 @@ import shared.client.ClientModel;
 public class CarpetPane extends JPanel{
 	private ClientModel data;
 	private ArrayList<ViewObserver> observers;
+	public final Dimension minCardSize = new Dimension(50, 80);
+	public final Dimension minCarpetSize = new Dimension(500, 500);
 	
 	public CarpetPane(ClientModel data, ArrayList<ViewObserver> observers) {
 		super();
 		this.data = data;
 		this.observers = observers;
-		this.setBackground(Color.green);
-		this.setPreferredSize(new Dimension(500, 500));
-		this.setMinimumSize(this.getPreferredSize());
+		this.setPreferredSize(this.minCarpetSize);
+		this.setMinimumSize(this.minCarpetSize);
 		this.update();
 	}
 	
@@ -41,25 +42,43 @@ public class CarpetPane extends JPanel{
 		super.paint(g);
 		
 			try {
-				int index = 0;
-				BufferedImage img;
+				//Calculate image sizes
+				double scale = this.getSize().getWidth()/this.minCarpetSize.getWidth();
+				Dimension carpetSize = new Dimension((int)(scale * this.minCarpetSize.getWidth()),
+						(int)(scale * this.minCarpetSize.getHeight()));
+				Dimension cardSize = new Dimension((int)(scale * this.minCardSize.getWidth()),
+						(int)(scale * this.minCardSize.getHeight()));
 				
-				img = Gui.pictureFactory.getPicture(Pictures.Carpet,this.getSize());
+				//Draw carpet image
+				BufferedImage img = Gui.pictureFactory.getPicture(Pictures.Carpet,carpetSize);
 				g.drawImage(img, 0, 0, null);
+				
+				//Draw deck on carpet (centered in carpet)
+				int index = 0; int x = 0; int y = 0;
+				int xOffset = -cardSize.width/2;
+				int yOffset = -cardSize.height/2;
 				for(Card c : this.data.getDeck()) {				
-				img = Gui.pictureFactory.getPicture(c, new Dimension(50, 80));
+					img = Gui.pictureFactory.getPicture(c, cardSize);
 					switch(index) {
 					case 0:
-						g.drawImage(img, 225, 335, null);
+						x = carpetSize.getSize().width/2 + xOffset;
+						y = carpetSize.getSize().height*2/3 + yOffset;
+						g.drawImage(img, x, y, null);
 						break;
 					case 1:
-						g.drawImage(img, 300, 210, null);
+						x = carpetSize.getSize().width*2/3 + xOffset;
+						y = carpetSize.getSize().height/2 + yOffset;
+						g.drawImage(img, x, y, null);
 						break;
 					case 2:
-						g.drawImage(img, 225, 85, null);
+						x = carpetSize.getSize().width/2 + xOffset;
+						y = carpetSize.getSize().height*1/3 + yOffset;
+						g.drawImage(img, x, y, null);
 						break;
 					case 3:
-						g.drawImage(img, 150, 210, null);
+						x = carpetSize.getSize().width*1/3 + xOffset;
+						y = carpetSize.getSize().height/2 + yOffset;
+						g.drawImage(img, x, y, null);
 						break;
 					}
 					index++;
