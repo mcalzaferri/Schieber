@@ -18,6 +18,7 @@ import shared.CardList;
 public class ViewableCard extends JButton{
 	private Card card;
 	private ArrayList<ViewObserver> observers;
+	public final Dimension minCardSize = new Dimension(100, 160);
 	
 	public ViewableCard(Card card, ArrayList<ViewObserver> observers) {
 		super();
@@ -27,7 +28,7 @@ public class ViewableCard extends JButton{
 	}
 	
 	private void initButton() {
-		this.setPreferredSize(new Dimension(100, 200));
+		this.setPreferredSize(minCardSize);
 		try {
 			this.setIcon(new ImageIcon(Gui.pictureFactory.getPicture(card, this.getPreferredSize())));
 		} catch (IOException e1) {
@@ -48,13 +49,5 @@ public class ViewableCard extends JButton{
 			return false;
 		}
 		return true;
-	}
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-//		BufferedImage img = Gui.pictureFactory.getPicture(card);
-//		g.drawImage(img,
-//                0, 0, this.getWidth(), this.getHeight(),
-//                null);
 	}
 }
