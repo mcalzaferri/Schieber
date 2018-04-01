@@ -22,10 +22,12 @@ public interface ClientMessageDecoder {
 			decoder.msgReceived((GameStartedInfoMessage)msg);
 		else if(msg instanceof NewRoundInfoMessage)
 			decoder.msgReceived((NewRoundInfoMessage)msg);
+		else if(msg instanceof NewTurnInfoMessage)
+			decoder.msgReceived((NewTurnInfoMessage)msg);
 		else if(msg instanceof PlayerChangedStateMessage)
 			decoder.msgReceived((PlayerChangedStateMessage)msg);
-		else if(msg instanceof PlayerMovedToLobbyInfoMessage)
-			decoder.msgReceived((PlayerMovedToLobbyInfoMessage)msg);
+		//else if(msg instanceof PlayerMovedToLobbyInfoMessage)
+			//decoder.msgReceived((PlayerMovedToLobbyInfoMessage)msg);
 		else if(msg instanceof PlayerMovedToTableInfoMessage)
 			decoder.msgReceived((PlayerMovedToTableInfoMessage)msg);
 		else if(msg instanceof TurnInfoMessage)
@@ -41,8 +43,8 @@ public interface ClientMessageDecoder {
 			decoder.msgReceived((HandOutCardsMessage)msg);
 		else if(msg instanceof LobbyStateMessage)
 			decoder.msgReceived((LobbyStateMessage)msg);
-		else if(msg instanceof WrongCardMessage)
-			decoder.msgReceived((WrongCardMessage)msg);
+		//else if(msg instanceof WrongCardMessage)
+			//decoder.msgReceived((WrongCardMessage)msg);
 		else
 			;//TODO what do here???
 			
@@ -53,6 +55,7 @@ public interface ClientMessageDecoder {
 	void msgReceived(EndOfRoundInfoMessage msg);
 	void msgReceived(GameStartedInfoMessage msg);
 	void msgReceived(NewRoundInfoMessage msg);
+	void msgReceived(NewTurnInfoMessage msg);
 	void msgReceived(PlayerChangedStateMessage msg);
 	void msgReceived(PlayerMovedToLobbyInfoMessage msg);
 	void msgReceived(PlayerMovedToTableInfoMessage msg);
