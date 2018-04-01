@@ -10,6 +10,8 @@ public class Player /*extends EntityPlayer*/{
 	private int seatNr;				//player seat number (0 to 4) (0 means not at the table)
 	private int id;
 	private boolean isBot;
+	private boolean isReady;
+	private boolean isAtTable;
 	private String name;
 	private List<Card> cards;	//cards on hand
 	private InetSocketAddress address;
@@ -32,6 +34,14 @@ public class Player /*extends EntityPlayer*/{
 		id = entity.id;
 	}
 	
+	public void update(PlayerEntity entity) {
+		if(id == entity.id) {
+			seatNr = entity.seat.seatNr;
+			name = entity.name;
+			isBot = entity.isBot;
+		}
+	}
+	
 	public InetSocketAddress getSocketAddress() {
 		return address;
 	}
@@ -44,7 +54,7 @@ public class Player /*extends EntityPlayer*/{
 		cards.remove(c);
 	}
 
-	public int getseatNr() {
+	public int getSeatNr() {
 		return seatNr;
 	}
 	
@@ -58,5 +68,21 @@ public class Player /*extends EntityPlayer*/{
 	
 	public String getName() {
 		return name;
+	}
+
+	public boolean isReady() {
+		return isReady;
+	}
+
+	public void setReady(boolean isReady) {
+		this.isReady = isReady;
+	}
+
+	public boolean isAtTable() {
+		return isAtTable;
+	}
+
+	public void setAtTable(boolean isAtTable) {
+		this.isAtTable = isAtTable;
 	}
 }

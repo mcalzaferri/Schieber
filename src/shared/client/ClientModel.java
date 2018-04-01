@@ -1,17 +1,22 @@
 package shared.client;
 
+import java.util.Dictionary;
+
+import ch.ntb.jass.common.entities.PlayerEntity;
 import shared.*;
 
 public class ClientModel {
 	//Fields
-	private Player[] players;
+	private Player thisPlayer;
+	private Dictionary<Integer,Player> players;
+	private Team[] teams;
 	private CardList hand;
 	private CardList deck;
 	private Trump trump;
 	private Score score;
-	private Integer seatId;
 	private Integer activeSeatId;
 	private Boolean canSwitch;
+	private GameState gameState;
 	
 	//Constructors
 	
@@ -28,12 +33,21 @@ public class ClientModel {
 		deck.updateData(deckCards);
 	}
 	
-	//Getters and Setters
-	public Player[] getPlayers() {
-		return players;
+	public Player getPlayerById(Integer id) {
+		return players.get(id);
 	}
-	public void setTeams(Player[] players) {
-		this.players = players;
+	
+	public void updatePlayer(PlayerEntity entity) {
+		getPlayerById(entity.id).update(entity);
+	}
+	
+	//Getters and Setters
+	public Team[] getTeams() {
+		return teams;
+	}
+	public void setTeams(Team[] teams) {
+		
+		this.teams = teams;
 	}
 	public CardList getHand() {
 		return hand;
@@ -54,10 +68,7 @@ public class ClientModel {
 		this.trump = trump;
 	}
 	public int getSeatId() {
-		return seatId;
-	}
-	public void setSeatId(int seatId) {
-		this.seatId = seatId;
+		return getThisPlayer().getSeatNr();
 	}
 
 	public Score getScore() {
@@ -82,5 +93,29 @@ public class ClientModel {
 
 	public void setCanSwitch(Boolean canSwitch) {
 		this.canSwitch = canSwitch;
+	}
+
+	public GameState getGameState() {
+		return gameState;
+	}
+
+	public void setGameState(GameState gameState) {
+		this.gameState = gameState;
+	}
+
+	public Dictionary<Integer,Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(Dictionary<Integer,Player> players) {
+		this.players = players;
+	}
+
+	public Player getThisPlayer() {
+		return thisPlayer;
+	}
+
+	public void setThisPlayer(Player thisPlayer) {
+		this.thisPlayer = thisPlayer;
 	}
 }

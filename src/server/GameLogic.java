@@ -56,8 +56,8 @@ public class GameLogic {
 	 * @return array with nine cards
 	 */
 	public Card[] getCardsForPlayer(Player p) {
-		Card[] cards = Arrays.copyOfRange(deck, 9 * p.getseatNr(),
-		                                        9 * p.getseatNr() + 8);
+		Card[] cards = Arrays.copyOfRange(deck, 9 * p.getSeatNr(),
+		                                        9 * p.getSeatNr() + 8);
 		p.putCards(cards);
 		return cards;
 	}

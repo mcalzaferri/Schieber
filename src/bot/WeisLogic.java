@@ -28,16 +28,16 @@ public class WeisLogic {
 	public ArrayList<Weis> getWeise(){
 		
 		// Stöck?
-		if(checkStoeck()) {weise.add(new Weis(WeisType.STOECK,new Card(trump.getTrumpfColor(),CardValue.OBER),trump));}
+		if(checkStoeck()) {weise.add(new Weis(WeisType.STOECK,new Card(trump.getTrumpfColor(),CardValue.OBER)));}
 		
 		// 4 Gliche?
 		for(CardValue cv : check4Gliche()) {
 			if(cv == CardValue.UNDER) {
-				weise.add(new Weis(WeisType.VIERBAUERN, new Card(CardColor.EICHEL,CardValue.UNDER),trump));
+				weise.add(new Weis(WeisType.VIERBAUERN, new Card(CardColor.EICHEL,CardValue.UNDER)));
 			} else if(cv == CardValue.NEUN) {
-				weise.add(new Weis(WeisType.VIERNELL, new Card(CardColor.EICHEL,CardValue.NEUN),trump));
+				weise.add(new Weis(WeisType.VIERNELL, new Card(CardColor.EICHEL,CardValue.NEUN)));
 			} else {
-				weise.add(new Weis(WeisType.VIERGLEICHE, new Card(CardColor.EICHEL,cv),trump));
+				weise.add(new Weis(WeisType.VIERGLEICHE, new Card(CardColor.EICHEL,cv)));
 			}
 		}
 		
@@ -57,31 +57,31 @@ public class WeisLogic {
 				switch(noOfCards) {
 				case 3: 
 					weisType = WeisType.DREIBLATT;
-					weise.add(new Weis(weisType, card, trump));
+					weise.add(new Weis(weisType, card));
 					break;
 				case 4:
 					weisType = WeisType.VIERBLATT;
-					weise.add(new Weis(weisType, card, trump));
+					weise.add(new Weis(weisType, card));
 					break;
 				case 5:
 					weisType = WeisType.FUENFBLATT;
-					weise.add(new Weis(weisType, card, trump));
+					weise.add(new Weis(weisType, card));
 					break;
 				case 6:
 					weisType = WeisType.SECHSBLATT;
-					weise.add(new Weis(weisType, card, trump));
+					weise.add(new Weis(weisType, card));
 					break;
 				case 7:
 					weisType = WeisType.SIEBENBLATT;
-					weise.add(new Weis(weisType, card, trump));
+					weise.add(new Weis(weisType, card));
 					break;
 				case 8:
 					weisType = WeisType.ACHTBLATT;
-					weise.add(new Weis(weisType, card, trump));
+					weise.add(new Weis(weisType, card));
 					break;
 				case 9:
 					weisType = WeisType.NEUNBLATT;
-					weise.add(new Weis(weisType, card, trump));
+					weise.add(new Weis(weisType, card));
 					break;
 				default:
 				}

@@ -28,6 +28,8 @@ public class Card {
 		if(obj instanceof Card) {
 			Card card = (Card)obj;
 			return (this.color == card.color && this.value == card.value);
+		}else if(obj instanceof CardEntity) {
+			return this.getId() == CardEntity.getId((CardEntity)obj);
 		}
 		return super.equals(obj);
 	}

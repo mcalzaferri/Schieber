@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.ChosenGameModeMessage;
-import ch.ntb.jass.common.proto.player_messages.JoinGameMessage;
+import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.LeaveTableMessage;
 import ch.ntb.jass.common.proto.player_messages.PlaceCardMessage;
 import shared.Card;
@@ -14,9 +14,11 @@ import shared.InternalMessage;
 import shared.ServerAddress;
 import shared.Trump;
 import shared.Weis;
+import shared.client.AbstractClient;
 
 public class ClientCommunication extends Communication {
 	private InetSocketAddress serverAddress;
+	private AbstractClient client;
 
 	protected ClientCommunication() {
 		super();
@@ -44,13 +46,12 @@ public class ClientCommunication extends Communication {
 		super.send(msg, serverAddress);
 	}
 
-	private Message receive() throws ClassNotFoundException, IOException {
+	private void receive() throws ClassNotFoundException, IOException {
 		InternalMessage msg = super.internalReceive();
 		// Discard messages that were not sent by the server.
-		if (!serverAddress.equals(msg.senderAddress)) {
-			return null;
+		if (!serverAddress.equals(msg.senderAddress) || msg == null) {
+			return;
 		}
-		return msg.message;
 	}
 
 	// Methods for clients
@@ -83,7 +84,7 @@ public class ClientCommunication extends Communication {
 	// TODO REV: Isn't server IP already set in the constructor? What is the
 	// ServerAddress class for?
 	public void connect(ServerAddress serverAddress) {
-		JoinGameMessage msg = new JoinGameMessage();
+		JoinLobbyMessage msg = new JoinLobbyMessage();
 		// TODO send(msg);
 	}
 }
