@@ -1,5 +1,7 @@
 package shared;
 
+import ch.ntb.jass.common.entities.CardValueEntity;
+
 public enum CardValue {
 	//(	ID,		Defaultvalue, 	Trumpfvalue, 	GeneralScore, 	TrumpfScore, 	UneufeScore, 	ObenabeScore)
 	SECHS(	1,		6,		6,		0,		0,		11,		0),
@@ -53,6 +55,10 @@ public enum CardValue {
 				return ASS;
 		}
 		return null;
+	}
+	
+	public static CardValue getByEntity(CardValueEntity entity) {
+		return getValueById(entity.getId());
 	}
 	
 	//Getters und Setters

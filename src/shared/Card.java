@@ -1,5 +1,7 @@
 package shared;
 
+import ch.ntb.jass.common.entities.CardEntity;
+
 public class Card {
 	//Fields
 	private CardColor color;
@@ -9,6 +11,15 @@ public class Card {
 	public Card(CardColor c, CardValue v) {
 		this.color = c;
 		this.value = v;
+	}
+	
+	public Card(int cardId) {
+		this.color = CardColor.getColorById(getColorId(cardId));
+		this.value = CardValue.getValueById(getValueId(cardId));
+	}
+	
+	public Card(CardEntity entity) {
+		this(CardEntity.getId(entity));
 	}
 
 	//Methods
@@ -21,12 +32,13 @@ public class Card {
 		return super.equals(obj);
 	}
 
+	/** @deprecated Use constructor instead
+	 */
+	@Deprecated
 	public static Card getCardById(int cardId) {
-		int colorId = cardId/10;
-		int valueId = cardId%10;
-		return new Card(CardColor.getColorById(colorId),CardValue.getValueById(valueId));
+		return new Card(cardId);
 	}
-
+	
 	/**Compares this card to another. 
 	 * The method will always return 1 if the card is from another color unless that color is trump
 	 * @param card The card which this is compared to
@@ -61,6 +73,18 @@ public class Card {
 				return 0;
 		}
 	}
+	
+    /**
+     * @param Decomposes a card ID into the ID of the color.
+     * @return The ID representative of the color.
+     */
+    private static int getColorId(int cardId) {return cardId/10;}
+
+    /**
+     * @param Decomposes a card ID into the ID of the value.
+     * @return The ID representative of the value of this card.
+     */
+    private static int getValueId(int cardId) {return cardId%10;}
 
 	//Getter and Setter
 	public CardValue getValue() {

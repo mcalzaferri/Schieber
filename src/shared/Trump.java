@@ -1,5 +1,7 @@
 package shared;
 
+import ch.ntb.jass.common.entities.TrumpEntity;
+
 public enum Trump {
 	SCHIEBEN(1, GameMode.SCHIEBEN,null),
 	EICHEL(2, GameMode.TRUMPF,CardColor.EICHEL),
@@ -28,6 +30,10 @@ public enum Trump {
 		}else {
 			return gameMode.getScoreMultiplicator();
 		}
+	}
+	
+	public static Trump getByEntity(TrumpEntity entity) {
+		return getById(entity.getId());
 	}
 	
 	public static Trump getById(int id) {
