@@ -24,10 +24,8 @@ public class HandLayout implements LayoutManager{
 		//CALCULATES THE PREFFERED SIZE OF THE CONTAINER
 		int prefWidth = 0, prefHeight = 0;
 		for(Component c : parent.getComponents()) {
-			if(c.isVisible()) {
-				prefWidth += c.getPreferredSize().width;
-				prefHeight += c.getPreferredSize().height;
-			}
+			prefWidth += c.getPreferredSize().width;
+			prefHeight += c.getPreferredSize().height;
 		}
 		//Sets dimension to total components width and average components height
 		return new Dimension(prefWidth, prefHeight/parent.getComponentCount());
@@ -35,29 +33,40 @@ public class HandLayout implements LayoutManager{
 
 	@Override
 	public Dimension minimumLayoutSize(Container parent) {
-		// TODO Auto-generated method stub
-		return null;
+		int minHeight = 0;
+		int minWidth = 0;
+		for(Component c : parent.getComponents()) {
+			minWidth = Math.max(minWidth, c.getMinimumSize().width);
+			minHeight += c.getMinimumSize().height;
+		}
+		return new Dimension(minWidth, minHeight/parent.getComponentCount());
 	}
 
 	@Override
 	public void layoutContainer(Container parent) {
 		//SETS BOUNDS OF COMPONENTS
-		Dimension d = this.preferredLayoutSize(parent);
-		Dimension p = parent.getSize();
-
+		Dimension pref = this.preferredLayoutSize(parent);
+		Dimension min = this.minimumLayoutSize(parent);
+		Dimension act = parent.getSize();	
+		act.height = Math.max(act.height, min.height);
+		double scale = act.height/(double)min.height;
+		act.width = Math.max(act.width, (int)(min.width*scale));
+		
+		parent.setBounds(parent.getBounds().x, parent.getBounds().y, act.width, act.height);
+		
 		//Do the layout
-		if(d.getWidth() <= parent.getWidth()) {
-			int curWidth = (int) ((parent.getWidth() - d.getWidth())/2);
+		if(pref.getWidth()*scale <= act.getWidth()) {
+			int x = (int) ((act.getWidth() - pref.getWidth()*scale)/2);
 			for(Component c : parent.getComponents()){
-				c.setBounds(curWidth, 0, c.getPreferredSize().width, c.getPreferredSize().height);
-				curWidth += c.getWidth();
+				c.setBounds(x, 0, (int)(c.getMinimumSize().width*scale), (int)(c.getMinimumSize().height*scale));
+				x += c.getWidth();
 			}
 		}
 		else {
-			int offset = (parent.getWidth() - parent.getComponent(parent.getComponentCount()-1).getWidth())/(parent.getComponentCount()-1);
+			int offset = (int)((act.width - parent.getComponent(parent.getComponentCount()-1).getMinimumSize().width*scale)/(parent.getComponentCount()-1));
 			for(int i = 0; i < parent.getComponentCount(); i++) {
 				Component c = parent.getComponent(i);
-				c.setBounds(i*offset, 0, c.getPreferredSize().width, c.getPreferredSize().height);
+				c.setBounds(i*offset, 0, (int)(c.getMinimumSize().width*scale), (int)(c.getMinimumSize().height*scale));
 			}
 		}
 	}

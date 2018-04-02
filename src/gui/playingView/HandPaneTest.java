@@ -72,7 +72,7 @@ public class HandPaneTest extends JFrame{
 		});
 
 		this.handPane = new HandPane(cards, obs);
-		this.setSize(500, 500);
+		this.setSize(800,200);
 		this.add(handPane, BorderLayout.CENTER);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

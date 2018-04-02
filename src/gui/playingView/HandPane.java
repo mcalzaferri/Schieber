@@ -1,14 +1,8 @@
 package gui.playingView;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import client.ViewObserver;
@@ -24,7 +18,7 @@ public class HandPane extends JPanel{
 		this.hand = hand;
 		this.observers = observers;
 		this.setLayout(new HandLayout());	
-		this.setPreferredSize(new Dimension(500, 100));
+		this.setPreferredSize(new Dimension(500, 200));
 		this.setMinimumSize(this.getPreferredSize());
 		this.update();
 	}
