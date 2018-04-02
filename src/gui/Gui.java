@@ -46,6 +46,9 @@ public class Gui extends AbstractClientView{
 		this.observers.add(observer);
 	}
 
+	public void update() {
+		this.currentView.update();
+	}
 	@Override
 	public void changeView(ViewEnumeration view) {
 		if(this.currentView.getViewType().equals(view)) {
