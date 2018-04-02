@@ -3,9 +3,7 @@ package gui.playingView;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.LayoutManager;
 import java.awt.LayoutManager2;
-import java.awt.Rectangle;
 
 public class PlayingFieldLayout implements LayoutManager2{
 

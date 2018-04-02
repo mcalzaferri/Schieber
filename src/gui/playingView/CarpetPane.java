@@ -1,11 +1,8 @@
 package gui.playingView;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -14,13 +11,12 @@ import client.ViewObserver;
 import gui.Gui;
 import gui.PictureFactory.Pictures;
 import shared.Card;
-import shared.CardList;
 import shared.client.ClientModel;
 
 public class CarpetPane extends JPanel{
 	private ClientModel data;
 	private ArrayList<ViewObserver> observers;
-	public final Dimension minCardSize = new Dimension(50, 80);
+	public final Dimension minCardSize = new Dimension(60, 96);
 	public final Dimension minCarpetSize = new Dimension(500, 500);
 	
 	public CarpetPane(ClientModel data, ArrayList<ViewObserver> observers) {
