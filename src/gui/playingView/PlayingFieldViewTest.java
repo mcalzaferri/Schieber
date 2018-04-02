@@ -72,6 +72,7 @@ public class PlayingFieldViewTest {
 			
 		});
 		this.data.setHand(cards);
+		data.setTrump(Trump.EICHEL);
 		data.setDeck(cards);
 		this.pfv = new PlayingFieldView(ViewEnumeration.PLAYVIEW, obs, data);
 	}
