@@ -37,6 +37,7 @@ public abstract class BotIntelligence {
 		if (currHand.length < 1)
 		{
 			//TODO: FKaiser Errorhandling? What to do?
+			System.out.println("Error - CurrHand is empty");
 		}
 		
 		cardsInHand = getCardListByIds(currHand);
@@ -198,6 +199,7 @@ public abstract class BotIntelligence {
 		if (wiis.length < 1)
 		{
 			//TODO FKaiser Errorhandling - What to do?
+			System.out.println("Error - wiis is empty");
 		}
 		
 		int noOfCards;

@@ -25,6 +25,13 @@ public class IntelligenceNormal extends BotIntelligence {
 		ArrayList<Card> allowedCards = getAllowedCards();
 		Card c = null;
 		
+		if (allowedCards.isEmpty())
+		{
+			//TODO FKaiser Errorhandling - what to do?
+			System.out.println("Error - AllowedCards is empty");
+		}
+			
+		
 		if(deck.isEmpty()) { //I'm first to go
 			if(winningCards.isEmpty()) { //refresh winningCards List if necessary
 				winningCards = this.getSicherenStichDuringPlay(allowedCards);
