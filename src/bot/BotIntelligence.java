@@ -40,10 +40,10 @@ public abstract class BotIntelligence {
 			System.out.println("Error - CurrHand is empty");
 		}
 		
-		cardsInHand = getCardListByIds(currHand);
+		this.cardsInHand = getCardListByIds(currHand);
 		// add cards in Hand to knownCards
-		for(Card c : cardsInHand) {
-			knownCards.add(new KnownCard(c,selfID,false));
+		for(Card c : this.cardsInHand) {
+			this.knownCards.add(new KnownCard(c,selfID,false));
 		}
 	}
 	
@@ -75,10 +75,10 @@ public abstract class BotIntelligence {
 		
 		//add last played card to cardsPlayed and knownCards, update partner cards and enemy cards
 		if(!deck.isEmpty()) {
-			cardsPlayed.add(deck.get(deck.size() - 1));
-			knownCards.add(new KnownCard(deck.get(deck.size() - 1), activePlayerID, true));
-			partnerCards.remove(deck.get(deck.size() - 1));
-			enemyCards.remove(deck.get(deck.size() - 1));
+			this.cardsPlayed.add(deck.get(deck.size() - 1));
+			this.knownCards.add(new KnownCard(deck.get(deck.size() - 1), activePlayerID, true));
+			this.partnerCards.remove(deck.get(deck.size() - 1));
+			this.enemyCards.remove(deck.get(deck.size() - 1));
 		}
 	}
 	
@@ -244,7 +244,7 @@ public abstract class BotIntelligence {
 				break; 
 			}
 			Card c = Card.getCardById(originCardID);
-			knownCards.add(new KnownCard(c, playerID, false));
+			this.knownCards.add(new KnownCard(c, playerID, false));
 			boolean partner = (partnerID == playerID);
 			if(partner) { partnerCards.add(c); }
 			else { enemyCards.add(c); }
@@ -258,7 +258,7 @@ public abstract class BotIntelligence {
 			} else {
 				for(int i = 1; i<noOfCards; i++) {
 					c = Card.getCardById(originCardID+i*10);
-					knownCards.add(new KnownCard(c, playerID, false));
+					this.knownCards.add(new KnownCard(c, playerID, false));
 					if(partner) { partnerCards.add(c); }
 					else { enemyCards.add(c); }
 				}
@@ -268,11 +268,11 @@ public abstract class BotIntelligence {
 	}
 	
 	public void setActivePlayerID(int activeSeatId) {
-		activePlayerID = activeSeatId;
+		this.activePlayerID = activeSeatId;
 	}
 	
 	public void setSelfID(int seatId) {
-		selfID = seatId;
+		this.selfID = seatId;
 	}
 	
 	public void setPartnerID(int partnerID) {
@@ -287,21 +287,21 @@ public abstract class BotIntelligence {
 			int index = c.getColor().getId()-1;
 			if(c.equals(maxCardsInPlay[index])) {
 				if(c.getValue() == CardValue.SECHS) {
-					maxCardsInPlay[index] = null;
+					this.maxCardsInPlay[index] = null;
 				} else {
 					if(c.getColor() == trump.getTrumpfColor()) { // different logic for Trumpf
-						if(maxCardsInPlay[index].getValue() == CardValue.UNDER) { // Bauer
-							maxCardsInPlay[index] = Card.getCardById(c.getId()-2); // set to Nell
-						} else if (maxCardsInPlay[index].getValue() == CardValue.NEUN){ // Nell
-							maxCardsInPlay[index] = Card.getCardById(c.getId()+5); // set to Ass
+						if(this.maxCardsInPlay[index].getValue() == CardValue.UNDER) { // Bauer
+							this.maxCardsInPlay[index] = Card.getCardById(c.getId()-2); // set to Nell
+						} else if (this.maxCardsInPlay[index].getValue() == CardValue.NEUN){ // Nell
+							this.maxCardsInPlay[index] = Card.getCardById(c.getId()+5); // set to Ass
 						} else {
-							maxCardsInPlay[index] = Card.getCardById(c.getId()-1);
-							if(maxCardsInPlay[index].getValue() == CardValue.UNDER || maxCardsInPlay[index].getValue() == CardValue.NEUN) {
-								maxCardsInPlay[index] = Card.getCardById(c.getId()-1);
+							this.maxCardsInPlay[index] = Card.getCardById(c.getId()-1);
+							if(this.maxCardsInPlay[index].getValue() == CardValue.UNDER || this.maxCardsInPlay[index].getValue() == CardValue.NEUN) {
+								this.maxCardsInPlay[index] = Card.getCardById(c.getId()-1);
 							}
 						}
 					} else {
-						maxCardsInPlay[index] = Card.getCardById(c.getId()-1);
+						this.maxCardsInPlay[index] = Card.getCardById(c.getId()-1);
 					}
 				}
 			}
@@ -318,22 +318,22 @@ public abstract class BotIntelligence {
 			Card lastCard = Card.getCardById(deckIDs[deckIDs.length-1]);
 			if(firstCard.getColor() == trump.getTrumpfColor()) { // first card is trump
 				if(firstCard.getColor() != lastCard.getColor()) {
-					if(activePlayerID == partnerID) {
-						partnerOutOfColor[firstCard.getColor().getId()-1] = true;
-					} else if (activePlayerID == enemyLeftID) {
-						enemyLeftOutOfColor[firstCard.getColor().getId()-1] = true;
-					} else if (activePlayerID == enemyRightID) {
-						enemyRightOutOfColor[firstCard.getColor().getId()-1] = true;
+					if(this.activePlayerID == partnerID) {
+						this.partnerOutOfColor[firstCard.getColor().getId()-1] = true;
+					} else if (this.activePlayerID == this.enemyLeftID) {
+						this.enemyLeftOutOfColor[firstCard.getColor().getId()-1] = true;
+					} else if (this.activePlayerID == this.enemyRightID) {
+						this.enemyRightOutOfColor[firstCard.getColor().getId()-1] = true;
 					}
 				}
 			} else { // first card is not trump, but trump is always allowed
 				if((firstCard.getColor() != lastCard.getColor()) && (lastCard.getColor() != trump.getTrumpfColor())) {
-					if(activePlayerID == partnerID) {
-						partnerOutOfColor[firstCard.getColor().getId()-1] = true;
-					} else if (activePlayerID == enemyLeftID) {
-						enemyLeftOutOfColor[firstCard.getColor().getId()-1] = true;
-					} else if (activePlayerID == enemyRightID) {
-						enemyRightOutOfColor[firstCard.getColor().getId()-1] = true;
+					if(this.activePlayerID == this.partnerID) {
+						this.partnerOutOfColor[firstCard.getColor().getId()-1] = true;
+					} else if (this.activePlayerID == this.enemyLeftID) {
+						this.enemyLeftOutOfColor[firstCard.getColor().getId()-1] = true;
+					} else if (this.activePlayerID == this.enemyRightID) {
+						this.enemyRightOutOfColor[firstCard.getColor().getId()-1] = true;
 					}
 				}
 			}
