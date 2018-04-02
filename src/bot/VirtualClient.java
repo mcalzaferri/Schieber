@@ -68,7 +68,7 @@ public class VirtualClient extends AbstractClient {
 	
 	@Override
 	public void doRequestWeis() {
-		super.publishChosenWeis((Weis[]) ki.getWeise().toArray()); 
+		super.publishChosenWiis((Weis[]) ki.getWeise().toArray()); 
 	}
 	
 	public void doShowWeis(Weis[] wiis, int playerID) {

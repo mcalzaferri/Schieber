@@ -188,6 +188,7 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 	}
 	*/
 	//Override methods from ClientCommunication
+	/*
 	@Override
 	public void publishChosenCard(Card card) {
 		outputArea.append("publishChosenCard() with: " + card + "\n");
@@ -204,6 +205,7 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 		}
 		outputArea.append("publishChosenTrump() with: " + sb + "\n");
 	}
+	*/
 	@Override
 	public void disconnect() {
 		outputArea.append("disconnect()" + "\n");

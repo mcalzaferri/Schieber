@@ -35,36 +35,24 @@ public class ClientCommunication extends Communication {
 	 * @param msg Message to send.
 	 * @throws IOException
 	 */
-	private void send(Message msg) throws IOException {
-		super.send(msg, serverAddress);
+	public void send(Message msg){
+		try {
+			super.send(msg, serverAddress);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void receive() throws ClassNotFoundException, IOException {
+	public void receive() throws ClassNotFoundException, IOException {
 		InternalMessage msg = super.internalReceive();
 		// Discard messages that were not sent by the server.
 		if (!serverAddress.equals(msg.senderAddress) || msg == null) {
 			return;
 		}
+		client.handleReceivedMessage(msg.message);
 	}
 
 	// Methods for clients
-
-	public void publishChosenCard(Card card) {
-		PlaceCardMessage msg = new PlaceCardMessage();
-		// TODO msg.card = card;
-		// TODO send(msg);
-	}
-
-	public void publishChosenTrump(Trump trump) {
-		ChosenGameModeMessage msg = new ChosenGameModeMessage();
-		// TODO msg.color = trump.getTrumpfColor();
-		// TODO msg.mode = trump.getGameMode();
-		// TODO send(msg);
-	}
-
-	public void publishChosenWiis(Weis[] wiis) {
-
-	}
 
 	public void disconnect() {
 		LeaveTableMessage msg = new LeaveTableMessage();

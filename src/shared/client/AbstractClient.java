@@ -4,7 +4,10 @@ import java.net.InetSocketAddress;
 
 import ch.ntb.jass.common.entities.CardEntity;
 import ch.ntb.jass.common.entities.PlayerEntity;
+import ch.ntb.jass.common.entities.SeatEntity;
+import ch.ntb.jass.common.entities.WeisEntity;
 import ch.ntb.jass.common.proto.Message;
+import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
 import client.ClientCommunication;
@@ -223,16 +226,43 @@ public abstract class AbstractClient {
 	//protected abstract void doShowWeis(Weis[] wiis, int playerID)();
 
 	//Methods for Client -> Server
-	public void publishChosenTrump(Trump trump) {
-		com.publishChosenTrump(trump);
+	protected void publishChangedState(boolean isReady) {
+		ChangeStateMessage msg = new ChangeStateMessage();
+		msg.isReady = isReady;
+		com.send(msg);
 	}
-	
-	public void publishChosenCard(Card card) {
-		com.publishChosenCard(card);
+	protected void publishChosenTrump(Trump trump) {
+		//TODO send message
 	}
-	
-	public void publishChosenWeis(Weis[] wiis) {
-		com.publishChosenWiis(wiis);
+	protected void publishChosenWiis(Weis[] wiis) {
+		ChosenWiisMessage msg = new ChosenWiisMessage();
+		msg.wiis = wiis;
+		com.send(msg);
+	}
+	protected void joinLobby(String username) {
+		JoinLobbyMessage msg = new JoinLobbyMessage();
+		model.setThisPlayer(new Player(null,username,0));
+		msg.playerData = model.getThisPlayer();
+		com.send(msg);
+	}
+	protected void joinTable(int preferedSeat) {
+		JoinTableMessage msg = new JoinTableMessage();
+		msg.preferedSeat = new SeatEntity();
+		msg.preferedSeat.seatNr = preferedSeat;
+		com.send(msg);
+	}
+	protected void leaveLobby() {
+		LeaveLobbyMessage msg = new LeaveLobbyMessage();
+		com.send(msg);
+	}
+	protected void leaveTable() {
+		LeaveTableMessage msg = new LeaveTableMessage();
+		com.send(msg);
+	}
+	protected void publishChosenCard(Card card) {
+		PlaceCardMessage msg = new PlaceCardMessage();
+		msg.card = card;
+		com.send(msg);
 	}
 	
 	/**
