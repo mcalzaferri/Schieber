@@ -125,6 +125,12 @@ public class VirtualClient extends AbstractClient {
 		}
 		return ids;
 	}
+
+	@Override
+	protected void doRequestCard(boolean selectWiis) {
+		// TODO FKaiser: Just to fix bot
+		
+	}
 	
 
 }
