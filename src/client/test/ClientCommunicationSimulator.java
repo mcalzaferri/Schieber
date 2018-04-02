@@ -3,6 +3,7 @@ package client.test;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.TextArea;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -208,7 +209,7 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 		outputArea.append("disconnect()" + "\n");
 	}
 	@Override
-	public void connect(ServerAddress serverAddress) {
+	public void connect(InetSocketAddress serverAddress) {
 		outputArea.append("connect() with: " + serverAddress + "\n");
 	}
 

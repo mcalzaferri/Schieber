@@ -1,5 +1,7 @@
 package client;
 
+import java.net.InetSocketAddress;
+
 import shared.*;
 import shared.client.*;
 
@@ -100,7 +102,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param serverAddress Address where the player wants to connect to.
 	 */
 	@Override
-	public void btnConnectClick(ServerAddress serverAddress) {
+	public void btnConnectClick(InetSocketAddress serverAddress) {
 		super.connect(serverAddress);
 	}
 	

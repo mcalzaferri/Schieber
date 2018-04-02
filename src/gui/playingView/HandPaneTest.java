@@ -1,6 +1,7 @@
 package gui.playingView;
 
 import java.awt.BorderLayout;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public class HandPaneTest extends JFrame{
 		obs.add(new ViewObserver() {
 
 			@Override
-			public void btnConnectClick(ServerAddress serverAddress) {
+			public void btnConnectClick(InetSocketAddress serverAddress) {
 				// TODO Auto-generated method stub
 				
 			}

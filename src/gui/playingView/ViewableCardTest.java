@@ -2,6 +2,7 @@ package gui.playingView;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -26,7 +27,7 @@ public class ViewableCardTest extends JFrame{
 		obs.add(new ViewObserver() {
 
 			@Override
-			public void btnConnectClick(ServerAddress serverAddress) {
+			public void btnConnectClick(InetSocketAddress serverAddress) {
 				// TODO Auto-generated method stub
 				
 			}

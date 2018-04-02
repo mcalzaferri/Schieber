@@ -34,8 +34,8 @@ public class ServerTest {
 		msgHandler = new MessageHandler(logic, 65000);
 		msgHandler.setReceiveTimeout(100);
 
-		cCom = new ClientCommunication(
-				new InetSocketAddress("localhost", 65000), 64000);
+		cCom = new ClientCommunication();
+		cCom.connect(new InetSocketAddress("localhost", 65000));
 		cCom.open();
 		cCom.setReceiveTimeout(100);
 
