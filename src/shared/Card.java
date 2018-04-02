@@ -1,21 +1,24 @@
 package shared;
 
+import ch.ntb.jass.common.entities.CardColorEntity;
 import ch.ntb.jass.common.entities.CardEntity;
+import ch.ntb.jass.common.entities.CardValueEntity;
 
-public class Card {
+public class Card extends CardEntity{
 	//Fields
-	private CardColor color;
-	private CardValue value;
+	private final CardColor color;
+	private final  CardValue value;
 
 	//Constructors
 	public Card(CardColor c, CardValue v) {
 		this.color = c;
 		this.value = v;
+		super.color = CardColorEntity.getById(getColorId(getId()));
+		super.value = CardValueEntity.getById(getValueId(getId()));
 	}
 	
 	public Card(int cardId) {
-		this.color = CardColor.getColorById(getColorId(cardId));
-		this.value = CardValue.getValueById(getValueId(cardId));
+		this(CardColor.getColorById(getColorId(cardId)),CardValue.getValueById(getValueId(cardId)));
 	}
 	
 	public Card(CardEntity entity) {

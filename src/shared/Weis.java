@@ -1,8 +1,10 @@
 package shared;
 
+import ch.ntb.jass.common.entities.CardEntity;
 import ch.ntb.jass.common.entities.WeisEntity;
+import ch.ntb.jass.common.entities.WeisTypeEntity;
 
-public class Weis{
+public class Weis extends WeisEntity{
 	//Datenfelder
 	private final WeisType type;
 	private final Card originCard;
@@ -12,11 +14,12 @@ public class Weis{
 	public Weis(WeisType type, Card originCard) {
 		this.type = type;
 		this.originCard = originCard;
+		super.type = WeisTypeEntity.getById(type.getId());
+		super.originCard = CardEntity.getById(originCard.getId());
 	}
 	
 	public Weis(WeisEntity entity) {
-		type = WeisType.getByEntity(entity.type);
-		originCard = new Card(entity.originCard);
+		this(WeisType.getByEntity(entity.type),new Card(entity.originCard));
 	}
 	
 	//Methoden
