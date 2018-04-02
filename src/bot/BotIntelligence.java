@@ -33,6 +33,12 @@ public abstract class BotIntelligence {
 	 * @param currHand, Array of card IDs
 	 */
 	public void setHand(int[] currHand) {
+		
+		if (currHand.length < 1)
+		{
+			//TODO: FKaiser Errorhandling? What to do?
+		}
+		
 		cardsInHand = getCardListByIds(currHand);
 		// add cards in Hand to knownCards
 		for(Card c : cardsInHand) {
@@ -132,9 +138,8 @@ public abstract class BotIntelligence {
 				modifier = 11;
 				break;
 			default:
-				modifier = 0; // shouldn't happen
+				modifier = 0; // shouldn't happen //TODO: FKaiser But what if it happens?
 				break;
-				
 			}
 			values[c.getColor().getId()-1] += modifier;
 		}
@@ -189,6 +194,12 @@ public abstract class BotIntelligence {
 	 * @param player
 	 */
 	public void showWeis(Weis[] wiis, int playerID) {
+		
+		if (wiis.length < 1)
+		{
+			//TODO FKaiser Errorhandling - What to do?
+		}
+		
 		int noOfCards;
 		boolean folge;
 		int originCardID;
