@@ -1,5 +1,7 @@
 package shared;
 
+import ch.ntb.jass.common.entities.CardColorEntity;
+
 public enum CardColor {
 	EICHEL(1,1),
 	ROSE(2,1),
@@ -30,6 +32,11 @@ public enum CardColor {
 		}
 		return null;
 	}
+	
+	public static CardColor getByEntity(CardColorEntity entity) {
+		return getColorById(entity.getId());
+	}
+	
 	//Getter und Setter
 	public int getId() {
 		return id;

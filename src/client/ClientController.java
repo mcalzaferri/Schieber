@@ -46,7 +46,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 *  @param winner Winnerteam
 	 */
 	@Override
-	public void doEndGame(Team winner) {
+	public void doEndGame() {
 		view.changeView(ViewEnumeration.GAMEOVERVIEW);
 	}
 	
@@ -157,6 +157,12 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void doRequestWeis() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void doRequestCard(boolean selectWiis) {
 		// TODO Auto-generated method stub
 		
 	}

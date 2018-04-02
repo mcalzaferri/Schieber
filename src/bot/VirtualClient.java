@@ -35,7 +35,7 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	public void doEndGame(Team winner) {
+	public void doEndGame() {
 		super.disconnect();
 		//disable bot
 		this.active = false;

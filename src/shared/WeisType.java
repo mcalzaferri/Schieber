@@ -1,5 +1,7 @@
 package shared;
 
+import ch.ntb.jass.common.entities.WeisTypeEntity;
+
 public enum WeisType {
 	//				ID,	score
 	STOECK(			1,	20),
@@ -25,6 +27,10 @@ public enum WeisType {
 	}
 		
 	//Methoden
+	public static WeisType getByEntity(WeisTypeEntity entity) {
+		return getWeisTypeById(entity.getId());
+	}
+	
 	public static WeisType getWeisTypeById(int id) {
 		switch(id) {
 		case 1:

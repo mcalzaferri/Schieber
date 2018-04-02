@@ -32,7 +32,7 @@ public class NextCardTest {
 		bot.setTrump(Trump.ROSE);
 		bot.setSelfID(0);
 		bot.setPartnerID(2);
-		Weis[] wiis = {new Weis(WeisType.VIERBLATT, new Card(CardColor.ROSE,CardValue.UNDER), Trump.ROSE)};
+		Weis[] wiis = {new Weis(WeisType.VIERBLATT, new Card(CardColor.ROSE,CardValue.UNDER))};
 		bot.showWeis(wiis, 2);
 		bot.updateMaxCards();
 		
@@ -47,7 +47,7 @@ public class NextCardTest {
 		bot2.setTrump(Trump.EICHEL);
 		bot2.setSelfID(0);
 		bot2.setPartnerID(2);
-		Weis[] wiis2 = {new Weis(WeisType.VIERBLATT, new Card(CardColor.EICHEL,CardValue.UNDER), Trump.EICHEL)};
+		Weis[] wiis2 = {new Weis(WeisType.VIERBLATT, new Card(CardColor.EICHEL,CardValue.UNDER))};
 		bot2.showWeis(wiis2, 1);
 		bot2.setDeck(new int[0]);
 		bot2.updateMaxCards();

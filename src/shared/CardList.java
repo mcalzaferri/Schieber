@@ -3,6 +3,8 @@ package shared;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import ch.ntb.jass.common.entities.CardEntity;
+
 public class CardList extends ArrayList<Card>{
 	//Fields
 	private static final long serialVersionUID = 6000012260383619668L;
@@ -39,6 +41,13 @@ public class CardList extends ArrayList<Card>{
 			}
 		}
 	}
+	public void updateData(CardEntity[] cards) {
+		Card[] array = new Card[cards.length];
+		for(int i = 0; i  < cards.length; i++) {
+			array[i] = new Card(cards[i]);
+		}
+		updateData(array);
+	}
 	
 	public void sort() {
 		super.sort(new Comparator<Card>() {
@@ -70,7 +79,7 @@ public class CardList extends ArrayList<Card>{
 	
 	public void add(int cardId) {
 		if(!contains(cardId))
-			super.add(Card.getCardById(cardId));
+			super.add(new Card(cardId));
 	}
 	
 	public Card highest(Card firstCard, Trump trump) {
@@ -81,6 +90,16 @@ public class CardList extends ArrayList<Card>{
 			}
 		}
 		return highest;
+	}
+	
+	public Card[] toArray() {
+		Card[] array = new Card[size()];
+		int i = 0;
+		for(Card card : this) {
+			array[i] = card;
+			i++;
+		}
+		return array;
 	}
 	//Getters and setters
 }

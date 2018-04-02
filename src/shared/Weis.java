@@ -1,22 +1,27 @@
 package shared;
 
-public class Weis implements Comparable<Weis>{
+import ch.ntb.jass.common.entities.WeisEntity;
+
+public class Weis{
 	//Datenfelder
 	private final WeisType type;
 	private final Card originCard;
-	private final Trump trump;
 	
 
 	//Konstruktoren	
-	public Weis(WeisType type, Card originCard, Trump trump) {
+	public Weis(WeisType type, Card originCard) {
 		this.type = type;
 		this.originCard = originCard;
-		this.trump = trump;
+	}
+	
+	public Weis(WeisEntity entity) {
+		type = WeisType.getByEntity(entity.type);
+		originCard = new Card(entity.originCard);
 	}
 	
 	//Methoden
-	@Override
-	public int compareTo(Weis o) {
+	
+	public int compareTo(Weis o, Trump trump) {
 		if(type.compareTo(o.getType()) != 0) {
 			return type.compareTo(o.getType());
 		}else if(originCard.getValue().compareTo(o.getOriginCard().getValue()) != 0){

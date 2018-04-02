@@ -2,8 +2,6 @@ package bot;
 
 import java.io.IOException;
 import java.net.SocketException;
-
-import ch.ntb.jass.common.proto.player_messages.JoinGameMessage;
 import client.ClientCommunication;
 import shared.ServerAddress;
 

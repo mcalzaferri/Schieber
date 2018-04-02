@@ -37,7 +37,7 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 	
 	public ClientCommunicationSimulator() {
 		initialComponents();
-		addListeners();
+		//addListeners();
 	}
 	
 	//Methods
@@ -86,7 +86,7 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 		fenster.pack();
 		fenster.setVisible(true);
 	}
-
+	/*
 	public void addListeners() {
 		chosenGameModeInfo.setSimulationRowListener(new SimulationRowListener() {
 			@Override
@@ -185,7 +185,7 @@ public class ClientCommunicationSimulator extends ClientCommunication {
 			}
 		});
 	}
-	
+	*/
 	//Override methods from ClientCommunication
 	@Override
 	public void publishChosenCard(Card card) {
