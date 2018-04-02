@@ -1,8 +1,5 @@
 package gui.playingView;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.io.Writer;
 import java.util.ArrayList;
 
 import client.ViewEnumeration;
@@ -18,17 +15,19 @@ public class PlayingFieldView extends AbstractView{
 	public PlayingFieldView(ViewEnumeration viewType, ArrayList<ViewObserver> observers, ClientModel data) {
 		super(viewType, observers);
 		this.hand = new HandPane(data.getHand(), observers);
-		this.blackBoard = new BlackBoardPane(null, observers);
+		this.blackBoard = new BlackBoardPane(data, observers);
 		this.carpet = new CarpetPane(data, observers);
 		layoutView();
 	}
 	
 	private void layoutView() {
-		this.setMinimumSize(this.getBounds().getSize());
-		this.setLayout(new PlayingFieldLayout());
+		PlayingFieldLayout l = new PlayingFieldLayout();
+		this.setLayout(l);
+
 		this.add(this.hand, PlayingFieldLayout.HAND);
 		this.add(this.blackBoard, PlayingFieldLayout.BLACKBOARD);
 		this.add(this.carpet, PlayingFieldLayout.CARPET);
+		this.setMinimumSize(l.minimumLayoutSize(this.getParent()));
 		this.setVisible(true);
 		this.pack();
 	}
