@@ -1,6 +1,7 @@
 package bot;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
 import client.ClientCommunication;
 import shared.ServerAddress;
@@ -14,8 +15,8 @@ public class BotApplication {
 	
 	
 	public static void main(String[] args) throws IOException {
-		
-		communication = new ClientCommunication("146.136.43.84");
+		communication =  new ClientCommunication();
+		communication.connect(new InetSocketAddress("146.136.43.84",port));
 		communication.open();
 		
 		while(true) {

@@ -1,5 +1,6 @@
 package gui.playingView;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -34,7 +35,7 @@ public class PlayingFieldViewTest {
 		obs.add(new ViewObserver() {
 
 			@Override
-			public void btnConnectClick(ServerAddress serverAddress) {
+			public void btnConnectClick(InetSocketAddress serverAddress) {
 				// TODO Auto-generated method stub
 				
 			}

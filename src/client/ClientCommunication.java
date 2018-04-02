@@ -20,19 +20,12 @@ public class ClientCommunication extends Communication {
 	private InetSocketAddress serverAddress;
 	private AbstractClient client;
 
-	protected ClientCommunication() {
+	public ClientCommunication() {
 		super();
-		serverAddress = null;
 	}
 
-	public ClientCommunication(String serverIp) {
-		super();
-		serverAddress = new InetSocketAddress(serverIp, this.port);
-	}
-
-	public ClientCommunication(InetSocketAddress serverAddr, int listenPort) {
+	public ClientCommunication(int listenPort) {
 		super(listenPort);
-		serverAddress = serverAddr;
 	}
 
 	// Internal methods
@@ -81,9 +74,8 @@ public class ClientCommunication extends Communication {
 	/**
 	 * @param serverAddress Address of the Game Server
 	 */
-	// TODO REV: Isn't server IP already set in the constructor? What is the
-	// ServerAddress class for?
-	public void connect(ServerAddress serverAddress) {
+	public void connect(InetSocketAddress serverAddress) {
+		this.serverAddress = serverAddress;
 		JoinLobbyMessage msg = new JoinLobbyMessage();
 		// TODO send(msg);
 	}

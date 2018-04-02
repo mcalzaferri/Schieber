@@ -1,5 +1,7 @@
 package shared.client;
 
+import java.net.InetSocketAddress;
+
 import ch.ntb.jass.common.entities.CardEntity;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.proto.Message;
@@ -235,9 +237,8 @@ public abstract class AbstractClient {
 	
 	/**
 	 * @param serverAddress Address to connect to
-	 * @return true if successfully connected
 	 */
-	public void connect(ServerAddress serverAddress) {
+	public void connect(InetSocketAddress serverAddress) {
 		 com.connect(serverAddress);
 	}
 	
