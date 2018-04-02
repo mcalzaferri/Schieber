@@ -1,14 +1,9 @@
 package gui.playingView;
 
-import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 
-import client.ViewObserver;
-import shared.Card;
-import shared.CardList;
+import shared.client.ClientModel;
 
 public class BlackBoardPaneTest extends JFrame{
 	private BlackBoardPane pane;
@@ -22,7 +17,7 @@ public class BlackBoardPaneTest extends JFrame{
 	}
 	
 	public BlackBoardPaneTest() {
-		this.pane = new BlackBoardPane(null, null);
+		this.pane = new BlackBoardPane(new ClientModel(), null);
 		this.add(pane);
 		this.setVisible(true);
 		this.setSize(500, 500);

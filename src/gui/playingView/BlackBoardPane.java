@@ -1,11 +1,9 @@
 package gui.playingView;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,21 +13,21 @@ import javax.swing.JPanel;
 import client.ViewObserver;
 import gui.Gui;
 import gui.PictureFactory.Pictures;
-import shared.Card;
-import shared.CardList;
 import shared.client.ClientModel;
 
 public class BlackBoardPane extends JPanel{
 	private ClientModel data;
 	private ArrayList<ViewObserver> observers;
-	public final Font font = new Font("MV Boli" ,Font.PLAIN,36);
-	public final Dimension minSize = new Dimension(250, 500);
+	private BlackBoardDrawer drawer;
+	public final Font font = new Font("MV Boli" ,Font.PLAIN, 28);
+	public final Dimension minSize = new Dimension(350, 500);
+	public final Rectangle minInnerBounds = new Rectangle(50, 50, minSize.width - 100, minSize.height -100);
 	
 	public BlackBoardPane(ClientModel data, ArrayList<ViewObserver> observers) {
 		super();
 		this.data = data;
 		this.observers = observers;
-		this.setBackground(Color.BLACK);
+		this.drawer = new BlackBoardDrawer();
 		this.setPreferredSize(minSize);
 		this.setMinimumSize(this.getPreferredSize());
 		this.update();
@@ -50,9 +48,11 @@ public class BlackBoardPane extends JPanel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		g.setColor(Color.white);
-		g.setFont(font);
-		g.drawString("Test", 30, 30);
-
+		double scale = this.getSize().getHeight()/minSize.getHeight();
+		this.drawer.setScale(scale);
+		this.drawer.setFont(this.font);
+		this.drawer.setBounds(minInnerBounds);
+		this.drawer.drawText(g, new String[]{"Schieber", "Score Team 1", "Score Team 2"});
+		this.drawer.drawTrump(g, data.getTrump());
 	}
 }
