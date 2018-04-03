@@ -13,6 +13,7 @@ public class ClientModel {
 	private CardList hand;
 	private CardList deck;
 	private Trump trump;
+	private Boolean weis;
 	private Score score;
 	private Integer activeSeatId;
 	private Boolean canSwitch;
@@ -61,6 +62,12 @@ public class ClientModel {
 	public void setDeck(CardList deck) {
 		this.deck = deck;
 	}
+	public void setWeis(Weis weis){
+		this.weis = weis;
+	}
+	public void getWeis(){
+		return weis;
+	}	
 	public Trump getTrump() {
 		return trump;
 	}
