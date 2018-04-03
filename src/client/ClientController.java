@@ -19,7 +19,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	//Methods
 	
 	//Inherited methods from AbstractClient
-	
 	/** Store broadcasted trump in the model and update view.
 	 * @param trump Trump which was broadcasted
 	 */
@@ -96,6 +95,36 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	public void doRequestTrump(boolean canSwitch) {
 		view.changeView(ViewEnumeration.SELECTTRUMPVIEW);
 	}
+
+	@Override
+	public void doConnected() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doDisconnected() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doRequestWeis() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void doRequestCard(boolean selectWiis) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected void doPlayerShowedWiis(Weis[] wiis, Player player) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	//Inherited methods from ViewObserver
 	/** The Player pressed the connect button on the gui.
@@ -146,25 +175,13 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	}
 
 	@Override
-	public void doConnected() {
+	public void btnWeisAllowed() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void doDisconnected() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void doRequestWeis() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void doRequestCard(boolean selectWiis) {
+	public void btnWeisDenied() {
 		// TODO Auto-generated method stub
 		
 	}

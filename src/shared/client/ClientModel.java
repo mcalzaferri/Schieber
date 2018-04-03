@@ -13,7 +13,7 @@ public class ClientModel {
 	private CardList hand;
 	private CardList deck;
 	private Trump trump;
-	private Boolean weis;
+	private Weis[] possibleWiis;
 	private Score score;
 	private Integer activeSeatId;
 	private Boolean canSwitch;
@@ -23,7 +23,7 @@ public class ClientModel {
 	
 	//Methods
 	public void updateScore(Score score) {
-		//TODO
+		this.score.updateScore(score);
 	}
 	
 	public void updateHand(Card[] handCards) {
@@ -62,12 +62,6 @@ public class ClientModel {
 	public void setDeck(CardList deck) {
 		this.deck = deck;
 	}
-	public void setWeis(Weis weis){
-		this.weis = weis;
-	}
-	public void getWeis(){
-		return weis;
-	}	
 	public Trump getTrump() {
 		return trump;
 	}
@@ -124,5 +118,13 @@ public class ClientModel {
 
 	public void setThisPlayer(Player thisPlayer) {
 		this.thisPlayer = thisPlayer;
+	}
+
+	public Weis[] getPossibleWiis() {
+		return possibleWiis;
+	}
+
+	public void setPossibleWiis(Weis[] possibleWiis) {
+		this.possibleWiis = possibleWiis;
 	}
 }

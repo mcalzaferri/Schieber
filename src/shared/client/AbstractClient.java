@@ -2,10 +2,7 @@ package shared.client;
 
 import java.net.InetSocketAddress;
 
-import ch.ntb.jass.common.entities.CardEntity;
-import ch.ntb.jass.common.entities.PlayerEntity;
-import ch.ntb.jass.common.entities.SeatEntity;
-import ch.ntb.jass.common.entities.WeisEntity;
+import ch.ntb.jass.common.entities.*;
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
@@ -39,7 +36,6 @@ public abstract class AbstractClient {
 			//server_info_messages
 			@Override
 			public void msgReceived(ChosenTrumpInfoMessage msg) {
-				//TODO this will be renamed to ChosenTrumpInfoMessage
 				Trump trump = Trump.getByEntity(msg.trump);
 				model.setTrump(trump);
 				doSetTrump(trump);
@@ -91,6 +87,7 @@ public abstract class AbstractClient {
 				model.setActiveSeatId(msg.nextPlayer.seat.seatNr);
 				//If the player is you, select card
 				if(msg.nextPlayer.id == model.getThisPlayer().getId()) {
+					//TODO calculate all possible wiis and store them in the model
 					doRequestCard(msg.selectWeis);
 				}
 			}
@@ -139,7 +136,11 @@ public abstract class AbstractClient {
 
 			@Override
 			public void msgReceived(WiisInfoMessage msg) {
-				// TODO Auto-generated method stub
+				Weis[] wiis = new Weis[msg.wiis.length];
+				for(int i = 0; i < msg.wiis.length; i++) {
+					wiis[i] = new Weis(msg.wiis[i]);
+				}
+				doPlayerShowedWiis(wiis, new Player(msg.player));
 				
 			}
 
@@ -221,7 +222,7 @@ public abstract class AbstractClient {
 	 * This method tells the GUI and the Bot if Weis was published
 	 * @param Weis(e), which player did it
 	 */
-	protected abstract void doShowWeis(Weis[] wiis, int playerID);
+	protected abstract void doPlayerShowedWiis(Weis[] wiis, Player player);
 
 	//Methods for Client -> Server
 	protected void publishChangedState(boolean isReady) {
@@ -230,7 +231,8 @@ public abstract class AbstractClient {
 		com.send(msg);
 	}
 	protected void publishChosenTrump(Trump trump) {
-		//TODO send message
+		ChosenTrumpMessage msg = new ChosenTrumpMessage();
+		msg.trump = trump.getEntity();
 	}
 	protected void publishChosenWiis(Weis[] wiis) {
 		ChosenWiisMessage msg = new ChosenWiisMessage();
