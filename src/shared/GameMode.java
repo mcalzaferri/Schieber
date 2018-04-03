@@ -1,5 +1,7 @@
 package shared;
 
+import ch.ntb.jass.common.entities.GameModeEntity;
+
 public enum GameMode {
 	SCHIEBEN(1,0),
 	TRUMPF(2,1),
@@ -29,6 +31,10 @@ public enum GameMode {
 			return UNEUFE;
 		}
 		return null;
+	}
+	
+	public GameModeEntity getEntity() {
+		return GameModeEntity.getById(id);
 	}
 	
 	//Getter und Setter
