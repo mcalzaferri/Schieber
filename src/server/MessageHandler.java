@@ -5,6 +5,7 @@ import java.net.SocketException;
 
 import ch.ntb.jass.common.proto.*;
 import ch.ntb.jass.common.proto.player_messages.*;
+import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
 import shared.Communication;
 import shared.InternalMessage;
@@ -38,7 +39,7 @@ public class MessageHandler {
 		Message msg = iMsg.message;
 		System.out.println(msg.getClass().getSimpleName() + " received");
 
-		if (msg instanceof JoinGameMessage) {
+		if (msg instanceof JoinLobbyMessage) {
 			// TODO: add name field to JoinGameMessage?
 			logic.addPlayer(new Player(iMsg.senderAddress, "",
 					logic.getPlayerCount()));
@@ -50,15 +51,15 @@ public class MessageHandler {
 				// TODO: change game state
 			}
 		} else if (msg instanceof ChosenGameModeMessage) {
-			StartGameMessage startGameMessage = new StartGameMessage();
-//				broadcastMessage(startGameMessage);
+			ToPlayerMessage startGameMessage = new GameStartedInfoMessage();
+			broadcastMessage(startGameMessage);
 
 			System.out.println("Game has started");
-			YourTurnMessage yourTurnMessage = new YourTurnMessage();
+			ToPlayerMessage yourTurnMessage = new NewTurnInfoMessage();
 			send(yourTurnMessage, logic.getPresentPlayer());
 
 		} else if (msg instanceof PlaceCardMessage) {
-			YourTurnMessage yourTurn = new YourTurnMessage();
+			ToPlayerMessage yourTurn = new NewTurnInfoMessage();
 			broadcastMessage(msg);
 			send(yourTurn, logic.getPresentPlayer());
 //			} else if (msg instanceof LeaveTableMessage) {
@@ -68,7 +69,7 @@ public class MessageHandler {
 //						System.out.println("Player " + p.getId()+ " has left the game");
 //					}
 //				}
-//			} else {
+		} else {
 			System.err.println("Unkown message!");
 		}
 	}

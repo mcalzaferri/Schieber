@@ -16,6 +16,8 @@ import org.junit.Test;
 import client.ClientCommunication;
 
 public class ServerTest {
+	final int serverListenPort = 65000;
+	final int clientListenPort = 64000;
 	MessageHandler msgHandler;
 	GameLogic logic;
 	ClientCommunication cCom;
@@ -31,11 +33,10 @@ public class ServerTest {
 	@Before
 	public void setUp() throws Exception {
 		logic = new GameLogic();
-		msgHandler = new MessageHandler(logic, 65000);
+		msgHandler = new MessageHandler(logic, serverListenPort);
 		msgHandler.setReceiveTimeout(100);
 
-		cCom = new ClientCommunication();
-		cCom.connect(new InetSocketAddress("localhost", 65000));
+		cCom = new ClientCommunication(clientListenPort);
 		cCom.open();
 		cCom.setReceiveTimeout(100);
 
@@ -50,7 +51,7 @@ public class ServerTest {
 
 	@Test
 	public void testPlayerJoin() throws ClassNotFoundException, IOException {
-		// cCom.connect();
+		cCom.connect(new InetSocketAddress("localhost", serverListenPort));
 		try {
 			msgHandler.handleMessage();
 		} catch (SocketTimeoutException e) {
