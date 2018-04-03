@@ -33,7 +33,7 @@ public enum CardValue {
 		this.obenabeScore = obenabeScore;
 	}
 	//Methoden
-	public static CardValue getValueById(int id) {
+	public static CardValue getById(int id) {
 		switch(id) {
 			case 1:
 				return SECHS;
@@ -58,7 +58,7 @@ public enum CardValue {
 	}
 	
 	public static CardValue getByEntity(CardValueEntity entity) {
-		return getValueById(entity.getId());
+		return getById(entity.getId());
 	}
 	
 	public CardValueEntity getEntity() {

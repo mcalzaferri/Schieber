@@ -18,7 +18,7 @@ public class Card extends CardEntity{
 	}
 	
 	public Card(int cardId) {
-		this(CardColor.getColorById(getColorId(cardId)),CardValue.getValueById(getValueId(cardId)));
+		this(CardColor.getById(getColorId(cardId)),CardValue.getById(getValueId(cardId)));
 	}
 	
 	public Card(CardEntity entity) {

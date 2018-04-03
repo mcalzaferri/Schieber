@@ -33,8 +33,8 @@ public class GameLogic {
 
 		deck = new Card[36];
 		for (int i = 0; i < deck.length; i++) {
-			deck[i] = new Card(CardColor.getColorById(i / 9 + 1),
-			                   CardValue.getValueById(i % 9 + 1));
+			deck[i] = new Card(CardColor.getById(i / 9 + 1),
+			                   CardValue.getById(i % 9 + 1));
 		}
 
 		// Fisher–Yates shuffle

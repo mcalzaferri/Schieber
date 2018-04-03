@@ -28,10 +28,10 @@ public enum WeisType {
 		
 	//Methoden
 	public static WeisType getByEntity(WeisTypeEntity entity) {
-		return getWeisTypeById(entity.getId());
+		return getById(entity.getId());
 	}
 	
-	public static WeisType getWeisTypeById(int id) {
+	public static WeisType getById(int id) {
 		switch(id) {
 		case 1:
 			return STOECK;

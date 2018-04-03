@@ -19,7 +19,7 @@ public enum CardColor {
 	}
 	
 	//Methoden
-	public static CardColor getColorById(int id) {
+	public static CardColor getById(int id) {
 		switch(id) {
 			case 1:
 				return EICHEL;
@@ -38,7 +38,7 @@ public enum CardColor {
 	}
 	
 	public static CardColor getByEntity(CardColorEntity entity) {
-		return getColorById(entity.getId());
+		return getById(entity.getId());
 	}
 	
 	//Getter und Setter

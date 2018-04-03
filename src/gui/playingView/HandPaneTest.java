@@ -80,6 +80,6 @@ public class HandPaneTest extends JFrame{
 	}
 	private Card createRandomCard() {
 		Random r = new Random();
-		return new Card(CardColor.getColorById(r.nextInt(4) + 1), CardValue.getValueById(r.nextInt(8) + 1));
+		return new Card(CardColor.getById(r.nextInt(4) + 1), CardValue.getById(r.nextInt(8) + 1));
 	}
 }
