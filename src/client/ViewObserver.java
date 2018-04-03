@@ -11,6 +11,6 @@ public interface ViewObserver {
 	public abstract void btnTrumpClick(Trump trump);
 	public abstract void btnCardClick(Card card);
 	public abstract void btnCloseWindowClick(ViewEnumeration view);
-	public abstract void btnWeisAllowed(Weis weis);
-	public abstract void btnWeisDenied(Weis weis);
+	public abstract void btnWeisAllowed();
+	public abstract void btnWeisDenied();
 }
