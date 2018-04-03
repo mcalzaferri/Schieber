@@ -64,7 +64,13 @@ public class ClientCommunication extends Communication {
 	 */
 	public void connect(InetSocketAddress serverAddress) {
 		this.serverAddress = serverAddress;
-		JoinLobbyMessage msg = new JoinLobbyMessage();
-		send(msg);
+		send(new JoinLobbyMessage());
+	}
+
+	/**
+	 * @param ip IP address / hostname of the Game Server
+	 */
+	public void connect(String ip) {
+		connect(new InetSocketAddress(ip, this.port));
 	}
 }
