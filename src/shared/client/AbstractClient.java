@@ -233,6 +233,7 @@ public abstract class AbstractClient {
 	protected void publishChosenTrump(Trump trump) {
 		ChosenTrumpMessage msg = new ChosenTrumpMessage();
 		msg.trump = trump.getEntity();
+		com.send(msg);
 	}
 	protected void publishChosenWiis(Weis[] wiis) {
 		ChosenWiisMessage msg = new ChosenWiisMessage();

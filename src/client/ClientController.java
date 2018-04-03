@@ -110,13 +110,12 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void doRequestWeis() {
-		// TODO Auto-generated method stub
-		
+		// TODO 
 	}
 
 	@Override
 	protected void doRequestCard(boolean selectWiis) {
-		// TODO Auto-generated method stub
+		view.changeView(ViewEnumeration.PLAYVIEW);
 		
 	}
 	
@@ -170,19 +169,24 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void btnCloseWindowClick(ViewEnumeration view) {
-		// TODO Auto-generated method stub
+		super.disconnect();
+		System.exit(0);
+	}
+
+	@Override
+	public void btnWeisActionChosen(boolean allowBroadcast) {
+		super.publishChosenWiis(model.getPossibleWiis());
+	}
+
+	@Override
+	public void btnJoinTableClick(Seat preferedSeat) {
+		super.joinTable(preferedSeat.seatNr);
 		
 	}
 
 	@Override
-	public void btnWeisAllowed() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void btnWeisDenied() {
-		// TODO Auto-generated method stub
-		
+	public void btnChangeStateClick() {
+		model.getThisPlayer().setReady(!model.getThisPlayer().isReady());
+		super.publishChangedState(model.getThisPlayer().isReady());
 	}
 }

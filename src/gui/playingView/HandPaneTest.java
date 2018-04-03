@@ -13,6 +13,7 @@ import shared.Card;
 import shared.CardColor;
 import shared.CardList;
 import shared.CardValue;
+import shared.Seat;
 import shared.ServerAddress;
 import shared.Trump;
 
@@ -66,6 +67,24 @@ public class HandPaneTest extends JFrame{
 
 			@Override
 			public void btnCloseWindowClick(ViewEnumeration view) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void btnWeisActionChosen(boolean allowBroadcast) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void btnJoinTableClick(Seat preferedSeat) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void btnChangeStateClick() {
 				// TODO Auto-generated method stub
 				
 			}
