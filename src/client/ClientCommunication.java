@@ -65,6 +65,6 @@ public class ClientCommunication extends Communication {
 	public void connect(InetSocketAddress serverAddress) {
 		this.serverAddress = serverAddress;
 		JoinLobbyMessage msg = new JoinLobbyMessage();
-		// TODO send(msg);
+		send(msg);
 	}
 }

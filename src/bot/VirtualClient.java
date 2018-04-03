@@ -55,9 +55,6 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	public void doUpdateActiveSeat(int activeSeatId) {
 		ki.setActivePlayerID(activeSeatId);
-		if(activeSeatId == mySeatId) {
-			super.publishChosenCard(ki.getNextCard());
-		}
 	}
 
 	@Override
@@ -66,7 +63,6 @@ public class VirtualClient extends AbstractClient {
 		
 	}
 	
-	@Override
 	public void doRequestWeis() {
 		super.publishChosenWiis((Weis[]) ki.getWeise().toArray()); 
 	}
@@ -110,7 +106,6 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	public void doDisconnected() {
 		active = false;
-		
 	}
 	
 	/**
@@ -128,8 +123,10 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	protected void doRequestCard(boolean selectWiis) {
-		// TODO FKaiser: Just to fix bot
-		
+		super.publishChosenCard(ki.getNextCard());
+		if(selectWiis) {
+			doRequestWeis();
+		}
 	}
 	
 
