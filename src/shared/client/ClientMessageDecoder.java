@@ -14,8 +14,8 @@ public interface ClientMessageDecoder {
 			//do nothing
 		}
 		//server_info_messages
-		else if(msg instanceof ChosenGameModeInfoMessage)
-			decoder.msgReceived((ChosenGameModeInfoMessage)msg);
+		else if(msg instanceof ChosenTrumpInfoMessage)
+			decoder.msgReceived((ChosenTrumpInfoMessage)msg);
 		else if(msg instanceof EndOfRoundInfoMessage)
 			decoder.msgReceived((EndOfRoundInfoMessage)msg);
 		else if(msg instanceof GameStartedInfoMessage)
@@ -35,8 +35,8 @@ public interface ClientMessageDecoder {
 		else if(msg instanceof WiisInfoMessage)
 			decoder.msgReceived((WiisInfoMessage)msg);
 		//server_messages
-		else if(msg instanceof ChooseGameModeMessage)
-			decoder.msgReceived((ChooseGameModeMessage)msg);
+		else if(msg instanceof ChooseTrumpMessage)
+			decoder.msgReceived((ChooseTrumpMessage)msg);
 		else if(msg instanceof GameStateMessage)
 			decoder.msgReceived((GameStateMessage)msg);
 		else if(msg instanceof HandOutCardsMessage)
@@ -51,7 +51,7 @@ public interface ClientMessageDecoder {
 	}
 	
 	//server_info_messages
-	void msgReceived(ChosenGameModeInfoMessage msg);
+	void msgReceived(ChosenTrumpInfoMessage msg);
 	void msgReceived(EndOfRoundInfoMessage msg);
 	void msgReceived(GameStartedInfoMessage msg);
 	void msgReceived(NewRoundInfoMessage msg);
@@ -63,7 +63,7 @@ public interface ClientMessageDecoder {
 	void msgReceived(WiisInfoMessage msg);
 	
 	//server_messages
-	void msgReceived(ChooseGameModeMessage msg);
+	void msgReceived(ChooseTrumpMessage msg);
 	void msgReceived(GameStateMessage msg);
 	void msgReceived(HandOutCardsMessage msg);
 	void msgReceived(LobbyStateMessage msg);

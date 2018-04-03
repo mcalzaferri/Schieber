@@ -47,10 +47,10 @@ public class MessageHandler {
 			if (logic.getPlayerCount() == 4) {
 				handOutCards();
 				// request game mode from first player
-				send(new ChooseGameModeMessage(), logic.getPlayers().get(0));
+				send(new ChooseTrumpMessage(), logic.getPlayers().get(0));
 				// TODO: change game state
 			}
-		} else if (msg instanceof ChosenGameModeMessage) {
+		} else if (msg instanceof ChosenTrumpMessage) {
 			ToPlayerMessage startGameMessage = new GameStartedInfoMessage();
 			broadcastMessage(startGameMessage);
 

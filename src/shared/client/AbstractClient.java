@@ -38,9 +38,9 @@ public abstract class AbstractClient {
 
 			//server_info_messages
 			@Override
-			public void msgReceived(ChosenGameModeInfoMessage msg) {
+			public void msgReceived(ChosenTrumpInfoMessage msg) {
 				//TODO this will be renamed to ChosenTrumpInfoMessage
-				Trump trump = Trump.EICHEL;//TODO delete this when fixed.
+				Trump trump = Trump.getByEntity(msg.trump);
 				model.setTrump(trump);
 				doSetTrump(trump);
 			}
@@ -125,7 +125,7 @@ public abstract class AbstractClient {
 				model.getDeck().add(new Card(msg.laidCard));
 				if(msg.player.id == model.getThisPlayer().getId()) {
 					//This player has laid that card
-					model.getHand().remove(CardEntity.getId(msg.laidCard));
+					model.getHand().remove(msg.laidCard.calcId());
 				}
 				playerChanged(model.getPlayerById(msg.player.id));
 				doUpdateDeck(model.getDeck().toArray());
@@ -145,7 +145,7 @@ public abstract class AbstractClient {
 
 			//server_messages
 			@Override
-			public void msgReceived(ChooseGameModeMessage msg) {
+			public void msgReceived(ChooseTrumpMessage msg) {
 				doRequestTrump(msg.canSchieben);
 			}
 

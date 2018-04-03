@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import ch.ntb.jass.common.proto.Message;
-import ch.ntb.jass.common.proto.player_messages.ChosenGameModeMessage;
-import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
-import ch.ntb.jass.common.proto.player_messages.LeaveTableMessage;
-import ch.ntb.jass.common.proto.player_messages.PlaceCardMessage;
+import ch.ntb.jass.common.proto.player_messages.*;
 import shared.Card;
 import shared.Communication;
 import shared.InternalMessage;
