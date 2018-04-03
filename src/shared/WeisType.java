@@ -59,6 +59,9 @@ public enum WeisType {
 		return null;
 	}
 		
+	public WeisTypeEntity getEntity() {
+		return WeisTypeEntity.getById(id);
+	}
 	//Getter und Setter
 	public int getId() {
 		return id;

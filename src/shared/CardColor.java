@@ -33,6 +33,10 @@ public enum CardColor {
 		return null;
 	}
 	
+	public CardColorEntity getEntity() {
+		return CardColorEntity.getById(id);
+	}
+	
 	public static CardColor getByEntity(CardColorEntity entity) {
 		return getColorById(entity.getId());
 	}

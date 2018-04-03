@@ -56,6 +56,10 @@ public enum Trump {
 		return null;
 	}
 	
+	public TrumpEntity getEntity() {
+		return TrumpEntity.getById(id);
+	}
+	
 	//Getter und Setter
 	public int getId() {
 		return id;

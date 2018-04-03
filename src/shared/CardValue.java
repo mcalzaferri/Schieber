@@ -61,6 +61,10 @@ public enum CardValue {
 		return getValueById(entity.getId());
 	}
 	
+	public CardValueEntity getEntity() {
+		return CardValueEntity.getById(id);
+	}
+	
 	//Getters und Setters
 	public int getId() {
 		return id;
