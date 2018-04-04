@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -56,17 +57,22 @@ public class BlackBoardDrawer {
 			}
 		}
 	}
-	
+	private BufferedImage img;
+	private Trump trump;
 	public void drawTrump(Graphics g, Trump trump) {
-		BufferedImage img;
+		
 		try {
 			g.setFont(this.getNormalFont());
 			g.setColor(Color.WHITE);
 			g.drawString(trump.toString(), (int)(scale*bounds.x), (int)(scale*(bounds.y + bounds.height/2)));
 			
 			Dimension d = new Dimension((int)(scale*50), (int)(scale*70));
-			img = Gui.pictureFactory.getPicture(trump, d);
-			g.drawImage(img, (int)(scale*(bounds.x + bounds.width/2) - d.getWidth()/2), (int)(scale*(bounds.y + bounds.height/2) - d.getHeight()/2), null);
+			if(img == null || this.trump == null || this.trump != trump) {
+				this.trump = trump;
+				img = Gui.pictureFactory.getPicture(trump);
+			}
+			g.drawImage(Gui.pictureFactory.getScaledPicture(img, d), 
+					(int)(scale*(bounds.x + bounds.width/2) - d.getWidth()/2), (int)(scale*(bounds.y + bounds.height/2) - d.getHeight()/2), null);
 						
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -74,7 +80,6 @@ public class BlackBoardDrawer {
 		}
 		
 	}
-	
 	private Font getNormalFont() {
 		return new Font(this.font.getFontName(), this.font.getStyle(), (int)(this.font.getSize() * scale));
 	}
