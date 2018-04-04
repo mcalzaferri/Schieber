@@ -3,6 +3,7 @@ package gui.playingView;
 import java.awt.GraphicsEnvironment;
 import javax.swing.JFrame;
 
+import shared.Trump;
 import shared.client.ClientModel;
 
 public class BlackBoardPaneTest extends JFrame{
@@ -17,7 +18,9 @@ public class BlackBoardPaneTest extends JFrame{
 	}
 	
 	public BlackBoardPaneTest() {
-		this.pane = new BlackBoardPane(new ClientModel(), null);
+		ClientModel cm = new ClientModel();
+		cm.setTrump(Trump.EICHEL);
+		this.pane = new BlackBoardPane(cm, null);
 		this.add(pane);
 		this.setVisible(true);
 		this.setSize(500, 500);
