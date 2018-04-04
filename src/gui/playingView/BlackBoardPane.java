@@ -3,6 +3,7 @@ package gui.playingView;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class BlackBoardPane extends JPanel{
 	public void paint(Graphics g) {
 		super.paint(g);
 		try {
-			BufferedImage img = Gui.pictureFactory.getPicture(Pictures.BlackBoard, this.getSize());
+			Image img = Gui.pictureFactory.getPicture(Pictures.BlackBoard, this.getSize());
 			g.drawImage(img, 0, 0, null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
