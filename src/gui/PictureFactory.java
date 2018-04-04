@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,7 +21,7 @@ public class PictureFactory {
 		return this.loadImage(path);
 		
 	}
-	public BufferedImage getPicture(Card card, Dimension size) throws IOException {
+	public Image getPicture(Card card, Dimension size) throws IOException {
 		return this.getScaledPicture(this.getPicture(card), size);
 		
 	}
@@ -29,7 +29,7 @@ public class PictureFactory {
 		String path = "res\\modes\\" + trump.toString() + ".png";
 		return this.loadImage(path);
 	}
-	public BufferedImage getPicture(Trump trump, Dimension size) throws IOException {
+	public Image getPicture(Trump trump, Dimension size) throws IOException {
 		return this.getScaledPicture(this.getPicture(trump), size);
 	}
 	
@@ -37,21 +37,13 @@ public class PictureFactory {
 		String path = "res\\" + picture.toString() + ".png";
 		return this.loadImage(path);
 	}
-	public BufferedImage getPicture(Pictures picture, Dimension size) throws IOException {
+	public Image getPicture(Pictures picture, Dimension size) throws IOException {
 		return this.getScaledPicture(this.getPicture(picture), size);
 	}
-	private BufferedImage getScaledPicture(BufferedImage original, Dimension size) {
-		//Draws original picture into new picture using graphics object
-		int newWidth = size.width;
-		int newHeigth = size.height;
-		BufferedImage newImage = new BufferedImage(newWidth, newHeigth, BufferedImage.TYPE_INT_RGB);
-
-		Graphics g = newImage.createGraphics();
-		g.drawImage(original, 0, 0, newWidth, newHeigth, null);
-		g.dispose();
-		return newImage;
+	public Image getScaledPicture(BufferedImage original, Dimension size) {
+		return original.getScaledInstance(size.width, size.height, Image.SCALE_FAST);
 	}
-	private BufferedImage loadImage(String path) throws IOException {	        
+	public BufferedImage loadImage(String path) throws IOException {	        
     	path = new File(path).getAbsolutePath();
     	URL url = new File(path).toURI().toURL();
         return  ImageIO.read(url);
