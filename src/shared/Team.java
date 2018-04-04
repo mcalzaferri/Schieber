@@ -8,6 +8,12 @@ public class Team {
 	private Player[] players;
 	private int teamId;
 	
+	//Constructors
+	public Team(Player[] players, int teamId) {
+		this.players = players;
+		this.teamId = teamId;
+	}
+	
 	public Team(TeamEntity entity, Dictionary<Integer,Player> dictionary) {
 		players = new Player[2];
 		for(int i = 0; i <= 1; i++) {
@@ -18,6 +24,12 @@ public class Team {
 		}
 	}
 	
+	public Team(TeamEntity entity) {
+		this(entity, null);
+	}
+	
+	
+	//Methods
 	public void removePlayer(int id) {
 		for(int i = 0; i <= 1; i++) {
 			if(players[i].getId() == id) {
@@ -27,10 +39,15 @@ public class Team {
 		}
 	}
 	
-	public Team(TeamEntity entity) {
-		this(entity, null);
+	public TeamEntity getEntity() {
+		TeamEntity team = new TeamEntity();
+		team.players = players;
+		team.teamId = teamId;
+		return team;
 	}
 	
+	
+	//Getters and Setters
 	public Player getPlayer(int index) {
 		return players[index];
 	}
