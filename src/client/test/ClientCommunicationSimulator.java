@@ -8,6 +8,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -238,8 +239,6 @@ public class ClientCommunicationSimulator{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		PlayerPanel playerPanel = new PlayerPanel("player", players);
 		panel.add(playerPanel);
-		JCheckBox isReadyBox = new JCheckBox("isReady");
-		panel.add(isReadyBox);
 		msgFrame.add(panel,MessageEnumeration.PlayerChangedStateMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
 			@Override
@@ -247,7 +246,7 @@ public class ClientCommunicationSimulator{
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.PlayerChangedStateMessage) {
 					PlayerChangedStateMessage msg = new PlayerChangedStateMessage();
 					msg.player = playerPanel.getPlayer();
-					msg.isReady = isReadyBox.isSelected();
+					msg.isReady = playerPanel.getPlayer().isReady();
 					client.handleReceivedMessage(msg);
 				}
 			}
@@ -401,6 +400,29 @@ public class ClientCommunicationSimulator{
 			cardPanels[i] = new CardPanel("Card#" + (i+1));
 			panel.add(cardPanels[i]);
 		}
+		JButton btnRandom = new JButton("Random");
+		panel.add(btnRandom);
+		btnRandom.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Integer> usedValues = new ArrayList<>();
+				Random rm = new Random();
+				for(int i = 0; i < cardPanels.length;i++) {
+					int color = 0;
+					int value = 0;
+					Integer id = 0;
+					do {
+						color = rm.nextInt(4) + 1;
+						value = rm.nextInt(9) + 1;
+						id = color * 10 + value;
+					}while(usedValues.contains(id));
+					usedValues.add(id);
+					cardPanels[i].setCard(new Card(id));
+				}
+			}
+		});
+		
 		msgFrame.add(panel,MessageEnumeration.HandOutCardsMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
 			@Override

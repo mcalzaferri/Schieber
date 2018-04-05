@@ -1,24 +1,27 @@
 package client.test;
 
+import java.awt.Dimension;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import shared.Player;
 
 public class PlayerPanel extends JPanel {
 
 	private static final long serialVersionUID = 4529969236622381523L;
-	JLabel description;
+	String description;
 	JComboBox<Player> playerBox;
 	JCheckBox isBotBox;
 	JCheckBox isReadyBox;
 	
 	public PlayerPanel(String text, Player[] players) {
 		super();
-		description = new JLabel(text);
+		description = text;
 		initialComponents(players);
 	}
 	
@@ -26,9 +29,11 @@ public class PlayerPanel extends JPanel {
 		playerBox = new JComboBox<>(players);
 		isBotBox = new JCheckBox("isBot");
 		isReadyBox = new JCheckBox("isReady");
-		
+		playerBox.setMaximumSize(new Dimension(200, 30));
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		this.add(description);
+		TitledBorder title;
+		title = BorderFactory.createTitledBorder(description);
+		this.setBorder(title);
 		this.add(playerBox);
 		this.add(isBotBox);
 		this.add(isReadyBox);
