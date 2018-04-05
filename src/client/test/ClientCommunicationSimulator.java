@@ -15,12 +15,15 @@ import javax.swing.*;
 import ch.ntb.jass.common.entities.ScoreEntity;
 import ch.ntb.jass.common.entities.TeamEntity;
 import ch.ntb.jass.common.entities.WeisEntity;
+import ch.ntb.jass.common.proto.Message;
+import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
+import client.ClientCommunication;
 import shared.*;
 import shared.client.AbstractClient;
 
-public class ClientCommunicationSimulator{
+public class ClientCommunicationSimulator extends ClientCommunication{
 	private AbstractClient client;
 	private JFrame fenster;
 	private JPanel mainFrame;
@@ -472,6 +475,62 @@ public class ClientCommunicationSimulator{
 				}
 			}
 		});
+	}
+
+	//inherited methods from ClientCommunication
+	@Override
+	public void send(Message msg) {
+		outputArea.append("-----------START-----------\n");
+		if(msg == null) {
+			outputArea.append("null Message sent");
+		}else {
+			outputArea.append("MESSAGE: " + msg.getClass().getSimpleName() + " SENT\n");
+			if(msg instanceof ChangeStateMessage) {
+				ChangeStateMessage cmsg = (ChangeStateMessage)msg;
+				outputArea.append("isReady: " + cmsg.isReady + "\n");
+			}else if(msg instanceof ChosenTrumpMessage) {
+				ChosenTrumpMessage cmsg = (ChosenTrumpMessage)msg;
+				if(cmsg.trump != null)
+					outputArea.append("trump: " + cmsg.trump + "\n");
+				else
+					outputArea.append("trump: null\n");
+			}else if(msg instanceof ChosenWiisMessage) {
+				ChosenWiisMessage cmsg = (ChosenWiisMessage)msg;
+				if(cmsg.wiis != null)
+					for(WeisEntity w : cmsg.wiis)
+						outputArea.append("Weis: " + w.type + " to " + w.originCard.color + " " + w.originCard.value + "\n");
+				else
+					outputArea.append("wiis: null\n");
+			}else if(msg instanceof JoinLobbyMessage) {
+				JoinLobbyMessage cmsg = (JoinLobbyMessage)msg;
+				if(cmsg.playerData != null)
+					outputArea.append(
+							"playerData.name: " + cmsg.playerData.name +  "\n" +
+							"playerData.id: " + cmsg.playerData.id + "\n" +
+							"playerData.isBot: " + cmsg.playerData.isBot + "\n" +
+							"playerData.seatNr: " + cmsg.playerData.seat.seatNr + "\n"
+							);
+				else
+					outputArea.append("playerData: null\n");
+			}else if(msg instanceof JoinTableMessage) {
+				JoinTableMessage cmsg = (JoinTableMessage)msg;
+				if(cmsg.preferedSeat != null)
+					outputArea.append("preferedSeat: " + cmsg.preferedSeat.seatNr +  "\n");
+				else
+					outputArea.append("preferedSeat: null\n");
+			}else if(msg instanceof LeaveLobbyMessage) {
+				
+			}else if(msg instanceof LeaveTableMessage) {
+				
+			}else if(msg instanceof PlaceCardMessage) {
+				PlaceCardMessage cmsg = (PlaceCardMessage)msg;
+				if(cmsg.card != null)
+					outputArea.append("card: " + cmsg.card.color + " " + cmsg.card.value +  "\n");
+				else
+					outputArea.append("card: null\n");
+			}
+		}
+		outputArea.append("------------END------------\n");
 	}
 }
 

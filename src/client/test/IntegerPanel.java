@@ -45,4 +45,12 @@ public class IntegerPanel extends JPanel{
 		}
 		return 0;
 	}
+	
+	public void setInt(Integer value) {
+		integerField.setText(value.toString());
+	}
+	
+	public void setEditable(boolean value) {
+		integerField.setEditable(value);
+	}
 }

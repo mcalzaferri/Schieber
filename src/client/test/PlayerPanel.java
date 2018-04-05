@@ -1,11 +1,13 @@
 package client.test;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -18,17 +20,21 @@ public class PlayerPanel extends JPanel {
 	JComboBox<Player> playerBox;
 	JCheckBox isBotBox;
 	JCheckBox isReadyBox;
+	JLabel nullLabel;
+	Player[] players;
 	
 	public PlayerPanel(String text, Player[] players) {
 		super();
 		description = text;
-		initialComponents(players);
+		this.players = players;
+		initialComponents();
 	}
 	
-	private void initialComponents(Player[] players) {
+	private void initialComponents() {
 		playerBox = new JComboBox<>(players);
 		isBotBox = new JCheckBox("isBot");
 		isReadyBox = new JCheckBox("isReady");
+		nullLabel = new JLabel("            null            ");
 		playerBox.setMaximumSize(new Dimension(200, 30));
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		TitledBorder title;
@@ -37,6 +43,8 @@ public class PlayerPanel extends JPanel {
 		this.add(playerBox);
 		this.add(isBotBox);
 		this.add(isReadyBox);
+		this.add(nullLabel);
+		nullLabel.setVisible(false);
 	}
 	
 	public Player getPlayer() {
@@ -44,6 +52,40 @@ public class PlayerPanel extends JPanel {
 		p.isBot = isBotBox.isSelected();
 		p.setReady(isReadyBox.isSelected());
 		return p;
+	}
+	
+	public void setPlayer(Player player) {
+		if(player != null) {
+			playerBox.setBackground(Color.WHITE);
+			playerBox.setVisible(true);
+			isBotBox.setVisible(true);
+			isReadyBox.setVisible(true);
+			nullLabel.setVisible(false);
+			Player p = null;
+			for(int i = 0; i < players.length; i++) {
+				if(players[i].id == player.id) {
+					p = players[i];
+					break;
+				}
+			}
+			if(p != null) {
+				playerBox.setSelectedItem(p);
+				isBotBox.setSelected(p.isBot);
+				isReadyBox.setSelected(p.isReady());
+			}
+		}else {
+			playerBox.setVisible(false);
+			isBotBox.setVisible(false);
+			isReadyBox.setVisible(false);
+			nullLabel.setVisible(true);
+		}
+		
+	}
+	
+	public void setEditable(boolean value) {
+		playerBox.setEditable(value);
+		isBotBox.setEnabled(value);
+		isReadyBox.setEnabled(value);
 	}
 	
 	
