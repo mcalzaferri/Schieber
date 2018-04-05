@@ -276,4 +276,9 @@ public abstract class AbstractClient {
 	public void disconnect() {
 		com.disconnect();
 	}
+	
+	//Getters and Setters
+	public ClientModel getModel() {
+		return this.model;
+	}
 }
