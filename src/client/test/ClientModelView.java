@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
+import shared.Card;
 import shared.Player;
 import shared.client.ClientModel;
 
@@ -36,18 +37,55 @@ public class ClientModelView extends JFrame{
 		updateTimer = new Timer(500, null); //will fire events every 500ms
 		
 		initialThisPlayer();
+		initialHand();
 	}
 	
 	private void initialThisPlayer() {
 		PlayerPanel thisPlayerPanel = new PlayerPanel("thisPlayer", players);
+		thisPlayerPanel.setEditable(false);
 		mainFrame.add(thisPlayerPanel);
 		updateTimer.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				thisPlayerPanel.setPlayer(model.getThisPlayer());
+			}
+		});
+	}
+	private void initialHand() {
+		CardPanel[] cardPanels = new CardPanel[9];
+		for(int i = 0; i < 9; i++) {
+			cardPanels[i] = new CardPanel("Card#" + i);
+			cardPanels[i].setEditable(false);
+			mainFrame.add(cardPanels[i]);
+		}
+		updateTimer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(model.getHand() != null) {
+					for(int i = 0; i < 9; i++) {
+						cardPanels[i].setCard(model.getHand().get(i));
+					}
+				}else {
+					for(int i = 0; i < 9; i++) {
+						cardPanels[i].setCard(null);
+					}
+				}
 				
 			}
 		});
 	}
+	
+	private void initialDeck() {
+		CardPanel[] cardPanels = new CardPanel[4];
+		for(int i = 0; i < 4; i++) {
+			cardPanels[i] = new CardPanel("Deck#" + i);
+			cardPanels[i].setEditable(false);
+			mainFrame.add(cardPanels[i]);
+		}
+		//TODO
+	}
+	
+	
 }

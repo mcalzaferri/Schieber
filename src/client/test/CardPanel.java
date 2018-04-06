@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -17,6 +18,7 @@ public class CardPanel extends JPanel {
 	String description;
 	JComboBox<CardColor> colorComboBox;
 	JComboBox<CardValue> valueComboBox;
+	JLabel nullLabel;
 	
 	public CardPanel(String text) {
 		super();
@@ -29,12 +31,15 @@ public class CardPanel extends JPanel {
 		valueComboBox = new JComboBox<>(CardValue.values());
 		colorComboBox.setMaximumSize(new Dimension(200, 30));
 		valueComboBox.setMaximumSize(new Dimension(200, 30));
+		nullLabel = new JLabel("            null            ");
+		nullLabel.setVisible(false);
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		TitledBorder title;
 		title = BorderFactory.createTitledBorder(description);
 		this.setBorder(title);
 		this.add(colorComboBox);
 		this.add(valueComboBox);
+		this.add(nullLabel);
 	}
 	
 	public Card getCard() {
@@ -42,7 +47,22 @@ public class CardPanel extends JPanel {
 	}
 	
 	public void setCard(Card card) {
-		colorComboBox.setSelectedItem(card.getColor());
-		valueComboBox.setSelectedItem(card.getValue());
+		if(card != null) {
+			colorComboBox.setSelectedItem(card.getColor());
+			valueComboBox.setSelectedItem(card.getValue());
+			colorComboBox.setVisible(true);
+			valueComboBox.setVisible(true);
+			nullLabel.setVisible(false);
+		}else {
+			colorComboBox.setVisible(false);
+			valueComboBox.setVisible(false);
+			nullLabel.setVisible(true);
+		}
 	}
+	
+	public void setEditable(boolean value) {
+		colorComboBox.setEditable(value);
+		valueComboBox.setEditable(value);
+	}
+	
 }

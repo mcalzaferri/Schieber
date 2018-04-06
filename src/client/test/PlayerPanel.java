@@ -72,13 +72,17 @@ public class PlayerPanel extends JPanel {
 				playerBox.setSelectedItem(p);
 				isBotBox.setSelected(p.isBot);
 				isReadyBox.setSelected(p.isReady());
+				return;
+			}else {
+				nullLabel.setText("            invalid id            ");
 			}
 		}else {
-			playerBox.setVisible(false);
-			isBotBox.setVisible(false);
-			isReadyBox.setVisible(false);
-			nullLabel.setVisible(true);
+			nullLabel.setText("            null            ");
 		}
+		playerBox.setVisible(false);
+		isBotBox.setVisible(false);
+		isReadyBox.setVisible(false);
+		nullLabel.setVisible(true);
 		
 	}
 	
