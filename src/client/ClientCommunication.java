@@ -3,6 +3,7 @@ package client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.*;
 import shared.Card;
@@ -57,14 +58,18 @@ public class ClientCommunication extends Communication {
 	}
 
 	/**
+	 * Connect to server.
 	 * @param serverAddress Address of the Game Server
 	 */
 	public void connect(InetSocketAddress serverAddress) {
 		this.serverAddress = serverAddress;
-		send(new JoinLobbyMessage());
+		JoinLobbyMessage msg = new JoinLobbyMessage();
+		msg.playerData = new PlayerEntity();
+		send(msg);
 	}
 
 	/**
+	 * Connect to server using the default port.
 	 * @param ip IP address / hostname of the Game Server
 	 */
 	public void connect(String ip) {

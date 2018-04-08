@@ -6,7 +6,7 @@ import java.util.List;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
 
-public class Player extends PlayerEntity{
+public class Player extends PlayerEntity {
 	private Seat seat;				//player seat number (0 to 4) (0 means not at the table)
 	private boolean isReady;
 	private boolean isAtTable;
@@ -28,7 +28,7 @@ public class Player extends PlayerEntity{
 			this.name = name;
 		}
 	}
-	
+
 	public Player(InetSocketAddress address, String name, int seatNr) {
 		this(address,name,seatNr,false,false,false,0);
 	}
@@ -36,7 +36,7 @@ public class Player extends PlayerEntity{
 	public Player(PlayerEntity entity) {
 		this(null, entity.name,entity.seat.seatNr,entity.isBot,false,false,entity.id);
 	}
-	
+
 	//Methods
 	public void update(PlayerEntity entity) {
 		if(id == entity.id) {
@@ -49,7 +49,7 @@ public class Player extends PlayerEntity{
 	public String toString() {
 		return name;
 	}
-	
+
 	//Getters and Setters
 	public InetSocketAddress getSocketAddress() {
 		return address;
@@ -63,18 +63,22 @@ public class Player extends PlayerEntity{
 		cards.remove(c);
 	}
 
+	public void setSeatNr(int nr) {
+		seat.seatNr = nr;
+	}
+
 	public int getSeatNr() {
 		return seat.seatNr;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public boolean isBot() {
 		return isBot;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

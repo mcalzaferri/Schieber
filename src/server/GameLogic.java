@@ -1,9 +1,11 @@
 package server;
 
-import java.util.ArrayList;
+import java.net.InetSocketAddress;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Random;
 
 import shared.Card;
@@ -15,22 +17,25 @@ import shared.Player;
 public class GameLogic {
 	private GameMode mode;
 	private CardColor trumpf;
-	private ArrayList<Player> players;
-	private Player presentPlayer;
-	private int playerPointer = 0;
+	/**
+	 * Maps seatNr to Player object
+	 */
+	private Map<Integer, Player> players;
+	/**
+	 * Seat nr of player that has to take action.
+	 * 0 means it's noones move.
+	 */
+	private int currentSeatNr = 0;
 	private Card[] deck;
 
 	public GameLogic() {
-		startGame();
+		players = new Hashtable<Integer, Player>();
 	}
 
 	/**
-	 * Start a new Game.
-	 * Creates a new list for players and a new shuffled deck of cards.
+	 * Create a new shuffled deck of cards.
 	 */
-	public void startGame() {
-		players = new ArrayList<>();
-
+	public void createDeck() {
 		deck = new Card[36];
 		for (int i = 0; i < deck.length; i++) {
 			deck[i] = new Card(CardColor.getById(i / 9 + 1),
@@ -47,15 +52,15 @@ public class GameLogic {
 		}
 	}
 
-	public List<Player> getPlayers() {
-		return Collections.unmodifiableList(players);
+	public Collection<Player> getPlayers() {
+		return Collections.unmodifiableCollection(players.values());
 	}
 
 	/**
-	 * Return cards that will be handed out.
+	 * Assign cards to player.
 	 * @return array with nine cards
 	 */
-	public Card[] getCardsForPlayer(Player p) {
+	public Card[] assignCardsToPlayer(Player p) {
 		Card[] cards = Arrays.copyOfRange(deck, 9 * p.getSeatNr(),
 		                                        9 * p.getSeatNr() + 8);
 		p.putCards(cards);
@@ -64,31 +69,72 @@ public class GameLogic {
 
 	/**
 	 * Add player to game.
-	 * @param p player to be added
-	 * @return false if table is full (4 players), true otherwise
+	 * @param p player to add
 	 */
-	public boolean addPlayer(Player p) {
-		if (players.size() == 4) {
-			System.err.println("Can't add player: Table full!");
+	public void addPlayer(Player p) {
+		players.put(p.getSeatNr(), p);
+	}
+
+	/**
+	 * Adds a player to the table by assigning a seat to him.
+	 * @param p player to add to the table
+	 * @param prefearedSeatNr the players preferred seat
+	 * @return true on success, false otherwise
+	 */
+	public boolean addPlayerToTable(Player p, int preferredSeatNr) {
+		if(preferredSeatNr < 1 || preferredSeatNr > 4) {
+			System.err.println("Failed to add player to table: invalid seatNr: "
+					+ preferredSeatNr);
 			return false;
 		}
-		players.add(p);
+
+		if(players.containsKey(preferredSeatNr)) {
+			System.err.println("Failed to add player to table: seat occupied");
+			return false;
+		}
+
+		if(p.getSeatNr() > 0) {
+			System.err.println(
+					"Failed to add player to table: player already at table");
+		}
+
+		players.remove(p.getSeatNr());
+		p.setSeatNr(preferredSeatNr);
+		addPlayer(p);
 		return true;
 	}
 
-//	public void removePlayer(Player p){
-//		players.remove(p.getId());
-//	}
+	/**
+	 * @return true if all players at the table are ready, false otherwise
+	 */
+	public boolean allPlayersReady() {
+		for(Map.Entry<Integer, Player> entry : players.entrySet()) {
+			if(entry.getKey() > 0 && !entry.getValue().isReady()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public Player getPlayer(InetSocketAddress addr) {
+		for (Player p : players.values()) {
+			if(p.getSocketAddress().equals(addr)) {
+				return p;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Get player whose turn it is.
 	 * @return player that has to take action
 	 */
-	public Player getPresentPlayer() {
-		if(playerPointer == players.size()){
-			playerPointer = 0;
+	public Player getNextPlayer() {
+		currentSeatNr++;
+		if(currentSeatNr == 5) {
+			currentSeatNr = 1;
 		}
-		return getPlayers().get(playerPointer++);
+		return players.get(++currentSeatNr);
 	}
 
 	/**
@@ -97,11 +143,11 @@ public class GameLogic {
 	 * @return false if move is invalid, true otherwise
 	 */
 	public boolean placeCard(Card c) {
-		return false;
+		throw new UnsupportedOperationException("Function not implemented.");
 	}
 
 	public Player getRoundWinner() {
-		return null;
+		throw new UnsupportedOperationException("Function not implemented.");
 	}
 
 	public int getPlayerCount() {
