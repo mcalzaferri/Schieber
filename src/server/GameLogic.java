@@ -14,6 +14,10 @@ import shared.CardValue;
 import shared.GameMode;
 import shared.Player;
 
+/**
+ * This class does all the game specific stuff like handling players, keeping
+ * track of the cards that were played and calculating scores.
+ */
 public class GameLogic {
 	private GameMode mode;
 	private CardColor trumpf;

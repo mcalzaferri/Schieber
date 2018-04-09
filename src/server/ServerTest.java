@@ -16,14 +16,17 @@ import org.junit.Test;
 import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.proto.player_messages.JoinTableMessage;
 import client.ClientCommunication;
-import server.states.GameState;
 import server.states.LobbyState;
 
+/**
+ * Unit tests for the game engine and state machine. Currently, "implements
+ * Serializable" has to be added to the Message class and all the entity classes
+ * for these tests to work.
+ */
 public class ServerTest {
 	final int serverListenPort = 65000;
 	final int clientListenPort = 64000;
-	MessageHandler msgHandler;
-	GameLogic logic;
+	ServerApp app;
 	ClientCommunication cCom;
 
 	@BeforeClass
@@ -36,10 +39,9 @@ public class ServerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		logic = new GameLogic();
-		msgHandler = new MessageHandler(logic, serverListenPort);
-		msgHandler.setReceiveTimeout(100);
-		GameState.init(msgHandler, logic);
+		app = new ServerApp(serverListenPort);
+		app.com.open();
+		app.com.setReceiveTimeout(100);
 
 		cCom = new ClientCommunication(clientListenPort);
 		cCom.open();
@@ -48,40 +50,42 @@ public class ServerTest {
 
 	@After
 	public void tearDown() throws Exception {
-		msgHandler.stop();
+		app.stop();
 		cCom.close();
 	}
 
 	@Test
 	public void testJoinLobby() throws ClassNotFoundException, IOException {
-		msgHandler.changeState(new LobbyState());
 		cCom.connect(new InetSocketAddress("localhost", serverListenPort));
 
-		handleMessage();
+		waitForMessage();
 
-		assertEquals(1, logic.getPlayerCount());
-		assertEquals(0, logic.getPlayer(
+		assertEquals(1, app.logic.getPlayerCount());
+		assertEquals(0, app.logic.getPlayer(
 				new InetSocketAddress("localhost", clientListenPort)).getSeatNr());
 	}
 
 	@Test
 	public void testJoinTable() throws ClassNotFoundException, IOException {
-		msgHandler.changeState(new LobbyState());
+		app.stateMachine.changeState(new LobbyState());
 		cCom.connect(new InetSocketAddress("localhost", serverListenPort));
-		handleMessage();
+		waitForMessage();
 
 		JoinTableMessage msg = new JoinTableMessage();
 		msg.preferedSeat = new SeatEntity();
 		msg.preferedSeat.seatNr = 1;
 		cCom.send(msg);
-		handleMessage();
-		assertEquals(msg.preferedSeat.seatNr, logic.getPlayer(
+		waitForMessage();
+		assertEquals(msg.preferedSeat.seatNr, app.logic.getPlayer(
 				new InetSocketAddress("localhost", clientListenPort)).getSeatNr());
 	}
 
-	private void handleMessage() throws ClassNotFoundException, IOException {
+	/**
+	 * Helper function that waits for a message and fails if it times out.
+	 */
+	private void waitForMessage() throws ClassNotFoundException, IOException {
 		try {
-			msgHandler.handleMessage();
+			app.handleMessage();
 		} catch (SocketTimeoutException e) {
 			fail("no message received");
 		}

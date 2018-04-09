@@ -25,6 +25,10 @@ public class Communication {
 		receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
 	}
 
+	/**
+	 * Use specific listen port.
+	 * @param port listen port
+	 */
 	public Communication(int port) {
 		this();
 		this.port = port;
@@ -101,5 +105,9 @@ public class Communication {
 	 */
 	public void setReceiveTimeout(int tmo) throws SocketException {
 		socket.setSoTimeout(tmo);
+	}
+
+	public void setListenPort(int port) {
+		this.port = port;
 	}
 }

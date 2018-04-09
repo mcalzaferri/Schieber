@@ -9,7 +9,7 @@ import shared.Player;
 
 public class LobbyState extends GameState {
 	@Override
-	public boolean handle(Player sender, ToServerMessage msg) throws IOException {
+	public boolean handleMessage(Player sender, ToServerMessage msg) throws IOException {
 		if(msg instanceof JoinTableMessage) {
 			JoinTableMessage jtm = (JoinTableMessage) msg;
 			logic.addPlayerToTable(sender, jtm.preferedSeat.seatNr);
@@ -22,8 +22,8 @@ public class LobbyState extends GameState {
 				GameStartedInfoMessage gsim = new GameStartedInfoMessage();
 				// TODO:
 				//gsim.teams = ;
-				msgHandler.broadcastMessage(gsim);
-				msgHandler.changeState(new StartGameState());
+				broadcast(gsim);
+				stateMachine.changeState(new StartGameState());
 			}
 		} else {
 			return false;

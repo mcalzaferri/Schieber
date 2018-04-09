@@ -1,7 +1,5 @@
 package test;
 
-import static org.junit.Assert.*;
-
 import java.net.InetSocketAddress;
 
 import org.junit.After;
@@ -13,17 +11,14 @@ import org.junit.Test;
 import bot.IntelligenceNormal;
 import bot.VirtualClient;
 import client.ClientCommunication;
-import server.GameLogic;
-import server.MessageHandler;
-import shared.Communication;
+import server.ServerApp;
 
 public class ServerBotIntegrationTest {
 	final int serverListenPort = 65000;
 	final int clientListenPort = 64000;
 	ClientCommunication cCom;
 	VirtualClient client;
-	MessageHandler msgHandler;
-	GameLogic logic;
+	ServerApp app;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -35,9 +30,9 @@ public class ServerBotIntegrationTest {
 
 	@Before
 	public void setUp() throws Exception {
-		logic = new GameLogic();
-		msgHandler = new MessageHandler(logic, serverListenPort);
-		msgHandler.setReceiveTimeout(100);
+		app = new ServerApp(serverListenPort);
+		app.setReceiveTimeout(100);
+		app.open();
 
 		cCom =  new ClientCommunication();
 		cCom.setReceiveTimeout(100);
@@ -49,7 +44,7 @@ public class ServerBotIntegrationTest {
 
 	@After
 	public void tearDown() throws Exception {
-		msgHandler.stop();
+		app.stop();
 		cCom.close();
 	}
 
