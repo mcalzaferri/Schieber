@@ -80,6 +80,14 @@ public class GameLogic {
 	}
 
 	/**
+	 * Remove player from game.
+	 * @param p player to remove
+	 */
+	public void removePlayer(Player p) {
+		players.remove(p.getSeatNr());
+	}
+	
+	/**
 	 * Adds a player to the table by assigning a seat to him.
 	 * @param p player to add to the table
 	 * @param prefearedSeatNr the players preferred seat
