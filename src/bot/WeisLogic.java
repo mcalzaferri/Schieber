@@ -52,7 +52,7 @@ public class WeisLogic {
 				noOfCards++;
 			} else {
 				Card card;
-				card = Card.getCardById(cardIds[i-noOfCards]);
+				card = new Card(cardIds[i-noOfCards]);
 				WeisType weisType;
 				switch(noOfCards) {
 				case 3: 
@@ -121,7 +121,8 @@ public class WeisLogic {
 		}
 		for(int i = 3; i < 9; i++) { // ignore 6,7,8 Card values
 			if(noOfCards[i] == 4){
-				vierGliche.add(Card.getCardById(i).getValue());
+				Card c = new Card(i + 11); // convert position in Array to Cardvalue
+				vierGliche.add(c.getValue());
 			}
 		}
 		return vierGliche;	
