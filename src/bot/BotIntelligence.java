@@ -174,13 +174,49 @@ public abstract class BotIntelligence {
 			Card firstPlayedCard = deck.get(0);
 			CardColor colorInPlay = firstPlayedCard.getColor();
 			for(Card c: cardsInHand) {
-				if(c.getColor().equals(trump.getTrumpfColor())) { // Trump always allowed
+				if(c.getColor().equals(trump.getTrumpfColor())) { // Trump always allowed, but check for "Untertrumpfen"
 					allowedCards.add(c);
+					
+					if(sequence >= 2) {
+						Card secondPlayedCard = deck.get(1);
+						if(secondPlayedCard.getColor() == trump.getTrumpfColor()) {
+							if(secondPlayedCard.getValue().getTrumpValue() > c.getValue().getTrumpValue()) {
+								allowedCards.remove(c);
+							}
+						}
+					}
+					
+					if(sequence >= 3) {
+						Card thirdPlayedCard = deck.get(2);
+						if(thirdPlayedCard.getColor() == trump.getTrumpfColor()) {
+							if(thirdPlayedCard.getValue().getTrumpValue() > c.getValue().getTrumpValue()) {
+								allowedCards.remove(c);
+							}
+						}
+					}
 				}
 				else if(c.getColor().equals(colorInPlay)) { // similar colour to first card allowed
 					allowedCards.add(c);
 				}
 			}
+			
+			// only trump cards in the list, but Trump not first card -> allow all cards, except "Untertrumpf"
+			if(colorInPlay != trump.getTrumpfColor()) { 
+				boolean onlyTrump = true;
+				for(Card c : allowedCards) {
+					if(c.getColor() != trump.getTrumpfColor()) {
+						onlyTrump = false;
+					}
+				}
+				if(onlyTrump) {
+					for(Card c : cardsInHand) {
+						if(c.getColor() != trump.getTrumpfColor()) {
+							allowedCards.add(c);
+						}
+					}
+				}
+			}
+			
 			if(allowedCards.isEmpty()) { //no valid cards in hand -> play anything
 				return cardsInHand;
 			}
