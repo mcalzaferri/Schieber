@@ -266,7 +266,7 @@ public class IntelligenceNormal extends BotIntelligence {
 					noOfCards++;
 				} else {
 					Card card;
-					card = Card.getCardById(ids[i-noOfCards]);
+					card = new Card(ids[i-noOfCards]);
 					if(card.getValue()==CardValue.SECHS) {
 						sichereStich += noOfCards;
 					}
@@ -282,7 +282,7 @@ public class IntelligenceNormal extends BotIntelligence {
 					noOfCards++;
 				} else {
 					Card card;
-					card = Card.getCardById(ids[i-1]);
+					card = new Card(ids[i-1]);
 					if(card.getValue()==CardValue.ASS) {
 						sichereStich += noOfCards;
 					}
@@ -340,7 +340,7 @@ public class IntelligenceNormal extends BotIntelligence {
 				noOfCards++;
 			} else {
 				Card card;
-				card = Card.getCardById(ids[i-1]);
+				card = new Card(ids[i-1]);
 				if(card.getValue()==CardValue.ASS && card.getColor().equals(color)) {
 					sichereStich += noOfCards;
 				}

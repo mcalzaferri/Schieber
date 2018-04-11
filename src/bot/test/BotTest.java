@@ -31,7 +31,7 @@ public class BotTest {
 		System.out.println("Cards on Hand");
 		System.out.println("---------------");
 		for(int id : testHand) {
-			Card card = Card.getCardById(id);
+			Card card = new Card(id);
 			System.out.println(card.getColor() + " " + card.getValue());
 		}
 		System.out.println("----------------");
@@ -75,7 +75,7 @@ public class BotTest {
 		System.out.println("Cards on Table");
 		System.out.println("---------------");
 		for(int id : deck3) {
-			Card card = Card.getCardById(id);
+			Card card = new Card(id);
 			System.out.println(card.getColor() + " " + card.getValue());
 		}
 		System.out.println("----------------");
