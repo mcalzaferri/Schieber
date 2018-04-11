@@ -1,6 +1,6 @@
 package shared.client;
 
-import java.util.Dictionary;
+import java.util.Map;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
 import shared.*;
@@ -8,7 +8,7 @@ import shared.*;
 public class ClientModel {
 	//Fields
 	private Player thisPlayer;
-	private Dictionary<Integer,Player> players;
+	private Map<Integer,Player> players;
 	private Team[] teams;
 	private CardList hand;
 	private CardList deck;
@@ -104,11 +104,11 @@ public class ClientModel {
 		this.gameState = gameState;
 	}
 
-	public Dictionary<Integer,Player> getPlayers() {
+	public Map<Integer,Player> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(Dictionary<Integer,Player> players) {
+	public void setPlayers(Map<Integer,Player> players) {
 		this.players = players;
 	}
 

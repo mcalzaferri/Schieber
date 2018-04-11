@@ -100,7 +100,7 @@ public abstract class AbstractClient {
 
 			@Override
 			public void msgReceived(PlayerLeftLobbyInfoMessage msg) {
-				// TODO Auto-generated method stub
+				model.getPlayers().remove(msg.player.id);
 				
 			}
 			
