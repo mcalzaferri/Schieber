@@ -23,25 +23,22 @@ public class IntelligenceNormal extends BotIntelligence {
 	public Card getNextCard() {
 		
 		ArrayList<Card> allowedCards = getAllowedCards();
-		Card c = null;
 		
 		if (allowedCards.isEmpty())
 		{
 			//TODO FKaiser Errorhandling - what to do?
 			System.out.println("Error - AllowedCards is empty");
 		}
-			
 		
+		winningCards = this.getSicherenStichDuringPlay(allowedCards);
+			
 		if(deck.isEmpty()) { //I'm first to go
-			if(winningCards.isEmpty()) { //refresh winningCards List if necessary
-				winningCards = this.getSicherenStichDuringPlay(allowedCards);
-			}
+			
 			for(Card wc : winningCards) {
 				if(wc.getColor() == trump.getTrumpfColor() && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) {
 					// Don't play trump card if enemy has none
 				} else {
-					c = winningCards.remove(0);
-					return c;
+					return wc;
 				}
 			}
 			
@@ -78,17 +75,52 @@ public class IntelligenceNormal extends BotIntelligence {
 				}
 			}
 			
-		} else {
-			// TODO add all further cases
-		}
-				
-	
-		// try not to play a card that the enemy surely wins
-		for(Card ec : this.getSicherenStichDuringPlay(enemyCards)) {
-			for(Card oc : allowedCards) {
-				if(ec.getColor() != oc.getColor()) {
-					return oc;
+			// try not to play a card that the enemy surely wins
+			for(Card ec : this.getSicherenStichDuringPlay(enemyCards)) {
+				for(Card oc : allowedCards) {
+					if(ec.getColor() != oc.getColor()) {
+						return oc;
+					}
 				}
+			}
+			
+		} else if(deck.size() == 1) { // I'm second to go
+			
+			Card firstCard = deck.get(0);
+			
+			//Stich with Farbe if possible
+			for(Card wc : winningCards) {
+				if(wc.getColor() == firstCard.getColor()) {
+					return wc;
+				}
+			}
+			
+			int score = getScore(firstCard);
+			
+			//stich if high scoring card (with Trumpf)
+			if(score >= 8) {
+				for(Card wc : winningCards) {
+					return wc;
+				}
+			}
+			
+		} else if(deck.size() == 2) { // I'm third to go (partner started)
+			// TODO implement logic
+		} else if(deck.size() == 3) { // last to go
+			// TODO implement logic
+		}
+		
+		// 1st fallback, apparently no good card on hand, don't play a scoring card
+		for(Card c : allowedCards) {
+			if(getScore(c) == 0) {
+				return c;
+			}
+		}
+		
+		// 2nd fallback, play a low scoring card
+		for(Card c : allowedCards) {
+			if(getScore(c) < 8) {
+				return c;
 			}
 		}
 		
@@ -348,7 +380,6 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 		}
 		return sichereStich;
-		
 	}
 	
 	/**
@@ -370,7 +401,32 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 		}
 		return winningCards;
-		
 	}
-
+	
+	/**
+	 * This function returns the score of a card (depending on the current Gamemode/Trump
+	 * @param card
+	 * @return score
+	 */
+	public int getScore(Card c) {
+		int score = 0;
+		switch(trump.getGameMode()) {
+		case TRUMPF:
+			if(trump.getTrumpfColor() == c.getColor()) {
+				score = c.getValue().getTrumpScore();
+			} else {
+				score = c.getValue().getGeneralScore();
+			}
+			break;
+		case OBENABE:
+			score = c.getValue().getObenabeScore();
+			break;
+		case UNEUFE:
+			score = c.getValue().getUneufeScore();
+			break;
+		default:
+			break;
+		}
+		return score;
+	}
 }
