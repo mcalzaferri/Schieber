@@ -60,9 +60,10 @@ public class CardPanel extends JPanel {
 		}
 	}
 	
-	public void setEditable(boolean value) {
-		colorComboBox.setEditable(value);
-		valueComboBox.setEditable(value);
+	@Override
+	public void setEnabled(boolean value) {
+		colorComboBox.setEnabled(value);
+		valueComboBox.setEnabled(value);
 	}
 	
 }

@@ -122,7 +122,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	//server_info_messages
 	private void initialChosenTrumpInfoMsg() {
 		JComboBox<Trump> trumpComboBox = new JComboBox<>(Trump.values());
-		trumpComboBox.setEditable(false);
+		trumpComboBox.setEditable(true);
 		JPanel panel = new JPanel();
 		panel.add(trumpComboBox);
 		msgFrame.add(panel,MessageEnumeration.ChosenTrumpInfoMessage.toString());

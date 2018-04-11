@@ -86,8 +86,9 @@ public class PlayerPanel extends JPanel {
 		
 	}
 	
-	public void setEditable(boolean value) {
-		playerBox.setEditable(value);
+	@Override
+	public void setEnabled(boolean value) {
+		playerBox.setEnabled(value);
 		isBotBox.setEnabled(value);
 		isReadyBox.setEnabled(value);
 	}
