@@ -26,10 +26,14 @@ public interface ClientMessageDecoder {
 			decoder.msgReceived((NewTurnInfoMessage)msg);
 		else if(msg instanceof PlayerChangedStateMessage)
 			decoder.msgReceived((PlayerChangedStateMessage)msg);
+		else if(msg instanceof PlayerLeftLobbyInfoMessage)
+			decoder.msgReceived((PlayerLeftLobbyInfoMessage)msg);
 		else if(msg instanceof PlayerMovedToLobbyInfoMessage)
 			decoder.msgReceived((PlayerMovedToLobbyInfoMessage)msg);
 		else if(msg instanceof PlayerMovedToTableInfoMessage)
 			decoder.msgReceived((PlayerMovedToTableInfoMessage)msg);
+		else if(msg instanceof StichInfoMessage)
+			decoder.msgReceived((StichInfoMessage)msg);
 		else if(msg instanceof TurnInfoMessage)
 			decoder.msgReceived((TurnInfoMessage)msg);
 		else if(msg instanceof WiisInfoMessage)
@@ -47,7 +51,7 @@ public interface ClientMessageDecoder {
 			decoder.msgReceived((WrongCardMessage)msg);
 		else
 			;//TODO what do here???
-			
+		;//TODO Messages who have submessages must be moved to here
 	}
 	
 	//server_info_messages
@@ -57,8 +61,10 @@ public interface ClientMessageDecoder {
 	void msgReceived(NewRoundInfoMessage msg);
 	void msgReceived(NewTurnInfoMessage msg);
 	void msgReceived(PlayerChangedStateMessage msg);
+	void msgReceived(PlayerLeftLobbyInfoMessage msg);
 	void msgReceived(PlayerMovedToLobbyInfoMessage msg);
 	void msgReceived(PlayerMovedToTableInfoMessage msg);
+	void msgReceived(StichInfoMessage msg);
 	void msgReceived(TurnInfoMessage msg);
 	void msgReceived(WiisInfoMessage msg);
 	

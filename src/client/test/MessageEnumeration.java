@@ -22,6 +22,7 @@ public enum MessageEnumeration {
 	PlayerLeftLobbyInfoMessage(MessageType.InfoMessage),
 	PlayerMovedToLobbyInfoMessage(MessageType.InfoMessage),
 	PlayerMovedToTableInfoMessage(MessageType.InfoMessage),
+	StichInfoMessage(MessageType.InfoMessage),
 	TurnInfoMessage(MessageType.InfoMessage),
 	WiisInfoMessage(MessageType.InfoMessage),
 	

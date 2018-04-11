@@ -99,6 +99,12 @@ public abstract class AbstractClient {
 			}
 
 			@Override
+			public void msgReceived(PlayerLeftLobbyInfoMessage msg) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
 			public void msgReceived(PlayerMovedToLobbyInfoMessage msg) {
 				model.updatePlayer(msg.player);
 				model.getPlayerById(msg.player.id).setAtTable(false);
@@ -128,12 +134,15 @@ public abstract class AbstractClient {
 				doUpdateDeck(model.getDeck().toArray());
 				doUpdateHand(model.getHand().toArray());
 				
-				if(msg.emptyDeck)
-					model.setGameState(GameState.PLAYOVER);
-				else
+				if(model.getGameState() != GameState.PLAYOVER)
 					model.setGameState(GameState.TURNOVER);
 			}
 
+			@Override
+			public void msgReceived(StichInfoMessage msg) {
+				model.setGameState(GameState.PLAYOVER);
+			}
+			
 			@Override
 			public void msgReceived(WiisInfoMessage msg) {
 				Weis[] wiis = new Weis[msg.wiis.length];
@@ -173,8 +182,7 @@ public abstract class AbstractClient {
 			public void msgReceived(WrongCardMessage msg) {
 				// TODO Is this message obsolete anyways?
 				
-			}
-			
+			}			
 		});
 	}
 	//Non Abstract Template methods for Server -> Client

@@ -109,6 +109,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 		initialPlayerLeftLobbyInfoMessage();
 		initialPlayerMovedToLobbyInfoMessage();
 		initialPlayerMovedToTableInfoMessage();
+		initialStichInfoMessage();
 		initialTurnInfoMessage();
 		initialWiisInfoMessage();
 		//server_messages
@@ -148,13 +149,13 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 		panel.add(scoreTeam2Panel);
 		
 		//Add stuff from extended 
-		panel.add(new JLabel("-------Fields from TurnInfoMessage--------"));
+		panel.add(new JLabel("-------Fields from StichInfoMessage--------"));
+		PlayerPanel playerWhoWonStichPanel = new PlayerPanel("Player who won Stich: ", players);
+		panel.add(playerWhoWonStichPanel);
 		CardPanel laidCardPanel = new CardPanel("laidCard:");
 		panel.add(laidCardPanel);
 		PlayerPanel playerPanel = new PlayerPanel("Player who made Turn:", players);
 		panel.add(playerPanel);
-		JCheckBox emptyDeckBox = new JCheckBox("emptyDeck");
-		panel.add(emptyDeckBox);
 		msgFrame.add(panel,MessageEnumeration.EndOfRoundInfoMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
 			@Override
@@ -167,9 +168,9 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 					score.scores.put(2, scoreTeam2Panel.getInt());
 					msg.score = score;
 					msg.gameOver = gameOverCheckBox.isSelected();
+					msg.playerWhoWonStich = playerWhoWonStichPanel.getPlayer();
 					msg.laidCard = laidCardPanel.getCard();
 					msg.player = playerPanel.getPlayer();
-					msg.emptyDeck = emptyDeckBox.isSelected();
 					client.handleReceivedMessage(msg);
 				}
 			}
@@ -306,6 +307,34 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			}
 		});
 	}
+	private void initialStichInfoMessage() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		PlayerPanel playerWhoWonStichPanel = new PlayerPanel("Player who won Stich:", players);
+		panel.add(playerWhoWonStichPanel);
+		
+		//Add stuff from extended 
+		panel.add(new JLabel("-------Fields from TurnInfoMessage--------"));
+		CardPanel laidCardPanel = new CardPanel("laidCard:");
+		panel.add(laidCardPanel);
+		PlayerPanel playerPanel = new PlayerPanel("Player who made Turn:", players);
+		panel.add(playerPanel);
+		msgFrame.add(panel,MessageEnumeration.TurnInfoMessage.toString());
+		btnReceive.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.StichInfoMessage) {
+					StichInfoMessage msg = new StichInfoMessage();
+					msg.playerWhoWonStich = playerWhoWonStichPanel.getPlayer();
+					msg.laidCard = laidCardPanel.getCard();
+					msg.player = playerPanel.getPlayer();
+					client.handleReceivedMessage(msg);
+				}
+			}
+		});
+	}
+	
 	private void initialTurnInfoMessage() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -313,8 +342,6 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 		panel.add(laidCardPanel);
 		PlayerPanel playerPanel = new PlayerPanel("player", players);
 		panel.add(playerPanel);
-		JCheckBox emptyDeckBox = new JCheckBox("emptyDeck");
-		panel.add(emptyDeckBox);
 		msgFrame.add(panel,MessageEnumeration.TurnInfoMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
 			@Override
@@ -323,7 +350,6 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 					TurnInfoMessage msg = new TurnInfoMessage();
 					msg.laidCard = laidCardPanel.getCard();
 					msg.player = playerPanel.getPlayer();
-					msg.emptyDeck = emptyDeckBox.isSelected();
 					client.handleReceivedMessage(msg);
 				}
 			}

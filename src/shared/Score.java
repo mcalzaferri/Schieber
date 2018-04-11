@@ -1,6 +1,5 @@
 package shared;
 
-import java.util.Enumeration;
 import java.util.Map;
 
 import ch.ntb.jass.common.entities.ScoreEntity;
