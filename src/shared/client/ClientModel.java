@@ -15,8 +15,8 @@ public class ClientModel {
 	private Trump trump;
 	private Weis[] possibleWiis;
 	private Score score;
-	private Integer activeSeatId;
-	private Boolean canSwitch;
+	private int activeSeatId;
+	private boolean canSwitch;
 	private GameState gameState;
 	
 	//Constructors
@@ -88,11 +88,11 @@ public class ClientModel {
 		this.activeSeatId = activeSeatId;
 	}
 
-	public Boolean getCanSwitch() {
+	public boolean getCanSwitch() {
 		return canSwitch;
 	}
 
-	public void setCanSwitch(Boolean canSwitch) {
+	public void setCanSwitch(boolean canSwitch) {
 		this.canSwitch = canSwitch;
 	}
 
