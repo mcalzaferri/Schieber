@@ -3,10 +3,10 @@ package client.test;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +18,7 @@ import shared.Player;
 import shared.Trump;
 import shared.Weis;
 import shared.client.ClientModel;
+import shared.client.GameState;
 
 public class ClientModelView extends JFrame{
 	private static final long serialVersionUID = -7761420473524430597L;
@@ -48,21 +49,10 @@ public class ClientModelView extends JFrame{
 		initialDeck();
 		initialTrump();
 		initialPossibleWiis();
-	}
-	
-	@SuppressWarnings("unused")
-	private void initialTemplate() {
-		JLabel label = new JLabel("Test");
-		label.setVisible(true);
-		mainFrame.add(label);
-		updateTimer.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		initialScore();
+		initialActiveSeatId();
+		initialCanSwitch();
+		initialGameState();
 	}
 	
 	private void initialThisPlayer() {
@@ -77,7 +67,6 @@ public class ClientModelView extends JFrame{
 			}
 		});
 	}
-	
 	private void initialPlayers() {
 		JPanel panel = new JPanel();
 		JPanel playerPanel = new JPanel();
@@ -134,7 +123,6 @@ public class ClientModelView extends JFrame{
 			}
 		});
 	}
-	
 	private void initialHand() {
 		CardPanel[] cardPanels = new CardPanel[9];
 		for(int i = 0; i < cardPanels.length; i++) {
@@ -212,7 +200,6 @@ public class ClientModelView extends JFrame{
 			}
 		});
 	}
-	
 	private void initialPossibleWiis() {
 		JPanel panel = new JPanel();
 		JPanel wiisPanel = new JPanel();
@@ -268,5 +255,92 @@ public class ClientModelView extends JFrame{
 			}
 		});
 	}
-	
+	private void initialScore() {
+		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createTitledBorder("Score"));
+		JLabel nullLabel = new JLabel("            null            ");
+		nullLabel.setVisible(false);
+		panel.add(nullLabel);
+		IntegerPanel[] teamScorePanels = new IntegerPanel[2];
+		teamScorePanels[0] = new IntegerPanel("ScoreTeam1");
+		teamScorePanels[1] = new IntegerPanel("ScoreTeam2");
+		for(IntegerPanel iPanel : teamScorePanels) {
+			iPanel.setEditable(false);
+			panel.add(iPanel);
+		}
+		mainFrame.add(panel);
+		updateTimer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(model.getScore() == null) {
+					for(IntegerPanel iPanel : teamScorePanels) {
+						iPanel.setVisible(false);
+					}
+					nullLabel.setVisible(true);
+				}else {
+					for(int i = 0; i < teamScorePanels.length; i++) {
+						teamScorePanels[i].setInt(model.getScore().scores.get((i+1)));
+						teamScorePanels[i].setVisible(true);
+					}
+					nullLabel.setVisible(false);
+				}
+				
+			}
+		});
+	}
+	private void initialActiveSeatId() {
+		IntegerPanel iPanel = new IntegerPanel("ActiveSeatId");
+		iPanel.setEditable(false);
+		mainFrame.add(iPanel);
+		updateTimer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				iPanel.setInt(model.getActiveSeatId());
+				
+			}
+		});
+	}
+	private void initialCanSwitch() {
+		JCheckBox canSwitchBox = new  JCheckBox("canSwitch");
+		canSwitchBox.setEnabled(false);
+		mainFrame.add(canSwitchBox);
+		updateTimer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				canSwitchBox.setSelected(model.getCanSwitch());
+				
+			}
+		});
+	}
+	private void initialGameState() {
+		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createTitledBorder("GameState"));
+		JComboBox<GameState> gameStateComboBox = new JComboBox<>(GameState.values());
+		gameStateComboBox.setEditable(false);
+		gameStateComboBox.setVisible(true);
+		panel.add(gameStateComboBox);
+		JLabel nullLabel = new JLabel("            null            ");
+		nullLabel.setVisible(false);
+		panel.add(nullLabel);
+		mainFrame.add(panel);
+updateTimer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GameState state = model.getGameState();
+				if(state != null) {
+					nullLabel.setVisible(false);
+					gameStateComboBox.setVisible(true);
+					gameStateComboBox.setSelectedItem(state);
+				}else {
+					nullLabel.setVisible(true);
+					gameStateComboBox.setVisible(false);
+				}
+				
+			}
+		});
+	}
 }
