@@ -2,6 +2,7 @@ package gui.playingView;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
@@ -83,12 +84,16 @@ public class ViewableCardTest extends JFrame{
 			
 		});
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		ViewableCard vc = new ViewableCard(c, obs);
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-		panel.add(vc);
+		ViewableCard vc = null;
+		try {
+			vc = new ViewableCard(c, obs);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.setSize(800, 800);
-		this.add(panel, BorderLayout.CENTER);
+		this.setLayout(new BorderLayout());
+		this.add(vc, BorderLayout.CENTER);
 		this.setVisible(true);
 	}
 }
