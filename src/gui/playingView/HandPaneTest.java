@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 import client.ViewEnumeration;
 import client.ViewObserver;
+import gui.ClientModelTest;
 import shared.Card;
 import shared.CardColor;
 import shared.CardList;
@@ -19,16 +20,13 @@ import shared.Trump;
 
 public class HandPaneTest extends JFrame{
 	private HandPane handPane; 
-	private CardList cards;
+	private ClientModelTest data;
 	public static void main(String[] args) {
 		HandPaneTest t = new HandPaneTest();
 	}
 	
 	public HandPaneTest() {
-		this.cards = new CardList();
-		for(int i = 0; i < 6; i++) {			
-			cards.add(this.createRandomCard());
-		}
+		data = new ClientModelTest();
 		ArrayList<ViewObserver> obs = new ArrayList<>();
 		obs.add(new ViewObserver() {
 
@@ -59,10 +57,8 @@ public class HandPaneTest extends JFrame{
 			@Override
 			public void btnCardClick(Card card) {
 				System.out.println(card.getColor().toString() + card.getValue());
-				cards.remove(card.getId());
-				cards.add(createRandomCard());
+				data.getHand().remove(card.getId());
 				handPane.update();
-				repaint();
 			}
 
 			@Override
@@ -91,14 +87,10 @@ public class HandPaneTest extends JFrame{
 			
 		});
 
-		this.handPane = new HandPane(cards, obs);
+		this.handPane = new HandPane(data, obs);
 		this.setSize(800,200);
 		this.add(handPane, BorderLayout.CENTER);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-	}
-	private Card createRandomCard() {
-		Random r = new Random();
-		return new Card(CardColor.getById(r.nextInt(4) + 1), CardValue.getById(r.nextInt(8) + 1));
 	}
 }
