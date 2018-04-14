@@ -88,15 +88,36 @@ public class IntelligenceNormal extends BotIntelligence {
 			
 			Card firstCard = deck.get(0);
 			
-			//Stich with Farbe if possible
-			for(Card wc : winningCards) {
-				if(wc.getColor() == firstCard.getColor()) {
-					return wc;
+			//play a highscoring card if partner has the best card
+			for(Card pc : this.getSicherenStichDuringPlay(partnerCards)) {
+				if(pc.getColor() == firstCard.getColor()) {
+					for(Card oc : allowedCards) {
+						if((oc.getColor() != trump.getTrumpfColor()) && (getScore(oc) >= 8)) {
+							return oc;
+						}
+					}
+				}
+			}
+			
+			// Stich with Farbe if possible and enemy out of this color
+			if(enemyLeftOutOfColor[firstCard.getId()-1]) { 
+				for(Card c : allowedCards) {
+					if(c.getColor() == firstCard.getColor() && getValue(c) > getValue(firstCard)) {
+						return c;
+					}
+				}
+			}
+			
+			// Stich with Farbe if possible and enemy out of Trumpf
+			if(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) { 
+				for(Card wc : winningCards) {
+					if(wc.getColor() == firstCard.getColor()) {
+						return wc;
+					}
 				}
 			}
 			
 			int score = getScore(firstCard);
-			
 			//stich if high scoring card (with Trumpf)
 			if(score >= 8) {
 				for(Card wc : winningCards) {
@@ -107,7 +128,73 @@ public class IntelligenceNormal extends BotIntelligence {
 		} else if(deck.size() == 2) { // I'm third to go (partner started)
 			// TODO implement logic
 		} else if(deck.size() == 3) { // last to go
-			// TODO implement logic
+
+			Card enemyLeftCard = deck.get(0); // is also first card
+			Card partnerCard = deck.get(1);
+			Card enemyRightCard = deck.get(2);
+			
+			int enemyLeftScore = getScore(enemyLeftCard);
+			int partnerScore = getScore(partnerCard);
+			int enemyRightScore = getScore(enemyRightCard);
+			
+			int enemyLeftValue = getValue(enemyLeftCard);
+			int partnerValue;
+			int enemyRightValue;
+			
+			// check if partner and enemycards match the first played color or trumpf
+			if((partnerCard.getColor() == enemyLeftCard.getColor()) || (partnerCard.getColor() == trump.getTrumpfColor())) {
+				partnerValue = getValue(partnerCard);
+			} else {
+				partnerValue = 0;
+			}
+			
+			if((enemyRightCard.getColor() == enemyLeftCard.getColor()) || (enemyRightCard.getColor() == trump.getTrumpfColor())) {
+				enemyRightValue = getValue(partnerCard);
+			} else {
+				enemyRightValue = 0;
+			}
+			
+			// partner is winning, try to schmier a 10 (or an 8 in Obenabe/undenufe)
+			if((partnerValue > enemyLeftValue) && (partnerValue > enemyRightValue)) {
+				for(Card c : allowedCards) {
+					if(getScore(c) == 8 || getScore(c) == 10) {
+						if(enemyLeftCard.getColor() == trump.getTrumpfColor()) {
+							return c;
+						} else if(c.getColor() != trump.getTrumpfColor()) { // don't schmier Trumpf
+							return c;
+						}
+					}
+				}
+			}
+			
+			// I can win with color
+			for(Card c : allowedCards) {
+				if(c.getColor() == enemyLeftCard.getColor()) {
+					if((getValue(c) > enemyLeftValue) && (getValue(c) > enemyRightValue)) {
+						return c;
+					}
+				}
+			}
+			
+			// I can win with a Trumpf (and the score is good)
+			if(enemyLeftCard.getColor() != trump.getTrumpfColor()) {
+				for(Card c : allowedCards) {
+					if((getValue(c) > enemyLeftValue) && (getValue(c) > enemyRightValue)) {
+						// good score, play low trumpf
+						if(enemyLeftScore + partnerScore + enemyRightScore >= 10) {
+							if(getScore(c) <= 10) {
+								return c;
+							}
+						}
+						
+						// awesome score, play any Trumpf
+						if(enemyLeftScore + partnerScore + enemyRightScore >= 20) {
+							return c;
+						}
+					}
+				}
+			}
+			
 		}
 		
 		// 1st fallback, apparently no good card on hand, don't play a scoring card
@@ -428,5 +515,31 @@ public class IntelligenceNormal extends BotIntelligence {
 			break;
 		}
 		return score;
+	}
+	
+	/**
+	 * This function returns the value of a card (depending on the current Gamemode/Trump
+	 * @param card
+	 * @return value
+	 */
+	public int getValue(Card c) {
+		int value = 0;
+		switch(trump.getGameMode()) {
+		case TRUMPF:
+			if(trump.getTrumpfColor() == c.getColor()) {
+				value = c.getValue().getTrumpValue() + 10; // make Trump more valueable than other colors
+			} else {
+				value = c.getValue().getDefaultValue();
+			}
+			break;
+		case OBENABE:
+			value = c.getValue().getDefaultValue();
+		case UNEUFE:
+			value = 16 - c.getValue().getDefaultValue(); // invert value for UNEUFE
+			break;
+		default:
+			break;
+		}
+		return value;
 	}
 }
