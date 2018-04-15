@@ -100,7 +100,7 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 			
 			// Stich with Farbe if possible and enemy out of this color
-			if(enemyLeftOutOfColor[firstCard.getId()-1]) { 
+			if(enemyLeftOutOfColor[firstCard.getColor().getId()-1]) { 
 				for(Card c : allowedCards) {
 					if(c.getColor() == firstCard.getColor() && getValue(c) > getValue(firstCard)) {
 						return c;
