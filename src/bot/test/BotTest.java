@@ -29,190 +29,150 @@ public class BotTest {
 		
 		long seed = 0;
 		
-		r = new Random(seed);
-		allCards = new ArrayList<>();
-		allCards = generateAllCards();
+		long now = System.currentTimeMillis();
 		
-		// Generate Random Hand and give to bots
-		ArrayList<Integer> bot1Hand = generateRandomHand();
-		bot1.setHand(al2A(bot1Hand));
-		ArrayList<Integer> bot2Hand = generateRandomHand();
-		bot2.setHand(al2A(bot2Hand));
-		ArrayList<Integer> bot3Hand = generateRandomHand();
-		bot3.setHand(al2A(bot3Hand));
-		ArrayList<Integer> bot4Hand = generateRandomHand();
-		bot4.setHand(al2A(bot4Hand));
-		
-		// Generate fixed hand
-		// int[] testHand = generateFixedHand();
-		
-		// print Hands
-		print("Hand Bot1", al2A(bot1Hand));
-		print("Hand Bot2", al2A(bot2Hand));
-		print("Hand Bot3", al2A(bot3Hand));
-		print("Hand Bot4", al2A(bot4Hand));
-		
-		// set IDs
-		bot1.setSelfID(0);
-		bot1.setEnemyLeftID(1);
-		bot1.setPartnerID(2);
-		bot1.setEnemyRightID(3);
-		
-		bot2.setSelfID(1);
-		bot2.setEnemyLeftID(2);
-		bot2.setPartnerID(3);
-		bot2.setEnemyRightID(0);
-		
-		bot3.setSelfID(2);
-		bot3.setEnemyLeftID(3);
-		bot3.setPartnerID(0);
-		bot3.setEnemyRightID(1);
-		
-		bot4.setSelfID(3);
-		bot4.setEnemyLeftID(0);
-		bot4.setPartnerID(1);
-		bot4.setEnemyRightID(2);
-		
-		
-		// select Trump
-		Trump trump = bot1.selectTrump(true);
-		System.out.println("Trump (Bot1)");
-		System.out.println("---------------");
-		System.out.println(trump);
-		System.out.println("----------------");
-		System.out.println();
-		
-		if(trump == Trump.SCHIEBEN) {
-			trump = bot3.selectTrump(false);
-			System.out.println("Trump (Bot3)");
+		// do a huge amount of games to test for unwanted exceptions
+		for(seed = 0; seed < 10000; seed++) {
+			
+			System.out.println("Seed: " + seed);
+
+			r = new Random(seed);
+			allCards = new ArrayList<>();
+			allCards = generateAllCards();
+
+			// Generate Random Hand and give to bots
+			ArrayList<Integer> bot1Hand = generateRandomHand();
+			bot1.setHand(al2A(bot1Hand));
+			ArrayList<Integer> bot2Hand = generateRandomHand();
+			bot2.setHand(al2A(bot2Hand));
+			ArrayList<Integer> bot3Hand = generateRandomHand();
+			bot3.setHand(al2A(bot3Hand));
+			ArrayList<Integer> bot4Hand = generateRandomHand();
+			bot4.setHand(al2A(bot4Hand));
+
+			// Generate fixed hand
+			// int[] testHand = generateFixedHand();
+
+			// print Hands
+			print("Hand Bot1", al2A(bot1Hand));
+			print("Hand Bot2", al2A(bot2Hand));
+			print("Hand Bot3", al2A(bot3Hand));
+			print("Hand Bot4", al2A(bot4Hand));
+
+			// set IDs
+			bot1.setSelfID(0);
+			bot1.setEnemyLeftID(1);
+			bot1.setPartnerID(2);
+			bot1.setEnemyRightID(3);
+
+			bot2.setSelfID(1);
+			bot2.setEnemyLeftID(2);
+			bot2.setPartnerID(3);
+			bot2.setEnemyRightID(0);
+
+			bot3.setSelfID(2);
+			bot3.setEnemyLeftID(3);
+			bot3.setPartnerID(0);
+			bot3.setEnemyRightID(1);
+
+			bot4.setSelfID(3);
+			bot4.setEnemyLeftID(0);
+			bot4.setPartnerID(1);
+			bot4.setEnemyRightID(2);
+
+
+			// select Trump
+			Trump trump = bot1.selectTrump(true);
+			System.out.println("Trump (Bot1)");
 			System.out.println("---------------");
 			System.out.println(trump);
 			System.out.println("----------------");
 			System.out.println();
-			
-		}
-		
-		//tell Trump to all Bots
-		bot1.setTrump(trump);
-		bot2.setTrump(trump);
-		bot3.setTrump(trump);
-		bot4.setTrump(trump);
-		
-		// playing round 1 (with Wiis)
-		int[] deck1 = new int[0];
-		updateBots(deck1, 0);
-		Card card1 = bot1.getNextCard();
-		ArrayList<Weis> weise = bot1.getWeise();
-		print("Bot1 plays",card1);
-		if(!weise.isEmpty()) {
-			print("Bot1 weises", weise);
-			Weis[] weisA = new Weis[weise.size()];
-			weise.toArray(weisA);
-			bot2.showWeis(weisA, 0);
-			bot3.showWeis(weisA, 0);
-			bot4.showWeis(weisA, 0);
-		}
-		
-		bot2.setActivePlayerID(1);
-		int[] deck2 = new int[1];
-		deck2[0] = card1.getId();
-		updateBots(deck2, 1);
-		Card card2 = bot2.getNextCard();
-		weise = bot2.getWeise();
-		print("Bot2 plays",card2);
-		if(!weise.isEmpty()) {
-			print("Bot2 weises", weise);
-			Weis[] weisA = new Weis[weise.size()];
-			weise.toArray(weisA);
-			bot1.showWeis(weisA, 1);
-			bot3.showWeis(weisA, 1);
-			bot4.showWeis(weisA, 1);
-		}
-		
-		bot3.setActivePlayerID(2);
-		int[] deck3 = new int[2];
-		deck3[0] = card1.getId();
-		deck3[1] = card2.getId();
-		updateBots(deck3,2);
-		Card card3 = bot3.getNextCard();
-		weise = bot3.getWeise();
-		print("Bot3 plays",card3);
-		if(!weise.isEmpty()) {
-			print("Bot3 weises", weise);
-			Weis[] weisA = new Weis[weise.size()];
-			weise.toArray(weisA);
-			bot1.showWeis(weisA, 2);
-			bot2.showWeis(weisA, 2);
-			bot4.showWeis(weisA, 2);
-		}
-		
-		bot4.setActivePlayerID(3);
-		int[] deck4 = new int[3];
-		deck4[0] = card1.getId();
-		deck4[1] = card2.getId();
-		deck4[2] = card3.getId();
-		updateBots(deck4,3);
-		Card card4 = bot4.getNextCard();
-		weise = bot4.getWeise();
-		print("Bot4 plays",card4);
-		if(!weise.isEmpty()) {
-			print("Bot4 weises", weise);
-			Weis[] weisA = new Weis[weise.size()];
-			weise.toArray(weisA);
-			bot1.showWeis(weisA, 3);
-			bot2.showWeis(weisA, 3);
-			bot3.showWeis(weisA, 3);
-		}
-		
-		// end round - update deck info
-		int[] fullDeck = new int[4];
-		fullDeck[0] = card1.getId();
-		fullDeck[1] = card2.getId();
-		fullDeck[2] = card3.getId();
-		fullDeck[3] = card4.getId();
-		updateBots(fullDeck,0);
-		bot1.updateMaxCards();
-		bot2.updateMaxCards();
-		bot3.updateMaxCards();
-		bot4.updateMaxCards();
-		
-		// update Hands
-		bot1Hand.remove((Integer) card1.getId());
-		bot1.setHand(al2A(bot1Hand));
-		bot2Hand.remove((Integer) card2.getId());
-		bot2.setHand(al2A(bot2Hand));
-		bot3Hand.remove((Integer) card3.getId());
-		bot3.setHand(al2A(bot3Hand));
-		bot4Hand.remove((Integer) card4.getId());
-		bot4.setHand(al2A(bot4Hand));
-	
-		// further rounds
-		for(int i = 2; i < 10; i++) {
-			System.out.println("Round " + i);
-			System.out.println("----------------------");
-			
-			updateBots(deck1,0);
-			card1 = bot1.getNextCard();
-			System.out.println("Bot1 plays: " + card1.getColor() + " " + card1.getValue());
-			
+
+			if(trump == Trump.SCHIEBEN) {
+				trump = bot3.selectTrump(false);
+				System.out.println("Trump (Bot3)");
+				System.out.println("---------------");
+				System.out.println(trump);
+				System.out.println("----------------");
+				System.out.println();
+
+			}
+
+			//tell Trump to all Bots
+			bot1.setTrump(trump);
+			bot2.setTrump(trump);
+			bot3.setTrump(trump);
+			bot4.setTrump(trump);
+
+			// playing round 1 (with Wiis)
+			int[] deck1 = new int[0];
+			updateBots(deck1, 0);
+			Card card1 = bot1.getNextCard();
+			ArrayList<Weis> weise = bot1.getWeise();
+			print("Bot1 plays",card1);
+			if(!weise.isEmpty()) {
+				print("Bot1 weises", weise);
+				Weis[] weisA = new Weis[weise.size()];
+				weise.toArray(weisA);
+				bot2.showWeis(weisA, 0);
+				bot3.showWeis(weisA, 0);
+				bot4.showWeis(weisA, 0);
+			}
+
+			bot2.setActivePlayerID(1);
+			int[] deck2 = new int[1];
 			deck2[0] = card1.getId();
-			updateBots(deck2,1);
-			card2 = bot2.getNextCard();
-			System.out.println("Bot2 plays: " + card2.getColor() + " " + card2.getValue());
-			
+			updateBots(deck2, 1);
+			Card card2 = bot2.getNextCard();
+			weise = bot2.getWeise();
+			print("Bot2 plays",card2);
+			if(!weise.isEmpty()) {
+				print("Bot2 weises", weise);
+				Weis[] weisA = new Weis[weise.size()];
+				weise.toArray(weisA);
+				bot1.showWeis(weisA, 1);
+				bot3.showWeis(weisA, 1);
+				bot4.showWeis(weisA, 1);
+			}
+
+			bot3.setActivePlayerID(2);
+			int[] deck3 = new int[2];
 			deck3[0] = card1.getId();
 			deck3[1] = card2.getId();
 			updateBots(deck3,2);
-			card3 = bot3.getNextCard();
-			System.out.println("Bot3 plays: " + card3.getColor() + " " + card3.getValue());
-			
+			Card card3 = bot3.getNextCard();
+			weise = bot3.getWeise();
+			print("Bot3 plays",card3);
+			if(!weise.isEmpty()) {
+				print("Bot3 weises", weise);
+				Weis[] weisA = new Weis[weise.size()];
+				weise.toArray(weisA);
+				bot1.showWeis(weisA, 2);
+				bot2.showWeis(weisA, 2);
+				bot4.showWeis(weisA, 2);
+			}
+
+			bot4.setActivePlayerID(3);
+			int[] deck4 = new int[3];
 			deck4[0] = card1.getId();
 			deck4[1] = card2.getId();
 			deck4[2] = card3.getId();
 			updateBots(deck4,3);
-			card4 = bot4.getNextCard();
-			System.out.println("Bot4 plays: " + card4.getColor() + " " + card4.getValue());
-			
+			Card card4 = bot4.getNextCard();
+			weise = bot4.getWeise();
+			print("Bot4 plays",card4);
+			if(!weise.isEmpty()) {
+				print("Bot4 weises", weise);
+				Weis[] weisA = new Weis[weise.size()];
+				weise.toArray(weisA);
+				bot1.showWeis(weisA, 3);
+				bot2.showWeis(weisA, 3);
+				bot3.showWeis(weisA, 3);
+			}
+
+			// end round - update deck info
+			int[] fullDeck = new int[4];
 			fullDeck[0] = card1.getId();
 			fullDeck[1] = card2.getId();
 			fullDeck[2] = card3.getId();
@@ -222,7 +182,8 @@ public class BotTest {
 			bot2.updateMaxCards();
 			bot3.updateMaxCards();
 			bot4.updateMaxCards();
-			
+
+			// update Hands
 			bot1Hand.remove((Integer) card1.getId());
 			bot1.setHand(al2A(bot1Hand));
 			bot2Hand.remove((Integer) card2.getId());
@@ -231,10 +192,59 @@ public class BotTest {
 			bot3.setHand(al2A(bot3Hand));
 			bot4Hand.remove((Integer) card4.getId());
 			bot4.setHand(al2A(bot4Hand));
-			
-			System.out.println();
+
+			// further rounds
+			for(int i = 2; i < 10; i++) {
+				System.out.println("Round " + i);
+				System.out.println("----------------------");
+
+				updateBots(deck1,0);
+				card1 = bot1.getNextCard();
+				System.out.println("Bot1 plays: " + card1.getColor() + " " + card1.getValue());
+
+				deck2[0] = card1.getId();
+				updateBots(deck2,1);
+				card2 = bot2.getNextCard();
+				System.out.println("Bot2 plays: " + card2.getColor() + " " + card2.getValue());
+
+				deck3[0] = card1.getId();
+				deck3[1] = card2.getId();
+				updateBots(deck3,2);
+				card3 = bot3.getNextCard();
+				System.out.println("Bot3 plays: " + card3.getColor() + " " + card3.getValue());
+
+				deck4[0] = card1.getId();
+				deck4[1] = card2.getId();
+				deck4[2] = card3.getId();
+				updateBots(deck4,3);
+				card4 = bot4.getNextCard();
+				System.out.println("Bot4 plays: " + card4.getColor() + " " + card4.getValue());
+
+				fullDeck[0] = card1.getId();
+				fullDeck[1] = card2.getId();
+				fullDeck[2] = card3.getId();
+				fullDeck[3] = card4.getId();
+				updateBots(fullDeck,0);
+				bot1.updateMaxCards();
+				bot2.updateMaxCards();
+				bot3.updateMaxCards();
+				bot4.updateMaxCards();
+
+				bot1Hand.remove((Integer) card1.getId());
+				bot1.setHand(al2A(bot1Hand));
+				bot2Hand.remove((Integer) card2.getId());
+				bot2.setHand(al2A(bot2Hand));
+				bot3Hand.remove((Integer) card3.getId());
+				bot3.setHand(al2A(bot3Hand));
+				bot4Hand.remove((Integer) card4.getId());
+				bot4.setHand(al2A(bot4Hand));
+
+				System.out.println();
+		}
 			
 		}
+		
+		System.out.println("elapsed time: " + (System.currentTimeMillis() - now) + " ms");
 		
 		
 

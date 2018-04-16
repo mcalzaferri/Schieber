@@ -109,10 +109,12 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 			
 			// Stich with Farbe if possible and enemy out of Trumpf
-			if(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) { 
-				for(Card wc : winningCards) {
-					if(wc.getColor() == firstCard.getColor()) {
-						return wc;
+			if(trump.getTrumpfColor() != null) {
+				if(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) { 
+					for(Card wc : winningCards) {
+						if(wc.getColor() == firstCard.getColor()) {
+							return wc;
+						}
 					}
 				}
 			}
