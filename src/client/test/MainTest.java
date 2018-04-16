@@ -1,4 +1,4 @@
-package client;
+package client.test;
 
 import bot.BotIntelligence;
 import bot.IntelligenceNormal;
@@ -6,9 +6,6 @@ import bot.VirtualClient;
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import client.ClientController;
-import client.test.ClientCommunicationSimulator;
-import client.test.ClientModelView;
-import client.test.MessageEnumeration;
 import gui.ClientModelTest;
 import gui.Gui;
 import shared.client.ClientModel;
