@@ -91,6 +91,45 @@ public class Card extends CardEntity{
      */
     private static int getValueId(int cardId) {return cardId%10;}
 
+    /** Checks if this card is allowed to be played in the current configuration of the players hand, the first card that was played and the current trump
+     * @param hand The current hand the player is holding. The card which is checked must be one of these cards.
+     * @param firstCardOnDeck The first card which was played onto the deck
+     * @param trump Current trump
+     * @return True if this card is allowed to be played.
+     */
+    public boolean isAllowed(Card[] hand, Card firstCardOnDeck, Trump trump) {
+    	//First handle null values
+    	if(hand == null || trump == null)
+    		return false; //Should not occur maybe throw error here
+    	else if(firstCardOnDeck == null)
+    		return true; //If there is no card on the deck all cards are allowed
+    	//Now handle all other cases
+    	
+    	if(firstCardOnDeck.getColor() == this.getColor())
+    		return true; //Same colored cards are always allowed. Nothing to explain here
+    	if(trump.getGameMode() == GameMode.TRUMPF && trump.getTrumpfColor() == this.getColor())
+    		return true; //Trump is always allowed. Nothing to explain here
+
+    	//Now the cases where this card is of different color and is only allowed if there is no card of the same color in the players hand (Except for buur)
+    	for(Card card : hand) {
+    		if(card.getColor() == firstCardOnDeck.getColor() && !card.isBuur(trump)) {
+    			return false; //There are other cards in the players hand which he has to play first.
+    		}
+    	}
+    	//Default case if the player has no other card he is forced to play before this one.
+    	return true;
+    }
+
+	/** Checks if this card is the buur (This is usefull as the buur must be handled differently as any other card)
+	 * @param trump The trump which is active
+	 * @return True if this card is of value UNDER and the same color as the trumpf
+	 */
+	public boolean isBuur(Trump trump) {
+		if(trump != null && trump.getGameMode() == GameMode.TRUMPF && trump.getTrumpfColor() == this.getColor() && this.getValue() == CardValue.UNDER)
+			return true;
+		return false;
+	}
+    
 	//Getter and Setter
 	public CardValue getValue() {
 		return value;
