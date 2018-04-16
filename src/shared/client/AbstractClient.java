@@ -87,7 +87,6 @@ public abstract class AbstractClient {
 				model.setActiveSeatId(msg.nextPlayer.seat.seatNr);
 				//If the player is you, select card
 				if(msg.nextPlayer.id == model.getThisPlayer().getId()) {
-					//TODO calculate all possible wiis and store them in the model
 					doRequestCard(msg.selectWeis);
 				}
 			}
@@ -168,6 +167,7 @@ public abstract class AbstractClient {
 			public void msgReceived(HandOutCardsMessage msg) {
 				model.getHand().updateData(msg.cards);
 				doUpdateHand(model.getHand().toArray());
+				//TODO calculate all possible wiis and store them in the model
 			}
 
 			@Override
