@@ -7,7 +7,19 @@ import client.ViewObserver;
 import gui.AbstractView;
 import shared.client.ClientModel;
 
+/**
+ * This class represents a playing field with a hand panel showing the
+ * players hand, a black board panel showing the team's score and a carpet
+ * panel showing the current deck.
+ * 
+ * @author mstieger
+ *
+ */
 public class PlayingFieldView extends AbstractView{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9149324107653292469L;
 	private HandPane hand;
 	private BlackBoardPane blackBoard;
 	private CarpetPane carpet;
@@ -36,9 +48,6 @@ public class PlayingFieldView extends AbstractView{
 	public void update() {
 		this.hand.update();
 		this.blackBoard.update();
-		this.carpet.update();
-		
+		this.carpet.update();		
 	}
-
-
 }
