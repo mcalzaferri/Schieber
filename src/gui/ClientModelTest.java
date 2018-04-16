@@ -1,5 +1,13 @@
 package gui;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Map;
+
+import ch.ntb.jass.common.entities.PlayerEntity;
+import shared.*;
+
+import java.net.InetSocketAddress;
 import java.util.Random;
 
 import shared.Card;
@@ -7,6 +15,7 @@ import shared.CardColor;
 import shared.CardList;
 import shared.CardValue;
 import shared.client.ClientModel;
+import shared.*;
 
 public class ClientModelTest extends ClientModel{
 	public ClientModelTest() {
@@ -20,10 +29,64 @@ public class ClientModelTest extends ClientModel{
 			cards.add(this.createRandomCard());
 		}
 		this.setHand(cards);
+		
+		Random r = new Random();
+		//Trump trump = createRandomTrump();
+
+		Weis[] weis = new Weis[3];
+		/*for(int i = 0; i < weis.length; i++) {	
+			weis[i] = this.createRandomWeis();
+		}*/
+		
+		Trump trump = Trump.UNEUFE;
+		this.setTrump(trump);
+		weis[0]= new Weis(WeisType.VIERGLEICHE, new Card(CardColor.SCHELLE,CardValue.NEUN));
+		
+		this.setTrump(trump);
+		weis[1]= new Weis(WeisType.VIERBLATT, new Card(CardColor.EICHEL,CardValue.SIEBEN));
+		
+		this.setTrump(trump);
+		weis[2]= new Weis(WeisType.NEUNBLATT, new Card(CardColor.SCHILTE,CardValue.SECHS));
+		
+		/*Trump trump = Trump.EICHEL;
+		this.setTrump(trump);
+		weis[0]= new Weis(WeisType.VIERGLEICHE, new Card(CardColor.SCHELLE,CardValue.OBER));
+
+		this.setTrump(trump);
+		weis[1]= new Weis(WeisType.ACHTBLATT, new Card(CardColor.EICHEL,CardValue.KOENIG));
+		
+		this.setTrump(trump);
+		weis[2]= new Weis(WeisType.NEUNBLATT, new Card(CardColor.SCHILTE,CardValue.ASS));*/
+		
+		this.setPossibleWiis(weis);
+		
+		Player player1 = new Player(null, "Peter", 2);
+		Player player2 = new Player(null, "Hannah", 0);
+		Player player3 = new Player(null, "Luise", 4);
+		
+		Player actPlayer = new Player(null,"Leon",0);
+		
+		Map<Integer,Player> players = new Hashtable<Integer, Player>();
+		players.put(1, player1);
+		players.put(2, player2);
+		players.put(3, player3);
+		
+		this.setThisPlayer(actPlayer);
+		this.setPlayers(players);
 	}
 	
 	private Card createRandomCard() {
 		Random r = new Random();
 		return new Card(CardColor.getById(r.nextInt(4) + 1), CardValue.getById(r.nextInt(8) + 1));
+	}
+	
+	private Weis createRandomWeis() {
+		Random r = new Random();
+		return new Weis(WeisType.getById(r.nextInt(11) + 1), new Card(CardColor.getById(r.nextInt(4) + 1), CardValue.getById(r.nextInt(8) + 1)));
+	}
+	
+	private Trump createRandomTrump() {
+		Random r = new Random();
+		return Trump.getById(r.nextInt(7)+1);
 	}
 }
