@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 public class TrumpView extends AbstractView{
 	private JButton eichelButton;
@@ -38,33 +39,40 @@ public class TrumpView extends AbstractView{
 		JPanel trumpViewPanel = new JPanel();
 		trumpViewPanel.setLayout(new GridLayout(7,2));
 		
-		trumpViewPanel.add(new JLabel(new ImageIcon("res/modes/Eichel.png")));
-		eichelButton = new JButton("Eichel");
-		trumpViewPanel.add(eichelButton);
+		try{
+			
+			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.EICHEL))));
+			eichelButton = new JButton("Eichel");
+			trumpViewPanel.add(eichelButton);
+			
+			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.ROSE))));
+			roseButton = new JButton("Rose");
+			trumpViewPanel.add(roseButton);
+			
+			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.SCHILTE))));
+			schilteButton = new JButton("Schilte");
+			trumpViewPanel.add(schilteButton);
+			
+			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.SCHELLE))));
+			schelleButton = new JButton("Schelle");
+			trumpViewPanel.add(schelleButton);
+			
+			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.OBENABE))));
+			obenabeButton = new JButton("Obenabe");
+			trumpViewPanel.add(obenabeButton);
+			
+			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.UNEUFE))));
+			undenufeButton = new JButton("Undenufe");
+			trumpViewPanel.add(undenufeButton);
+			
+			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.SCHIEBEN))));
+			schiebenButton = new JButton("Schieben");
+			trumpViewPanel.add(schiebenButton);
 		
-		trumpViewPanel.add(new JLabel(new ImageIcon("res/modes/Rosen.png")));
-		roseButton = new JButton("Rose");
-		trumpViewPanel.add(roseButton);
-		trumpViewPanel.add(new JLabel(new ImageIcon("res/modes/Schilten.png")));
-		
-		schilteButton = new JButton("Schilte");
-		trumpViewPanel.add(schilteButton);
-		
-		trumpViewPanel.add(new JLabel(new ImageIcon("res/modes/Schellen.png")));
-		schelleButton = new JButton("Schelle");
-		trumpViewPanel.add(schelleButton);
-		trumpViewPanel.add(new JLabel(new ImageIcon("res/modes/ObenAbe.png")));
-		
-		obenabeButton = new JButton("Obenabe");
-		trumpViewPanel.add(obenabeButton);
-		
-		trumpViewPanel.add(new JLabel(new ImageIcon("res/modes/UneUfe.png")));
-		undenufeButton = new JButton("Undenufe");
-		trumpViewPanel.add(undenufeButton);
-		
-		trumpViewPanel.add(new JLabel(new ImageIcon("res/modes/Schieben.png")));
-		schiebenButton = new JButton("Schieben");
-		trumpViewPanel.add(schiebenButton);
+		}catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		add(trumpViewPanel);
 		setSize(width,height);
