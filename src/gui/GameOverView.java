@@ -16,6 +16,7 @@ public class GameOverView extends AbstractView{
 
 	private JButton newRoundButton;
 	private JButton disconnectButton;
+	private JPanel buttonPanel;
 	
     private static final int width = 400;
     private static final int height = 200;
@@ -30,8 +31,13 @@ public class GameOverView extends AbstractView{
 		
 		newRoundButton = new JButton("neue Runde");
 		disconnectButton = new JButton("Beenden");
+		buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout());
+		buttonPanel.add(newRoundButton);
+		buttonPanel.add(disconnectButton);
 		JPanel endViewPanel = new JPanel();
-		endViewPanel.setLayout(new GridLayout(2,1));
+		endViewPanel.setLayout(new BorderLayout());
+		endViewPanel.add(buttonPanel,BorderLayout.SOUTH);
 		
 		newRoundButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -52,8 +58,7 @@ public class GameOverView extends AbstractView{
 		});
 		
 		
-		endViewPanel.add(newRoundButton);
-		endViewPanel.add(disconnectButton);
+
 		
 		add(endViewPanel);
 		setSize(width,height);
