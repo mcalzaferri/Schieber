@@ -41,7 +41,7 @@ public class BlackBoardDrawer {
 	 * @param title Title to be drawn onto component
 	 */
 	public void drawTitle(Graphics g, String title) {
-		titleOffset = (g.getFontMetrics().getHeight());
+		titleOffset = (int) (g.getFontMetrics().getHeight());
 		g.drawString(title, bounds.x, bounds.y + titleOffset);		
 		g.drawLine(bounds.x, bounds.y + titleOffset, 
 				bounds.x + g.getFontMetrics().stringWidth(title), bounds.y + titleOffset);
