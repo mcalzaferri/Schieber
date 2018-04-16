@@ -14,7 +14,7 @@ public class PlayingFieldView extends AbstractView{
 	
 	public PlayingFieldView(ViewEnumeration viewType, ArrayList<ViewObserver> observers, ClientModel data) {
 		super(viewType, observers);
-		this.hand = new HandPane(data.getHand(), observers);
+		this.hand = new HandPane(data, observers);
 		this.blackBoard = new BlackBoardPane(data, observers);
 		this.carpet = new CarpetPane(data, observers);
 		layoutView();

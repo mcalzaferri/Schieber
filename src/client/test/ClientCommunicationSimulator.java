@@ -35,8 +35,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	
 	
 	
-	public ClientCommunicationSimulator(AbstractClient client) {
-		this.client = client;
+	public ClientCommunicationSimulator() {
 		initialPlayers();
 		initialComponents();
 	}
@@ -557,6 +556,11 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			}
 		}
 		outputArea.append("------------END------------\n");
+	}
+
+	//Getters and setters
+	public void setClient(AbstractClient client) {
+		this.client = client;
 	}
 }
 

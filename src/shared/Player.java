@@ -22,7 +22,7 @@ public class Player extends PlayerEntity {
 		this.isReady = isReady;
 		this.id = id;
 		cards = null;
-		if (name.isEmpty()) {
+		if (name.isEmpty() && address != null) {
 			this.name = address.toString();
 		} else {
 			this.name = name;

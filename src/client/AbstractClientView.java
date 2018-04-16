@@ -1,6 +1,5 @@
 package client;
 
-import shared.*;
 import shared.client.ClientModel;
 
 public abstract class AbstractClientView {
