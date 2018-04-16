@@ -5,6 +5,18 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager2;
 
+/**
+ * This class layouts its component in order to fit a playing view
+ * containing the following components:
+ * * carpet:	In the upper left corner
+ * * blackboard:	In the upper right corner
+ * * hand:	below the carpet
+ * 
+ * This layout manager therefore respects each components minimum size.
+ * 
+ * @author mstieger
+ *
+ */
 public class PlayingFieldLayout implements LayoutManager2{
 
     public static final String CARPET  = "Carpet";
@@ -39,16 +51,9 @@ public class PlayingFieldLayout implements LayoutManager2{
 	}
 	@Override
 	public Dimension preferredLayoutSize(Container parent) {
-		Dimension carpet = this.carpet.getPreferredSize();
-		Dimension blackboard = this.blackboard.getPreferredSize();
-		Dimension hand = this.hand.getPreferredSize();
-		
-		//Calculate preferred height
-		int height = Math.max(blackboard.height, carpet.height) + hand.height;
-		//Calculate preferred width
-		int width = Math.max(carpet.width + blackboard.width, hand.width);
-		return new Dimension(width, height);
+		return this.minimumLayoutSize(parent);	//Ensures that calling pack method on the frame does not result in an exception
 	}
+	
 	@Override
 	public Dimension minimumLayoutSize(Container parent) {
 		Dimension carpet = this.carpet.getMinimumSize();
@@ -64,31 +69,34 @@ public class PlayingFieldLayout implements LayoutManager2{
 	
 	@Override
 	public void layoutContainer(Container parent) {
-		//TODO Not catched if components are null
-		Dimension act = parent.getSize();
-		Dimension min = this.minimumLayoutSize(parent);
-		
-		//Scaling according to width
-		act.width = Math.max(act.width, min.width);
-		double scaling = (double)act.width/(double)min.width;
-		
-		//Set bounds
-		int x=0, y=0, w=(int)(scaling*min.width), h=(int)(scaling*min.height);
-		parent.setBounds(x, y, w, h);
-		
-		x = 0; y=0; 
-		w=(int)(scaling*carpet.getMinimumSize().width); h = (int)(scaling*carpet.getMinimumSize().height);
-		carpet.setBounds(0, 0, w, h);
-		
-		x = w; y = 0; 
-		w = (int)(scaling*blackboard.getMinimumSize().width); h = (int)(scaling*blackboard.getMinimumSize().height);
-		blackboard.setBounds(x, y, w, h);
-		
-		x = 0; y = (int)(scaling*(min.height - hand.getMinimumSize().height));
-		w = (int)(scaling*hand.getMinimumSize().width); h = (int)(scaling*hand.getMinimumSize().height);
-		hand.setBounds(x, y, w, h);
+		//Only works if all components are not null
+		if(this.carpet != null && this.blackboard != null && this.hand != null) {
+			Dimension act = parent.getSize();
+			Dimension min = this.minimumLayoutSize(parent);
+			
+			//Scaling according to width
+			act.width = Math.max(act.width, min.width);
+			double scaling = (double)act.width/(double)min.width;
+			
+			//Set bounds
+			int x=0, y=0, w=(int)(scaling*min.width), h=(int)(scaling*min.height);
+			parent.setBounds(x, y, w, h);
+			
+			x = 0; y=0; 
+			w=(int)(scaling*carpet.getMinimumSize().width); h = (int)(scaling*carpet.getMinimumSize().height);
+			carpet.setBounds(0, 0, w, h);
+			
+			x = w; y = 0; 
+			w = (int)(scaling*blackboard.getMinimumSize().width); h = (int)(scaling*blackboard.getMinimumSize().height);
+			blackboard.setBounds(x, y, w, h);
+			
+			x = 0; y = (int)(scaling*(min.height - hand.getMinimumSize().height));
+			w = (int)(scaling*hand.getMinimumSize().width); h = (int)(scaling*hand.getMinimumSize().height);
+			hand.setBounds(x, y, w, h);		
+		}
 		
 	}
+	
 	@Override
 	public void addLayoutComponent(Component comp, Object constraints) {
 		synchronized (comp.getTreeLock()) {

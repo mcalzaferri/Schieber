@@ -1,10 +1,7 @@
 package gui.playingView;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -12,79 +9,94 @@ import java.io.IOException;
 import gui.Gui;
 import shared.Trump;
 
+/**
+ * Draws content over a graphics object onto a component. The class supports
+ * title, text and trump to be drawn.
+ * 
+ * @author mstieger
+ *
+ */
 public class BlackBoardDrawer {
 	private Rectangle bounds;
-	private Font font;
-	private double scale;
-	public final double titleFactor = 1.5;
+	private int titleOffset;
 	
 	public BlackBoardDrawer() {
 		this.bounds = new Rectangle();
-		this.font = new Font("MV Boli" ,Font.PLAIN, 36);
-		this.scale = 1;
+		this.titleOffset = 0;
 	}
+	/**
+	 * Sets the drawers bounds
+	 * 
+	 * @param bounds Bounds within the content is drawn
+	 */
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
 	}
-	
-	public void setFont(Font font) {
-		this.font = font;
-	}
-	
-	public void setScale(double scale) {
-		this.scale = scale;
-	}
-	public void drawText(Graphics g, String[] text) {
 
-		int x = (int)(scale*bounds.x);
-		int y = (int)(scale*(bounds.y + this.font.getSize()*this.titleFactor));
+	/**
+	 * Draws a title onto the graphics object by using the graphics font. The title
+	 * is drawn underlined at the top of the drawers bounds.
+	 * 
+	 * @param g Graphics object of component
+	 * @param title Title to be drawn onto component
+	 */
+	public void drawTitle(Graphics g, String title) {
+		titleOffset = (int) (g.getFontMetrics().getHeight());
+		g.drawString(title, bounds.x, bounds.y + titleOffset);		
+		g.drawLine(bounds.x, bounds.y + titleOffset, 
+				bounds.x + g.getFontMetrics().stringWidth(title), bounds.y + titleOffset);
+		
+	}
+	
+	/**
+	 * Draws text with the given font onto the component by using the graphics object.
+	 * Each line of the text array therefore resembles a line of text on the component.
+	 * This method should always be called after the drawTitle method if a title is needed.
+	 * 
+	 * @param g Graphics object of component
+	 * @param text Text to be drawn onto component (each element resembles a line)
+	 */
+	public void drawText(Graphics g, String[] text) {
+		int x = bounds.x;
+		int y = bounds.y + titleOffset + g.getFontMetrics().getHeight();
+				
 		for(int i = 0; i < text.length; i++) {
-			if(i == 0) {
-				//Draw title
-				Font titleFont = this.getTitleFont();
-				g.setFont(titleFont);
-				g.setColor(Color.WHITE);
-				g.drawString(text[i], x, y);
-				y += titleFont.getSize();
-			}
-			else {
-				//Draw text
-				Font f = this.getNormalFont();
-				g.setFont(f);
-				g.setColor(Color.white);
-				g.drawString(text[i], x, y);
-				y += f.getSize();
-			}
+			//Draw text
+			g.drawString(text[i], x, y);
+			y += g.getFontMetrics().getHeight();
 		}
+		
+		titleOffset = 0;
 	}
 	private BufferedImage img;
 	private Trump trump;
-	public void drawTrump(Graphics g, Trump trump) {
+	/**
+	 * Draw the trump with its text and picture at the bottom the drawers bounds.
+	 * 
+	 * @param g Graphics object of component
+	 * @param trump Actual trump
+	 * @param size Size of the trump picture
+	 */
+	public void drawTrump(Graphics g, Trump trump, Dimension size) {
 		
-		try {
-			g.setFont(this.getNormalFont());
-			g.setColor(Color.WHITE);
-			g.drawString(trump.toString(), (int)(scale*bounds.x), (int)(scale*(bounds.y + bounds.height/2)));
-			
-			Dimension d = new Dimension((int)(scale*50), (int)(scale*70));
-			if(img == null || this.trump == null || this.trump != trump) {
-				this.trump = trump;
-				img = Gui.pictureFactory.getPicture(trump);
-			}
-			g.drawImage(Gui.pictureFactory.getScaledPicture(img, d), 
-					(int)(scale*(bounds.x + bounds.width/2) - d.getWidth()/2), (int)(scale*(bounds.y + bounds.height/2) - d.getHeight()/2), null);
+		try {		
+			if(trump != null) {
+				if(img == null || this.trump != trump) {
+					this.trump = trump;
+					img = Gui.pictureFactory.getPicture(trump);
+				}
+				g.drawImage(Gui.pictureFactory.getScaledPicture(img, size), 
+						bounds.x + g.getFontMetrics().stringWidth(trump.toString()), 
+						bounds.y + bounds.height - g.getFontMetrics().getHeight(), null);
+				
+				g.drawString(trump.toString(), bounds.x, 
+						bounds.y + bounds.height);
+			}			
 						
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-	}
-	private Font getNormalFont() {
-		return new Font(this.font.getFontName(), this.font.getStyle(), (int)(this.font.getSize() * scale));
-	}
-	
-	private Font getTitleFont() {
-		return new Font(this.font.getFontName(), Font.BOLD, (int)(this.font.getSize()*this.titleFactor*scale));
 	}
 }

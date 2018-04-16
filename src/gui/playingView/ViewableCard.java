@@ -21,10 +21,15 @@ import shared.Card;
  *
  */
 public class ViewableCard extends JButton{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3420841619970204936L;
 	private Card card;
 	private ArrayList<ViewObserver> observers;
 	private BufferedImage img;
-	public final Dimension minCardSize = new Dimension(100, 160);
+	
+	public static final Dimension minCardSize = new Dimension(100, 160);
 	
 	/**
 	 * Creates a new viewable card and loads a corresponding image from file system.

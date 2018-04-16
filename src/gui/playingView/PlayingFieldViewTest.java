@@ -10,6 +10,7 @@ import shared.Card;
 import shared.CardColor;
 import shared.CardList;
 import shared.CardValue;
+import shared.Player;
 import shared.Seat;
 import shared.ServerAddress;
 import shared.Trump;
@@ -94,6 +95,7 @@ public class PlayingFieldViewTest {
 		this.data.setHand(cards);
 		data.setTrump(Trump.EICHEL);
 		data.setDeck(cards);
+
 		this.pfv = new PlayingFieldView(ViewEnumeration.PLAYVIEW, obs, data);
 	}
 	private Card createRandomCard() {

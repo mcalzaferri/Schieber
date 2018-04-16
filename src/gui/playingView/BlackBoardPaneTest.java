@@ -10,11 +10,11 @@ public class BlackBoardPaneTest extends JFrame{
 	private BlackBoardPane pane;
 	public static void main(String[] args) {
 		BlackBoardPaneTest t = new BlackBoardPaneTest();
-		String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment()
-	            .getAvailableFontFamilyNames();
-
-	      for (String fontName : fontNames)
-	         System.out.println(fontName);
+//		String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment()
+//	            .getAvailableFontFamilyNames();
+//
+//	      for (String fontName : fontNames)
+//	         System.out.println(fontName);
 	}
 	
 	public BlackBoardPaneTest() {

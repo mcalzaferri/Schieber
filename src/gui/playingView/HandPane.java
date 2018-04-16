@@ -1,5 +1,6 @@
 package gui.playingView;
 
+import java.awt.Dimension;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -36,6 +37,7 @@ public class HandPane extends JPanel{
 	 */
 	private void initializeComponents() {
 		this.setLayout(new HandLayout());
+		this.setMinimumSize(new Dimension(CarpetPane.minCarpetSize.width, ViewableCard.minCardSize.height));
 		this.update();
 	}
 	
