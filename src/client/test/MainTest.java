@@ -11,6 +11,7 @@ import gui.Gui;
 import shared.client.ClientModel;
 import shared.*;
 
+@SuppressWarnings("all")
 public class MainTest {
 
 	public static void main(String[] args) {

@@ -6,12 +6,9 @@ import java.net.InetSocketAddress;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.*;
-import shared.Card;
+
 import shared.Communication;
 import shared.InternalMessage;
-import shared.ServerAddress;
-import shared.Trump;
-import shared.Weis;
 import shared.client.AbstractClient;
 
 public class ClientCommunication extends Communication {
@@ -54,7 +51,8 @@ public class ClientCommunication extends Communication {
 
 	public void disconnect() {
 		LeaveTableMessage msg = new LeaveTableMessage();
-		// TODO send(msg);
+		send(msg);
+		// TODO what do now?
 	}
 
 	/**
