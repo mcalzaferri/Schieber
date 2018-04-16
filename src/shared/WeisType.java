@@ -58,7 +58,32 @@ public enum WeisType {
 		}
 		return null;
 	}
-		
+
+	/** Returns the weisType which represents the count number of cards in a row
+	 * @param count
+	 * @return
+	 */
+	public static WeisType getByCount(int count) {
+		switch(count) {
+		case 3:
+			return WeisType.DREIBLATT;
+		case 4:
+			return WeisType.VIERBLATT;
+		case 5:
+			return WeisType.FUENFBLATT;
+		case 6:
+			return WeisType.SECHSBLATT;
+		case 7:
+			return WeisType.SIEBENBLATT;
+		case 8:
+			return WeisType.ACHTBLATT;
+		case 9:
+			return WeisType.NEUNBLATT;
+		default:
+			return null;
+		}
+	}
+	
 	public WeisTypeEntity getEntity() {
 		return WeisTypeEntity.getById(id);
 	}

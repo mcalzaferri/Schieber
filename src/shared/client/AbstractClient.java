@@ -167,7 +167,7 @@ public abstract class AbstractClient {
 			public void msgReceived(HandOutCardsMessage msg) {
 				model.getHand().updateData(msg.cards);
 				doUpdateHand(model.getHand().toArray());
-				//TODO calculate all possible wiis and store them in the model
+				model.setPossibleWiis(model.getHand().getPossibleWiis(model.getTrump()));
 			}
 
 			@Override
