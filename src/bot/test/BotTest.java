@@ -32,11 +32,15 @@ public class BotTest {
 		long now = System.currentTimeMillis();
 		
 		// do a huge amount of games to test for unwanted exceptions
-		for(seed = 0; seed < 10000; seed++) {
+		 for(seed = 0; seed < 10000; seed++) {
+		
 			
 			System.out.println("Seed: " + seed);
 
-			r = new Random(seed);
+			// r = new Random(seed);
+			// Alternative: do tests without fixed seeds to do even more different combinations
+			r = new Random();
+			
 			allCards = new ArrayList<>();
 			allCards = generateAllCards();
 
