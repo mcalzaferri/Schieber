@@ -10,6 +10,7 @@ import shared.Team;
 import shared.Trump;
 import shared.Weis;
 import shared.client.AbstractClient;
+import shared.client.ClientModel;
 
 public class VirtualClient extends AbstractClient {
 
@@ -18,8 +19,8 @@ public class VirtualClient extends AbstractClient {
 	private int mySeatId;
 	private Score score;
 	
-	public VirtualClient(ClientCommunication com) {
-		super(com);
+	public VirtualClient(ClientCommunication com, ClientModel model) {
+		super(com, model);
 	}
 
 	@Override
