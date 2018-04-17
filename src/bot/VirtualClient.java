@@ -13,7 +13,7 @@ import shared.client.AbstractClient;
 
 public class VirtualClient extends AbstractClient {
 
-	private BotIntelligence ki = new IntelligenceRandom(); // set random intelligence by default
+	private BotIntelligence ki = new IntelligenceNormal(); // set normal intelligence by default
 	public Boolean active;
 	private int mySeatId;
 	private Score score;
