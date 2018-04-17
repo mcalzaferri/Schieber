@@ -83,7 +83,7 @@ public class HandLayout implements LayoutManager{
 			}
 		}
 		//Horizontally overlap components
-		else {
+		else if(parent.getComponentCount() > 0){
 			int offset = (int)((act.width - parent.getComponent(parent.getComponentCount()-1).getMinimumSize().width*scale)/(parent.getComponentCount()-1));
 			for(int i = 0; i < parent.getComponentCount(); i++) {
 				Component c = parent.getComponent(i);
