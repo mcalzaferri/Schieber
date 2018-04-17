@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import client.ClientCommunication;
 import shared.ServerAddress;
+import shared.client.ClientModel;
 
 public class BotApplication {
 
@@ -18,7 +19,7 @@ public class BotApplication {
 		communication.open();
 		communication.connect(new InetSocketAddress("146.136.43.84",port));
 
-		VirtualClient vc = new VirtualClient(communication);
+		VirtualClient vc = new VirtualClient(communication, new ClientModel());
 		vc.setIntelligence(new IntelligenceNormal());
 
 

@@ -12,6 +12,7 @@ import bot.IntelligenceNormal;
 import bot.VirtualClient;
 import client.ClientCommunication;
 import server.ServerApp;
+import shared.client.ClientModel;
 
 public class ServerBotIntegrationTest {
 	final int serverListenPort = 65000;
@@ -37,7 +38,7 @@ public class ServerBotIntegrationTest {
 		cCom =  new ClientCommunication();
 		cCom.setReceiveTimeout(100);
 		cCom.open();
-		client = new VirtualClient(cCom);
+		client = new VirtualClient(cCom, new ClientModel());
 		client.setIntelligence(new IntelligenceNormal());
 
 	}
