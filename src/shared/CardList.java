@@ -133,6 +133,11 @@ public class CardList extends ArrayList<Card>{
 				if(id + 1 == tempList.get(i).getId()) {
 					id = tempList.get(i).getId();
 					sequenceCount++;
+					//Check for STOECK
+					if(sequenceCount == 2 && trump.getGameMode() == GameMode.TRUMPF && trump.getTrumpfColor() == tempList.get(i).getColor() && tempList.get(i).getValue() == CardValue.KOENIG) {
+						//STOECK
+						wiis.add(new Weis(WeisType.STOECK, tempList.getCardById(id)));
+					}
 				}else {
 					//If the sequence has ended check if the sequence is longer then 3 and therefore is a possible weis
 					if(sequenceCount >= 3) {
@@ -143,10 +148,9 @@ public class CardList extends ArrayList<Card>{
 							//Return the lowest card in case of Uneufe
 							wiis.add(new Weis(WeisType.getByCount(sequenceCount), tempList.getCardById(id - (sequenceCount -1))));
 						}
-					}else if(sequenceCount == 2 && trump.getGameMode() == GameMode.TRUMPF && trump.getTrumpfColor() == tempList.get(i).getColor() && tempList.get(i).getValue() == CardValue.KOENIG) {
-						//STOECK
-						wiis.add(new Weis(WeisType.STOECK, tempList.getCardById(id)));
 					}
+					sequenceCount = 0;
+					id = tempList.get(i).getId();
 				}
 			}
 		}
