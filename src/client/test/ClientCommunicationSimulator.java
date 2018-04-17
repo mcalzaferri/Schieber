@@ -43,11 +43,11 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	//Methods
 	public void initialPlayers() {
 		players = new Player[5];
-		players[0] = new Player(null, "Enemy1", 2,false,true,false,1);
-		players[1] = new Player(null, "Enemy2", 4,false,true,false,2);
-		players[2] = new Player(null, "Friend", 3,false,true,false,3);
-		players[3] = new Player(null, "YOU" , 1,false,true,false,4);
-		players[4] = new Player(null, "PlayerInLobby", 0,false,false,false,0);
+		players[0] = new Player(null, "Enemy1", Seat.LEFTENEMY,false,true,false,1);
+		players[1] = new Player(null, "Enemy2", Seat.RIGHTENEMY,false,true,false,2);
+		players[2] = new Player(null, "Friend", Seat.PARTNER,false,true,false,3);
+		players[3] = new Player(null, "YOU" , Seat.CLIENT,false,true,false,4);
+		players[4] = new Player(null, "PlayerInLobby", Seat.NOTATTABLE,false,false,false,0);
 	}
 	
 	public void initialComponents() {

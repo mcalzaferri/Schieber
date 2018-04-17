@@ -14,9 +14,9 @@ public class Player extends PlayerEntity {
 	private InetSocketAddress address;
 
 	//Constructors
-	public Player(InetSocketAddress address, String name, int seatNr, boolean isBot, boolean isAtTable, boolean isReady, int id) {
+	public Player(InetSocketAddress address, String name, Seat seat, boolean isBot, boolean isAtTable, boolean isReady, int id) {
 		this.address = address;
-		this.seat = new Seat(seatNr);
+		this.seat = seat;
 		this.isBot = isBot;
 		this.isAtTable = isAtTable;
 		this.isReady = isReady;
@@ -29,18 +29,18 @@ public class Player extends PlayerEntity {
 		}
 	}
 
-	public Player(InetSocketAddress address, String name, int seatNr) {
-		this(address,name,seatNr,false,false,false,0);
+	public Player(InetSocketAddress address, String name, Seat seat) {
+		this(address,name,seat,false,false,false,0);
 	}
 
 	public Player(PlayerEntity entity) {
-		this(null, entity.name,entity.seat.seatNr,entity.isBot,false,false,entity.id);
+		this(null, entity.name,Seat.getBySeatNr(entity.seat.seatNr),entity.isBot,false,false,entity.id);
 	}
 
 	//Methods
 	public void update(PlayerEntity entity) {
 		if(id == entity.id) {
-			seat = new Seat(entity.seat.seatNr);
+			seat = Seat.getBySeatNr(entity.seat.seatNr);
 			name = entity.name;
 			isBot = entity.isBot;
 		}
@@ -64,11 +64,11 @@ public class Player extends PlayerEntity {
 	}
 
 	public void setSeatNr(int nr) {
-		seat.seatNr = nr;
+		seat = Seat.getBySeatNr(nr);
 	}
 
 	public int getSeatNr() {
-		return seat.seatNr;
+		return seat.getSeatEntity().seatNr;
 	}
 
 	public int getId() {

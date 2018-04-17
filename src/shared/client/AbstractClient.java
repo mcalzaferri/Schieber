@@ -250,14 +250,13 @@ public abstract class AbstractClient {
 	}
 	protected void joinLobby(String username) {
 		JoinLobbyMessage msg = new JoinLobbyMessage();
-		model.setThisPlayer(new Player(null,username,0));
+		model.setThisPlayer(new Player(null,username,Seat.NOTATTABLE));
 		msg.playerData = model.getThisPlayer();
 		com.send(msg);
 	}
-	protected void joinTable(int preferedSeat) {
+	protected void joinTable(Seat preferedSeat) {
 		JoinTableMessage msg = new JoinTableMessage();
-		msg.preferedSeat = new SeatEntity();
-		msg.preferedSeat.seatNr = preferedSeat;
+		msg.preferedSeat = preferedSeat.getSeatEntity();
 		com.send(msg);
 	}
 	protected void leaveLobby() {

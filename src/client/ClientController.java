@@ -180,7 +180,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void btnJoinTableClick(Seat preferedSeat) {
-		super.joinTable(preferedSeat.seatNr);
+		super.joinTable(preferedSeat);
 		
 	}
 

@@ -13,6 +13,7 @@ import gui.BufferedDrawer;
 import gui.Gui;
 import gui.PictureFactory.Pictures;
 import shared.Player;
+import shared.Seat;
 import shared.client.ClientModel;
 
 public class CarpetPane extends JPanel{
@@ -72,7 +73,7 @@ public class CarpetPane extends JPanel{
 		bg.drawImage(Gui.pictureFactory.getScaledPicture(imgCarpet, carpetSize), 0, 0, null);
 		drawer.drawDeck(bg, data.getDeck(), carpetSize, cardSize);
 		//TODO get player data from client model
-		Player p = new Player(null, "John Doe", 0, false, false, false, 0);
+		Player p = new Player(null, "John Doe", Seat.NOTATTABLE, false, false, false, 0);
 		drawer.drawPlayer(bg, "North", p, carpetSize, coverSize);
 		drawer.drawPlayer(bg, "East", p, carpetSize, coverSize);
 		drawer.drawPlayer(bg, "South", p, carpetSize, coverSize);

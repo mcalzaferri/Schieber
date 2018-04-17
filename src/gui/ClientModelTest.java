@@ -60,11 +60,11 @@ public class ClientModelTest extends ClientModel{
 		
 		this.setPossibleWiis(weis);
 		
-		Player player1 = new Player(null, "Peter", 2);
-		Player player2 = new Player(null, "Hannah", 0);
-		Player player3 = new Player(null, "Luise", 4);
+		Player player1 = new Player(null, "Peter", Seat.LEFTENEMY);
+		Player player2 = new Player(null, "Hannah", Seat.NOTATTABLE); //TODO maybe this is partner? mcalzaferri
+		Player player3 = new Player(null, "Luise", Seat.RIGHTENEMY);
 		
-		Player actPlayer = new Player(null,"Leon",0);
+		Player actPlayer = new Player(null,"Leon",Seat.NOTATTABLE); //TODO maybe this is client? mcalzaferri
 		
 		Map<Integer,Player> players = new Hashtable<Integer, Player>();
 		players.put(1, player1);

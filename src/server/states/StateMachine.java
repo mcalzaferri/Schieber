@@ -13,6 +13,7 @@ import ch.ntb.jass.common.proto.server_messages.GameStateMessage;
 import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
 import shared.InternalMessage;
 import shared.Player;
+import shared.Seat;
 
 /**
  * Keeps track of the current state and handles joining and leaving players.
@@ -81,7 +82,7 @@ public class StateMachine {
 		if(playerData.name == null || playerData.name.isEmpty()) {
 			playerData.name = "@" + playerAddr;
 		}
-		Player sender = new Player(playerAddr, playerData.name, 0,
+		Player sender = new Player(playerAddr, playerData.name, Seat.NOTATTABLE,
 				playerData.isBot, false, false, GameState.logic.getPlayerCount());
 		GameState.logic.addPlayer(sender);
 
