@@ -5,5 +5,6 @@ public enum ViewEnumeration {
 	SELECTTRUMPVIEW,
 	PLAYVIEW,
 	GAMEOVERVIEW,
-	WEISVIEW
+	WEISVIEW,
+	LOBBYVIEW;
 }
