@@ -10,6 +10,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.nio.charset.Charset;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ntb.jass.common.proto.Message;
 
@@ -19,10 +23,13 @@ public class Communication {
 	private byte[] receiveBuffer;
 	private DatagramSocket socket;
 	private DatagramPacket receivePacket;
+	private ObjectMapper objectMapper;
 
 	public Communication() {
 		receiveBuffer = new byte[bufferSize];
 		receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
+
+		objectMapper = new ObjectMapper();
 	}
 
 	/**
@@ -48,16 +55,13 @@ public class Communication {
 		socket.receive(receivePacket);
 		System.out.println("Packet received");
 
-		// deserialize message (will be replaced with json deserialization later)
-		ObjectInputStream objIn = new ObjectInputStream(
-				new ByteArrayInputStream(receivePacket.getData()));
-		InternalMessage msg = new InternalMessage();
 		try {
-			msg.message = (Message)objIn.readObject();
+			InternalMessage msg = new InternalMessage();
+			msg.message = objectMapper.readValue(receivePacket.getData(), Message.class);
 			msg.senderAddress = (InetSocketAddress)receivePacket.getSocketAddress();
 			return msg;
-		} catch(InvalidClassException e) {
-			System.err.println("Invalid object received.");
+		} catch(JsonParseException e) {
+			System.err.println("Failed to parse received json.");
 			return null;
 		}
 	}
@@ -68,14 +72,11 @@ public class Communication {
 	 * @throws IOException
 	 */
 	public void send(Message msg, InetSocketAddress peerAddress) throws IOException {
-		// serialize message (will be replaced with JSON serialization later)
-		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-		ObjectOutputStream objOut = new ObjectOutputStream(byteStream);
-		objOut.writeObject(msg);
+		String jsonString = objectMapper.writeValueAsString(msg);
 
 		// create datagram packet
-		DatagramPacket packet = new DatagramPacket(byteStream.toByteArray(),
-				byteStream.toByteArray().length, peerAddress);
+		DatagramPacket packet = new DatagramPacket(jsonString.getBytes("UTF-8"),
+				jsonString.getBytes().length, peerAddress);
 
 		// send packet
 		socket.send(packet);
