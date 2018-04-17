@@ -104,4 +104,10 @@ public class Gui extends AbstractClientView{
 	public ViewEnumeration getCurrentView() {
 		return this.currentView.getViewType();
 	}
+
+	@Override
+	public void publishMessage(String text) {
+		// TODO Auto-generated method stub
+		
+	}
 }
