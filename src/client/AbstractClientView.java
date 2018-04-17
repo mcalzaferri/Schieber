@@ -24,4 +24,9 @@ public abstract class AbstractClientView {
 	 * @return active view enum
 	 */
 	public abstract ViewEnumeration getCurrentView();
+	
+	/**This method is called whenever information must be displayed to the user
+	 * @param text The text that shall be displayed.
+	 */
+	public abstract void publishMessage(String text);
 }
