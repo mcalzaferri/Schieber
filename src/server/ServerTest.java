@@ -19,9 +19,7 @@ import client.ClientCommunication;
 import server.states.LobbyState;
 
 /**
- * Unit tests for the game engine and state machine. Currently, "implements
- * Serializable" has to be added to the Message class and all the entity classes
- * for these tests to work.
+ * Unit tests for the game engine and state machine.
  */
 public class ServerTest {
 	final int serverListenPort = 65000;
@@ -87,7 +85,7 @@ public class ServerTest {
 		try {
 			app.handleMessage();
 		} catch (SocketTimeoutException e) {
-			fail("no message received");
+			fail("Timed out while waiting for the message.");
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package server;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,7 +25,7 @@ public class GameLogic {
 	/**
 	 * Maps seatNr to Player object
 	 */
-	private Map<Integer, Player> players;
+	private ArrayList<Player> players;
 	/**
 	 * Seat nr of player that has to take action.
 	 * 0 means it's noones move.
@@ -33,7 +34,7 @@ public class GameLogic {
 	private Card[] deck;
 
 	public GameLogic() {
-		players = new Hashtable<Integer, Player>();
+		players = new ArrayList<>();
 	}
 
 	/**
@@ -57,7 +58,7 @@ public class GameLogic {
 	}
 
 	public Collection<Player> getPlayers() {
-		return Collections.unmodifiableCollection(players.values());
+		return Collections.unmodifiableCollection(players);
 	}
 
 	/**
@@ -65,8 +66,13 @@ public class GameLogic {
 	 * @return array with nine cards
 	 */
 	public Card[] assignCardsToPlayer(Player p) {
-		Card[] cards = Arrays.copyOfRange(deck, 9 * p.getSeatNr(),
-		                                        9 * p.getSeatNr() + 8);
+		if (p.getSeatNr() == 0) {
+			System.err.println("Tried to assign cards to player which is not at the table.");
+			return null;
+		}
+
+		Card[] cards = Arrays.copyOfRange(deck, 9 * (p.getSeatNr() - 1),
+		                                        9 * (p.getSeatNr() - 1) + 9);
 		p.putCards(cards);
 		return cards;
 	}
@@ -76,7 +82,7 @@ public class GameLogic {
 	 * @param p player to add
 	 */
 	public void addPlayer(Player p) {
-		players.put(p.getSeatNr(), p);
+		players.add(p);
 	}
 
 	/**
@@ -86,7 +92,7 @@ public class GameLogic {
 	public void removePlayer(Player p) {
 		players.remove(p.getSeatNr());
 	}
-	
+
 	/**
 	 * Adds a player to the table by assigning a seat to him.
 	 * @param p player to add to the table
@@ -100,9 +106,11 @@ public class GameLogic {
 			return false;
 		}
 
-		if(players.containsKey(preferredSeatNr)) {
-			System.err.println("Failed to add player to table: seat occupied");
-			return false;
+		for (Player player : players) {
+			if (player.getSeatNr() == preferredSeatNr) {
+				System.err.println("Failed to add player to table: seat occupied");
+				return false;
+			}
 		}
 
 		if(p.getSeatNr() > 0) {
@@ -120,8 +128,8 @@ public class GameLogic {
 	 * @return true if all players at the table are ready, false otherwise
 	 */
 	public boolean allPlayersReady() {
-		for(Map.Entry<Integer, Player> entry : players.entrySet()) {
-			if(entry.getKey() > 0 && !entry.getValue().isReady()) {
+		for (Player p : players) {
+			if (p.getSeatNr() > 0 && !p.isReady()) {
 				return false;
 			}
 		}
@@ -129,7 +137,7 @@ public class GameLogic {
 	}
 
 	public Player getPlayer(InetSocketAddress addr) {
-		for (Player p : players.values()) {
+		for (Player p : players) {
 			if(p.getSocketAddress().equals(addr)) {
 				return p;
 			}
