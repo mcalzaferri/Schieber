@@ -20,6 +20,8 @@ public class Gui extends AbstractClientView{
 	private PlayingFieldView playingFieldView;
 	private TrumpView trumpView;
 	private GameOverView gameOverView;
+	private WeisView weisView;
+	private LobbyView lobbyView;
 	private AbstractView currentView;
 	
 	
@@ -31,6 +33,9 @@ public class Gui extends AbstractClientView{
 		this.playingFieldView = new PlayingFieldView(ViewEnumeration.PLAYVIEW, observers, data);
 		this.trumpView = new TrumpView(ViewEnumeration.SELECTTRUMPVIEW, observers);
 		this.gameOverView = new GameOverView(ViewEnumeration.GAMEOVERVIEW, observers);
+		this.lobbyView = new LobbyView(ViewEnumeration.LOBBYVIEW, observers, data);
+		this.weisView = new WeisView(ViewEnumeration.WEISVIEW, observers, data);
+		
 		
 		//Init views
 		this.playingFieldView.setVisible(true);
@@ -78,8 +83,19 @@ public class Gui extends AbstractClientView{
 			this.currentView.setVisible(true);
 			
 			break;
+		case WEISVIEW:
+			this.currentView.setVisible(false);
+			this.currentView = this.weisView;
+			this.currentView.setVisible(true);
+			break;
+		case LOBBYVIEW:
+			this.currentView.setVisible(false);
+			this.currentView = this.lobbyView;
+			this.currentView.setVisible(true);
+			break;
 		default:
 			break;
+
 		
 		}
 	}
