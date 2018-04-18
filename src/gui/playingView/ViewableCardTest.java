@@ -86,7 +86,8 @@ public class ViewableCardTest extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		ViewableCard vc = null;
 		try {
-			vc = new ViewableCard(c, obs);
+			vc = new ViewableCard(c);
+			vc.isAllowed(false);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

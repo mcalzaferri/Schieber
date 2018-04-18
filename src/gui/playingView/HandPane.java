@@ -1,10 +1,12 @@
 package gui.playingView;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JPanel;
 import client.ViewObserver;
+import gui.ObservableView;
 import shared.Card;
 import shared.client.ClientModel;
 
@@ -14,21 +16,14 @@ import shared.client.ClientModel;
  * @author mstieger
  *
  */
-public class HandPane extends JPanel{
+public class HandPane extends ObservableView implements ActionListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8159517916094656762L;
-	private ClientModel data;
-	private ArrayList<ViewObserver> observers;
 	
 	public HandPane(ClientModel data, ArrayList<ViewObserver> observers) {
-		super();
-		if(data == null) {
-			throw new IllegalArgumentException("Data can not be null");
-		}
-		this.data = data;
-		this.observers = observers;
+		super(data, observers);
 		initializeComponents();
 	}
 	
@@ -36,6 +31,7 @@ public class HandPane extends JPanel{
 	 * Initialize the class' graphics
 	 */
 	private void initializeComponents() {
+		this.setDoubleBuffered(true);
 		this.setLayout(new HandLayout());
 		this.setMinimumSize(new Dimension(CarpetPane.minCarpetSize.width, ViewableCard.minCardSize.height));
 		this.update();
@@ -52,14 +48,29 @@ public class HandPane extends JPanel{
 			for(Card c : data.getHand()) {
 				ViewableCard vc = null;
 				try {
-					vc = new ViewableCard(c, observers);
+					vc = new ViewableCard(c);
+					vc.addActionListener(this);
+					vc.isAllowed(c.isAllowed(data.getHand().toArray(), data.getDeck().get(0), data.getTrump()));
+					add(vc);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				add(vc);
 			}
 		}		
 		validate();	//Redo the layout
 		repaint();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		for(ViewObserver vo : observers) {
+			try {
+				ViewableCard vc = (ViewableCard) e.getSource();
+				vo.btnCardClick(vc.getCard());
+			}catch(ClassCastException ex) {
+				//Source was not a viewable card => do nothing
+			}
+		}
+		
 	}
 }

@@ -2,6 +2,7 @@ package gui.playingView;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
@@ -26,7 +27,7 @@ public class ViewableCard extends JButton{
 	 */
 	private static final long serialVersionUID = 3420841619970204936L;
 	private Card card;
-	private ArrayList<ViewObserver> observers;
+	private boolean isAllowed;
 	private BufferedImage img;
 	
 	public static final Dimension minCardSize = new Dimension(100, 160);
@@ -38,13 +39,13 @@ public class ViewableCard extends JButton{
 	 * @param observers	Observers to be informed on an occurring event
 	 * @throws IOException 
 	 */
-	public ViewableCard(Card card, ArrayList<ViewObserver> observers) throws IOException {
+	public ViewableCard(Card card) throws IOException {
 		super();
 		if(card == null) {
 			throw new IllegalArgumentException("Card can not be null");
 		}
 		this.card = card;	
-		this.observers = observers;
+		this.isAllowed = true;
 		this.img  = Gui.pictureFactory.getPicture(card);
 		this.initializeComponents();
 	}
@@ -56,23 +57,13 @@ public class ViewableCard extends JButton{
 	private void initializeComponents() {
 		this.setMinimumSize(minCardSize);	
 		this.setOpaque(false);	//Ensures that the underlying pixels show through
-		
-		this.addActionListener(
-		/**
-		 * Informs observers if the button has been clicked.
-		 * @author mstieger
-		 *
-		 */
-		new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(observers != null) {
-					for(ViewObserver vo : observers) {
-						vo.btnCardClick(card);
-					}
-				}
-			}		
-		});
+	}
+	
+	public Card getCard() {
+		return card;
+	}
+	public void isAllowed(boolean flag) {
+		isAllowed = flag;
 	}
 	/* (non-Javadoc)
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
@@ -82,12 +73,11 @@ public class ViewableCard extends JButton{
 	 */
 	@Override
 	public void paint(Graphics g) {
-		try {
-			g.setClip(new RoundRectangle2D.Double(0, 0, getSize().getWidth(), getSize().getHeight(), 25, 25));
-			g.drawImage(Gui.pictureFactory.getScaledPicture(img, this.getSize()), 0, 0, null);
+		g.setClip(new RoundRectangle2D.Double(0, 0, getSize().getWidth(), getSize().getHeight(), 25, 25));
+		Image i = Gui.pictureFactory.getScaledPicture(img, this.getSize());
+		if(!isAllowed) {
+			i = Gui.pictureFactory.getGrayPicture(i);
 		}
-		catch(IllegalArgumentException e) {
-			e.printStackTrace();
-		}
+		g.drawImage(i, 0, 0, null);
 	}
 }
