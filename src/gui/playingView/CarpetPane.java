@@ -11,18 +11,17 @@ import javax.swing.JPanel;
 import client.ViewObserver;
 import gui.BufferedDrawer;
 import gui.Gui;
+import gui.ObservableView;
 import gui.PictureFactory.Pictures;
 import shared.Player;
 import shared.Seat;
 import shared.client.ClientModel;
 
-public class CarpetPane extends JPanel{
+public class CarpetPane extends ObservableView{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6681250484175442412L;
-	private ClientModel data;
-	private ArrayList<ViewObserver> observers;
 	private BufferedImage imgCarpet;
 	
 	public static final Dimension minCardSize = new Dimension(60, 96);
@@ -30,28 +29,18 @@ public class CarpetPane extends JPanel{
 	public static final Dimension minCarpetSize = new Dimension(500, 500);
 	
 	public CarpetPane(ClientModel data, ArrayList<ViewObserver> observers) {
-		super();
+		super(data, observers);
 		this.imgCarpet = null;
 		try {
 			this.imgCarpet = Gui.pictureFactory.getPicture(Pictures.Carpet);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		if(data == null) {
-			throw new IllegalArgumentException("Data can not be null");
-		}
-		this.data = data;
+		}	
 		this.drawer = new CarpetDrawer(15);
-		this.observers = observers;
-
 		this.setMinimumSize(this.minCarpetSize);
 	}
 	
-	public void update() {
-		repaint();
-	}
-
 	CarpetDrawer drawer;
 	BufferedDrawer bd = new BufferedDrawer();
 	Graphics bg;
