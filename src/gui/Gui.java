@@ -1,108 +1,75 @@
 package gui;
 
-import java.awt.List;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import client.AbstractClientView;
 import client.ViewEnumeration;
 import client.ViewObserver;
 import gui.playingView.PlayingFieldView;
-import shared.Card;
-import shared.CardList;
-import shared.Player;
-import shared.Score;
 import shared.client.ClientModel;
 
 public class Gui extends AbstractClientView{
 	public static PictureFactory pictureFactory = new PictureFactory();
 	private ArrayList<ViewObserver> observers;
-	private SelectHostView selectHostView;
-	private PlayingFieldView playingFieldView;
-	private TrumpView trumpView;
-	private GameOverView gameOverView;
-	private WeisView weisView;
-	private LobbyView lobbyView;
-	private AbstractView currentView;
-	
-	
+	private JFrame frame;
+	private JInternalFrame iFrame;
+	private ArrayList<Viewable> internals;
+		
 	public Gui(ClientModel data) {
-		//Init fields
 		super(data);
 		this.observers = new ArrayList<>();
-		this.selectHostView = new SelectHostView(ViewEnumeration.SELECTHOSTVIEW, observers);
-		this.playingFieldView = new PlayingFieldView(ViewEnumeration.PLAYVIEW, observers, data);
-		this.trumpView = new TrumpView(ViewEnumeration.SELECTTRUMPVIEW, observers);
-		this.gameOverView = new GameOverView(ViewEnumeration.GAMEOVERVIEW, observers);
-		this.lobbyView = new LobbyView(ViewEnumeration.LOBBYVIEW, observers, data);
-		this.weisView = new WeisView(ViewEnumeration.WEISVIEW, observers, data);
+		this.frame = new JFrame("Schieber");
+		this.iFrame = new JInternalFrame("", false, false, false, false);
 		
+		this.internals = new ArrayList<>();		
+		internals.add(new SelectHostView(observers));
+		internals.add(new LobbyView(data, observers));
+		internals.add(new TrumpView(observers));
+		internals.add(new WeisView(data, observers));
+		internals.add(new GameOverView(observers));
 		
-		//Init views
-		this.playingFieldView.setVisible(true);
-		this.currentView = this.playingFieldView;
-		
-		this.selectHostView.setVisible(false);
-		this.trumpView.setVisible(false);
-		this.gameOverView.setVisible(false);
+		initializeGui();
 	}
-
+	private void initializeGui() {
+		//Set up internal frame
+        JDesktopPane desktop = new JDesktopPane(); //a specialized layered pane
+		desktop.add(iFrame);
+        frame.setContentPane(desktop);
+        
+		//Set up main frame	
+		PlayingFieldView p = new PlayingFieldView(data, observers);
+		frame.setLayout(new BorderLayout());
+		frame.add(p.getContent(), BorderLayout.CENTER);
+		frame.setMinimumSize(p.getContent().getMinimumSize());
+		frame.setVisible(true);
+	}
+		
 	@Override
 	public void addObserver(ViewObserver observer) {
 		this.observers.add(observer);
 	}
-
-	public void update() {
-		this.currentView.update();
-	}
+	
 	@Override
 	public void changeView(ViewEnumeration view) {
-		if(this.currentView.getViewType().equals(view)) {
-			this.currentView.update();
+		for(Viewable v : internals) {
+			if(v.getType().equals(view)) {
+				this.iFrame.setContentPane(v.getContent());
+				this.iFrame.setSize(v.getContent().getMinimumSize());
+				this.iFrame.setTitle(v.getType().toString());
+				this.iFrame.setVisible(true);
+				return;
+			}
 		}
-		switch(view) {
-		case GAMEOVERVIEW:
-			this.currentView.setVisible(false);
-			this.currentView = this.gameOverView;
-			this.currentView.setVisible(true);
-			break;
-		case PLAYVIEW:
-			this.currentView.setVisible(false);
-			this.currentView = this.playingFieldView;
-			this.currentView.setVisible(true);
-			
-			break;
-		case SELECTHOSTVIEW:
-			this.currentView.setVisible(false);
-			this.currentView = this.selectHostView;
-			this.currentView.setVisible(true);
-			
-			break;
-		case SELECTTRUMPVIEW:
-			this.currentView.setVisible(false);
-			this.currentView = this.trumpView;
-			this.currentView.setVisible(true);
-			
-			break;
-		case WEISVIEW:
-			this.currentView.setVisible(false);
-			this.currentView = this.weisView;
-			this.currentView.setVisible(true);
-			break;
-		case LOBBYVIEW:
-			this.currentView.setVisible(false);
-			this.currentView = this.lobbyView;
-			this.currentView.setVisible(true);
-			break;
-		default:
-			break;
-
-		
-		}
+		this.iFrame.setVisible(false);
 	}
 
 	@Override
 	public ViewEnumeration getCurrentView() {
-		return this.currentView.getViewType();
+		return null;
 	}
 
 	@Override
