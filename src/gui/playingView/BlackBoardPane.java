@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import client.ViewObserver;
 import gui.Gui;
+import gui.ObservableView;
 import gui.PictureFactory.Pictures;
 import shared.client.ClientModel;
 
@@ -23,13 +24,11 @@ import shared.client.ClientModel;
  * @author mstieger
  *
  */
-public class BlackBoardPane extends JPanel{
+public class BlackBoardPane extends ObservableView{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7805022564116303797L;
-	private ClientModel data;
-	private ArrayList<ViewObserver> observers;
 	private BlackBoardDrawer drawer;
 	private BufferedImage img;
 	
@@ -39,7 +38,7 @@ public class BlackBoardPane extends JPanel{
 	public static final Rectangle minInnerBounds = new Rectangle(50, 50, minSize.width - 100, minSize.height -100);
 	
 	public BlackBoardPane(ClientModel data, ArrayList<ViewObserver> observers) {
-		super();
+		super(data, observers);
 		this.drawer = new BlackBoardDrawer();
 		try {
 			this.img = Gui.pictureFactory.getPicture(Pictures.BlackBoard);
@@ -47,24 +46,10 @@ public class BlackBoardPane extends JPanel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(data == null) {
-			throw new IllegalArgumentException("Data can not be null");
-		}
-		this.data = data;
-		this.observers = observers;	
+		
 		this.setMinimumSize(minSize);
-		this.update();
 	}
-	
-	/**
-	 * Updates the blackboard. This means that the scores and the current trump are
-	 * drawn anew.
-	 */
-	public void update() {
-		//TODO
-		repaint();
-	}
-	
+		
 	Rectangle r = new Rectangle();
 	Dimension dim = new Dimension();
 	Font f = font;
