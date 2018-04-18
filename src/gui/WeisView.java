@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-public class WeisView extends AbstractView{
+public class WeisView extends ObservableView implements Viewable{
 	
 	//components
 	JPanel weisViewPanel;
@@ -53,18 +53,9 @@ public class WeisView extends AbstractView{
     
     //list of possible Wiis
     private Weis[] weisList;
-    
-    //local variables
-    ClientModel data;
-    ViewEnumeration viewType;
-    ArrayList<ViewObserver> observers;
-    
-	public WeisView(ViewEnumeration viewType, ArrayList<ViewObserver> observers, ClientModel data) {
-		super(viewType, observers);
-		
-		this.viewType = viewType;
-		this.observers = observers;
-		this.data = data;
+        
+	public WeisView(ClientModel data, ArrayList<ViewObserver> observers) {	
+		super(data, observers);
 		weisList = data.getPossibleWiis();
 		
 		layoutWeisView();
@@ -102,7 +93,7 @@ public class WeisView extends AbstractView{
 			weisViewPanel.add(swipeRightButton, BorderLayout.EAST);
 		}
 
-		getContentPane().add(weisViewPanel);
+		add(weisViewPanel);
 		setSize(width,height);
 		setLocation(left,top);
 		
@@ -267,6 +258,16 @@ public class WeisView extends AbstractView{
 		}
 		
 		return cardList;
+	}
+
+	@Override
+	public JPanel getContent() {
+		return this;
+	}
+
+	@Override
+	public ViewEnumeration getType() {
+		return ViewEnumeration.WEISVIEW;
 	}
 	
 

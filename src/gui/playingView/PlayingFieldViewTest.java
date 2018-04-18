@@ -4,6 +4,8 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JFrame;
+
 import client.ViewEnumeration;
 import client.ViewObserver;
 import shared.Card;
@@ -16,7 +18,7 @@ import shared.ServerAddress;
 import shared.Trump;
 import shared.client.ClientModel;
 
-public class PlayingFieldViewTest {
+public class PlayingFieldViewTest extends JFrame{
 	
 	private PlayingFieldView pfv;
 	private ClientModel data;
@@ -62,7 +64,7 @@ public class PlayingFieldViewTest {
 			@Override
 			public void btnCardClick(Card card) {
 				System.out.println(card.getColor().toString() + card.getValue());			
-				cards.remove(card.getId());
+				cards.remove(card);
 				cards.add(createRandomCard());
 				pfv.update();
 			}
@@ -96,7 +98,10 @@ public class PlayingFieldViewTest {
 		data.setTrump(Trump.EICHEL);
 		data.setDeck(cards);
 
-		this.pfv = new PlayingFieldView(ViewEnumeration.PLAYVIEW, obs, data);
+		this.pfv = new PlayingFieldView(data, obs);
+		add(this.pfv.getContent());
+		setVisible(true);
+		setSize(500, 500);
 	}
 	private Card createRandomCard() {
 		Random r = new Random();

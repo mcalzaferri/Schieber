@@ -18,7 +18,7 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Map;
 
-public class LobbyView extends AbstractView{
+public class LobbyView extends ObservableView implements Viewable{
 
 	//width, height and dimension of window
     private static final int width = 800;
@@ -50,20 +50,12 @@ public class LobbyView extends AbstractView{
 	private JLabel player3Label;
 	private JLabel player4Label;
 	
-	//local variables
-	ViewEnumeration viewType;
-	ArrayList<ViewObserver> observers;
-	ClientModel data;
 	Map<Integer,Player> playersMap;
 	Player actPlayer;
 	
 	
-	public LobbyView(ViewEnumeration viewType, ArrayList<ViewObserver> observers, ClientModel data) {
-		super(viewType, observers);
-		
-		this.viewType = viewType;
-		this.observers = observers;
-		this.data = data;
+	public LobbyView(ClientModel data, ArrayList<ViewObserver> observers) {
+		super(data, observers);
 		
 		playersMap = data.getPlayers();
 		actPlayer = data.getThisPlayer();
@@ -325,6 +317,16 @@ public class LobbyView extends AbstractView{
 		player3Box.validate();
 		player4Box.validate();
 		this.repaint();
+	}
+
+	@Override
+	public JPanel getContent() {
+		return this;
+	}
+
+	@Override
+	public ViewEnumeration getType() {
+		return ViewEnumeration.LOBBYVIEW;
 	}
 	
 	

@@ -17,7 +17,7 @@ import shared.CardValue;
 
 import javax.swing.*;
 
-public class SelectHostView extends AbstractView{
+public class SelectHostView extends ObservableView implements Viewable{
 	
 	//Components
 	JPanel serverPanel;
@@ -37,8 +37,8 @@ public class SelectHostView extends AbstractView{
     
 
 
-	public SelectHostView(ViewEnumeration viewType, ArrayList<ViewObserver> observers) {
-		super(viewType, observers);
+	public SelectHostView(ArrayList<ViewObserver> observers) {
+		super(null, observers);
 		
 		layoutSelectHostView();
 		
@@ -57,8 +57,7 @@ public class SelectHostView extends AbstractView{
 
 	private void layoutSelectHostView() {
 		
-		//set title, dimensions and location of window
-		setTitle("Spiel starten");
+		//dimensions and location of window
 		setSize(width,height);
 		setLocation(left,top);
 		
@@ -108,16 +107,25 @@ public class SelectHostView extends AbstractView{
 		startButtonPanel.add(startButton);
 		
 		//add Components 
-		Container contentPane = getContentPane();
-		contentPane.setLayout(new BorderLayout());
-		contentPane.add(serverPanel,BorderLayout.NORTH);
-		contentPane.add(startButtonPanel,BorderLayout.SOUTH);
+		setLayout(new BorderLayout());
+		add(serverPanel,BorderLayout.NORTH);
+		add(startButtonPanel,BorderLayout.SOUTH);
 	}
 
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public JPanel getContent() {
+		return this;
+	}
+
+	@Override
+	public ViewEnumeration getType() {
+		return ViewEnumeration.SELECTHOSTVIEW;
 	}
 
 }

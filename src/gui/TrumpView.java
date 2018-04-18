@@ -14,7 +14,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
-public class TrumpView extends AbstractView{
+public class TrumpView extends ObservableView implements Viewable{
 	private JButton eichelButton;
 	private JButton roseButton;
 	private JButton schilteButton;
@@ -32,9 +32,8 @@ public class TrumpView extends AbstractView{
     Toolkit.getDefaultToolkit().getScreenSize().width/2-width/2;
     
     
-	public TrumpView(ViewEnumeration viewType, ArrayList<ViewObserver> observers) {
-		super(viewType, observers);
-		setTitle("Trumpfauswahl");
+	public TrumpView(ArrayList<ViewObserver> observers) {
+		super(null, observers);
 		
 		JPanel trumpViewPanel = new JPanel();
 		trumpViewPanel.setLayout(new GridLayout(7,2));
@@ -149,6 +148,16 @@ public class TrumpView extends AbstractView{
 	@Override
 	public void update() {
 
+	}
+
+	@Override
+	public JPanel getContent() {
+		return this;
+	}
+
+	@Override
+	public ViewEnumeration getType() {
+		return ViewEnumeration.SELECTTRUMPVIEW;
 	}
 
 }

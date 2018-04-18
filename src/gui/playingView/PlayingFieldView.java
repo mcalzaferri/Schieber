@@ -1,10 +1,11 @@
 package gui.playingView;
 
 import java.util.ArrayList;
-
+import javax.swing.JPanel;
 import client.ViewEnumeration;
 import client.ViewObserver;
-import gui.AbstractView;
+import gui.ObservableView;
+import gui.Viewable;
 import shared.client.ClientModel;
 
 /**
@@ -15,7 +16,7 @@ import shared.client.ClientModel;
  * @author mstieger
  *
  */
-public class PlayingFieldView extends AbstractView{
+public class PlayingFieldView extends ObservableView implements Viewable{
 	/**
 	 * 
 	 */
@@ -24,15 +25,15 @@ public class PlayingFieldView extends AbstractView{
 	private BlackBoardPane blackBoard;
 	private CarpetPane carpet;
 	
-	public PlayingFieldView(ViewEnumeration viewType, ArrayList<ViewObserver> observers, ClientModel data) {
-		super(viewType, observers);
+	public PlayingFieldView(ClientModel data, ArrayList<ViewObserver> observers) {
+		super(data, observers);
 		this.hand = new HandPane(data, observers);
 		this.blackBoard = new BlackBoardPane(data, observers);
 		this.carpet = new CarpetPane(data, observers);
-		layoutView();
+		initializeComponents();
 	}
 	
-	private void layoutView() {
+	private void initializeComponents() {
 		PlayingFieldLayout l = new PlayingFieldLayout();
 		this.setLayout(l);
 
@@ -40,14 +41,25 @@ public class PlayingFieldView extends AbstractView{
 		this.add(this.blackBoard, PlayingFieldLayout.BLACKBOARD);
 		this.add(this.carpet, PlayingFieldLayout.CARPET);
 		this.setMinimumSize(l.minimumLayoutSize(this.getParent()));
+		this.setDoubleBuffered(true);
 		this.setVisible(true);
-		this.pack();
 	}
 
 	@Override
 	public void update() {
 		this.hand.update();
-		this.blackBoard.update();
-		this.carpet.update();		
+		this.blackBoard.repaint();
+		this.carpet.repaint();	
+		this.repaint();
+	}
+
+	@Override
+	public JPanel getContent() {
+		return this;
+	}
+
+	@Override
+	public ViewEnumeration getType() {
+		return ViewEnumeration.PLAYVIEW;
 	}
 }

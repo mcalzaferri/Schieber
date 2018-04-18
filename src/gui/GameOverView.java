@@ -4,6 +4,7 @@ import javax.swing.*;
 import client.ViewEnumeration;
 import client.ViewObserver;
 import shared.ServerAddress;
+import shared.client.ClientModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class GameOverView extends AbstractView{
+public class GameOverView extends ObservableView implements Viewable{
 
 	private JButton newRoundButton;
 	private JButton disconnectButton;
@@ -25,10 +26,9 @@ public class GameOverView extends AbstractView{
     private static final int left = 
     Toolkit.getDefaultToolkit().getScreenSize().width/2-width/2;
 	
-	public GameOverView(ViewEnumeration viewType, ArrayList<ViewObserver> observers) {
-		super(viewType, observers);
-		setTitle("Spiel beendet");
-		
+	public GameOverView(ArrayList<ViewObserver> observers) {
+		super(null, observers);
+
 		newRoundButton = new JButton("neue Runde");
 		disconnectButton = new JButton("Beenden");
 		buttonPanel = new JPanel();
@@ -66,8 +66,19 @@ public class GameOverView extends AbstractView{
 
 	}
 	
-	public void update()
-	{
+	@Override
+	public JPanel getContent() {
+		return this;
+	}
+
+	@Override
+	public ViewEnumeration getType() {
+		return ViewEnumeration.GAMEOVERVIEW;
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
 		
 	}
 	
