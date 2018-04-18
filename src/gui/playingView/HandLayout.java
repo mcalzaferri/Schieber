@@ -45,7 +45,8 @@ public class HandLayout implements LayoutManager{
 			minHeight += c.getMinimumSize().height;
 		}
 		try {
-			return new Dimension((parent.getComponentCount() + 1) * minWidth/2 , minHeight);
+			return new Dimension((parent.getComponentCount() + 1) * minWidth/2 ,
+					minHeight/parent.getComponentCount());
 		}
 		catch(ArithmeticException ex) {
 			return new Dimension(-1, -1);
