@@ -26,23 +26,19 @@ public class GuiTest extends JFrame{
 		this.setLayout(new FlowLayout());
 		
 		JComboBox box = new JComboBox(ViewEnumeration.values());
-		JLabel label = new JLabel();
-		//label.setText(gui.getCurrentView().toString());
-		box.addActionListener(new ActionListener() {
 
+		box.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				
+			public void actionPerformed(ActionEvent e) {			
 				gui.changeView(ViewEnumeration.valueOf(box.getSelectedItem().toString()));
 				//label.setText(gui.getCurrentView().toString());
 			}
 			
 		});
 		
-		this.add(label);
 		this.add(box);
 		this.pack();
 		this.setVisible(true);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 }
