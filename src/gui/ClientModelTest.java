@@ -75,17 +75,17 @@ public class ClientModelTest extends ClientModel{
 		this.setPlayers(players);
 	}
 	
-	private Card createRandomCard() {
+	public static Card createRandomCard() {
 		Random r = new Random();
 		return new Card(CardColor.getById(r.nextInt(4) + 1), CardValue.getById(r.nextInt(8) + 1));
 	}
 	
-	private Weis createRandomWeis() {
+	public static  Weis createRandomWeis() {
 		Random r = new Random();
 		return new Weis(WeisType.getById(r.nextInt(11) + 1), new Card(CardColor.getById(r.nextInt(4) + 1), CardValue.getById(r.nextInt(8) + 1)));
 	}
 	
-	private Trump createRandomTrump() {
+	public static Trump createRandomTrump() {
 		Random r = new Random();
 		return Trump.getById(r.nextInt(7)+1);
 	}
