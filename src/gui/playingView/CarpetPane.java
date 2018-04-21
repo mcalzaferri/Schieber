@@ -8,15 +8,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
-
 import client.ViewObserver;
-import gui.BufferedDrawer;
 import gui.Gui;
 import gui.ObservableView;
 import gui.PictureFactory.Pictures;
 import shared.Player;
-import shared.Seat;
 import shared.client.ClientModel;
 
 public class CarpetPane extends ObservableView{
