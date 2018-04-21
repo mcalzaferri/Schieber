@@ -46,6 +46,9 @@ public class PictureFactory {
 		return this.getScaledPicture(this.getPicture(picture), size);
 	}
 	public Image getScaledPicture(BufferedImage original, Dimension size) {
+		if(size.width <= 0 || size.height <= 0) {
+			size.width = 1; size.height = 1;	//Prevents illegal argument exception in getScaledInstance-call
+		}
 		return original.getScaledInstance(size.width, size.height, Image.SCALE_FAST);
 	}
 	
