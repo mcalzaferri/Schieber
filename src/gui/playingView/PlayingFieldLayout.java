@@ -22,15 +22,17 @@ public class PlayingFieldLayout implements LayoutManager2{
     public static final String CARPET  = "Carpet";
     public static final String BLACKBOARD  = "Blackboard";
     public static final String HAND = "Hand";
+    public static final String INFO = "Info";
     
     private Component carpet;
     private Component blackboard;
     private Component hand;
+    private Component info;
     
 	@Override
 	public void addLayoutComponent(String name, Component comp) {
 		synchronized (comp.getTreeLock()) {
-	        /* Assign the component to one of the known regions of the layout.
+	        /* Asign the component to one of the known regions of the layout.
 	         */
 	        if ("Carpet".equals(name) || name == null) {
 	        	carpet = comp;
@@ -38,9 +40,11 @@ public class PlayingFieldLayout implements LayoutManager2{
 	        	blackboard = comp;
 	        } else if ("Hand".equals(name)) {
 	        	hand = comp;
-	        } else {
-	            throw new IllegalArgumentException("cannot add to layout: unknown constraint: " + name);
-	        }
+	        } else if ("Info".equals(name)){
+	        	info = comp;
+            }else {
+            	throw new IllegalArgumentException("cannot add to layout: unknown constraint: " + name);
+            }
 	      }
 		
 	}
@@ -56,43 +60,62 @@ public class PlayingFieldLayout implements LayoutManager2{
 	
 	@Override
 	public Dimension minimumLayoutSize(Container parent) {
-		Dimension carpet = this.carpet.getMinimumSize();
-		Dimension blackboard = this.blackboard.getMinimumSize();
-		Dimension hand = this.hand.getMinimumSize();
+		if(isValid()) {
+			Dimension carpet = this.carpet.getMinimumSize();
+			Dimension blackboard = this.blackboard.getMinimumSize();
+			Dimension hand = this.hand.getMinimumSize();
+			Dimension info = this.info.getMinimumSize();
+			
+			//Calculate minimum height
+			int height = Math.max(carpet.height + hand.height, blackboard.height + info.height);
+			//Calculate minimum width
+			int width = Math.max(carpet.width + blackboard.width, hand.width + info.width);
+			return new Dimension(width, height);
+		}
+		return new Dimension(-1, -1); //Some default layout to prevent exceptions if returned null
 		
-		//Calculate minimum height
-		int height = Math.max(blackboard.height, carpet.height) + hand.height;
-		//Calculate minimum width
-		int width = Math.max(carpet.width + blackboard.width, hand.width);
-		return new Dimension(width, height);
 	}
 	
 	@Override
 	public void layoutContainer(Container parent) {
 		//Only works if all components are not null
-		if(this.carpet != null && this.blackboard != null && this.hand != null) {
+		if(isValid()) {
 			Dimension act = parent.getSize();
 			Dimension min = this.minimumLayoutSize(parent);
 			
-			//Scaling according to width
-			act.width = Math.max(act.width, min.width);
-			double scaling = (double)act.width/(double)min.width;
+			/*
+			 * Scaling
+			 * Take minimal scale of horizontal and vertical scale to ensure that the components always fit
+			 * in the parent's bounds. Because the components height and width are scaled with the same factor,
+			 * their aspect ration stays the same		
+			 */
+			double scaling = Math.min((double)act.width/min.width, (double)act.height/min.height);
+			scaling = Math.max(scaling, 1);	//Prevents parent's bounds to go below minimum layout size
 			
-			//Set bounds
+			//Set bounds of components
+			//Set parents bounds 
 			int x=0, y=0, w=(int)(scaling*min.width), h=(int)(scaling*min.height);
 			parent.setBounds(x, y, w, h);
 			
+			//Carpet located in the upper left
 			x = 0; y=0; 
 			w=(int)(scaling*carpet.getMinimumSize().width); h = (int)(scaling*carpet.getMinimumSize().height);
 			carpet.setBounds(0, 0, w, h);
 			
+			//Blackboard located in the upper right, immediately after carpet
 			x = w; y = 0; 
 			w = (int)(scaling*blackboard.getMinimumSize().width); h = (int)(scaling*blackboard.getMinimumSize().height);
 			blackboard.setBounds(x, y, w, h);
 			
-			x = 0; y = (int)(scaling*(min.height - hand.getMinimumSize().height));
+			//Hand located in the lower left below carpet
+			x = 0; y = (int)(scaling*(carpet.getMinimumSize().height));
 			w = (int)(scaling*hand.getMinimumSize().width); h = (int)(scaling*hand.getMinimumSize().height);
-			hand.setBounds(x, y, w, h);		
+			hand.setBounds(x, y, w, h);	
+			
+			//Infoboard located in the lower right
+			x = (int)(scaling*blackboard.getMinimumSize().height); y = (int)(scaling*(blackboard.getMinimumSize().height));
+			w = (int)(scaling*info.getMinimumSize().width); h = (int)(scaling*info.getMinimumSize().height);
+			info.setBounds(x, y, w, h);
 		}
 		
 	}
@@ -107,11 +130,15 @@ public class PlayingFieldLayout implements LayoutManager2{
 	        }
 	      }	
 	}
+	private boolean isValid() {
+		return (carpet != null && blackboard != null && hand != null && info != null);
+	}
 	@Override
 	public Dimension maximumLayoutSize(Container target) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	@Override
 	public float getLayoutAlignmentX(Container target) {
 		// TODO Auto-generated method stub
