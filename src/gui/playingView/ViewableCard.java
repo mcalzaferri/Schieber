@@ -27,7 +27,6 @@ public class ViewableCard extends JButton{
 	 */
 	private static final long serialVersionUID = 3420841619970204936L;
 	private Card card;
-	private boolean isAllowed;
 	private BufferedImage img;
 	
 	public static final Dimension minCardSize = new Dimension(100, 160);
@@ -39,14 +38,18 @@ public class ViewableCard extends JButton{
 	 * @param observers	Observers to be informed on an occurring event
 	 * @throws IOException 
 	 */
-	public ViewableCard(Card card) throws IOException {
+	public ViewableCard(Card card){
 		super();
 		if(card == null) {
-			throw new IllegalArgumentException("Card can not be null");
+			throw new IllegalArgumentException("Fatal Error: Card must not be null");
 		}
 		this.card = card;	
-		this.isAllowed = true;
-		this.img  = Gui.pictureFactory.getPicture(card);
+		try {
+			this.img  = Gui.pictureFactory.getPicture(card);
+		} catch (IOException e) {
+			//Fatal error => Should not occur
+			e.printStackTrace();
+		}
 		this.initializeComponents();
 	}
 
@@ -62,9 +65,7 @@ public class ViewableCard extends JButton{
 	public Card getCard() {
 		return card;
 	}
-	public void isAllowed(boolean flag) {
-		isAllowed = flag;
-	}
+
 	/* (non-Javadoc)
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 * 
@@ -73,9 +74,9 @@ public class ViewableCard extends JButton{
 	 */
 	@Override
 	public void paint(Graphics g) {
-		g.setClip(new RoundRectangle2D.Double(0, 0, getSize().getWidth(), getSize().getHeight(), 25, 25));
+		g.setClip(new RoundRectangle2D.Double(0, 0, getSize().getWidth(), getSize().getHeight(), 25, 25));	//Makes button round
 		Image i = Gui.pictureFactory.getScaledPicture(img, this.getSize());
-		if(!isAllowed) {
+		if(!isEnabled()) {
 			i = Gui.pictureFactory.getGrayPicture(i);
 		}
 		g.drawImage(i, 0, 0, null);
