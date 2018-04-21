@@ -88,6 +88,7 @@ public class HandPaneTest extends JFrame{
 		});
 
 		this.handPane = new HandPane(data, obs);
+		handPane.update();
 		this.setSize(800,200);
 		this.add(handPane, BorderLayout.CENTER);
 		this.setVisible(true);

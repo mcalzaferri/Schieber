@@ -1,6 +1,7 @@
 package gui.playingView;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -24,6 +25,9 @@ public class HandPane extends ObservableView implements ActionListener{
 	
 	public HandPane(ClientModel data, ArrayList<ViewObserver> observers) {
 		super(data, observers);
+		if(data == null) {
+			throw new IllegalArgumentException("Fatal Error: Card must not be null");
+		}
 		initializeComponents();
 	}
 	
@@ -32,9 +36,9 @@ public class HandPane extends ObservableView implements ActionListener{
 	 */
 	private void initializeComponents() {
 		this.setDoubleBuffered(true);
+		setOpaque(false);
 		this.setLayout(new HandLayout());
 		this.setMinimumSize(new Dimension(CarpetPane.minCarpetSize.width, ViewableCard.minCardSize.height));
-		this.update();
 	}
 	
 	/**
@@ -43,22 +47,20 @@ public class HandPane extends ObservableView implements ActionListener{
 	 * being removed and repainted.
 	 */
 	public void update() {
-		this.removeAll();
+		this.removeAll();	//Remove all cards from panel's components list
+		
+		//Add cards to panel if hand is not null
 		if(data.getHand() != null) {
 			for(Card c : data.getHand()) {
-				ViewableCard vc = null;
-				try {
-					vc = new ViewableCard(c);
-					vc.addActionListener(this);
-					vc.isAllowed(c.isAllowed(data.getHand().toArray(), data.getDeck().get(0), data.getTrump()));
-					add(vc);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				ViewableCard vc = new ViewableCard(c);
+				vc.addActionListener(this);
+				vc.setEnabled(c.isAllowed(data.getHand().toArray(), data.getDeck().get(0), data.getTrump()));
+				add(vc);
 			}
-		}		
+		}	
+		
 		validate();	//Redo the layout
-		repaint();
+		repaint();	//Let panel draw its components
 	}
 
 	@Override
