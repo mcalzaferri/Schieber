@@ -19,10 +19,12 @@ import shared.Trump;
 public class BlackBoardDrawer {
 	private Rectangle bounds;
 	private int titleOffset;
+	private int gap;
 	
-	public BlackBoardDrawer() {
+	public BlackBoardDrawer(int gap) {
 		this.bounds = new Rectangle();
 		this.titleOffset = 0;
+		this.gap = gap;
 	}
 	/**
 	 * Sets the drawers bounds
@@ -78,25 +80,23 @@ public class BlackBoardDrawer {
 	 * @param size Size of the trump picture
 	 */
 	public void drawTrump(Graphics g, Trump trump, Dimension size) {
-		
-		try {		
-			if(trump != null) {
-				if(img == null || this.trump != trump) {
-					this.trump = trump;
+			
+		if(trump != null) {
+			if(img == null || this.trump != trump) {
+				this.trump = trump;
+				try {
 					img = Gui.pictureFactory.getPicture(trump);
+				} catch (IOException e) {
+					// Fatal error => Should not happen
+					e.printStackTrace();
 				}
-				g.drawImage(Gui.pictureFactory.getScaledPicture(img, size), 
-						bounds.x + g.getFontMetrics().stringWidth(trump.toString()), 
-						bounds.y + bounds.height - g.getFontMetrics().getHeight(), null);
-				
-				g.drawString(trump.toString(), bounds.x, 
-						bounds.y + bounds.height);
-			}			
-						
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+			}
+			g.drawImage(Gui.pictureFactory.getScaledPicture(img, size), 
+					bounds.x + g.getFontMetrics().stringWidth(trump.toString()) + gap, 
+					bounds.y + bounds.height - g.getFontMetrics().getHeight(), null);
+			
+			g.drawString(trump.toString(), bounds.x, 
+					bounds.y + bounds.height);
+		}					
 	}
 }

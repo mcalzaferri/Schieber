@@ -39,14 +39,17 @@ public class BlackBoardPane extends ObservableView{
 	
 	public BlackBoardPane(ClientModel data, ArrayList<ViewObserver> observers) {
 		super(data, observers);
-		this.drawer = new BlackBoardDrawer();
+		if(data == null) {
+			throw new IllegalArgumentException("Fatal Error: Card must not be null");
+		}
+		this.drawer = new BlackBoardDrawer(25);
 		try {
 			this.img = Gui.pictureFactory.getPicture(Pictures.BlackBoard);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// Fatal error => Should not happen
 			e.printStackTrace();
 		}
-		
+		setOpaque(false);
 		this.setMinimumSize(minSize);
 	}
 		
@@ -59,9 +62,7 @@ public class BlackBoardPane extends ObservableView{
 		r.setRect(scale*minInnerBounds.x, scale*minInnerBounds.y,
 				scale*minInnerBounds.width, scale*minInnerBounds.height);
 		dim.setSize(scale*minTrumpSize.width, scale*minTrumpSize.height);
-		
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
+	
 		g.drawImage(Gui.pictureFactory.getScaledPicture(img, this.getSize()), 0, 0, null);
 		
 		g.setColor(Color.WHITE);
