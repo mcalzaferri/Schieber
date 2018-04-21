@@ -1,11 +1,15 @@
 package gui.playingView;
 
+import java.awt.BorderLayout;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JFrame;
 
+import ch.ntb.jass.common.entities.SeatEntity;
 import client.ViewEnumeration;
 import client.ViewObserver;
 import shared.Card;
@@ -28,6 +32,7 @@ public class PlayingFieldViewTest extends JFrame{
 	}
 	
 	public PlayingFieldViewTest() {
+		super();
 		this.data = new ClientModel();
 		
 		
@@ -97,11 +102,28 @@ public class PlayingFieldViewTest extends JFrame{
 		this.data.setHand(cards);
 		data.setTrump(Trump.EICHEL);
 		data.setDeck(cards);
-
+		
+		Map<Integer,Player> players = new HashMap();
+		Seat s = Seat.CLIENT;
+		SeatEntity se = new SeatEntity();
+		se.seatNr = 1;
+		Seat.setClientSeat(se);
+		players.put(0, new Player(null, "This is a lenght test for carpet", Seat.CLIENT, false, false, false, 0));
+		players.put(1, new Player(null, "Sau", Seat.LEFTENEMY, false, false, false, 0));
+		players.put(2, new Player(null, "Arsch", Seat.PARTNER, false, false, false, 0));
+		players.put(3, new Player(null, "Spinner", Seat.RIGHTENEMY, false, false, false, 0));
+		data.setPlayers(players);
+		
 		this.pfv = new PlayingFieldView(data, obs);
-		add(this.pfv.getContent());
-		setVisible(true);
+		pfv.update();
+		setLayout(new BorderLayout());
+		add(this.pfv.getContent(), BorderLayout.CENTER);
+		for(int i = 0; i < 100; i++) {
+			pfv.publish("Go fuck yourself " + i);
+		}
 		setSize(500, 500);
+		pack();
+		setVisible(true);
 	}
 	private Card createRandomCard() {
 		Random r = new Random();
