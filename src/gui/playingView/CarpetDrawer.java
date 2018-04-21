@@ -11,6 +11,7 @@ import gui.PictureFactory.Pictures;
 import shared.Card;
 import shared.CardList;
 import shared.Player;
+import shared.Seat;
 
 /**
  * This class draws the content of the carpet onto a given component
@@ -40,9 +41,9 @@ public class CarpetDrawer {
 			this.imgSouth = Gui.pictureFactory.getPicture(Pictures.CoverSouth);
 			this.imgWest = Gui.pictureFactory.getPicture(Pictures.CoverWest);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// Fatal Error => Should not happen
 			e.printStackTrace();
-		}
+		}		
 		
 	}
 	
@@ -104,46 +105,86 @@ public class CarpetDrawer {
 	 * @param carpetSize Size of the component representing the carpet
 	 * @param cardSize Size of the hidden cards of the player
 	 */
-	public void drawPlayer(Graphics g, String position, Player player, Dimension carpetSize, Dimension cardSize) {
-		int stringWidth = g.getFontMetrics().stringWidth(player.getName());
-		int stringHeight = g.getFontMetrics().getHeight();
-		Dimension cardSizeInv = new Dimension(cardSize.height, cardSize.width); //For images on the left/right
-		
-		int nOfCards = 5;	// TODO Get number of cards in players hand
-		
-		//Draw name and hand at specified position
-		if(position.equals("North")){
-			img = Gui.pictureFactory.getScaledPicture(imgNorth, cardSize);
-			for(int i = 0; i < nOfCards; i++) {
-				g.drawImage(img, (carpetSize.width + (nOfCards + 1)*cardSize.width/2)/2 - i*cardSize.width/2 - cardSize.width, 
-						0, null);
+
+	public void drawPlayer(Graphics g, Player player, Dimension carpetSize, Dimension cardSize) {
+		//Only draw player if not null
+		if(player != null) {
+			//Set up text to be drawn
+			String text = player.getName();
+			if(text == null) {
+				text = "No name";
 			}
-			g.drawString(player.getName(), (carpetSize.width - stringWidth)/2, gap + stringHeight + cardSize.height);
+			text = getString(g, text, carpetSize.width/4);	//Reduce text to given length that it fits in graphics
 			
-		}else if(position.equals("East")) {
-			img = Gui.pictureFactory.getScaledPicture(imgEast, cardSizeInv);
-			for(int i = 0; i < nOfCards; i++) {
-				g.drawImage(img, carpetSize.width - cardSizeInv.width, 
-						(carpetSize.height + (nOfCards + 1)*cardSizeInv.height/2)/2 - i*cardSizeInv.height/2 - cardSizeInv.height, null);
+			int stringWidth = g.getFontMetrics().stringWidth(text);
+			int stringHeight = g.getFontMetrics().getHeight();
+
+			Dimension cardSizeInv = new Dimension(cardSize.height, cardSize.width); //For images on the left/right
+			int nOfCards = 5;	// TODO Get number of cards in players hand
+
+			/*
+			 * DRAW PLAYERS
+			 * Draws player according to their given seat.
+			 */
+			Seat seat = Seat.NOTATTABLE;
+			try {
+				seat = Seat.getById(player.getSeatNr());
 			}
-			g.drawString(player.getName(), (carpetSize.width - stringWidth - gap - cardSizeInv.width), (carpetSize.height + stringHeight)/2);
+			catch(NullPointerException ex) {
+				//Do nothing
+			}
+
+			switch(seat) {
+			case CLIENT:
+				img = Gui.pictureFactory.getScaledPicture(imgSouth, cardSize);
+				g.drawString(text, (carpetSize.width - stringWidth)/2, carpetSize.height - gap - cardSize.height);
+
+				break;
+			case LEFTENEMY:
+				img = Gui.pictureFactory.getScaledPicture(imgWest, cardSizeInv);
+				for(int i = 0; i < nOfCards; i++) {
+					g.drawImage(img, 0, 
+							(carpetSize.height - (nOfCards + 1)*cardSizeInv.height/2)/2 + i*cardSizeInv.height/2, null);
+				}
+				g.drawString(text, gap + cardSizeInv.width, (carpetSize.height + stringHeight)/2);
 			
-		}else if(position.equals("South")) {
-			img = Gui.pictureFactory.getScaledPicture(imgSouth, cardSize);
-			for(int i = 0; i < nOfCards; i++) {
-				g.drawImage(img, (carpetSize.width - (nOfCards + 1)*cardSize.width/2)/2 + i*cardSize.width/2 , 
-						carpetSize.height - cardSize.height, null);
+				break;
+			case NOTATTABLE:
+				break;
+			case PARTNER:
+				img = Gui.pictureFactory.getScaledPicture(imgNorth, cardSize);
+				for(int i = 0; i < nOfCards; i++) {
+					g.drawImage(img, (carpetSize.width + (nOfCards + 1)*cardSize.width/2)/2 - i*cardSize.width/2 - cardSize.width, 
+							0, null);
+				}
+				g.drawString(text, (carpetSize.width - stringWidth)/2, gap + stringHeight + cardSize.height);
+				
+				break;
+			case RIGHTENEMY:
+				img = Gui.pictureFactory.getScaledPicture(imgEast, cardSizeInv);
+				for(int i = 0; i < nOfCards; i++) {
+					g.drawImage(img, carpetSize.width - cardSizeInv.width, 
+							(carpetSize.height + (nOfCards + 1)*cardSizeInv.height/2)/2 - i*cardSizeInv.height/2 - cardSizeInv.height, null);
+				}
+				g.drawString(text, (carpetSize.width - stringWidth - gap - cardSizeInv.width), (carpetSize.height + stringHeight)/2);
+				
+				break;
+			default:
+				break;
+
 			}
-			g.drawString(player.getName(), (carpetSize.width - stringWidth)/2, carpetSize.height - gap - cardSize.height);
-			
-		}else if(position.equals("West")) {
-			img = Gui.pictureFactory.getScaledPicture(imgWest, cardSizeInv);
-			for(int i = 0; i < nOfCards; i++) {
-				g.drawImage(img, 0, 
-						(carpetSize.height - (nOfCards + 1)*cardSizeInv.height/2)/2 + i*cardSizeInv.height/2, null);
-			}
-			g.drawString(player.getName(), gap + cardSizeInv.width, (carpetSize.height + stringHeight)/2);
-		}
+		}	
 	}
 	
+	private String getString(Graphics g, String s, int max) {
+		String sub;
+		for(int i = 0; i < s.length(); i++) {
+			sub = s.substring(0, i);
+
+			if( g.getFontMetrics().stringWidth(sub) > max) {
+				return sub + "~";	//String needs to be shorted
+			}
+		}
+		return s;	//String lies within size
+	}
 }

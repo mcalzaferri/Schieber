@@ -1,6 +1,8 @@
 package gui.playingView;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -30,26 +32,25 @@ public class CarpetPane extends ObservableView{
 	
 	public CarpetPane(ClientModel data, ArrayList<ViewObserver> observers) {
 		super(data, observers);
+		if(data == null) {
+			throw new IllegalArgumentException("Fatal Error: Card must not be null");
+		}
 		this.imgCarpet = null;
 		try {
 			this.imgCarpet = Gui.pictureFactory.getPicture(Pictures.Carpet);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// Fatal error => Should not happen
 			e.printStackTrace();
 		}	
 		this.drawer = new CarpetDrawer(15);
+		setOpaque(true);
 		this.setMinimumSize(this.minCarpetSize);
 	}
 	
 	CarpetDrawer drawer;
-	BufferedDrawer bd = new BufferedDrawer();
-	Graphics bg;
+	Font font;
 	@Override
-	public void paint(Graphics g) {	
-		bg = bd.getGraphics(getSize());
-		bg.setColor(getBackground());
-		bg.fillRect(0, 0, getWidth(), getHeight());
-		
+	public void paint(Graphics g) {			
 		//Calculate image sizes
 		double scale = this.getSize().getWidth()/this.minCarpetSize.getWidth();
 		Dimension carpetSize = new Dimension((int)(scale * this.minCarpetSize.getWidth()),
@@ -58,15 +59,21 @@ public class CarpetPane extends ObservableView{
 				(int)(scale * this.minCardSize.getHeight()));
 		Dimension coverSize = new Dimension((int)(scale * this.minCoverSize.getWidth()),
 				(int)(scale * this.minCoverSize.getHeight()));
-		//Draw content
-		bg.drawImage(Gui.pictureFactory.getScaledPicture(imgCarpet, carpetSize), 0, 0, null);
-		drawer.drawDeck(bg, data.getDeck(), carpetSize, cardSize);
-		//TODO get player data from client model
-		Player p = new Player(null, "John Doe", Seat.NOTATTABLE, false, false, false, 0);
-		drawer.drawPlayer(bg, "North", p, carpetSize, coverSize);
-		drawer.drawPlayer(bg, "East", p, carpetSize, coverSize);
-		drawer.drawPlayer(bg, "South", p, carpetSize, coverSize);
-		drawer.drawPlayer(bg, "West", p, carpetSize, coverSize);
-		bd.drawOnGraphics(g);	
+		
+		//Draw carpet as background
+		g.drawImage(Gui.pictureFactory.getScaledPicture(imgCarpet, carpetSize), 0, 0, null);
+		
+		//Draw players
+		g.setColor(Color.WHITE);
+		font = BlackBoardPane.font;
+		g.setFont(new Font(font.getFontName(), font.getStyle(), (int)(scale*font.getSize())));
+		if(data.getPlayers() != null) {
+			for(Player p : data.getPlayers().values()) {
+				drawer.drawPlayer(g, p, carpetSize, coverSize);
+			}
+		}
+		
+		//Draw deck (must be drawn over players so that the cards are always on top)
+		drawer.drawDeck(g, data.getDeck(), carpetSize, cardSize);
 	}
 }
