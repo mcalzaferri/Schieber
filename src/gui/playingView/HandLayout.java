@@ -31,8 +31,7 @@ public class HandLayout implements LayoutManager{
 
 	@Override
 	public Dimension preferredLayoutSize(Container parent) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.minimumLayoutSize(parent);	//Ensures that calling pack method on the frame does not result in an exception
 	}
 
 	@Override
