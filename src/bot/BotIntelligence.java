@@ -26,6 +26,8 @@ public abstract class BotIntelligence {
 	protected boolean[] enemyRightOutOfColor = {false,false,false,false};
 	protected int turn;
 	protected Trump trump;
+	protected boolean geschoben = false;
+	protected boolean trumpfGemacht = false;
 	
 	// common methods for any intelligence
 	/**
@@ -40,7 +42,7 @@ public abstract class BotIntelligence {
 			System.out.println("Error - CurrHand is empty");
 		}
 		
-		this.cardsInHand = getCardListByIds(currHand);
+		this.cardsInHand = getCardListByIds(currHand, true);
 		// add cards in Hand to knownCards
 		for(Card c : this.cardsInHand) {
 			this.knownCards.add(new KnownCard(c,selfID,false));
@@ -71,7 +73,7 @@ public abstract class BotIntelligence {
 	public void setDeck(int[] currDeck)
 	{
 		//refresh current deck "on table"
-		deck = getCardListByIds(currDeck);
+		deck = getCardListByIds(currDeck, false);
 		
 		//add last played card to cardsPlayed and knownCards, update partner cards and enemy cards
 		if(!deck.isEmpty()) {
@@ -92,8 +94,10 @@ public abstract class BotIntelligence {
 	 * @param cardIds
 	 * @return ArrayList<Card>
 	 */
-	private ArrayList<Card> getCardListByIds(int[] cardIds){
-		Arrays.sort(cardIds); //sort the Cards on Hand
+	private ArrayList<Card> getCardListByIds(int[] cardIds, boolean sort){
+		if(sort) {
+			Arrays.sort(cardIds); //sort the Cards on Hand
+		}
 		ArrayList<Card> list = new ArrayList<>();
 		for(int i : cardIds) {
 			list.add(new Card(i));
@@ -386,6 +390,14 @@ public abstract class BotIntelligence {
 	public void setEnemyRightID(int rightEnemyID) {
 		this.enemyRightID = rightEnemyID;
 		
+	}
+	
+	public void setGeschoben(boolean g) {
+		this.geschoben = g;
+	}
+	
+	public void setTrumpfGemacht(boolean t) {
+		this.trumpfGemacht = t;
 	}
 	
 	/**

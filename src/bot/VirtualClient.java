@@ -1,12 +1,9 @@
 package bot;
 
-import java.util.ArrayList;
-
 import client.ClientCommunication;
 import shared.Card;
 import shared.Player;
 import shared.Score;
-import shared.Team;
 import shared.Trump;
 import shared.Weis;
 import shared.client.AbstractClient;
@@ -61,6 +58,10 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	public void doRequestTrump(boolean canSwitch) {
 		super.publishChosenTrump(ki.selectTrump(canSwitch));
+		ki.setTrumpfGemacht(true);
+		if(!canSwitch) {
+			ki.setGeschoben(true);
+		}
 		
 	}
 	

@@ -34,6 +34,20 @@ public class IntelligenceNormal extends BotIntelligence {
 			
 		if(deck.isEmpty()) { //I'm first to go
 			
+			//austrumpfen if we made trumpf and enemy still has them
+			if(trumpfGemacht && trump.getTrumpfColor() != null && !(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1])) {
+				for(Card c : allowedCards) {
+					if(c.isBuur(trump)) {
+						return c;
+					}
+				}
+				for(Card c : allowedCards) {
+					if(c.getColor() == trump.getTrumpfColor()) {
+						return c;
+					}
+				}
+			}
+			
 			for(Card wc : winningCards) {
 				if(wc.getColor() == trump.getTrumpfColor() && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) {
 					// Don't play trump card if enemy has none
@@ -128,7 +142,106 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 			
 		} else if(deck.size() == 2) { // I'm third to go (partner started)
-			// TODO implement logic
+			
+			// if partner starts in first round - we made trumpf
+			if(cardsInHand.size() == 9) {
+				trumpfGemacht = true;
+			}
+			
+			Card partnerCard = deck.get(0); // also first card
+			Card enemyRightCard = deck.get(1);
+			
+			int partnerScore = getScore(partnerCard);
+			int enemyRightScore = getScore(enemyRightCard);
+			
+			int partnerValue = getValue(partnerCard);
+			int enemyRightValue;
+			
+			if((enemyRightCard.getColor() == partnerCard.getColor()) || (enemyRightCard.getColor() == trump.getTrumpfColor())) {
+				enemyRightValue = getValue(enemyRightCard);
+			} else {
+				enemyRightValue = 0;
+			}
+			
+			if(enemyRightValue > partnerValue) { // enemy has higher card
+
+				if(enemyRightCard.getColor() == partnerCard.getColor()) { // enemy didn't play trumpf (or trumpf is current round color)
+					
+					// Stich with Farbe if possible and enemy out of this color
+					if(enemyLeftOutOfColor[partnerCard.getColor().getId()-1]) { 
+						for(Card c : allowedCards) {
+							if(c.getColor() == partnerCard.getColor() && getValue(c) > getValue(partnerCard)) {
+								return c;
+							}
+						}
+					}
+					
+					// Stich with Farbe if possible and enemy out of Trumpf
+					if(trump.getTrumpfColor() != null) {
+						if(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) { 
+							for(Card wc : winningCards) {
+								if(wc.getColor() == partnerCard.getColor()) {
+									return wc;
+								}
+							}
+						}
+					}
+					
+				} else { // enemy played Trumpf
+					
+					// left enemy out of trumpf -> stich if good 
+					if(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) {
+						for(Card c : allowedCards) {
+							if((getValue(c) > enemyRightValue)) {
+								// good score, play low trumpf
+								if(partnerScore + enemyRightScore >= 10) {
+									if(getScore(c) <= 10) {
+										return c;
+									}
+								}
+								
+								// awesome score, play any Trumpf
+								if(partnerScore + enemyRightScore >= 20) {
+									return c;
+								}
+							}
+						}
+					}
+				}
+				
+			} else {
+			
+				// partner has max card
+				if(partnerCard.equals(maxCardsInPlay[partnerCard.getColor().getId()-1])) {
+					if(partnerCard.getColor() == trump.getTrumpfColor() || trump.getTrumpfColor() == null || enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) {
+						for(Card c : allowedCards) {
+							if(getScore(c) == 8 || getScore(c) == 10) {
+								if(partnerCard.getColor() == trump.getTrumpfColor()) {
+									return c;
+								} else if(c.getColor() != trump.getTrumpfColor()) { // don't schmier Trumpf
+									return c;
+								}
+							}
+						}
+					}
+				}
+
+				// partner has higher card than enemy and other enemy is out of color
+				if(enemyLeftOutOfColor[partnerCard.getColor().getId()-1]) {
+					if(trump.getTrumpfColor() != null && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) {
+						for(Card c : allowedCards) {
+							if(getScore(c) == 8 || getScore(c) == 10) {
+								if(partnerCard.getColor() == trump.getTrumpfColor()) {
+									return c;
+								} else if(c.getColor() != trump.getTrumpfColor()) { // don't schmier Trumpf
+									return c;
+								}
+							}
+						}
+					}
+				}
+			}
+			
 		} else if(deck.size() == 3) { // last to go
 
 			Card enemyLeftCard = deck.get(0); // is also first card
@@ -151,7 +264,7 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 			
 			if((enemyRightCard.getColor() == enemyLeftCard.getColor()) || (enemyRightCard.getColor() == trump.getTrumpfColor())) {
-				enemyRightValue = getValue(partnerCard);
+				enemyRightValue = getValue(enemyRightCard);
 			} else {
 				enemyRightValue = 0;
 			}
@@ -199,16 +312,16 @@ public class IntelligenceNormal extends BotIntelligence {
 			
 		}
 		
-		// 1st fallback, apparently no good card on hand, don't play a scoring card
+		// 1st fallback, apparently no good card on hand, don't play a scoring card & don't play Trumpf
 		for(Card c : allowedCards) {
-			if(getScore(c) == 0) {
+			if(getScore(c) == 0 && c.getColor() != trump.getTrumpfColor()) {
 				return c;
 			}
 		}
 		
-		// 2nd fallback, play a low scoring card
+		// 2nd fallback, play a low scoring card (not Trumpf)
 		for(Card c : allowedCards) {
-			if(getScore(c) < 8) {
+			if(getScore(c) < 8 && c.getColor() != trump.getTrumpfColor()) {
 				return c;
 			}
 		}
@@ -429,22 +542,22 @@ public class IntelligenceNormal extends BotIntelligence {
 		//assign new values
 		for(int i = 0; i<ids.length; i++) {
 			switch(ids[i]%10) {
-			case 0:
 			case 1:
 			case 2:
-				break;
 			case 3:
-				ids[i] += 4;
 				break;
 			case 4:
-				ids[i] -= 1;
+				ids[i] += 4;
 				break;
 			case 5:
-				ids[i] += 3;
+				ids[i] -= 1;
 				break;
 			case 6:
+				ids[i] += 3;
+				break;
 			case 7:
 			case 8:
+			case 9:
 				ids[i] -= 2;
 			default:
 			}

@@ -19,6 +19,9 @@ public class BotTest {
 	static IntelligenceNormal bot2;
 	static IntelligenceNormal bot3;
 	static IntelligenceNormal bot4;
+	
+	static final int noOfGames = 10000;
+	static final long initialSeed = 1;
 
 	public static void main(String[] args) {
 		
@@ -32,14 +35,13 @@ public class BotTest {
 		long now = System.currentTimeMillis();
 		
 		// do a huge amount of games to test for unwanted exceptions
-		 for(seed = 0; seed < 10000; seed++) {
+		 for(seed = initialSeed; seed < initialSeed + noOfGames; seed++) {
 		
-			
 			System.out.println("Seed: " + seed);
 
-			// r = new Random(seed);
+			//r = new Random(seed);
 			// Alternative: do tests without fixed seeds to do even more different combinations
-			r = new Random();
+			 r = new Random();
 			
 			allCards = new ArrayList<>();
 			allCards = generateAllCards();
@@ -87,6 +89,8 @@ public class BotTest {
 
 			// select Trump
 			Trump trump = bot1.selectTrump(true);
+			bot1.setTrumpfGemacht(true);
+			bot3.setTrumpfGemacht(true);
 			System.out.println("Trump (Bot1)");
 			System.out.println("---------------");
 			System.out.println(trump);
@@ -94,6 +98,7 @@ public class BotTest {
 			System.out.println();
 
 			if(trump == Trump.SCHIEBEN) {
+				bot3.setGeschoben(true);
 				trump = bot3.selectTrump(false);
 				System.out.println("Trump (Bot3)");
 				System.out.println("---------------");
@@ -223,7 +228,7 @@ public class BotTest {
 				updateBots(deck4,3);
 				card4 = bot4.getNextCard();
 				System.out.println("Bot4 plays: " + card4.getColor() + " " + card4.getValue());
-
+	
 				fullDeck[0] = card1.getId();
 				fullDeck[1] = card2.getId();
 				fullDeck[2] = card3.getId();
@@ -314,6 +319,16 @@ public class BotTest {
 		for(Weis w : weise) {
 			System.out.println(w.getType());
 			System.out.println(w.getOriginCard().getColor() + " " + w.getOriginCard().getValue());
+		}
+		System.out.println("----------------------");
+		System.out.println();
+	}
+	
+	private static void printCards(String s, ArrayList<Card> cards) {
+		System.out.println(s);
+		System.out.println("----------------------");
+		for(Card c : cards) {
+			System.out.println(c.getColor() + " " + c.getValue());
 		}
 		System.out.println("----------------------");
 		System.out.println();
