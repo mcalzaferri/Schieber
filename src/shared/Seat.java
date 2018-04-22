@@ -5,60 +5,55 @@ import ch.ntb.jass.common.entities.SeatEntity;
 public enum Seat{
 	//Constants
 	NOTATTABLE(0),
-	CLIENT(1),
-	LEFTENEMY(2),
-	PARTNER(3),
-	RIGHTENEMY(4);
+	SEAT1(1),
+	SEAT2(2),
+	SEAT3(3),
+	SEAT4(4);
 	
 	//Static fields
-	private final int id;
+	private final int seatNr;
 	private static SeatEntity clientSeat;
 	
 	//Constructors
-	private Seat(int id) {
-		this.id = id;
+	private Seat(int seatNr) {
+		this.seatNr = seatNr;
 	}
 	
 	//Static methods
-	/** This method returns the Seat which is bound to the specified id.
-	 * @param id The id of the Seat that should be returned
-	 * @return The Seat which is bound to the given id
+	/** This method returns the Seat which is bound to the specified seatNr.
+	 * @param seatNr The seatNr of the Seat that should be returned
+	 * @return The Seat which is bound to the given seatNr
 	 */
-	public static Seat getById(int id) {
-		switch(id) {
+	public static Seat getBySeatNr(int seatNr) {
+		switch(seatNr) {
 		case 1:
-			return CLIENT;
+			return SEAT1;
 		case 2:
-			return LEFTENEMY;
+			return SEAT2;
 		case 3:
-			return PARTNER;
+			return SEAT3;
 		case 4:
-			return RIGHTENEMY;
+			return SEAT4;
 		default:
 			return NOTATTABLE;
 		}
 	}
 	
-	public static Seat getBySeatNr(int seatNr) {
-		if(seatNr == 0 || clientSeat == SeatEntity.NOTATTABLE) {
-			return Seat.NOTATTABLE;
-		}else {
-			return getById(1 + ((seatNr + clientSeat.getSeatNr() - 2) % 4));
-		}
+	//Methods
+	public SeatEntity getSeatEntity() {
+		return SeatEntity.getBySeatNr(seatNr);
 	}
 	
-	//Methods
-	/** This method will calculate the actual Seat this player is sitting at.
-	 * @return The actual position of this player at the table
+	/** This method returns the relative position of the player. The relative position is relative to the clients position.
+	 * Only use this method for display purposes.
+	 * @return The relative Position to the client. (If the client is not at the table BOTTOM is SEAT1 ...)
 	 */
-	public SeatEntity getSeatEntity() {
-		SeatEntity ret = null;
-		if(this == Seat.NOTATTABLE || clientSeat == SeatEntity.NOTATTABLE) {
-			ret = SeatEntity.NOTATTABLE;
+	public RelativeSeat getRelativeSeat() {
+		if(clientSeat == null || clientSeat == SeatEntity.NOTATTABLE) {
+			return RelativeSeat.getById(getSeatNr());
 		}else {
-			ret = SeatEntity.getBySeatNr(1 + ((id + clientSeat.getSeatNr() - 2) % 4));
+			return RelativeSeat.getById(1 + (getSeatNr() - clientSeat.getSeatNr()) % 4);
 		}
-		return ret;
 	}
 
 	
@@ -80,7 +75,7 @@ public enum Seat{
 	/** Returns the id of this seat
 	 * @return The id of this seat
 	 */
-	public int getId() {
-		return id;
+	public int getSeatNr() {
+		return seatNr;
 	}
 }

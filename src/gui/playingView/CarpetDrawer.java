@@ -11,6 +11,7 @@ import gui.PictureFactory.Pictures;
 import shared.Card;
 import shared.CardList;
 import shared.Player;
+import shared.RelativeSeat;
 import shared.Seat;
 
 /**
@@ -126,21 +127,22 @@ public class CarpetDrawer {
 			 * DRAW PLAYERS
 			 * Draws player according to their given seat.
 			 */
-			Seat seat = Seat.NOTATTABLE;
+			RelativeSeat seat = RelativeSeat.NOTATTABLE;
 			try {
-				seat = Seat.getById(player.getSeatNr());
+				seat = player.getSeat().getRelativeSeat();
 			}
 			catch(NullPointerException ex) {
-				//Do nothing
+				//Do nothing 
+				//TODO /Maurus
 			}
 
 			switch(seat) {
-			case CLIENT:
+			case BOTTOM:
 				img = Gui.pictureFactory.getScaledPicture(imgSouth, cardSize);
 				g.drawString(text, (carpetSize.width - stringWidth)/2, carpetSize.height - gap - cardSize.height);
 
 				break;
-			case LEFTENEMY:
+			case LEFT:
 				img = Gui.pictureFactory.getScaledPicture(imgWest, cardSizeInv);
 				for(int i = 0; i < nOfCards; i++) {
 					g.drawImage(img, 0, 
@@ -151,7 +153,7 @@ public class CarpetDrawer {
 				break;
 			case NOTATTABLE:
 				break;
-			case PARTNER:
+			case TOP:
 				img = Gui.pictureFactory.getScaledPicture(imgNorth, cardSize);
 				for(int i = 0; i < nOfCards; i++) {
 					g.drawImage(img, (carpetSize.width + (nOfCards + 1)*cardSize.width/2)/2 - i*cardSize.width/2 - cardSize.width, 
@@ -160,7 +162,7 @@ public class CarpetDrawer {
 				g.drawString(text, (carpetSize.width - stringWidth)/2, gap + stringHeight + cardSize.height);
 				
 				break;
-			case RIGHTENEMY:
+			case RIGHT:
 				img = Gui.pictureFactory.getScaledPicture(imgEast, cardSizeInv);
 				for(int i = 0; i < nOfCards; i++) {
 					g.drawImage(img, carpetSize.width - cardSizeInv.width, 
