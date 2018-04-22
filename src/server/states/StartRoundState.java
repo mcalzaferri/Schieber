@@ -15,8 +15,8 @@ public class StartRoundState extends GameState {
 		logic.createDeck();
 		broadcast(new NewRoundInfoMessage());
 		handOutCards();
-		// TODO
-		//msgHandler.changeState(new waitForTrumpState());
+		
+		stateMachine.changeState(new WaitForTrumpState());
 	}
 
 	private void handOutCards() throws IOException {

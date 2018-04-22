@@ -8,6 +8,8 @@ import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.LeaveLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.LeaveTableMessage;
+import ch.ntb.jass.common.proto.server_info_messages.EndOfRoundInfoMessage;
+import ch.ntb.jass.common.proto.server_info_messages.PlayerLeftLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_messages.GameStateMessage;
 import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
@@ -85,12 +87,24 @@ public class StateMachine {
 					System.out.println("Player tried to rejoin lobby");
 					return true;
 				}
-			} else if(msg instanceof LeaveLobbyMessage) {
-				// TODO
-				return false;
-			} else if(msg instanceof LeaveTableMessage) {
-				// TODO
-				return false;
+			} else if(msg instanceof LeaveLobbyMessage) {				
+				PlayerLeftLobbyInfoMessage pllim = new PlayerLeftLobbyInfoMessage();			
+				GameState.broadcast(pllim);
+				//Remove Player from Lobby
+				GameState.logic.removePlayer(sender);			
+				return true;				
+			} else if(msg instanceof LeaveTableMessage) {				
+				PlayerMovedToLobbyInfoMessage pmtlim = new PlayerMovedToLobbyInfoMessage();
+				GameState.broadcast(pmtlim);	
+				
+				//Switch Player from Table to Lobby
+				GameState.logic.removePlayer(sender);
+				sender.setSeatNr(0);
+				
+				EndOfRoundInfoMessage eorim = new EndOfRoundInfoMessage();
+				GameState.broadcast(eorim);
+				changeState(new LobbyState());		
+				return true;				
 			} else {
 				// let current state handle message
 				return currentState.handleMessage(sender, msg);
