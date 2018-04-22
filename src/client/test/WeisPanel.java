@@ -8,14 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import shared.Weis;
-import shared.WeisType;
+import ch.ntb.jass.common.entities.*;
 
 public class WeisPanel extends JPanel {
 	private static final long serialVersionUID = 8621203944155884873L;
 	String description;
 	JCheckBox enableBox;
-	JComboBox<WeisType> weisTypeComboBox;
+	JComboBox<WeisTypeEntity> weisTypeComboBox;
 	CardPanel cardPanel;
 	JLabel nullLabel;
 	
@@ -26,7 +25,7 @@ public class WeisPanel extends JPanel {
 	}
 	
 	private void initialComponents() {
-		weisTypeComboBox = new JComboBox<>(WeisType.values());
+		weisTypeComboBox = new JComboBox<>(WeisTypeEntity.values());
 		enableBox = new JCheckBox("enableWeis");
 		cardPanel = new CardPanel("originCard");
 		nullLabel = new JLabel("            null            ");
@@ -42,25 +41,29 @@ public class WeisPanel extends JPanel {
 		
 	}
 	
-	public Weis getWeis() {
-		if(enableBox.isSelected())
-			return new Weis((WeisType)weisTypeComboBox.getSelectedItem(), cardPanel.getCard());
+	public WeisEntity getWeis() {
+		if(enableBox.isSelected()) {
+			WeisEntity weis = new WeisEntity();
+			weis.originCard = cardPanel.getCard();
+			weis.type = (WeisTypeEntity)weisTypeComboBox.getSelectedItem();
+			return weis;
+		}
 		else
 			return null;
 	}
 	
-	public void setWeis(Weis weis) {
+	public void setWeis(WeisEntity weis) {
 		if(weis != null) {
 			nullLabel.setVisible(false);
 			weisTypeComboBox.setVisible(true);
 			cardPanel.setVisible(true);
 			if(weisTypeComboBox.isEnabled())
 				enableBox.setVisible(true);
-			if(weis.getType() != null) {
-				weisTypeComboBox.setSelectedItem(weis.getType());
+			if(weis.type != null) {
+				weisTypeComboBox.setSelectedItem(weis.type);
 			}
-			if(weis.getOriginCard() != null) {
-				cardPanel.setCard(weis.getOriginCard());
+			if(weis.originCard != null) {
+				cardPanel.setCard(weis.originCard);
 			}
 			
 		}else {

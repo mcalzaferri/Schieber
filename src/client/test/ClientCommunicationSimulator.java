@@ -12,15 +12,12 @@ import java.util.Random;
 
 import javax.swing.*;
 
-import ch.ntb.jass.common.entities.ScoreEntity;
-import ch.ntb.jass.common.entities.TeamEntity;
-import ch.ntb.jass.common.entities.WeisEntity;
+import ch.ntb.jass.common.entities.*;
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
 import client.ClientCommunication;
-import shared.*;
 import shared.client.AbstractClient;
 
 public class ClientCommunicationSimulator extends ClientCommunication{
@@ -31,25 +28,16 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	private JPanel msgFrame;
 	private JButton btnReceive;
 	private JTextArea outputArea;
-	private Player[] players;
+	private PlayerEntity[] players;
 	
 	
 	
-	public ClientCommunicationSimulator() {
-		initialPlayers();
+	public ClientCommunicationSimulator(PlayerEntity[] players) {
+		this.players = players;
 		initialComponents();
 	}
 	
 	//Methods
-	public void initialPlayers() {
-		players = new Player[5];
-		players[0] = new Player(null, "Enemy1", Seat.LEFTENEMY,false,true,false,1);
-		players[1] = new Player(null, "Enemy2", Seat.RIGHTENEMY,false,true,false,2);
-		players[2] = new Player(null, "Friend", Seat.PARTNER,false,true,false,3);
-		players[3] = new Player(null, "YOU" , Seat.CLIENT,false,true,false,4);
-		players[4] = new Player(null, "PlayerInLobby", Seat.NOTATTABLE,false,false,false,0);
-	}
-	
 	public void initialComponents() {
 		fenster = new JFrame();
 		fenster.setPreferredSize(new Dimension(1000, 1000));
@@ -120,7 +108,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	}
 	//server_info_messages
 	private void initialChosenTrumpInfoMsg() {
-		JComboBox<Trump> trumpComboBox = new JComboBox<>(Trump.values());
+		JComboBox<TrumpEntity> trumpComboBox = new JComboBox<>(TrumpEntity.values());
 		trumpComboBox.setEditable(true);
 		JPanel panel = new JPanel();
 		panel.add(trumpComboBox);
@@ -130,7 +118,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			public void actionPerformed(ActionEvent e) {
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.ChosenTrumpInfoMessage) {
 					ChosenTrumpInfoMessage msg = new ChosenTrumpInfoMessage();
-					msg.trump = ((Trump)trumpComboBox.getSelectedItem()).getEntity();
+					msg.trump = ((TrumpEntity)trumpComboBox.getSelectedItem());
 					client.handleReceivedMessage(msg);
 				}
 			}
@@ -161,7 +149,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			public void actionPerformed(ActionEvent e) {
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.EndOfRoundInfoMessage) {
 					EndOfRoundInfoMessage msg = new EndOfRoundInfoMessage();
-					Score score = new Score(new ScoreEntity());
+					ScoreEntity score = new ScoreEntity();
 					score.scores = new Hashtable<>();
 					score.scores.put(1, scoreTeam1Panel.getInt());
 					score.scores.put(2, scoreTeam2Panel.getInt());
@@ -185,15 +173,19 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.GameStartedInfoMessage) {
-					Player[] playersTeam1 = new Player[2];
+					PlayerEntity[] playersTeam1 = new PlayerEntity[2];
 					playersTeam1[0] = players[3];
 					playersTeam1[1] = players[2];
-					Player[] playersTeam2 = new Player[2];
+					PlayerEntity[] playersTeam2 = new PlayerEntity[2];
 					playersTeam2[0] = players[0];
 					playersTeam2[1] = players[1];
 					TeamEntity[] teams = new TeamEntity[2];
-					teams[0] = new Team(playersTeam1,1).getEntity();
-					teams[1] = new Team(playersTeam2,2).getEntity();
+					teams[0] = new TeamEntity();
+					teams[0].players = playersTeam1;
+					teams[0].teamId = 1;
+					teams[1] = new TeamEntity();
+					teams[1].players = playersTeam2;
+					teams[1].teamId = 2;
 					GameStartedInfoMessage msg = new GameStartedInfoMessage();
 					msg.teams = teams;
 					client.handleReceivedMessage(msg);
@@ -242,6 +234,8 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		PlayerPanel playerPanel = new PlayerPanel("player", players);
 		panel.add(playerPanel);
+		JCheckBox isReadyBox = new JCheckBox("isReady");
+		panel.add(isReadyBox);
 		msgFrame.add(panel,MessageEnumeration.PlayerChangedStateMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
 			@Override
@@ -249,7 +243,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.PlayerChangedStateMessage) {
 					PlayerChangedStateMessage msg = new PlayerChangedStateMessage();
 					msg.player = playerPanel.getPlayer();
-					msg.isReady = playerPanel.getPlayer().isReady();
+					msg.isReady = isReadyBox.isSelected();
 					client.handleReceivedMessage(msg);
 				}
 			}
@@ -284,6 +278,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.PlayerMovedToLobbyInfoMessage) {
 					PlayerMovedToLobbyInfoMessage msg = new PlayerMovedToLobbyInfoMessage();
 					msg.player = playerPanel.getPlayer();
+					msg.player.seat = SeatEntity.NOTATTABLE;
 					client.handleReceivedMessage(msg);
 				}
 			}
@@ -294,6 +289,8 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		PlayerPanel playerPanel = new PlayerPanel("player", players);
 		panel.add(playerPanel);
+		JComboBox<SeatEntity> seatComboBox = new JComboBox<>(SeatEntity.values());
+		panel.add(seatComboBox);
 		msgFrame.add(panel,MessageEnumeration.PlayerMovedToTableInfoMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
 			@Override
@@ -301,6 +298,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.PlayerMovedToTableInfoMessage) {
 					PlayerMovedToTableInfoMessage msg = new PlayerMovedToTableInfoMessage();
 					msg.player = playerPanel.getPlayer();
+					msg.player.seat = (SeatEntity)seatComboBox.getSelectedItem();
 					client.handleReceivedMessage(msg);
 				}
 			}
@@ -446,7 +444,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 						id = color * 10 + value;
 					}while(usedValues.contains(id));
 					usedValues.add(id);
-					cardPanels[i].setCard(new Card(id));
+					cardPanels[i].setCard(CardEntity.getById(id));
 				}
 			}
 		});
@@ -457,7 +455,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			public void actionPerformed(ActionEvent e) {
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.HandOutCardsMessage) {
 					HandOutCardsMessage msg = new HandOutCardsMessage();
-					Card[] cards = new Card[cardPanels.length];
+					CardEntity[] cards = new CardEntity[cardPanels.length];
 					for(int i = 0; i < cardPanels.length;i++) {
 						cards[i] = cardPanels[i].getCard();
 					}

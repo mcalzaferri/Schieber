@@ -9,15 +9,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import shared.Card;
-import shared.CardColor;
-import shared.CardValue;
+import ch.ntb.jass.common.entities.*;
+
 
 public class CardPanel extends JPanel {
 	private static final long serialVersionUID = 8621203944155884873L;
 	String description;
-	JComboBox<CardColor> colorComboBox;
-	JComboBox<CardValue> valueComboBox;
+	JComboBox<CardColorEntity> colorComboBox;
+	JComboBox<CardValueEntity> valueComboBox;
 	JLabel nullLabel;
 	
 	public CardPanel(String text) {
@@ -27,8 +26,8 @@ public class CardPanel extends JPanel {
 	}
 	
 	private void initialComponents() {
-		colorComboBox = new JComboBox<>(CardColor.values());
-		valueComboBox = new JComboBox<>(CardValue.values());
+		colorComboBox = new JComboBox<>(CardColorEntity.values());
+		valueComboBox = new JComboBox<>(CardValueEntity.values());
 		colorComboBox.setMaximumSize(new Dimension(200, 30));
 		valueComboBox.setMaximumSize(new Dimension(200, 30));
 		nullLabel = new JLabel("            null            ");
@@ -42,14 +41,17 @@ public class CardPanel extends JPanel {
 		this.add(nullLabel);
 	}
 	
-	public Card getCard() {
-		return new Card((CardColor)colorComboBox.getSelectedItem(), (CardValue)valueComboBox.getSelectedItem());
+	public CardEntity getCard() {
+		CardEntity card = new CardEntity();
+		card.color = (CardColorEntity)colorComboBox.getSelectedItem();
+		card.value = (CardValueEntity)valueComboBox.getSelectedItem();
+		return card;
 	}
 	
-	public void setCard(Card card) {
+	public void setCard(CardEntity card) {
 		if(card != null) {
-			colorComboBox.setSelectedItem(card.getColor());
-			valueComboBox.setSelectedItem(card.getValue());
+			colorComboBox.setSelectedItem(card.color);
+			valueComboBox.setSelectedItem(card.value);
 			colorComboBox.setVisible(true);
 			valueComboBox.setVisible(true);
 			nullLabel.setVisible(false);

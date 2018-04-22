@@ -60,9 +60,9 @@ public class ClientModelTest extends ClientModel{
 		
 		this.setPossibleWiis(weis);
 		
-		Player player1 = new Player(null, "Peter", Seat.LEFTENEMY);
+		Player player1 = new Player(null, "Peter", Seat.SEAT2);
 		Player player2 = new Player(null, "Hannah", Seat.NOTATTABLE); //TODO maybe this is partner? mcalzaferri
-		Player player3 = new Player(null, "Luise", Seat.RIGHTENEMY);
+		Player player3 = new Player(null, "Luise", Seat.SEAT4);
 		
 		Player actPlayer = new Player(null,"Leon",Seat.NOTATTABLE); //TODO maybe this is client? mcalzaferri
 		
