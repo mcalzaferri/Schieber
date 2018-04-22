@@ -1,5 +1,6 @@
 package shared.client;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
@@ -20,6 +21,9 @@ public class ClientModel {
 	private GameState gameState;
 	
 	//Constructors
+	public ClientModel() {
+		players = new HashMap<Integer, Player>();
+	}
 	
 	//Methods
 	public void updateScore(Score score) {
@@ -39,7 +43,10 @@ public class ClientModel {
 	}
 	
 	public void updatePlayer(PlayerEntity entity) {
-		getPlayerById(entity.id).update(entity);
+		if(players.containsKey(entity.id))
+			getPlayerById(entity.id).update(entity);
+		else
+			players.put(entity.id, new Player(entity));
 	}
 	
 	//Getters and Setters
