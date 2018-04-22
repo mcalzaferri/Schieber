@@ -11,7 +11,8 @@ import shared.Player;
 
 /**
  * Abstract game state used for the state machine.
- * Concrete states extend this class and implement the handleMessage function.
+ * Concrete states extend this class and implement the handleMessage and/or act
+ * function.
  * The static data fields are used by the states to send messages and to talk
  * to the game engine.
  */
@@ -28,14 +29,22 @@ public abstract class GameState {
 
 	/**
 	 * Handle message
-	 * This function has to be implemented by the concrete state.
+	 * States that handle messages override this function.
 	 * @param sender the player that sent the message
 	 * @param msg the message
 	 * @return true if it was handled successfully, false otherwise
 	 * @throws IOException
 	 */
-	public abstract boolean handleMessage(Player sender, ToServerMessage msg) throws IOException;
+	public boolean handleMessage(Player sender, ToServerMessage msg) throws IOException {
+		return false;
+	}
 
+	/**
+	 * Trigger state action
+	 * This function is called when the state machine switches to this state.
+	 * States with an entry action override this function.
+	 */
+	public void act() throws IOException { }
 
 	/*
 	 *  Helper functions for states

@@ -24,8 +24,9 @@ public class StateMachine {
 
 	/**
 	 * Init state machine with default initial state.
+	 * @throws IOException
 	 */
-	public StateMachine() {
+	public StateMachine() throws IOException {
 		changeState(new LobbyState());
 	}
 
@@ -37,8 +38,9 @@ public class StateMachine {
 		currentState = state;
 	}
 
-	public void changeState(GameState state) {
+	public void changeState(GameState state) throws IOException {
 		currentState = state;
+		currentState.act();
 	}
 
 	public GameState getCurrentState() {

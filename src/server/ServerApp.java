@@ -31,7 +31,7 @@ public class ServerApp {
 		app.run();
 	}
 
-	public ServerApp() throws SocketException {
+	public ServerApp() throws IOException {
 		com = new Communication();
 		logic = new GameLogic();
 
@@ -40,7 +40,7 @@ public class ServerApp {
 		GameState.init(stateMachine, com, logic);
 	}
 
-	public ServerApp(int port) throws SocketException {
+	public ServerApp(int port) throws IOException {
 		this();
 		com.setListenPort(port);
 	}
@@ -94,7 +94,7 @@ public class ServerApp {
 		com.setReceiveTimeout(tmo);
 	}
 
-	public void setState(GameState state) {
+	public void setState(GameState state) throws IOException {
 		stateMachine.changeState(state);
 	}
 

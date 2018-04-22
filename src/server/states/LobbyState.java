@@ -11,32 +11,35 @@ import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import shared.Player;
 
 public class LobbyState extends GameState {
+	/**
+	 * @see GameState#handleMessage(Player, ToServerMessage)
+	 */
 	@Override
 	public boolean handleMessage(Player sender, ToServerMessage msg) throws IOException {
 		if(msg instanceof JoinTableMessage) {
 			JoinTableMessage jtMsg = (JoinTableMessage) msg;
-			if(!logic.addPlayerToTable(sender, jtMsg.preferedSeat)) {
+			if(logic.addPlayerToTable(sender, jtMsg.preferedSeat)) {
+				sendResultMsg(ResultMessage.Code.OK, "", sender);
+			} else {
 				sendResultMsg(ResultMessage.Code.FAILURE,
 						"Chosen seat is occupied. Please choose a free seat.",
 						sender);
-			} else {
-				sendResultMsg(ResultMessage.Code.OK, "", sender);
 			}
+			return true;
 		} else if(msg instanceof ChangeStateMessage) {
 			ChangeStateMessage csMsg = (ChangeStateMessage) msg;
 
 			sender.setReady(csMsg.isReady);
 
-			if (logic.allPlayersReady()) {
+			if (logic.areAllPlayersReady()) {
 				GameStartedInfoMessage gsMsg = new GameStartedInfoMessage();
 				gsMsg.targetScore = TargetScoreEntity.TO_1000;
 				gsMsg.teams = new TeamEntity[]{logic.getTeam1(), logic.getTeam2()};
 				broadcast(gsMsg);
-				stateMachine.changeState(new StartGameState());
+				stateMachine.changeState(new StartRoundState());
 			}
-		} else {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 }

@@ -14,10 +14,16 @@ import shared.CardColor;
 import shared.CardValue;
 import shared.GameMode;
 import shared.Player;
+import shared.Score;
 
 /**
  * This class does all the game specific stuff like handling players, keeping
  * track of the cards that were played and calculating scores.
+ *
+ * Terms:
+ * game  - multiple rounds (until score limit is reached)
+ * round - 9 runs (36 card played)
+ * run   - one iteration (4 cards played)
  */
 public class GameLogic {
 	private GameMode mode;
@@ -26,15 +32,25 @@ public class GameLogic {
 	 * Maps seatNr to Player object
 	 */
 	private ArrayList<Player> players;
-	/**
-	 * Seat nr of player that has to take action.
-	 * 0 means it's noones move.
-	 */
-	private int currentSeatNr = 0;
+	private SeatEntity currentSeat;
 	private Card[] deck;
 
 	public GameLogic() {
 		players = new ArrayList<>();
+		init();
+	}
+
+	/**
+	 * Initialize new game.
+	 */
+	public void init() {
+		currentSeat = SeatEntity.NOTATTABLE;
+		for (Player p : players) {
+			p.putCards(null);
+			p.setSeatNr(SeatEntity.NOTATTABLE.getSeatNr());
+			p.setReady(false);
+		}
+		// TODO: possibly more stuff has to be done here
 	}
 
 	/**
@@ -95,7 +111,7 @@ public class GameLogic {
 	}
 
 	/**
-	 * Adds a player to the table by assigning a seat to him.
+	 * Add player to the table by assigning a seat to him
 	 * @param player player to add to the table
 	 * @param prefearedSeatNr the players preferred seat
 	 * @return true on success, false otherwise
@@ -120,7 +136,7 @@ public class GameLogic {
 	/**
 	 * @return true if all players at the table are ready, false otherwise
 	 */
-	public boolean allPlayersReady() {
+	public boolean areAllPlayersReady() {
 		for (Player p : players) {
 			if (p.getSeatNr() > 0 && !p.isReady()) {
 				return false;
@@ -159,27 +175,71 @@ public class GameLogic {
 	}
 
 	/**
-	 * Get player whose turn it is.
-	 * @return player that has to take action
+	 * Get player whose next
+	 * @return next player that has to take action
+	 * @throws Exception
 	 */
-	public Player getNextPlayer() {
-		currentSeatNr++;
-		if(currentSeatNr == 5) {
-			currentSeatNr = 1;
+	public Player nextPlayer() {
+		switch(currentSeat) {
+		case NOTATTABLE:
+			currentSeat = SeatEntity.SEAT1;
+			break;
+		case SEAT1:
+			currentSeat = SeatEntity.SEAT2;
+			break;
+		case SEAT2:
+			currentSeat = SeatEntity.SEAT3;
+			break;
+		case SEAT3:
+			currentSeat = SeatEntity.SEAT4;
+			break;
+		case SEAT4:
+			currentSeat = SeatEntity.SEAT1;
+			break;
+		default:
+			System.err.println("Unimplemented Seat");
 		}
-		return players.get(++currentSeatNr);
+		return getCurrentPlayer();
 	}
 
 	/**
-	 * Place a card.
-	 * After the fourth card has been placed the round is over.
+	 * Get player whose turn it is.
+	 * @return player that has to take action
+	 */
+	public Player getCurrentPlayer() {
+		return getPlayer(currentSeat);
+	}
+
+	/**
+	 * Place a card
+	 * After the fourth card has been placed the run is over.
 	 * @return false if move is invalid, true otherwise
 	 */
 	public boolean placeCard(Card c) {
 		throw new UnsupportedOperationException("Function not implemented.");
 	}
 
-	public Player getRoundWinner() {
+	public Player getRunWinner() {
+		throw new UnsupportedOperationException("Function not implemented.");
+	}
+
+	public boolean inFirstRun() {
+		throw new UnsupportedOperationException("Function not implemented.");
+	}
+
+	public boolean isRunOver() {
+		throw new UnsupportedOperationException("Function not implemented.");
+	}
+
+	public boolean isRoundOver() {
+		throw new UnsupportedOperationException("Function not implemented.");
+	}
+
+	public boolean isGameOver() {
+		throw new UnsupportedOperationException("Function not implemented.");
+	}
+
+	public Score getScore() {
 		throw new UnsupportedOperationException("Function not implemented.");
 	}
 
