@@ -62,6 +62,14 @@ public class Player extends PlayerEntity {
 	public void popCard(Card c) {
 		cards.remove(c);
 	}
+	
+	public Seat getSeat() {
+		return seat;
+	}
+	
+	public void setSeat(Seat seat) {
+		this.seat = seat;
+	}
 
 	public void setSeatNr(int nr) {
 		seat = Seat.getBySeatNr(nr);
