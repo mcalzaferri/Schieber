@@ -34,13 +34,13 @@ public class Player extends PlayerEntity {
 	}
 
 	public Player(PlayerEntity entity) {
-		this(null, entity.name,Seat.getBySeatNr(entity.seat.seatNr),entity.isBot,false,false,entity.id);
+		this(null, entity.name,Seat.getBySeatNr(entity.seat.getSeatNr()),entity.isBot,false,false,entity.id);
 	}
 
 	//Methods
 	public void update(PlayerEntity entity) {
 		if(id == entity.id) {
-			seat = Seat.getBySeatNr(entity.seat.seatNr);
+			seat = Seat.getBySeatNr(entity.seat.getSeatNr());
 			name = entity.name;
 			isBot = entity.isBot;
 		}
@@ -68,7 +68,7 @@ public class Player extends PlayerEntity {
 	}
 
 	public int getSeatNr() {
-		return seat.getSeatEntity().seatNr;
+		return seat.getSeatEntity().getSeatNr();
 	}
 
 	public int getId() {

@@ -11,6 +11,7 @@ import ch.ntb.jass.common.proto.player_messages.LeaveTableMessage;
 import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_messages.GameStateMessage;
 import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
+import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import shared.InternalMessage;
 import shared.Player;
 import shared.Seat;
@@ -48,32 +49,58 @@ public class StateMachine {
 		// joining and leaving players are handled here
 		// all other messages are handled by the current state
 
-		ToServerMessage msg = (ToServerMessage)iMsg.message;
+		if (iMsg.message == null) {
+			GameState.sendResultMsg(ResultMessage.Code.PROTOCOL_ERROR,
+					"The data you sent was invalid. Fix your shit!", sender);
+		}
 
-		if (msg instanceof JoinLobbyMessage) {
-			if(sender == null) {
-				// New player joined
-				PlayerEntity playerData = ((JoinLobbyMessage) msg).playerData;
-				if(playerData == null) {
-					System.err.print(msg.getClass().getSimpleName()
-							+ " with no data received");
+		ToServerMessage msg;
+
+		try {
+			msg = (ToServerMessage)iMsg.message;
+		} catch(ClassCastException e) {
+			GameState.sendResultMsg(ResultMessage.Code.PROTOCOL_ERROR,
+					"The server only accepts data of type ToServerMessage. " +
+					"Fix your shit!",
+					sender);
+			System.err.println("Received a message that is not a ToServerMessage.");
+			return false;
+		}
+
+		try {
+			if (msg instanceof JoinLobbyMessage) {
+				if(sender == null) {
+					// New player joined
+					PlayerEntity playerData = ((JoinLobbyMessage) msg).playerData;
+					if(playerData == null) {
+						System.err.print(msg.getClass().getSimpleName()
+								+ " with no data received");
+						return true;
+					}
+					handleNewPlayer(playerData, iMsg.senderAddress);
+					return true;
+				} else {
+					System.out.println("Player tried to rejoin lobby");
 					return true;
 				}
-				handleNewPlayer(playerData, iMsg.senderAddress);
-				return true;
+			} else if(msg instanceof LeaveLobbyMessage) {
+				// TODO
+				return false;
+			} else if(msg instanceof LeaveTableMessage) {
+				// TODO
+				return false;
 			} else {
-				System.out.println("Player tried to rejoin lobby");
-				return true;
+				// let current state handle message
+				return currentState.handleMessage(sender, msg);
 			}
-		} else if(msg instanceof LeaveLobbyMessage) {
-			// TODO
-			return false;
-		} else if(msg instanceof LeaveTableMessage) {
-			// TODO
-			return false;
-		} else {
-			// let current state handle message
-			return currentState.handleMessage(sender, msg);
+		} catch (Exception e) {
+			GameState.sendResultMsg(ResultMessage.Code.PROTOCOL_ERROR,
+					"Something went wrong while processing the data you sent." +
+					" The server will just assume it's your fault and continue." +
+					" This might help you fix your code:" + System.lineSeparator() +
+					e.getMessage(),
+					sender);
+			return true;
 		}
 	}
 

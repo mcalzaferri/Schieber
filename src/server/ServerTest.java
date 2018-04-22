@@ -70,11 +70,10 @@ public class ServerTest {
 		waitForMessage();
 
 		JoinTableMessage msg = new JoinTableMessage();
-		msg.preferedSeat = new SeatEntity();
-		msg.preferedSeat.seatNr = 1;
+		msg.preferedSeat = SeatEntity.SEAT1;
 		cCom.send(msg);
 		waitForMessage();
-		assertEquals(msg.preferedSeat.seatNr, app.logic.getPlayer(
+		assertEquals(msg.preferedSeat.getSeatNr(), app.logic.getPlayer(
 				new InetSocketAddress("localhost", clientListenPort)).getSeatNr());
 	}
 

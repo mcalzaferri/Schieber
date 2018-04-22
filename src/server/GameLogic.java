@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Map;
 import java.util.Random;
 
+import ch.ntb.jass.common.entities.SeatEntity;
+import ch.ntb.jass.common.entities.TeamEntity;
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
@@ -63,17 +63,18 @@ public class GameLogic {
 
 	/**
 	 * Assign cards to player.
+	 * @param player player to assign cards to
 	 * @return array with nine cards
 	 */
-	public Card[] assignCardsToPlayer(Player p) {
-		if (p.getSeatNr() == 0) {
+	public Card[] assignCardsToPlayer(Player player) {
+		if (player.getSeatNr() == 0) {
 			System.err.println("Tried to assign cards to player which is not at the table.");
 			return null;
 		}
 
-		Card[] cards = Arrays.copyOfRange(deck, 9 * (p.getSeatNr() - 1),
-		                                        9 * (p.getSeatNr() - 1) + 9);
-		p.putCards(cards);
+		Card[] cards = Arrays.copyOfRange(deck, 9 * (player.getSeatNr() - 1),
+		                                        9 * (player.getSeatNr() - 1) + 9);
+		player.putCards(cards);
 		return cards;
 	}
 
@@ -90,37 +91,29 @@ public class GameLogic {
 	 * @param p player to remove
 	 */
 	public void removePlayer(Player p) {
-		players.remove(p.getSeatNr());
+		players.remove(p);
 	}
 
 	/**
 	 * Adds a player to the table by assigning a seat to him.
-	 * @param p player to add to the table
+	 * @param player player to add to the table
 	 * @param prefearedSeatNr the players preferred seat
 	 * @return true on success, false otherwise
 	 */
-	public boolean addPlayerToTable(Player p, int preferredSeatNr) {
-		if(preferredSeatNr < 1 || preferredSeatNr > 4) {
-			System.err.println("Failed to add player to table: invalid seatNr: "
-					+ preferredSeatNr);
-			return false;
+	public boolean addPlayerToTable(Player player, SeatEntity seat) {
+		if (player.getSeatNr() == seat.getSeatNr()) {
+			// Player is already sitting at this seat.
+			return true;
 		}
 
-		for (Player player : players) {
-			if (player.getSeatNr() == preferredSeatNr) {
+		for (Player p : players) {
+			if (p.getSeatNr() == seat.getSeatNr()) {
 				System.err.println("Failed to add player to table: seat occupied");
 				return false;
 			}
 		}
 
-		if(p.getSeatNr() > 0) {
-			System.err.println(
-					"Failed to add player to table: player already at table");
-		}
-
-		players.remove(p.getSeatNr());
-		p.setSeatNr(preferredSeatNr);
-		addPlayer(p);
+		player.setSeatNr(seat.getSeatNr());
 		return true;
 	}
 
@@ -143,6 +136,26 @@ public class GameLogic {
 			}
 		}
 		return null;
+	}
+
+	public Player getPlayer(SeatEntity seat) {
+		for (Player p : players) {
+			if(p.getSeatNr() == seat.getSeatNr()) {
+				return p;
+			}
+		}
+		return null;
+	}
+
+	public TeamEntity getTeam1() {
+		TeamEntity team = new TeamEntity();
+		team.players = new Player[] {getPlayer(SeatEntity.SEAT1), getPlayer(SeatEntity.SEAT3)};
+		return team;
+	}
+	public TeamEntity getTeam2() {
+		TeamEntity team = new TeamEntity();
+		team.players = new Player[] {getPlayer(SeatEntity.SEAT2), getPlayer(SeatEntity.SEAT4)};
+		return team;
 	}
 
 	/**

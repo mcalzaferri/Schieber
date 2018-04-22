@@ -62,7 +62,12 @@ public class ServerApp {
 		Player sender = logic.getPlayer(iMsg.senderAddress);
 
 		// log received message
-		System.out.print("received " + iMsg.message.getClass().getSimpleName());
+		System.out.print("received");
+		if (iMsg.message != null) {
+			System.out.print(iMsg.message.getClass().getSimpleName());
+		} else {
+			System.out.print(" invalid message");
+		}
 		if(sender != null) {
 			System.out.println(" from " + sender.getName());
 		} else {

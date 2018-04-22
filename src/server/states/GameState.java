@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.ToServerMessage;
+import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import server.GameLogic;
 import shared.Communication;
 import shared.Player;
@@ -52,5 +53,13 @@ public abstract class GameState {
 
 	public static void send(Message msg, Player player) throws IOException {
 		com.send(msg, player.getSocketAddress());
+	}
+
+	public static void sendResultMsg(ResultMessage.Code errorCode,
+			String errorText, Player player) throws IOException {
+		ResultMessage resMsg = new ResultMessage();
+		resMsg.code = errorCode;
+		resMsg.message = errorText;
+		send(resMsg, player);
 	}
 }

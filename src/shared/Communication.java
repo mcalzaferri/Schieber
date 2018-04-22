@@ -1,17 +1,10 @@
 package shared;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
-import java.nio.charset.Charset;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -55,15 +48,16 @@ public class Communication {
 		socket.receive(receivePacket);
 		System.out.println("Packet received");
 
+		InternalMessage msg = new InternalMessage();
+		msg.senderAddress = (InetSocketAddress)receivePacket.getSocketAddress();
+
 		try {
-			InternalMessage msg = new InternalMessage();
 			msg.message = objectMapper.readValue(receivePacket.getData(), Message.class);
-			msg.senderAddress = (InetSocketAddress)receivePacket.getSocketAddress();
-			return msg;
 		} catch(JsonParseException e) {
 			System.err.println("Failed to parse received json.");
-			return null;
 		}
+
+		return msg;
 	}
 
 	/**
