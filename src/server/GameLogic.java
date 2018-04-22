@@ -9,13 +9,14 @@ import java.util.Random;
 
 import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.entities.TeamEntity;
-import ch.ntb.jass.common.entities.TrumpEntity;
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
 import shared.GameMode;
 import shared.Player;
 import shared.Score;
+import shared.Seat;
+import shared.Trump;
 
 /**
  * This class does all the game specific stuff like handling players, keeping
@@ -28,7 +29,7 @@ import shared.Score;
  */
 public class GameLogic {
 	private GameMode mode;
-	private TrumpEntity trump;
+	private Trump trump;
 //	private CardColor trumpf;
 	/**
 	 * Maps seatNr to Player object
@@ -79,7 +80,7 @@ public class GameLogic {
 	 * Set trump
 	 */
 	
-	public void setTrump(TrumpEntity trump){
+	public void setTrump(Trump trump){
 		this.trump = trump;
 	}
 	
@@ -173,6 +174,13 @@ public class GameLogic {
 		}
 		return null;
 	}
+	
+	public SeatEntity getRandomSeat(){
+		Random random = new Random();
+		SeatEntity seatEntity = SeatEntity.values()[random.nextInt(getPlayerCount()+1)];
+		return seatEntity;
+	}
+	
 
 	public TeamEntity getTeam1() {
 		TeamEntity team = new TeamEntity();

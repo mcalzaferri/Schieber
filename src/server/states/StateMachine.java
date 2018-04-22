@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
+import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.LeaveLobbyMessage;
@@ -90,17 +91,12 @@ public class StateMachine {
 			} else if(msg instanceof LeaveLobbyMessage) {				
 				PlayerLeftLobbyInfoMessage pllim = new PlayerLeftLobbyInfoMessage();			
 				GameState.broadcast(pllim);
-				//Remove Player from Lobby
 				GameState.logic.removePlayer(sender);			
 				return true;				
 			} else if(msg instanceof LeaveTableMessage) {				
 				PlayerMovedToLobbyInfoMessage pmtlim = new PlayerMovedToLobbyInfoMessage();
 				GameState.broadcast(pmtlim);	
-				
-				//Switch Player from Table to Lobby
-				GameState.logic.removePlayer(sender);
-				sender.setSeatNr(0);
-				
+				sender.setSeat(Seat.NOTATTABLE);
 				EndOfRoundInfoMessage eorim = new EndOfRoundInfoMessage();
 				GameState.broadcast(eorim);
 				changeState(new LobbyState());		
