@@ -105,8 +105,7 @@ public class PlayingFieldViewTest extends JFrame{
 		
 		Map<Integer,Player> players = new HashMap();
 		Seat s = Seat.CLIENT;
-		SeatEntity se = new SeatEntity();
-		se.seatNr = 1;
+		SeatEntity se = SeatEntity.SEAT1;
 		Seat.setClientSeat(se);
 		players.put(0, new Player(null, "This is a lenght test for carpet", Seat.CLIENT, false, false, false, 0));
 		players.put(1, new Player(null, "Sau", Seat.LEFTENEMY, false, false, false, 0));

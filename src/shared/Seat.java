@@ -40,10 +40,10 @@ public enum Seat{
 	}
 	
 	public static Seat getBySeatNr(int seatNr) {
-		if(seatNr == 0 || clientSeat.seatNr == 0) {
+		if(seatNr == 0 || clientSeat == SeatEntity.NOTATTABLE) {
 			return Seat.NOTATTABLE;
 		}else {
-			return getById(1 + ((seatNr + clientSeat.seatNr - 2) % 4));
+			return getById(1 + ((seatNr + clientSeat.getSeatNr() - 2) % 4));
 		}
 	}
 	
@@ -52,11 +52,11 @@ public enum Seat{
 	 * @return The actual position of this player at the table
 	 */
 	public SeatEntity getSeatEntity() {
-		SeatEntity ret = new SeatEntity();
-		if(this == Seat.NOTATTABLE || clientSeat.seatNr == 0) {
-			ret.seatNr = 0;
+		SeatEntity ret = null;
+		if(this == Seat.NOTATTABLE || clientSeat == SeatEntity.NOTATTABLE) {
+			ret = SeatEntity.NOTATTABLE;
 		}else {
-			ret.seatNr = 1 + ((id + clientSeat.seatNr - 2) % 4);
+			ret = SeatEntity.getBySeatNr(1 + ((id + clientSeat.getSeatNr() - 2) % 4));
 		}
 		return ret;
 	}

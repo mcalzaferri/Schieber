@@ -84,7 +84,7 @@ public abstract class AbstractClient {
 					doUpdateDeck(model.getDeck().toArray());
 				}
 				model.setGameState(GameState.TURNACTIVE);
-				model.setActiveSeatId(msg.nextPlayer.seat.seatNr);
+				model.setActiveSeatId(msg.nextPlayer.seat.getSeatNr());
 				//If the player is you, select card
 				if(msg.nextPlayer.id == model.getThisPlayer().getId()) {
 					doRequestCard(msg.selectWeis);

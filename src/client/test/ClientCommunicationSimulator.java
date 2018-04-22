@@ -533,14 +533,14 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 							"playerData.name: " + cmsg.playerData.name +  "\n" +
 							"playerData.id: " + cmsg.playerData.id + "\n" +
 							"playerData.isBot: " + cmsg.playerData.isBot + "\n" +
-							"playerData.seatNr: " + cmsg.playerData.seat.seatNr + "\n"
+							"playerData.seatNr: " + cmsg.playerData.seat + "\n"
 							);
 				else
 					outputArea.append("playerData: null\n");
 			}else if(msg instanceof JoinTableMessage) {
 				JoinTableMessage cmsg = (JoinTableMessage)msg;
 				if(cmsg.preferedSeat != null)
-					outputArea.append("preferedSeat: " + cmsg.preferedSeat.seatNr +  "\n");
+					outputArea.append("preferedSeat: " + cmsg.preferedSeat +  "\n");
 				else
 					outputArea.append("preferedSeat: null\n");
 			}else if(msg instanceof LeaveLobbyMessage) {
