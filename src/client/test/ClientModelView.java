@@ -24,9 +24,9 @@ public class ClientModelView extends JFrame{
 	private static final long serialVersionUID = -7761420473524430597L;
 	ClientModel model;
 	JPanel mainFrame;
-	Player[] players;
+	PlayerEntity[] players;
 	Timer updateTimer;
-	public ClientModelView(ClientModel model, Player[] players) {
+	public ClientModelView(ClientModel model, PlayerEntity[] players) {
 		super();
 		this.model = model;
 		this.players = players;
@@ -42,7 +42,14 @@ public class ClientModelView extends JFrame{
 		mainFrame = new JPanel();
 		mainFrame.setLayout(new BoxLayout(mainFrame, BoxLayout.Y_AXIS));
 		updateTimer = new Timer(500, null); //will fire events every 500ms
-		
+		updateTimer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pack();
+				repaint();
+			}
+		});
 		initialThisPlayer();
 		initialPlayers();
 		initialHand();
