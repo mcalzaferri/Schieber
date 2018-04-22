@@ -108,10 +108,12 @@ public abstract class AbstractClient {
 				model.updatePlayer(msg.player);
 				model.getPlayerById(msg.player.id).setAtTable(false);
 				Team[] teams = model.getTeams();
-				for(int i = 0; i <= 1; i++) {
-					teams[i].removePlayer(msg.player.id);
+				if(teams != null) {
+					for(int i = 0; i <= 1; i++) {
+						teams[i].removePlayer(msg.player.id);
+					}
+					teamsChanged(model.getTeams());
 				}
-				teamsChanged(model.getTeams());
 				playerChanged(model.getPlayerById(msg.player.id));
 			}
 
