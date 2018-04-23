@@ -49,7 +49,7 @@ public class SelectHostView extends ObservableView implements Viewable{
 				for(ViewObserver observer: observers)
 				{
 					InetSocketAddress serverAddress = new InetSocketAddress(serverIPText.getText(), Integer.parseInt(serverSocketText.getText())); //TODO change port 
-					observer. btnConnectClick(serverAddress);
+					observer. btnConnectClick(serverAddress, "Username"); //TODO Feld zur eingabe des Benutzernamens (Darf nicht leer sein) /Maurus
 				}
 			}
 		});
@@ -58,6 +58,7 @@ public class SelectHostView extends ObservableView implements Viewable{
 	private void layoutSelectHostView() {
 		
 		//dimensions and location of window
+		setMinimumSize(new Dimension(width, height)); //TODO Has ofach mol so gmacht /Maurus
 		setSize(width,height);
 		setLocation(left,top);
 		
