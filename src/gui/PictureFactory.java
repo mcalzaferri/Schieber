@@ -19,7 +19,7 @@ import shared.Trump;
 
 public class PictureFactory {
 	public enum Pictures{
-		Carpet, BlackBoard, CoverNorth, CoverEast, CoverSouth, CoverWest, Table;
+		Carpet, BlackBoard, CoverNorth, CoverEast, CoverSouth, CoverWest, Table, Lobby;
 	}
 	public BufferedImage getPicture(Card card) throws IOException {
 		String path = "res\\cards\\" + card.getColor().toString() + card.getValue().getDefaultValue() + ".png";
