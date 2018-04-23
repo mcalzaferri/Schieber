@@ -57,14 +57,18 @@ public class ClientCommunication extends Communication {
 
 	/**
 	 * Connect to server.
+	 * When connecting to the server the id is always 0 as the server has to calculate the id first.
 	 * @param serverAddress Address of the Game Server
+	 * @param username The username the connecting player prefers
+	 * @param isBot True if a bot wants to connect, false otherwise
 	 */
 	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) {
 		this.serverAddress = serverAddress;
 		JoinLobbyMessage msg = new JoinLobbyMessage();
 		msg.playerData = new PlayerEntity();
-		msg.playerData.isBot = false;
+		msg.playerData.isBot = isBot;
 		msg.playerData.name = username;
+		msg.playerData.id = 0;
 		send(msg);
 	}
 }
