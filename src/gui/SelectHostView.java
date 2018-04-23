@@ -49,7 +49,7 @@ public class SelectHostView extends ObservableView implements Viewable{
 				for(ViewObserver observer: observers)
 				{
 					InetSocketAddress serverAddress = new InetSocketAddress(serverIPText.getText(), Integer.parseInt(serverSocketText.getText())); //TODO change port 
-					observer. btnConnectClick(serverAddress, "Username"); //TODO Feld zur eingabe des Benutzernamens (Darf nicht leer sein) /Maurus
+					observer. btnConnectClick(serverAddress, "YOU"); //TODO Feld zur eingabe des Benutzernamens (Darf nicht leer sein) /Maurus
 				}
 			}
 		});
