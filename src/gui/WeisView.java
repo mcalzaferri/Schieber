@@ -57,8 +57,8 @@ public class WeisView extends ObservableView implements Viewable{
 	public WeisView(ClientModel data, ArrayList<ViewObserver> observers) {	
 		super(data, observers);
 		weisList = data.getPossibleWiis();
-		
-		layoutWeisView();
+		if(weisList != null)
+			layoutWeisView(); //TODO Wenn das GUI erstellt wird ist getPossibleWiis null... /Maurus
 	}
 
 	@Override

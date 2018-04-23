@@ -14,6 +14,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		super(com, model);
 		this.view = view;
 		view.addObserver(this);
+		view.changeView(ViewEnumeration.SELECTHOSTVIEW);
 	}
 	
 	//Methods
@@ -130,8 +131,8 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * @param serverAddress Address where the player wants to connect to.
 	 */
 	@Override
-	public void btnConnectClick(InetSocketAddress serverAddress) {
-		super.connect(serverAddress);
+	public void btnConnectClick(InetSocketAddress serverAddress, String username) {
+		super.connect(serverAddress, username);
 	}
 	
 	/** On the GameOverView the player pressed the restart button as he wants to play another game.
