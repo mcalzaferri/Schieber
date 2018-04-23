@@ -253,12 +253,6 @@ public abstract class AbstractClient {
 		msg.wiis = wiis;
 		com.send(msg);
 	}
-	protected void joinLobby(String username) {
-		JoinLobbyMessage msg = new JoinLobbyMessage();
-		model.setThisPlayer(new Player(null,username,Seat.NOTATTABLE));
-		msg.playerData = model.getThisPlayer();
-		com.send(msg);
-	}
 	protected void joinTable(Seat preferedSeat) {
 		JoinTableMessage msg = new JoinTableMessage();
 		msg.preferedSeat = preferedSeat.getSeatEntity();
@@ -282,7 +276,9 @@ public abstract class AbstractClient {
 	 * @param serverAddress Address to connect to
 	 */
 	public void connect(InetSocketAddress serverAddress, String username) {
-		 com.connect(serverAddress, username);
+		model.setThisPlayer(new Player(serverAddress,username,Seat.NOTATTABLE));
+		com.connect(serverAddress, username);
+		
 	}
 	
 	public void disconnect() {
