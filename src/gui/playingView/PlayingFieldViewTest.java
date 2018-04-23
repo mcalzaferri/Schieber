@@ -107,10 +107,10 @@ public class PlayingFieldViewTest extends JFrame{
 		Seat s = Seat.SEAT1;
 		SeatEntity se = SeatEntity.SEAT1;
 		Seat.setClientSeat(se);
-		players.put(0, new Player(null, "This is a lenght test for carpet", Seat.SEAT1, false, false, false, 0));
-		players.put(1, new Player(null, "Sau", Seat.SEAT2, false, false, false, 0));
-		players.put(2, new Player(null, "Arsch", Seat.SEAT3, false, false, false, 0));
-		players.put(3, new Player(null, "Spinner", Seat.SEAT4, false, false, false, 0));
+		players.put(0, new Player(null, "This is a lenght test for carpet", Seat.SEAT1, false, false, 0));
+		players.put(1, new Player(null, "Sau", Seat.SEAT2, false, false, 0));
+		players.put(2, new Player(null, "Arsch", Seat.SEAT3, false, false, 0));
+		players.put(3, new Player(null, "Spinner", Seat.SEAT4, false, false, 0));
 		data.setPlayers(players);
 		
 		this.pfv = new PlayingFieldView(data, obs);

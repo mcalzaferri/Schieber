@@ -169,7 +169,6 @@ public class LobbyView extends ObservableView implements Viewable{
 							if(response == JOptionPane.YES_NO_OPTION)
 							{
 								actPlayer.setSeatNr(1);
-								actPlayer.setAtTable(true);
 								update();
 							}
 						
@@ -193,7 +192,6 @@ public class LobbyView extends ObservableView implements Viewable{
 							if(response == JOptionPane.YES_NO_OPTION)
 							{
 								actPlayer.setSeatNr(2);
-								actPlayer.setAtTable(true);
 								update();
 							}
 						
@@ -217,7 +215,6 @@ public class LobbyView extends ObservableView implements Viewable{
 							if(response == JOptionPane.YES_NO_OPTION)
 							{
 								actPlayer.setSeatNr(3);
-								actPlayer.setAtTable(true);
 								update();
 							}
 						
@@ -241,7 +238,6 @@ public class LobbyView extends ObservableView implements Viewable{
 							if(response == JOptionPane.YES_NO_OPTION)
 							{
 								actPlayer.setSeatNr(4);
-								actPlayer.setAtTable(true);
 								update();
 							}
 						

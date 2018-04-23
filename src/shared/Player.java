@@ -9,16 +9,14 @@ import ch.ntb.jass.common.entities.PlayerEntity;
 public class Player extends PlayerEntity {
 	private Seat seat;				//player seat number (0 to 4) (0 means not at the table)
 	private boolean isReady;
-	private boolean isAtTable;
 	private List<Card> cards;	//cards on hand
 	private InetSocketAddress address;
 
 	//Constructors
-	public Player(InetSocketAddress address, String name, Seat seat, boolean isBot, boolean isAtTable, boolean isReady, int id) {
+	public Player(InetSocketAddress address, String name, Seat seat, boolean isBot, boolean isReady, int id) {
 		this.address = address;
 		this.seat = seat;
 		this.isBot = isBot;
-		this.isAtTable = isAtTable;
 		this.isReady = isReady;
 		this.id = id;
 		cards = null;
@@ -30,11 +28,11 @@ public class Player extends PlayerEntity {
 	}
 
 	public Player(InetSocketAddress address, String name, Seat seat) {
-		this(address,name,seat,false,false,false,0);
+		this(address,name,seat,false,false,0);
 	}
 
 	public Player(PlayerEntity entity) {
-		this(null, entity.name,Seat.getBySeatNr(entity.seat.getSeatNr()),entity.isBot,false,false,entity.id);
+		this(null, entity.name,Seat.getBySeatNr(entity.seat.getSeatNr()),entity.isBot,false,entity.id);
 	}
 
 	//Methods
@@ -100,10 +98,6 @@ public class Player extends PlayerEntity {
 	}
 
 	public boolean isAtTable() {
-		return isAtTable;
-	}
-
-	public void setAtTable(boolean isAtTable) {
-		this.isAtTable = isAtTable;
+		return (seat != null && seat != Seat.NOTATTABLE);
 	}
 }

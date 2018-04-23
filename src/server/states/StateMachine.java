@@ -126,7 +126,7 @@ public class StateMachine {
 			playerData.name = "@" + playerAddr;
 		}
 		Player sender = new Player(playerAddr, playerData.name, Seat.NOTATTABLE,
-				playerData.isBot, false, false, GameState.logic.getPlayerCount());
+				playerData.isBot, false, GameState.logic.getPlayerCount());
 		GameState.logic.addPlayer(sender);
 
 		// inform others that a new player joined

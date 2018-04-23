@@ -109,7 +109,7 @@ public abstract class AbstractClient {
 			@Override
 			public void msgReceived(PlayerMovedToLobbyInfoMessage msg) {
 				model.updatePlayer(msg.player);
-				model.getPlayerById(msg.player.id).setAtTable(false);
+				model.getPlayerById(msg.player.id).setSeat(Seat.NOTATTABLE);
 				Team[] teams = model.getTeams();
 				if(teams != null) {
 					for(int i = 0; i <= 1; i++) {
@@ -123,7 +123,9 @@ public abstract class AbstractClient {
 			@Override
 			public void msgReceived(PlayerMovedToTableInfoMessage msg) {
 				model.updatePlayer(msg.player);
-				model.getPlayerById(msg.player.id).setAtTable(true);
+				if(msg.player.seat == null || msg.player.seat == SeatEntity.NOTATTABLE) {
+					model.getPlayerById(msg.player.id).setSeat(Seat.SEAT1);
+				}
 				playerChanged(model.getPlayerById(msg.player.id));
 			}
 
