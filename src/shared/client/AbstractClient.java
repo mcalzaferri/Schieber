@@ -277,9 +277,9 @@ public abstract class AbstractClient {
 	/**
 	 * @param serverAddress Address to connect to
 	 */
-	public void connect(InetSocketAddress serverAddress, String username) {
+	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) {
 		model.setThisPlayer(new Player(serverAddress,username,Seat.NOTATTABLE));
-		com.connect(serverAddress, username);
+		com.connect(serverAddress, username, isBot);
 		
 	}
 	

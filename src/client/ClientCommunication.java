@@ -59,18 +59,12 @@ public class ClientCommunication extends Communication {
 	 * Connect to server.
 	 * @param serverAddress Address of the Game Server
 	 */
-	public void connect(InetSocketAddress serverAddress, String username) {
+	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) {
 		this.serverAddress = serverAddress;
 		JoinLobbyMessage msg = new JoinLobbyMessage();
 		msg.playerData = new PlayerEntity();
+		msg.playerData.isBot = false;
+		msg.playerData.name = username;
 		send(msg);
-	}
-
-	/**
-	 * Connect to server using the default port.
-	 * @param ip IP address / hostname of the Game Server
-	 */
-	public void connect(String ip, String username) {
-		connect(new InetSocketAddress(ip, this.port), username);
 	}
 }

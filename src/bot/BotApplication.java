@@ -20,7 +20,7 @@ public class BotApplication {
 		communication =  new ClientCommunication();
 		communication.open();
 		Random rm = new Random();
-		communication.connect(new InetSocketAddress("146.136.43.84",port), "CatBot#" + rm.nextInt(999));
+		communication.connect(new InetSocketAddress("146.136.43.84",port), "cat-bot " + rm.nextInt(999), true);
 
 		VirtualClient vc = new VirtualClient(communication, new ClientModel());
 		vc.setIntelligence(new IntelligenceNormal());

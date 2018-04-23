@@ -54,7 +54,7 @@ public class ServerTest {
 
 	@Test
 	public void testJoinLobby() throws ClassNotFoundException, IOException {
-		cCom.connect(new InetSocketAddress("localhost", serverListenPort), "ServerTestJoinLobby");
+		cCom.connect(new InetSocketAddress("localhost", serverListenPort), "ServerTestJoinLobby", true);
 
 		waitForMessage();
 
@@ -66,7 +66,7 @@ public class ServerTest {
 	@Test
 	public void testJoinTable() throws ClassNotFoundException, IOException {
 		app.stateMachine.changeState(new LobbyState());
-		cCom.connect(new InetSocketAddress("localhost", serverListenPort), "ServerTestJoinTable");
+		cCom.connect(new InetSocketAddress("localhost", serverListenPort), "ServerTestJoinTable", true);
 		waitForMessage();
 
 		JoinTableMessage msg = new JoinTableMessage();
