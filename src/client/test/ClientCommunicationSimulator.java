@@ -174,11 +174,25 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			public void actionPerformed(ActionEvent e) {
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.GameStartedInfoMessage) {
 					PlayerEntity[] playersTeam1 = new PlayerEntity[2];
-					playersTeam1[0] = players[3];
-					playersTeam1[1] = players[2];
+					for(int i = 0; i < playersTeam1.length; i++) {
+						//Es wird davon ausgegangen dass alle Spieler zugewiesen wurden
+						for(PlayerEntity player : players) {
+							if(player.seat.getSeatNr() == i) {
+								playersTeam1[i] = player;
+								break;
+							}
+						}
+					}
 					PlayerEntity[] playersTeam2 = new PlayerEntity[2];
-					playersTeam2[0] = players[0];
-					playersTeam2[1] = players[1];
+					for(int i = 0; i < playersTeam2.length; i++) {
+						//Es wird davon ausgegangen dass alle Spieler zugewiesen wurden
+						for(PlayerEntity player : players) {
+							if(player.seat.getSeatNr() == i) {
+								playersTeam2[i] = player;
+								break;
+							}
+						}
+					}
 					TeamEntity[] teams = new TeamEntity[2];
 					teams[0] = new TeamEntity();
 					teams[0].players = playersTeam1;

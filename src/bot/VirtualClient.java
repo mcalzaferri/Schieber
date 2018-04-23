@@ -1,5 +1,7 @@
 package bot;
 
+import java.util.ArrayList;
+
 import client.ClientCommunication;
 import shared.Card;
 import shared.Player;
@@ -66,8 +68,10 @@ public class VirtualClient extends AbstractClient {
 	}
 	
 	public void doRequestWeis() {
-		super.publishChosenWiis((Weis[]) ki.getWeise().toArray()); 
-	}
+		ArrayList<Weis> wiisAl = ki.getWeise();
+		Weis[] wiis = new Weis[wiisAl.size()];
+		super.publishChosenWiis(wiisAl.toArray(wiis));
+		}
 	
 	public void doPlayerShowedWiis(Weis[] wiis, Player player) {
 		ki.showWeis(wiis, player.id);

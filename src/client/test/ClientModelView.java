@@ -141,16 +141,13 @@ public class ClientModelView extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(model.getHand() != null) {
-					for(int i = 0; i < cardPanels.length; i++) {
+				for(int i = 0; i < cardPanels.length; i++) {
+					if(model.getHand() != null && model.getHand().size() > i) {
 						cardPanels[i].setCard(model.getHand().get(i));
-					}
-				}else {
-					for(int i = 0; i < cardPanels.length; i++) {
+					}else {
 						cardPanels[i].setCard(null);
 					}
 				}
-				
 			}
 		});
 	}
@@ -165,16 +162,13 @@ public class ClientModelView extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(model.getDeck() != null) {
-					for(int i = 0; i < cardPanels.length; i++) {
+				for(int i = 0; i < cardPanels.length; i++) {
+					if(model.getDeck() != null && model.getDeck().size() > i) {
 						cardPanels[i].setCard(model.getDeck().get(i));
-					}
-				}else {
-					for(int i = 0; i < cardPanels.length; i++) {
+					}else {
 						cardPanels[i].setCard(null);
 					}
 				}
-				
 			}
 		});
 	}

@@ -61,7 +61,7 @@ public abstract class AbstractClient {
 				for(int i = 0; i <= 1; i++) {
 					teams[i] = new Team(msg.teams[i],model.getPlayers());
 					//Update all added players with the data in the msg
-					for(int j = 0; i <= 1; i++) {
+					for(int j = 0; j <= 1; j++) {
 						teams[i].getPlayer(j).update(msg.teams[i].players[j]);
 					}
 				}
@@ -79,7 +79,7 @@ public abstract class AbstractClient {
 			
 			public void msgReceived(NewTurnInfoMessage msg) {
 				//If the previous GameState wasnt TURNOVER (This means it was GAMEOVER OR ROUNDOVER OR PLAYOVER) the deck must be emptied
-				if(model.getGameState() != GameState.TURNOVER) {
+				if(model.getGameState() != GameState.TURNOVER && model.getDeck() != null) {
 					model.getDeck().clear();
 					doUpdateDeck(model.getDeck().toArray());
 				}
@@ -87,6 +87,9 @@ public abstract class AbstractClient {
 				model.setActiveSeatId(msg.nextPlayer.seat.getSeatNr());
 				//If the player is you, select card
 				if(msg.nextPlayer.id == model.getThisPlayer().getId()) {
+					if(msg.selectWeis) {
+						model.setPossibleWiis(model.getHand().getPossibleWiis(model.getTrump()));
+					}
 					doRequestCard(msg.selectWeis);
 				}
 			}
@@ -169,7 +172,7 @@ public abstract class AbstractClient {
 			public void msgReceived(HandOutCardsMessage msg) {
 				model.getHand().updateData(msg.cards);
 				doUpdateHand(model.getHand().toArray());
-				model.setPossibleWiis(model.getHand().getPossibleWiis(model.getTrump()));
+				
 			}
 
 			@Override

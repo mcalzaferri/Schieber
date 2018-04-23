@@ -23,6 +23,8 @@ public class ClientModel {
 	//Constructors
 	public ClientModel() {
 		players = new HashMap<Integer, Player>();
+		hand = new CardList();
+		deck = new CardList();
 	}
 	
 	//Methods
@@ -45,8 +47,11 @@ public class ClientModel {
 	public void updatePlayer(PlayerEntity entity) {
 		if(players.containsKey(entity.id))
 			getPlayerById(entity.id).update(entity);
-		else
+		else if(thisPlayer != null && entity.id == thisPlayer.id) {
+			players.put(entity.id, thisPlayer);
+		}else {
 			players.put(entity.id, new Player(entity));
+		}
 	}
 	
 	//Getters and Setters
