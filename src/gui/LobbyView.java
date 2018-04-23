@@ -28,60 +28,70 @@ public class LobbyView extends ObservableView implements Viewable{
     private static final int left = 
     Toolkit.getDefaultToolkit().getScreenSize().width/2-width/2;
     
-	//components
-	private JPanel tablePanel;
-	private JPanel playingFieldPanel;
-	private JPanel lobbyViewPanel;
-	private JPanel continueButtonPanel;
-	private Box player1Box;
-	private Box player2Box;
-	private Box player3Box;
-	private Box player4Box;
-	private JScrollPane playerScrollPane;
-	private JOptionPane chooseSeatOptionPane;
-	private JTable playerTable;
-	private JButton player1Button;
-	private JButton player2Button;
-	private JButton player3Button;
-	private JButton player4Button;
-	private JButton continueButton;
-	private JLabel player1Label;
-	private JLabel player2Label;
-	private JLabel player3Label;
-	private JLabel player4Label;
+	//Component
+	JPanel lobbyViewPanel;
+	LobbyPanel lobbyPicturePanel;
+	JPanel lobbyPanel;
+	JScrollPane playerScrollPane;
+	JOptionPane chooseSeatOptionPane;
+	JTable playerTable;
+	JLabel lobbyLabel;
+	JButton chair1Button;
+	JButton chair2Button;
+	JButton chair3Button;
+	JButton chair4Button;
 	
+	//local variables
+	ViewEnumeration viewType;
+	ArrayList<ViewObserver> observers;
+	ClientModel data;
 	Map<Integer,Player> playersMap;
 	Player actPlayer;
+	int optionType1;
+	int optionType2;
+	int optionType3;
+	int optionType4;
 	
+	String optionString1;
+	String optionString2;
+	String optionString3;
+	String optionString4;
 	
-	public LobbyView(ClientModel data, ArrayList<ViewObserver> observers) {
-		super(data, observers);
+	public LobbyView(ArrayList<ViewObserver> observers, ClientModel data) {
+		super(null, observers);
+		
+		this.viewType = viewType;
+		this.observers = observers;
+		this.data = data;
 		
 		playersMap = data.getPlayers();
 		actPlayer = data.getThisPlayer();
 		
+		lobbyPicturePanel = new LobbyPanel();
+		
 		layoutLobbyView();
 		
 	}
-	
+
 	public void layoutLobbyView()
 	{
-		layoutPlayerTablePanel();
-		layoutTablePanel();
+		layoutButtons();
+		playerScrollPane = new JScrollPane();
+		layoutPlayerScrollPanel();
 		lobbyViewPanel = new JPanel();
 		lobbyViewPanel.setLayout(new BorderLayout());
 		lobbyViewPanel.add(playerScrollPane,BorderLayout.WEST);
-		lobbyViewPanel.add(tablePanel,BorderLayout.CENTER);
+		lobbyViewPanel.add(lobbyPanel,BorderLayout.CENTER);
 		
 		add(lobbyViewPanel);
 		setSize(width,height);
 		setLocation(left,top);
 	}
 	
-	public void layoutPlayerTablePanel()
+	public void layoutPlayerScrollPanel()
 	{
 		String[] columnNames = {"Name", "Sitzplatz"};
-		Object[][] tableData = new Object[playersMap.size()][2];
+		Object[][] tableData = new Object[playersMap.size()+1][2];
 		int rowCount=0;
 
 		for(Map.Entry<Integer,Player> entry: playersMap.entrySet())
@@ -95,176 +105,189 @@ public class LobbyView extends ObservableView implements Viewable{
 			rowCount++;
 		}
 		
+		tableData[rowCount][0]=actPlayer.getName();
+		if(actPlayer.getSeatNr() == 0)
+			tableData[rowCount][1]="kein Sitzplatz";
+		else
+			tableData[rowCount][1]=actPlayer.getSeatNr();
+		
 		playerTable	= new JTable(tableData,columnNames);
-		playerScrollPane = new JScrollPane(playerTable);
+		playerScrollPane.setViewportView(playerTable);
 		playerScrollPane.setPreferredSize(new Dimension(width/4,height));
 	}
-	
-	public void layoutTablePanel()
-	{
-		playingFieldPanel = new JPanel();
-		playingFieldPanel.setLayout(new LobbyViewTableLayout(10,10));
-		try{
-			playingFieldPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Pictures.Table))),LobbyViewTableLayout.CENTER);
-		}
-		catch(IOException e1)
-		{
-		}
-		
-		layoutPlayerPanel();
-		
-		playingFieldPanel.add(player1Box,LobbyViewTableLayout.NORTH);
-		playingFieldPanel.add(player2Box,LobbyViewTableLayout.EAST);
-		playingFieldPanel.add(player3Box,LobbyViewTableLayout.SOUTH);
-		playingFieldPanel.add(player4Box,LobbyViewTableLayout.WEST);
-		tablePanel = new JPanel();
-		tablePanel.setLayout(new BorderLayout());
-		tablePanel.add(playingFieldPanel, BorderLayout.CENTER);
-		continueButton = new JButton("weiter");
-		continueButtonPanel = new JPanel();
-		continueButtonPanel.setLayout(new BorderLayout());
-		continueButtonPanel.add(continueButton, BorderLayout.EAST);
-		tablePanel.add(continueButtonPanel,BorderLayout.SOUTH);
-		
-		continueButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-					actPlayer.setReady(true);
-			}
-		});
-	}
-	
-	public void layoutPlayerPanel()
-	{
-		//Buttons
-		player1Button = new JButton("Spieler platzieren");
-		player1Button.setAlignmentX(Component.CENTER_ALIGNMENT);
-		player2Button = new JButton("Spieler platzieren");
-		player2Button.setAlignmentX(Component.CENTER_ALIGNMENT);
-		player3Button = new JButton("Spieler platzieren");
-		player3Button.setAlignmentX(Component.CENTER_ALIGNMENT);
-		player4Button = new JButton("Spieler platzieren");
-		player4Button.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		player1Label = new JLabel("Sitzplatz 1");
-		player1Label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		player2Label = new JLabel("Sitzplatz 2");
-		player2Label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		player3Label = new JLabel("Sitzplatz 3");
-		player3Label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		player4Label = new JLabel("Sitzplatz 4");
-		player4Label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		checkFreeSeats();
-		
-		
-		
-		/*player1Panel = new JPanel();
-		player1Panel.setLayout(new GridLayout(2,1));
-		player1Panel.add(player1Label);
-		player1Panel.add(player1Button);*/
-		
-		player1Box = Box.createVerticalBox();
-		player1Box.add(player1Label);
-		player1Box.add(player1Button);
-		
-		player2Box = Box.createVerticalBox();
-		player2Box.add(player2Label);
-		player2Box.add(player2Button);
 
-		player3Box = Box.createVerticalBox();
-		player3Box.add(player3Label);
-		player3Box.add(player3Button);
-		
-		player4Box = Box.createVerticalBox();
-		player4Box.add(player4Label);
-		player4Box.add(player4Button);
-		
-		
-		player1Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				chooseSeatOptionPane = new JOptionPane();
-				int response = chooseSeatOptionPane.showConfirmDialog(null,"Möchten Sie Sitzplatz 1 auswählen?", "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if(response == JOptionPane.YES_NO_OPTION)
-				{
-					actPlayer.setSeatNr(1);
-					actPlayer.setAtTable(true);
-					update();
-				}
-			}
-		});
-		
-		player2Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				chooseSeatOptionPane = new JOptionPane();
-				int response = chooseSeatOptionPane.showConfirmDialog(null,"Möchten Sie Sitzplatz 2 auswählen?", "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if(response == JOptionPane.YES_NO_OPTION)
-				{
-					actPlayer.setSeatNr(2);
-					actPlayer.setAtTable(true);
-					update();
-				}
-			}
-		});
-		
-		player3Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				chooseSeatOptionPane = new JOptionPane();
-				int response = chooseSeatOptionPane.showConfirmDialog(null,"Möchten Sie Sitzplatz 3 auswählen?", "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if(response == JOptionPane.YES_NO_OPTION)
-				{
-					actPlayer.setSeatNr(3);
-					actPlayer.setAtTable(true);
-					update();
-				}
-			}
-		});
-		
-		player4Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				chooseSeatOptionPane = new JOptionPane();
-				int response = chooseSeatOptionPane.showConfirmDialog(null,"Möchten Sie Sitzplatz 4 auswählen?", "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if(response == JOptionPane.YES_NO_OPTION)
-				{
-					actPlayer.setSeatNr(4);
-					actPlayer.setAtTable(true);
-					update();
-				}
-			}
-		});
-	}
 	
-	public void setLabels(String playerName, int seatNumber)
+	public void layoutButtons()
 	{
-		switch(seatNumber)
-		{
-			case 1:
-				player1Label.setText("hier spielt "+playerName);
-				break;
-			case 2:
-				player2Label.setText("hier spielt "+playerName);
-				break;
-			case 3:
-				player3Label.setText("hier spielt "+playerName);
-				break;
-			case 4:
-				player4Label.setText("hier spielt "+playerName);
-				break;
-			
-		}
+		chair1Button = new JButton("Sitzplatz 1");
+		chair1Button.setOpaque(false);		
+		chair2Button = new JButton();
+		chair2Button.setOpaque(false);	
+		chair3Button= new JButton();
+		chair3Button.setOpaque(false);	
+		chair4Button = new JButton();
+		chair4Button.setOpaque(false);	
+		
+		GridBagLayout gbl = new GridBagLayout();
+		gbl.columnWeights = new double[] {0.0709,0.0921,0.1773,0.0567,0.1702,0.1773,0.1631,0.0921};
+		gbl.rowWeights = new double[] {0.507,0.198,0.286};
+		lobbyPicturePanel.setLayout(gbl);
+		
+	    GridBagConstraints c = new GridBagConstraints();
+
+	    c.fill=GridBagConstraints.BOTH;
+	    c.gridx = 0;
+	    c.gridy = 0;
+	    c.gridwidth = 8;
+	    lobbyPicturePanel.add(Box.createGlue(),c);
+	    
+	    c.gridx = 1; 
+	    c.gridy = 1; 
+	    c.gridwidth = 2;
+	    lobbyPicturePanel.add(chair1Button,c); 
+	    
+	    c.gridx = 4; 
+	    c.gridy = 1; 
+	    c.gridwidth = 3;
+	    lobbyPicturePanel.add(chair2Button, c);
+	    
+	    c.gridx = 5; 
+	    c.gridy = 2; 
+	    c.gridwidth = 1;
+	    lobbyPicturePanel.add(chair3Button, c);
+	    c.gridx = 2; 
+	    lobbyPicturePanel.add(chair4Button, c);
+	    
+	    chooseSeatOptionPane = new JOptionPane();
+	    
+	    chair1Button.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent arg0) {
+		    	switch(optionType1)
+		    	{
+			    	case JOptionPane.QUESTION_MESSAGE:
+							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString1, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+							if(response == JOptionPane.YES_NO_OPTION)
+							{
+								actPlayer.setSeatNr(1);
+								actPlayer.setAtTable(true);
+								update();
+							}
+						
+			    		break;
+			    	case JOptionPane.INFORMATION_MESSAGE:
+			    			if(actPlayer.getSeatNr() == 1)
+			    				optionString1="Sitzplatz 1 wurde reserviert";
+			    			
+			    			chooseSeatOptionPane.showMessageDialog(null, optionString1);
+			    		break;
+		    	}
+	    	}
+		});
+	    
+	    chair2Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+		    	switch(optionType2)
+		    	{
+			    	case JOptionPane.QUESTION_MESSAGE:
+							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString2, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+							if(response == JOptionPane.YES_NO_OPTION)
+							{
+								actPlayer.setSeatNr(2);
+								actPlayer.setAtTable(true);
+								update();
+							}
+						
+			    		break;
+			    	case JOptionPane.INFORMATION_MESSAGE:
+			    			if(actPlayer.getSeatNr() == 2)
+			    				optionString2="Sitzplatz 2 wurde reserviert";
+			    			
+			    			chooseSeatOptionPane.showMessageDialog(null, optionString2);
+			    		break;
+		    	}
+			}
+		});
+	    
+	    chair3Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+		    	switch(optionType3)
+		    	{
+			    	case JOptionPane.QUESTION_MESSAGE:
+							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString3, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+							if(response == JOptionPane.YES_NO_OPTION)
+							{
+								actPlayer.setSeatNr(3);
+								actPlayer.setAtTable(true);
+								update();
+							}
+						
+			    		break;
+			    	case JOptionPane.INFORMATION_MESSAGE:
+		    			if(actPlayer.getSeatNr() == 3)
+		    				optionString3="Sitzplatz 3 wurde reserviert";
+		    			
+			    			chooseSeatOptionPane.showMessageDialog(null, optionString3);
+			    		break;
+		    	}
+			}
+		});
+	    
+	    chair4Button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+		    	switch(optionType4)
+		    	{
+			    	case JOptionPane.QUESTION_MESSAGE:
+							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString4, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+							if(response == JOptionPane.YES_NO_OPTION)
+							{
+								actPlayer.setSeatNr(4);
+								actPlayer.setAtTable(true);
+								update();
+							}
+						
+			    		break;
+			    	case JOptionPane.INFORMATION_MESSAGE:
+			    			if(actPlayer.getSeatNr() == 4)
+			    				optionString4="Sitzplatz 4 wurde reserviert";
+			    			
+			    			chooseSeatOptionPane.showMessageDialog(null, optionString4);
+			    		break;
+		    	}
+			}
+		});
+	    
+	    checkFreeSeats();
+	    
+	    JPanel continueButtonPanel = new JPanel();
+	    continueButtonPanel.setLayout(new BorderLayout());
+	    
+	    JButton continueButton = new JButton("weiter");
+	    continueButtonPanel.add(continueButton, BorderLayout.SOUTH);
+	    
+	    lobbyPanel = new JPanel();
+	    lobbyPanel.setLayout(new BorderLayout());
+	    lobbyPanel.add(lobbyPicturePanel, BorderLayout.CENTER);
+	    lobbyPanel.add(continueButtonPanel, BorderLayout.SOUTH);
+	    
+	    continueButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				actPlayer.setReady(true);
+			}
+		});
 	}
 	
 	public void checkFreeSeats()
-	{
-		player1Button.setVisible(true);
-		player2Button.setVisible(true);
-		player3Button.setVisible(true);
-		player4Button.setVisible(true);
+	{	
+		optionType1 = JOptionPane.QUESTION_MESSAGE;
+		optionType2 = JOptionPane.QUESTION_MESSAGE;
+		optionType3 = JOptionPane.QUESTION_MESSAGE;
+		optionType4 = JOptionPane.QUESTION_MESSAGE;
 		
-		player1Label.setText("Sitzplatz 1");
-		player2Label.setText("Sitzplatz 2");
-		player3Label.setText("Sitzplatz 3");
-		player4Label.setText("Sitzplatz 4");
-		
+		optionString1 = "Möchten Sie Sitzplatz 1 auswählen?";
+		optionString2 = "Möchten Sie Sitzplatz 2 auswählen?";
+		optionString3 = "Möchten Sie Sitzplatz 3 auswählen?";
+		optionString4 = "Möchten Sie Sitzplatz 4 auswählen?";
+				
 		for(Map.Entry<Integer,Player> entry: playersMap.entrySet())
 		{
 			int seatNumber = entry.getValue().getSeatNr();
@@ -272,34 +295,37 @@ public class LobbyView extends ObservableView implements Viewable{
 			
 			if(seatNumber>0 && seatNumber<=4)
 			{
-				setButtonInvisible(seatNumber);
-				setLabels(player.getName(), seatNumber);
+				setOptionPaneType(player);
 			}
 		}
 		
-		int actSeatNumber = actPlayer.getSeatNr();
-		if(actSeatNumber>0 && actSeatNumber<=4)
+		int actPlayerseatNumber = actPlayer.getSeatNr();
+		
+		if(actPlayerseatNumber>0 && actPlayerseatNumber<=4)
 		{
-			setButtonInvisible(actSeatNumber);
-			setLabels(actPlayer.getName(), actSeatNumber);
+			setOptionPaneType(actPlayer);
 		}
 	}
 	
-	public void setButtonInvisible(int freeSeatNumber)
+	public void setOptionPaneType(Player p)
 	{
-		switch(freeSeatNumber)
+		switch(p.getSeatNr())
 		{
 			case 1:
-				player1Button.setVisible(false);
+				optionType1 = JOptionPane.INFORMATION_MESSAGE;
+				optionString1 = "Dieser Platz ist schon besetzt von "+p.getName();
 				break;
 			case 2:
-				player2Button.setVisible(false);
+				optionType2 = JOptionPane.INFORMATION_MESSAGE;
+				optionString2 = "Dieser Platz ist schon besetzt von "+p.getName();
 				break;
 			case 3:
-				player3Button.setVisible(false);
+				optionType3 = JOptionPane.INFORMATION_MESSAGE;
+				optionString3 = "Dieser Platz ist schon besetzt von "+p.getName();
 				break;
 			case 4:
-				player4Button.setVisible(false);
+				optionType4 = JOptionPane.INFORMATION_MESSAGE;
+				optionString4 = "Dieser Platz ist schon besetzt von "+p.getName();
 				break;
 			
 		}
@@ -308,19 +334,16 @@ public class LobbyView extends ObservableView implements Viewable{
 	@Override
 	public void update() {
 		playersMap = data.getPlayers();
-		layoutPlayerTablePanel();
+		layoutPlayerScrollPanel();
 		playerTable.repaint();
 		playerScrollPane.repaint();
 		checkFreeSeats();
-		player1Box.validate();
-		player2Box.validate();
-		player3Box.validate();
-		player4Box.validate();
 		this.repaint();
 	}
 
 	@Override
 	public JPanel getContent() {
+		// TODO Auto-generated method stub
 		return this;
 	}
 
@@ -328,8 +351,6 @@ public class LobbyView extends ObservableView implements Viewable{
 	public ViewEnumeration getType() {
 		return ViewEnumeration.LOBBYVIEW;
 	}
-	
-	
 	
 
 }
