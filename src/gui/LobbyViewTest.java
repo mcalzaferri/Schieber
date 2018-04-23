@@ -17,7 +17,7 @@ public class LobbyViewTest {
 		JFrame f = new JFrame();
 		ArrayList<ViewObserver> observers = new ArrayList<ViewObserver>();
 		ClientModelTest model = new ClientModelTest();
-		LobbyView l = new LobbyView(model, observers);
+		LobbyView l = new LobbyView(observers, model);
 
 		f.add(l.getContent());
 		f.pack();
