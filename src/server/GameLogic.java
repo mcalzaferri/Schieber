@@ -9,6 +9,7 @@ import java.util.Random;
 
 import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.entities.TeamEntity;
+import ch.ntb.jass.common.entities.TrumpEntity;
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
@@ -27,7 +28,8 @@ import shared.Score;
  */
 public class GameLogic {
 	private GameMode mode;
-	private CardColor trumpf;
+	private TrumpEntity trump;
+//	private CardColor trumpf;
 	/**
 	 * Maps seatNr to Player object
 	 */
@@ -72,6 +74,15 @@ public class GameLogic {
 			deck[i] = temp;
 		}
 	}
+	
+	/**
+	 * Set trump
+	 */
+	
+	public void setTrump(TrumpEntity trump){
+		this.trump = trump;
+	}
+	
 
 	public Collection<Player> getPlayers() {
 		return Collections.unmodifiableCollection(players);
