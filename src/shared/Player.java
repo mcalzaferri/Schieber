@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
+import ch.ntb.jass.common.entities.SeatEntity;
 
 public class Player extends PlayerEntity {
 	private Seat seat;				//player seat number (0 to 4) (0 means not at the table)
@@ -14,16 +15,16 @@ public class Player extends PlayerEntity {
 
 	//Constructors
 	public Player(InetSocketAddress address, String name, Seat seat, boolean isBot, boolean isReady, int id) {
-		this.address = address;
-		this.seat = seat;
-		this.isBot = isBot;
-		this.isReady = isReady;
-		this.id = id;
+		setSocketAddress(address);
+		setSeat(seat);
+		setBot(isBot);
+		setReady(isReady);
+		setId(id);
 		cards = null;
 		if (name.isEmpty() && address != null) {
-			this.name = address.toString();
+			setName(address.toString());
 		} else {
-			this.name = name;
+			setName(name);
 		}
 	}
 
@@ -38,9 +39,9 @@ public class Player extends PlayerEntity {
 	//Methods
 	public void update(PlayerEntity entity) {
 		if(id == entity.id) {
-			seat = Seat.getBySeatNr(entity.seat.getSeatNr());
-			name = entity.name;
-			isBot = entity.isBot;
+			setSeatNr(entity.seat.getSeatNr());
+			setName(entity.name);
+			setBot(entity.isBot);
 		}
 	}
 	@Override
@@ -51,6 +52,10 @@ public class Player extends PlayerEntity {
 	//Getters and Setters
 	public InetSocketAddress getSocketAddress() {
 		return address;
+	}
+	
+	private void setSocketAddress(InetSocketAddress address) {
+		this.address = address;
 	}
 
 	public void putCards(Card[] cs) {
@@ -67,10 +72,11 @@ public class Player extends PlayerEntity {
 	
 	public void setSeat(Seat seat) {
 		this.seat = seat;
+		super.seat = SeatEntity.getBySeatNr(seat.getSeatNr());
 	}
 
 	public void setSeatNr(int nr) {
-		seat = Seat.getBySeatNr(nr);
+		setSeat(Seat.getBySeatNr(nr));
 	}
 
 	public int getSeatNr() {
@@ -80,13 +86,25 @@ public class Player extends PlayerEntity {
 	public int getId() {
 		return id;
 	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public boolean isBot() {
 		return isBot;
 	}
+	
+	private void setBot(boolean isBot) {
+		this.isBot = isBot;
+	}
 
 	public String getName() {
 		return name;
+	}
+	
+	private void setName(String name) {
+		this.name = name;
 	}
 
 	public boolean isReady() {

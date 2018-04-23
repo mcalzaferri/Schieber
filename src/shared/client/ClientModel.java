@@ -44,11 +44,19 @@ public class ClientModel {
 		return players.get(id);
 	}
 	
+	/** Update the model with a PlayerEntity
+	 * If thisPlayer has not received its id yet (id == 0) then and only then the method tries to identify thisPlayer by its username
+	 * If it is the username of thisPlayer then the id of the entity is stored and thisPlayer is added to the players map.
+	 * @param entity Data of the player who needs to be updated.
+	 */
 	public void updatePlayer(PlayerEntity entity) {
 		if(players.containsKey(entity.id))
 			getPlayerById(entity.id).update(entity);
-		else if(thisPlayer != null && entity.id == thisPlayer.id) {
-			players.put(entity.id, thisPlayer);
+		else if(thisPlayer != null && entity.id == thisPlayer.getId()) {
+			players.put(thisPlayer.getId(), thisPlayer);
+		}else if(thisPlayer != null && thisPlayer.getId() == 0 && entity.name.equals(thisPlayer.getName())) {
+			thisPlayer.setId(entity.id);
+			players.put(thisPlayer.getId(), thisPlayer);
 		}else {
 			players.put(entity.id, new Player(entity));
 		}
