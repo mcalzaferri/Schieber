@@ -281,8 +281,8 @@ public abstract class AbstractClient {
 	/**
 	 * @param serverAddress Address to connect to
 	 */
-	public void connect(InetSocketAddress serverAddress) {
-		 com.connect(serverAddress);
+	public void connect(InetSocketAddress serverAddress, String username) {
+		 com.connect(serverAddress, username);
 	}
 	
 	public void disconnect() {

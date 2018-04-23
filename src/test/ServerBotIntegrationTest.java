@@ -51,7 +51,7 @@ public class ServerBotIntegrationTest {
 
 	@Test
 	public void chooseTrumpTest() {
-		cCom.connect(new InetSocketAddress("localhost",serverListenPort));
+		cCom.connect(new InetSocketAddress("localhost",serverListenPort), "ChooseTrumpTest");
 		// TODO implement test
 	}
 

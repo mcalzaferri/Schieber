@@ -2,6 +2,8 @@ package bot;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Random;
+
 import client.ClientCommunication;
 import shared.ServerAddress;
 import shared.client.ClientModel;
@@ -17,7 +19,8 @@ public class BotApplication {
 	public static void main(String[] args) throws IOException {
 		communication =  new ClientCommunication();
 		communication.open();
-		communication.connect(new InetSocketAddress("146.136.43.84",port));
+		Random rm = new Random();
+		communication.connect(new InetSocketAddress("146.136.43.84",port), "CatBot#" + rm.nextInt(999));
 
 		VirtualClient vc = new VirtualClient(communication, new ClientModel());
 		vc.setIntelligence(new IntelligenceNormal());

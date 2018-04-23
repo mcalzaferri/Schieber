@@ -44,7 +44,7 @@ public class PlayingFieldViewTest extends JFrame{
 		obs.add(new ViewObserver() {
 
 			@Override
-			public void btnConnectClick(InetSocketAddress serverAddress) {
+			public void btnConnectClick(InetSocketAddress serverAddress, String username) {
 				// TODO Auto-generated method stub
 				
 			}

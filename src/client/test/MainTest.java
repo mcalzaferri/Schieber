@@ -18,7 +18,7 @@ import shared.*;
 public class MainTest {
 
 	public static void main(String[] args) {
-		boolean testBot = true;
+		boolean testBot = false;
 		PlayerEntity[] players = initialPlayers();
 		ClientModel model = new ClientModel();
 		model.setThisPlayer(new Player(players[3]));
@@ -33,11 +33,13 @@ public class MainTest {
 		}
 		sim.setClient(client);
 		//Automation of a few messages for faster progress
+		/*
 		for(PlayerEntity player : players) {
 			PlayerMovedToTableInfoMessage msg = new PlayerMovedToTableInfoMessage();
 			msg.player = player;
 			client.handleReceivedMessage(msg);
 		}
+		*/
 	}
 	public static PlayerEntity[] initialPlayers() {
 		PlayerEntity[] players = new PlayerEntity[5];
