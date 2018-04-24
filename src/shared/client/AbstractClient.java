@@ -7,6 +7,7 @@ import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
+import ch.ntb.jass.common.proto.server_messages.ResultMessage.Code;
 import client.BadResultException;
 import client.ClientCommunication;
 import shared.*;
@@ -187,15 +188,25 @@ public abstract class AbstractClient {
 			}
 
 			@Override
+			public void msgReceived(ResultMessage msg) {
+				if(msg.code == Code.OK) {
+					goodResultReceived(msg.message);
+				}else {
+					doHandleBadResultException(new BadResultException(msg.message));
+				}
+			}	
+			
+			@Override
 			public void msgReceived(WrongCardMessage msg) {
 				// TODO Is this message obsolete anyways?
 				
-			}			
+			}	
 		});
 	}
 	//Non Abstract Template methods for Server -> Client
 	protected void playerChanged(Player player) {}
 	protected void teamsChanged(Team[] teams) {}
+	protected void goodResultReceived(String message) {}
 	
 	//Abstract Template methods for Server -> Client
 	protected abstract void doSetTrump(Trump trump);
@@ -240,6 +251,8 @@ public abstract class AbstractClient {
 	 */
 	protected abstract void doPlayerShowedWiis(Weis[] wiis, Player player);
 
+	protected abstract void doHandleBadResultException(BadResultException e);
+	
 	//Methods for Client -> Server
 	protected void publishChangedState(boolean isReady) {
 		ChangeStateMessage msg = new ChangeStateMessage();

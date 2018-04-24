@@ -111,7 +111,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void doRequestWeis() {
-		// TODO 
+		view.changeView(ViewEnumeration.WEISVIEW);
 	}
 
 	@Override
@@ -124,6 +124,12 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	protected void doPlayerShowedWiis(Weis[] wiis, Player player) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	protected void doHandleBadResultException(BadResultException e) {
+		System.err.println(e.getMessage());
+		//TODO notify player
 	}
 	
 	//Inherited methods from ViewObserver

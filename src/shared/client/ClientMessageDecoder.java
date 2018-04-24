@@ -48,6 +48,8 @@ public interface ClientMessageDecoder {
 			decoder.msgReceived((HandOutCardsMessage)msg);
 		if(msg instanceof LobbyStateMessage)
 			decoder.msgReceived((LobbyStateMessage)msg);
+		if(msg instanceof ResultMessage)
+			decoder.msgReceived((ResultMessage)msg);
 		if(msg instanceof WrongCardMessage)
 			decoder.msgReceived((WrongCardMessage)msg);
 	}
@@ -71,5 +73,6 @@ public interface ClientMessageDecoder {
 	void msgReceived(GameStateMessage msg);
 	void msgReceived(HandOutCardsMessage msg);
 	void msgReceived(LobbyStateMessage msg);
+	void msgReceived(ResultMessage msg);
 	void msgReceived(WrongCardMessage msg);
 }

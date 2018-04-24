@@ -151,6 +151,13 @@ public class VirtualClient extends AbstractClient {
 			doRequestWeis();
 		}
 	}
+
+	@Override
+	protected void doHandleBadResultException(BadResultException e) {
+		//TODO handle bad result
+		System.err.println(e.getMessage());
+		
+	}
 	
 
 }
