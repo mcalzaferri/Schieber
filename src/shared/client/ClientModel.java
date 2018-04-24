@@ -39,8 +39,16 @@ public class ClientModel {
 		deck.updateData(deckCards);
 	}
 	
-	public Player getPlayerById(Integer id) {
+	public Player getPlayer(Integer id) {
 		return players.get(id);
+	}
+	
+	public Player getPlayer(Player player) {
+		return getPlayer(player.getId());
+	}
+	
+	public Player getPlayer(PlayerEntity player) {
+		return getPlayer(player.id);
 	}
 	
 	/** Update the model with a PlayerEntity
@@ -50,7 +58,7 @@ public class ClientModel {
 	 */
 	public void updatePlayer(PlayerEntity entity) {
 		if(players.containsKey(entity.id))
-			getPlayerById(entity.id).update(entity);
+			getPlayer(entity).update(entity);
 		else if(thisPlayer != null && entity.id == thisPlayer.getId()) {
 			players.put(thisPlayer.getId(), thisPlayer);
 		}else if(thisPlayer != null && thisPlayer.getId() == 0 && entity.name.equals(thisPlayer.getName())) {

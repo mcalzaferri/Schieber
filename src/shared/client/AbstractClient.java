@@ -98,8 +98,8 @@ public abstract class AbstractClient {
 
 			@Override
 			public void msgReceived(PlayerChangedStateMessage msg) {
-				model.getPlayerById(msg.player.id).setReady(msg.isReady);
-				playerChanged(model.getPlayerById(msg.player.id));
+				model.getPlayer(msg.player).setReady(msg.isReady);
+				playerChanged(model.getPlayer(msg.player));
 			}
 
 			@Override
@@ -111,7 +111,7 @@ public abstract class AbstractClient {
 			@Override
 			public void msgReceived(PlayerMovedToLobbyInfoMessage msg) {
 				model.updatePlayer(msg.player);
-				model.getPlayerById(msg.player.id).setSeat(Seat.NOTATTABLE);
+				model.getPlayer(msg.player).setSeat(Seat.NOTATTABLE);
 				Team[] teams = model.getTeams();
 				if(teams != null) {
 					for(int i = 0; i <= 1; i++) {
@@ -119,29 +119,28 @@ public abstract class AbstractClient {
 					}
 					teamsChanged(model.getTeams());
 				}
-				playerChanged(model.getPlayerById(msg.player.id));
+				playerChanged(model.getPlayer(msg.player));
 			}
 
 			@Override
 			public void msgReceived(PlayerMovedToTableInfoMessage msg) {
 				model.updatePlayer(msg.player);
 				if(msg.player.seat == null || msg.player.seat == SeatEntity.NOTATTABLE) {
-					model.getPlayerById(msg.player.id).setSeat(Seat.SEAT1);
+					model.getPlayer(msg.player).setSeat(Seat.SEAT1);
 				}
-				playerChanged(model.getPlayerById(msg.player.id));
+				playerChanged(model.getPlayer(msg.player));
 			}
 
+			@SuppressWarnings("unlikely-arg-type") //Du bischmer o kli unlikely
 			@Override
 			public void msgReceived(TurnInfoMessage msg) {
 				model.getDeck().add(new Card(msg.laidCard));
-				if(msg.player.id == model.getThisPlayer().getId()) {
-					//This player has laid that card
-					model.getHand().remove(msg.laidCard.calcId());
-				}
-				playerChanged(model.getPlayerById(msg.player.id));
+				model.getPlayer(msg.player).getCards().remove(msg.laidCard.calcId());
+				playerChanged(model.getPlayer(msg.player));
 				doUpdateDeck(model.getDeck().toArray());
-				doUpdateHand(model.getHand().toArray());
-				
+				if(model.getThisPlayer().equals(msg.player)) { 
+					doUpdateHand(model.getHand().toArray());
+				}
 				if(model.getGameState() != GameState.PLAYOVER)
 					model.setGameState(GameState.TURNOVER);
 			}
@@ -174,16 +173,31 @@ public abstract class AbstractClient {
 
 			@Override
 			public void msgReceived(HandOutCardsMessage msg) {
+				//First set players hand
 				model.getHand().updateData(msg.cards);
 				doUpdateHand(model.getHand().toArray());
-				
+				//Now set the other players hand to 9 unknown cards
+				Card unknownCard = new Card(null, null);
+				Card[] ca = new Card[9];
+				for(int i = 0; i < ca.length; i++) {
+					ca[i] = unknownCard;
+				}
+				for(Team team : model.getTeams()) {
+					for(Player player : team.getPlayers()) {
+						if(player.equals(model.getThisPlayer())) {
+							continue;
+						}
+						//Store a copy of the array in each unknown player
+						player.putCards(ca.clone());
+					}
+				}
 			}
 
 			@Override
 			public void msgReceived(LobbyStateMessage msg) {
 				for(PlayerEntity player : msg.players) {
 					model.getPlayers().put(player.id, new Player(player));
-					playerChanged(model.getPlayerById(player.id));
+					playerChanged(model.getPlayer(player));
 				}
 			}
 
