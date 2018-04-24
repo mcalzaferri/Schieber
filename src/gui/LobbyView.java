@@ -49,7 +49,9 @@ public class LobbyView extends ObservableView implements Viewable{
 	
 	public LobbyView(ArrayList<ViewObserver> observers, ClientModel data) {
 		super(data, observers);
-		
+		if(data == null) {
+			throw new IllegalArgumentException("Fatal Error: Players must not be null");
+		}
 		playersMap = data.getPlayers();
 		actPlayer = data.getThisPlayer();
 		
@@ -243,17 +245,28 @@ public class LobbyView extends ObservableView implements Viewable{
 	    JPanel continueButtonPanel = new JPanel();
 	    continueButtonPanel.setLayout(new BorderLayout());
 	    
-	    JButton continueButton = new JButton("weiter");
-	    continueButtonPanel.add(continueButton, BorderLayout.SOUTH);
+	    JButton readyButton = new JButton("Spieler ist bereit");
+	    JCheckBox readyCheckBox = new JCheckBox();
+	    continueButtonPanel.add(readyButton,BorderLayout.SOUTH);
 	    
 	    lobbyPanel = new JPanel();
 	    lobbyPanel.setLayout(new BorderLayout());
 	    lobbyPanel.add(lobbyPicturePanel, BorderLayout.CENTER);
 	    lobbyPanel.add(continueButtonPanel, BorderLayout.SOUTH);
 	    
-	    continueButton.addActionListener(new ActionListener() {
+	    JOptionPane readyMessageOptionPane = new JOptionPane();
+	    
+	    readyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				actPlayer.setReady(true);
+				if(actPlayer.getSeatNr()==0)
+				{
+					chooseSeatOptionPane.showMessageDialog(null, "Bitte wähle zuerst einen Sitzplatz aus");
+				}
+				else
+				{
+					actPlayer.setReady(true);
+					chooseSeatOptionPane.showMessageDialog(null, "Spieler ist nun bereit und wartet, bis sich alle Mitspieler platziert haben.");
+				}
 			}
 		});
 	}
