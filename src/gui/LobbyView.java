@@ -242,11 +242,15 @@ public class LobbyView extends ObservableView implements Viewable{
 	    checkFreeSeats();
 	    
 	    JPanel continueButtonPanel = new JPanel();
-	    continueButtonPanel.setLayout(new BorderLayout());
+	    continueButtonPanel.setLayout(new FlowLayout());
 	    
 	    JButton readyButton = new JButton("Spieler ist bereit");
-	    JCheckBox readyCheckBox = new JCheckBox();
-	    continueButtonPanel.add(readyButton,BorderLayout.SOUTH);
+	    continueButtonPanel.add(readyButton);
+	    
+	    JPanel showStatePanel = new JPanel();
+	    showStatePanel.setBackground(Color.red);
+	    
+	    continueButtonPanel.add(showStatePanel);
 	    
 	    lobbyPanel = new JPanel();
 	    lobbyPanel.setLayout(new BorderLayout());
@@ -265,6 +269,9 @@ public class LobbyView extends ObservableView implements Viewable{
 				{
 					actPlayer.setReady(true);
 					chooseSeatOptionPane.showMessageDialog(null, "Spieler ist nun bereit und wartet, bis sich alle Mitspieler platziert haben.");
+					showStatePanel.setBackground(Color.green);
+					showStatePanel.validate();
+					readyButton.setEnabled(false);
 				}
 			}
 		});
