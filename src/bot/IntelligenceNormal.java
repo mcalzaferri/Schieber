@@ -649,6 +649,7 @@ public class IntelligenceNormal extends BotIntelligence {
 			break;
 		case OBENABE:
 			value = c.getValue().getDefaultValue();
+			break;
 		case UNEUFE:
 			value = 16 - c.getValue().getDefaultValue(); // invert value for UNEUFE
 			break;
