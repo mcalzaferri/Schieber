@@ -15,11 +15,12 @@ import javax.swing.JPanel;
 import client.AbstractClientView;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import client.test.MessageType;
 import gui.PictureFactory.Pictures;
 import gui.playingView.PlayingFieldView;
 import shared.client.ClientModel;
 
-public class Gui extends AbstractClientView{
+public class Gui extends AbstractClientView implements Runnable{
 	public static PictureFactory pictureFactory = new PictureFactory();
 	private ArrayList<ViewObserver> observers;
 	private JFrame frame;
@@ -34,18 +35,15 @@ public class Gui extends AbstractClientView{
 		this.frame = new JFrame("Schieber");
 		this.iFrame = new JInternalFrame("", false, false, false, false);
 		this.main = new PlayingFieldView(data, observers);
-		main.update();
-		this.current = null;
 		
 		this.internals = new ArrayList<>();		
 		internals.add(new SelectHostView(observers));
-		//internals.add(new LobbyView(data, observers)); TODO Throws null pointer exception
+		internals.add(new LobbyView(observers, data));
 		internals.add(new TrumpView(observers));
 		internals.add(new WeisView(data, observers));
 		internals.add(new GameOverView(observers));
 		
 		initializeGui();
-		
 	}
 	private void initializeGui() {
 		//Set up internal frame
@@ -59,6 +57,7 @@ public class Gui extends AbstractClientView{
 		frame.setMinimumSize(main.getContent().getMinimumSize());
 		frame.setVisible(true);
 		
+		//Change close operation
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
@@ -71,6 +70,10 @@ public class Gui extends AbstractClientView{
 		        }
 		    }
 		});
+		
+		//Refresh all components
+		changeView(ViewEnumeration.PLAYVIEW);
+		updateAll();
 	}
 		
 	@Override
@@ -80,35 +83,24 @@ public class Gui extends AbstractClientView{
 	
 	@Override
 	public void changeView(ViewEnumeration view) {
-		//Update view if current view is the one to be changed
-		if(getCurrentView() == view) {
-			if(view == main.getType())
-				main.update();
-			else
-				current.update();
-		}
-		//Load new view in internal frame
-		else {
-			for(Viewable v : internals) {
-				if(v.getType().equals(view)) {
-					this.current = v;
-					this.iFrame.setContentPane(v.getContent());
-					this.iFrame.setSize(v.getContent().getMinimumSize());
-					this.iFrame.setTitle(v.getType().toString());
-					this.iFrame.setVisible(true);
-					return;
-				}
+		//Set internal frame
+		for(Viewable v : internals) {
+			if(v.getType().equals(view)) {
+				this.current = v;
+				this.iFrame.setContentPane(v.getContent());
+				this.iFrame.pack();
+				this.iFrame.setTitle(v.getType().toString());
+				this.iFrame.setVisible(true);
+				return;
 			}
-			this.iFrame.setVisible(false);	//If view is not in internals close inner frame
 		}
-
+		//Set main as current view
+		this.current = main;
+		this.iFrame.setVisible(false);	//Close inner frame
 	}
 
 	@Override
 	public ViewEnumeration getCurrentView() {
-		if(current == null) {
-			return main.getType();
-		}
 		return current.getType();
 	}
 
@@ -116,4 +108,66 @@ public class Gui extends AbstractClientView{
 	public void publishMessage(String text) {
 		this.main.publish(text);
 	}
+	@Override
+	public void updateView(ViewEnumeration view) {
+		for(Viewable v: internals) {
+			if(v.getType() == view) {
+				v.update();
+				return; //Leave method if first element has been found
+			}
+		}
+		main.update();	//Update  main if no other view has been found
+	}
+	
+	@Override
+	public void updateAll() {
+		for(Viewable v: internals) {
+			v.update();
+		}
+		main.update();
+	}
+	
+	/**This enumeration resembles the values to configure a JOptionPane
+	 * 
+	 * @author mstieger
+	 *
+	 */
+	public enum MessageType{
+		/*
+		 * Index values of elements must agree with the values for message types
+		 * of JOptionPane
+		 */
+		ERROR(0), 
+		INFORMATION(1), 
+		WARNING(2), 
+		QUESTION(3), 
+		PLAIN(-1);
+		
+		private final int index;
+		
+		MessageType(int index){
+			this.index = index;
+		}
+	};
+	
+	String message;
+	MessageType type;
+	@Override
+	public void showDialog(String message, MessageType type) {
+		/*Makes a dialog from a new thread => Needed because JOptionPane stops the
+		 * execution of the calling thread and therefore the calling program
+		 */	
+		this.message = message;
+		this.type = type;
+		new Thread(this).start();
+	}
+	@Override
+	public void run() {
+		//Creates an option pane with OK button
+				JOptionPane.showConfirmDialog(frame, 
+			            message, type.toString(), 
+			            JOptionPane.DEFAULT_OPTION,
+			            type.index);
+	}
+	
 }
