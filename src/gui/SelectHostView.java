@@ -1,21 +1,17 @@
 package gui;
 
 import java.awt.*;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
+import javax.swing.*;
+
 import client.ViewEnumeration;
 import client.ViewObserver;
-import shared.ServerAddress;
-import shared.Card;
-import shared.CardColor;
-import shared.CardValue;
-
-import javax.swing.*;
 
 public class SelectHostView extends ObservableView implements Viewable{
 	
@@ -24,6 +20,7 @@ public class SelectHostView extends ObservableView implements Viewable{
 	
 	private JTextField serverIPText; 
 	private JTextField serverSocketText;
+	private JTextField usernameText;
 	private JButton startButton;
 	
 	//Window size and coordinates 
@@ -43,13 +40,12 @@ public class SelectHostView extends ObservableView implements Viewable{
 		layoutSelectHostView();
 		
 		
-		
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
 					InetSocketAddress serverAddress = new InetSocketAddress(serverIPText.getText(), Integer.parseInt(serverSocketText.getText())); //TODO change port 
-					observer. btnConnectClick(serverAddress, "YOU"); //TODO Feld zur eingabe des Benutzernamens (Darf nicht leer sein) /Maurus
+					observer.btnConnectClick(serverAddress,usernameText.getText());
 				}
 			}
 		});
@@ -58,46 +54,40 @@ public class SelectHostView extends ObservableView implements Viewable{
 	private void layoutSelectHostView() {
 		
 		//dimensions and location of window
-		setMinimumSize(new Dimension(width, height)); //TODO Has ofach mol so gmacht /Maurus
-		setSize(width,height);
+
+		this.setPreferredSize(new Dimension(width,height));
 		setLocation(left,top);
 		
 		JLabel serverLabel = new JLabel("Server");
-		
-		/*//Server-IP
-		JLabel serverIPLabel = new JLabel("IP-Adresse:");
-		serverIPText = new JTextField();
-		JPanel serverIPPanel = new JPanel();
-		serverIPPanel.setLayout(new FlowLayout(FlowLayout.LEFT,20,0));
-		serverIPPanel.add(serverIPLabel);
-		serverIPPanel.add(serverIPText);
-		
-		//Server-Socket
-		JLabel serverSocketLabel = new JLabel("Socket:");
-		serverSocketText = new JTextField();
-		JPanel serverSocketPanel = new JPanel();
-		serverSocketPanel.setLayout(new FlowLayout(FlowLayout.LEFT,20,0));
-		serverSocketPanel.add(serverSocketLabel);
-		serverSocketPanel.add(serverSocketText);*/
+		serverLabel.setFont(new Font(serverLabel.getFont().getFontName(), Font.BOLD, 24));
+		serverLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		//Server-IP and Server-Socket
 		JLabel serverIPLabel = new JLabel("IP-Adresse:");
+		serverIPLabel.setFont(new Font(serverIPLabel.getFont().getFontName(), Font.PLAIN, 12));
 		serverIPText = new JTextField();
 		JLabel serverSocketLabel = new JLabel("Socket:");
+		serverSocketLabel.setFont(new Font(serverSocketLabel.getFont().getFontName(), Font.PLAIN, 12));
 		serverSocketText = new JTextField();
+		JLabel usernameLabel = new JLabel("Username:");
+		usernameLabel.setFont(new Font(serverSocketLabel.getFont().getFontName(), Font.PLAIN, 12));
+		usernameText = new JTextField();
+		
 		JPanel serverIPSocketPanel = new JPanel();
-		serverIPSocketPanel.setLayout(new GridLayout(2,2,0,5));
+		serverIPSocketPanel.setLayout(new GridLayout(3,2,0,5));
 		serverIPSocketPanel.add(serverIPLabel);
 		serverIPSocketPanel.add(serverIPText);
 		serverIPSocketPanel.add(serverSocketLabel);
 		serverIPSocketPanel.add(serverSocketText);
+		serverIPSocketPanel.add(usernameLabel);
+		serverIPSocketPanel.add(usernameText);
 		
 		
 		//Server IP and Socket
 		serverPanel = new JPanel();
-		serverPanel.setLayout(new GridLayout(2,1,0,20));
-		serverPanel.add(serverLabel);
-		serverPanel.add(serverIPSocketPanel);
+		serverPanel.setLayout(new BorderLayout(0,50));
+		serverPanel.add(serverLabel,BorderLayout.NORTH);
+		serverPanel.add(serverIPSocketPanel,BorderLayout.CENTER);
 		//serverPanel.add(serverSocketPanel);
 
 		
@@ -105,12 +95,13 @@ public class SelectHostView extends ObservableView implements Viewable{
 		JPanel startButtonPanel = new JPanel();
 		startButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		startButton = new JButton("starte Schieber");
+		startButton.setFont(new Font(startButton.getFont().getFontName(), Font.PLAIN, 12));
 		startButtonPanel.add(startButton);
 		
 		//add Components 
-		setLayout(new BorderLayout());
-		add(serverPanel,BorderLayout.NORTH);
-		add(startButtonPanel,BorderLayout.SOUTH);
+		this.setLayout(new BorderLayout());
+		this.add(serverPanel,BorderLayout.NORTH);
+		this.add(startButtonPanel,BorderLayout.SOUTH);
 	}
 
 	@Override
@@ -121,12 +112,13 @@ public class SelectHostView extends ObservableView implements Viewable{
 
 	@Override
 	public JPanel getContent() {
+		// TODO Auto-generated method stub
 		return this;
 	}
 
 	@Override
 	public ViewEnumeration getType() {
+		// TODO Auto-generated method stub
 		return ViewEnumeration.SELECTHOSTVIEW;
 	}
-
 }
