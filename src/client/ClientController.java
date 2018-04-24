@@ -132,7 +132,11 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void btnConnectClick(InetSocketAddress serverAddress, String username) {
-		super.connect(serverAddress, username, false);
+		try {
+			super.connect(serverAddress, username, false);
+		} catch (Exception e) {
+			System.err.println("Connect fehlgeschlagen mit Fehlermessage: " + e.getMessage());
+		}
 	}
 	
 	/** On the GameOverView the player pressed the restart button as he wants to play another game.

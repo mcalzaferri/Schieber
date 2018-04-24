@@ -40,7 +40,7 @@ public class Communication {
 	 * @throws ClassNotFoundException
 	 * @return The received message.
 	 */
-	public InternalMessage internalReceive()
+	public InternalMessage receive()
 			throws IOException, ClassNotFoundException {
 		receivePacket.setLength(receiveBuffer.length);
 

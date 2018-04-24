@@ -40,7 +40,7 @@ public class ServerBotIntegrationTest {
 		cCom.setReceiveTimeout(100);
 		cCom.open();
 		Random rm = new Random();
-		client = new VirtualClient(cCom, new ClientModel(),new InetSocketAddress("146.136.43.84",65000),"cat-bot " + rm.nextInt(999),new IntelligenceNormal());
+		client = new VirtualClient(cCom, new ClientModel(),new InetSocketAddress("146.136.43.84",65000),new IntelligenceNormal());
 		client.setIntelligence(new IntelligenceNormal());
 
 	}
@@ -52,7 +52,7 @@ public class ServerBotIntegrationTest {
 	}
 
 	@Test
-	public void chooseTrumpTest() {
+	public void chooseTrumpTest() throws Exception {
 		cCom.connect(new InetSocketAddress("localhost",serverListenPort), "ChooseTrumpTest", true);
 		// TODO implement test
 	}

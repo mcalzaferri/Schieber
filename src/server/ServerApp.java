@@ -55,7 +55,7 @@ public class ServerApp {
 
 	protected void handleMessage() throws ClassNotFoundException, IOException {
 		System.out.println("Waiting for Message...");
-		InternalMessage iMsg = com.internalReceive();
+		InternalMessage iMsg = com.receive();
 
 		// try to get player from game
 		// this will be null if the player is new

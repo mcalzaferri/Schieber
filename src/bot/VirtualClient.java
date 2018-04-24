@@ -2,6 +2,7 @@ package bot;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Random;
 
 import client.ClientCommunication;
 import shared.Card;
@@ -18,11 +19,23 @@ public class VirtualClient extends AbstractClient {
 	public Boolean active;
 	private int mySeatId;
 	private Score score;
+	private static String[] possibleBotNames = {"cat-bot","dog-bot","hot-bot","nt-bot","not-a-bot","definitely-not-a-bot","ro-bot","TheLegend27"};
 	
-	public VirtualClient(ClientCommunication com, ClientModel model, InetSocketAddress serverAddress, String username, BotIntelligence intelligence) {
+	public VirtualClient(ClientCommunication com, ClientModel model, InetSocketAddress serverAddress, BotIntelligence intelligence) {
 		super(com, model);
 		setIntelligence(intelligence);
-		connect(serverAddress, username, true);
+		boolean connected = false;
+		Random rm = new Random();
+		do {
+			try {
+				connect(serverAddress, possibleBotNames[rm.nextInt(possibleBotNames.length)], true);
+				//Wird keine Exception geworfen wurde connect erfolgreich durchgeführt
+				connected = true;
+			} catch (Exception e) {
+				System.err.println("Connect fehlgeschlagen mit Fehlermessage: " + e.getMessage());
+			}
+		}while(!connected);
+		
 	}
 
 	@Override

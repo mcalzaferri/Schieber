@@ -28,7 +28,7 @@ public class MainTest {
 		ClientCommunicationSimulator sim = new ClientCommunicationSimulator(players);
 		AbstractClient client;
 		if(testBot) {
-			client = new VirtualClient(sim, model, new InetSocketAddress("localhost", 65000), "cat-bot", new IntelligenceNormal());
+			client = new VirtualClient(sim, model, new InetSocketAddress("localhost", 65000), new IntelligenceNormal());
 
 		}else {
 			 client = new ClientController(sim, model, new Gui(model));

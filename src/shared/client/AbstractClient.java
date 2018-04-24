@@ -276,8 +276,9 @@ public abstract class AbstractClient {
 	
 	/**
 	 * @param serverAddress Address to connect to
+	 * @throws Exception 
 	 */
-	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) {
+	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws Exception {
 		model.setThisPlayer(new Player(serverAddress,username,Seat.NOTATTABLE));
 		com.connect(serverAddress, username, isBot);
 		
