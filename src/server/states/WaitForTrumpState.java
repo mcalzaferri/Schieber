@@ -14,7 +14,10 @@ import shared.Trump;
 
 public class WaitForTrumpState extends GameState{
 	
-	public WaitForTrumpState() throws IOException{		
+	private boolean schiebenAlreadyChosen;
+	
+	public WaitForTrumpState() throws IOException{	
+		schiebenAlreadyChosen = false;
 		ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();		
 		send(ctMsg, logic.getPlayer(logic.getRandomSeat()));
 	}
@@ -24,32 +27,17 @@ public class WaitForTrumpState extends GameState{
 	 */
 	public boolean handleMessage(Player sender, ToServerMessage msg) throws IOException{
 		if(msg instanceof ChosenTrumpMessage){
-			if(((ChosenTrumpMessage) msg).trump.equals(Trump.SCHIEBEN)){
-				ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
-				broadcast(msg);
-				Player nextPlayer;
-				
-				switch(sender.getSeat().getSeatEntity()){
-				case SEAT1 : 
-					nextPlayer = logic.getPlayer(SeatEntity.SEAT3);
-					send(ctMsg, nextPlayer);
-					break;
-				case SEAT2 : 
-					nextPlayer = logic.getPlayer(SeatEntity.SEAT4);
-					send(ctMsg, nextPlayer);
-					break;
-				case SEAT3 : 
-					nextPlayer = logic.getPlayer(SeatEntity.SEAT1);
-					send(ctMsg, nextPlayer);
-					break;
-				case SEAT4 : 
-					nextPlayer = logic.getPlayer(SeatEntity.SEAT2); 
-					send(ctMsg, nextPlayer);
-					break;
-				default:	
-					//Exceptionhandling
-					break;				
-				}
+			ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
+			
+			//Sends request to choose trump back to the sender
+			if(schiebenAlreadyChosen){
+				send(ctMsg, sender);
+			}
+			//Sends request to choose trump to the teammember
+			else if(((ChosenTrumpMessage) msg).trump.equals(Trump.SCHIEBEN)){
+				broadcast(msg);	
+				send(ctMsg, logic.getTeamMember(sender));
+				schiebenAlreadyChosen = true;
 			}
 			else{
 				ChosenTrumpInfoMessage ctiMsg = new ChosenTrumpInfoMessage();

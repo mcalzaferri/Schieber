@@ -37,7 +37,7 @@ public class GameLogic {
 	private ArrayList<Player> players;
 	private SeatEntity currentSeat;
 	private Card[] deck;
-
+	
 	public GameLogic() {
 		players = new ArrayList<>();
 		init();
@@ -181,7 +181,26 @@ public class GameLogic {
 		return seatEntity;
 	}
 	
-
+	/**
+	 * Gets the Teammember
+	 * @param player
+	 */
+	public Player getTeamMember(Player player){
+		switch(player.getSeat().getSeatEntity()){
+		case SEAT1 : 
+			return getPlayer(SeatEntity.SEAT3);
+		case SEAT2 : 
+			return getPlayer(SeatEntity.SEAT4);
+		case SEAT3 : 
+			return getPlayer(SeatEntity.SEAT1);
+		case SEAT4 : 
+			return getPlayer(SeatEntity.SEAT2);
+		default:	
+			System.err.println("Unimplemented Seat");
+			}		
+		return getCurrentPlayer();
+	}
+	
 	public TeamEntity getTeam1() {
 		TeamEntity team = new TeamEntity();
 		team.players = new Player[] {getPlayer(SeatEntity.SEAT1), getPlayer(SeatEntity.SEAT3)};
