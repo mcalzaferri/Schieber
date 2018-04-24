@@ -64,7 +64,7 @@ public class ClientCommunication extends Communication implements Runnable{
 	 * @param isBot True if a bot wants to connect, false otherwise
 	 * @throws Exception if the server denies the connect request or something else went wrong
 	 */
-	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws Exception {
+	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws BadResultException {
 		this.serverAddress = serverAddress;
 		JoinLobbyMessage msg = new JoinLobbyMessage();
 		msg.playerData = new PlayerEntity();
@@ -81,7 +81,7 @@ public class ClientCommunication extends Communication implements Runnable{
 					if(((ResultMessage)imsg.message).code == Code.OK) {
 						loop = false;
 					}else {
-						throw new Exception(((ResultMessage)imsg.message).message);
+						throw new BadResultException(((ResultMessage)imsg.message).message);
 					}
 				}
 			} catch (ClassNotFoundException | IOException e) {

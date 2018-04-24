@@ -99,13 +99,13 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void doConnected() {
-		// TODO Auto-generated method stub
+		System.out.println("Successfully connected");
 		
 	}
 
 	@Override
 	public void doDisconnected() {
-		// TODO Auto-generated method stub
+		System.out.println("Successfully disconnected");
 		
 	}
 
@@ -134,7 +134,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	public void btnConnectClick(InetSocketAddress serverAddress, String username) {
 		try {
 			super.connect(serverAddress, username, false);
-		} catch (Exception e) {
+		} catch (BadResultException e) {
 			System.err.println("Connect fehlgeschlagen mit Fehlermessage: " + e.getMessage());
 			//TODO notify player about error
 		}
