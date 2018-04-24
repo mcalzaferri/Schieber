@@ -12,7 +12,6 @@ public class ClientModel {
 	private Player thisPlayer;
 	private Map<Integer,Player> players;
 	private Team[] teams;
-	private CardList hand;
 	private CardList deck;
 	private Trump trump;
 	private Weis[] possibleWiis;
@@ -24,7 +23,6 @@ public class ClientModel {
 	//Constructors
 	public ClientModel() {
 		players = new HashMap<Integer, Player>();
-		hand = new CardList();
 		deck = new CardList();
 	}
 	
@@ -34,7 +32,7 @@ public class ClientModel {
 	}
 	
 	public void updateHand(Card[] handCards) {
-		hand.updateData(handCards);
+		thisPlayer.getCards().updateData(handCards);
 	}
 	
 	public void updateDeck(Card[] deckCards) {
@@ -72,10 +70,10 @@ public class ClientModel {
 		this.teams = teams;
 	}
 	public CardList getHand() {
-		return hand;
+		return thisPlayer.getCards();
 	}
 	public void setHand(CardList hand) {
-		this.hand = hand;
+		thisPlayer.setCards(hand);
 	}
 	public CardList getDeck() {
 		return deck;

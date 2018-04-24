@@ -93,6 +93,10 @@ public class Player {
 		cards.remove(c);
 	}
 	
+	public void setCards(CardList cards) {
+		this.cards = cards;
+	}
+	
 	public CardList getCards() {
 		return cards;
 	}
