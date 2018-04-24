@@ -14,44 +14,42 @@ public interface ClientMessageDecoder {
 			//do nothing
 		}
 		//server_info_messages
-		else if(msg instanceof ChosenTrumpInfoMessage)
+		if(msg instanceof ChosenTrumpInfoMessage)
 			decoder.msgReceived((ChosenTrumpInfoMessage)msg);
-		else if(msg instanceof EndOfRoundInfoMessage)
+		if(msg instanceof EndOfRoundInfoMessage)
 			decoder.msgReceived((EndOfRoundInfoMessage)msg);
-		else if(msg instanceof GameStartedInfoMessage)
+		if(msg instanceof GameStartedInfoMessage)
 			decoder.msgReceived((GameStartedInfoMessage)msg);
-		else if(msg instanceof NewRoundInfoMessage)
+		if(msg instanceof NewRoundInfoMessage)
 			decoder.msgReceived((NewRoundInfoMessage)msg);
-		else if(msg instanceof NewTurnInfoMessage)
+		if(msg instanceof NewTurnInfoMessage)
 			decoder.msgReceived((NewTurnInfoMessage)msg);
-		else if(msg instanceof PlayerChangedStateMessage)
+		if(msg instanceof PlayerChangedStateMessage)
 			decoder.msgReceived((PlayerChangedStateMessage)msg);
-		else if(msg instanceof PlayerLeftLobbyInfoMessage)
+		if(msg instanceof PlayerLeftLobbyInfoMessage)
 			decoder.msgReceived((PlayerLeftLobbyInfoMessage)msg);
-		else if(msg instanceof PlayerMovedToLobbyInfoMessage)
+		if(msg instanceof PlayerMovedToLobbyInfoMessage)
 			decoder.msgReceived((PlayerMovedToLobbyInfoMessage)msg);
-		else if(msg instanceof PlayerMovedToTableInfoMessage)
+		if(msg instanceof PlayerMovedToTableInfoMessage)
 			decoder.msgReceived((PlayerMovedToTableInfoMessage)msg);
-		else if(msg instanceof StichInfoMessage)
+		if(msg instanceof StichInfoMessage)
 			decoder.msgReceived((StichInfoMessage)msg);
-		else if(msg instanceof TurnInfoMessage)
+		if(msg instanceof TurnInfoMessage)
 			decoder.msgReceived((TurnInfoMessage)msg);
-		else if(msg instanceof WiisInfoMessage)
+		if(msg instanceof WiisInfoMessage)
 			decoder.msgReceived((WiisInfoMessage)msg);
+		
 		//server_messages
-		else if(msg instanceof ChooseTrumpMessage)
+		if(msg instanceof ChooseTrumpMessage)
 			decoder.msgReceived((ChooseTrumpMessage)msg);
-		else if(msg instanceof GameStateMessage)
+		if(msg instanceof GameStateMessage)
 			decoder.msgReceived((GameStateMessage)msg);
-		else if(msg instanceof HandOutCardsMessage)
+		if(msg instanceof HandOutCardsMessage)
 			decoder.msgReceived((HandOutCardsMessage)msg);
-		else if(msg instanceof LobbyStateMessage)
+		if(msg instanceof LobbyStateMessage)
 			decoder.msgReceived((LobbyStateMessage)msg);
-		else if(msg instanceof WrongCardMessage)
+		if(msg instanceof WrongCardMessage)
 			decoder.msgReceived((WrongCardMessage)msg);
-		else
-			;//TODO what do here???
-		;//TODO Messages who have submessages must be moved to here
 	}
 	
 	//server_info_messages
