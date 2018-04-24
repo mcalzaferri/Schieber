@@ -12,10 +12,8 @@ import ch.ntb.jass.common.entities.TeamEntity;
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
-import shared.GameMode;
 import shared.Player;
 import shared.Score;
-import shared.Seat;
 import shared.Trump;
 
 /**
@@ -28,19 +26,13 @@ import shared.Trump;
  * run   - one iteration (4 cards played)
  */
 public class GameLogic {
-	private GameMode mode;
 	private Trump trump;
-//	private CardColor trumpf;
-	/**
-	 * Maps seatNr to Player object
-	 */
 	private ArrayList<Player> players;
 	private SeatEntity currentSeat;
 	private Card[] deck;
-	
+
 	public GameLogic() {
 		players = new ArrayList<>();
-		init();
 	}
 
 	/**
@@ -75,15 +67,14 @@ public class GameLogic {
 			deck[i] = temp;
 		}
 	}
-	
+
 	/**
 	 * Set trump
 	 */
-	
 	public void setTrump(Trump trump){
 		this.trump = trump;
 	}
-	
+
 
 	public Collection<Player> getPlayers() {
 		return Collections.unmodifiableCollection(players);
@@ -174,33 +165,27 @@ public class GameLogic {
 		}
 		return null;
 	}
-	
-	public SeatEntity getRandomSeat(){
-		Random random = new Random();
-		SeatEntity seatEntity = SeatEntity.values()[random.nextInt(getPlayerCount()+1)];
-		return seatEntity;
-	}
-	
+
 	/**
 	 * Gets the Teammember
 	 * @param player
 	 */
 	public Player getTeamMember(Player player){
 		switch(player.getSeat().getSeatEntity()){
-		case SEAT1 : 
+		case SEAT1 :
 			return getPlayer(SeatEntity.SEAT3);
-		case SEAT2 : 
+		case SEAT2 :
 			return getPlayer(SeatEntity.SEAT4);
-		case SEAT3 : 
+		case SEAT3 :
 			return getPlayer(SeatEntity.SEAT1);
-		case SEAT4 : 
+		case SEAT4 :
 			return getPlayer(SeatEntity.SEAT2);
-		default:	
+		default:
 			System.err.println("Unimplemented Seat");
-			}		
+			}
 		return getCurrentPlayer();
 	}
-	
+
 	public TeamEntity getTeam1() {
 		TeamEntity team = new TeamEntity();
 		team.players = Player.getEntities(new Player[] {getPlayer(SeatEntity.SEAT1), getPlayer(SeatEntity.SEAT3)});

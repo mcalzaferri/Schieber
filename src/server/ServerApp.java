@@ -44,6 +44,7 @@ public class ServerApp {
 		// init state machine
 		stateMachine = new StateMachine();
 		GameState.init(stateMachine, com, logic);
+		stateMachine.changeState(new LobbyState());
 	}
 
 	public ServerApp(int listenPort) throws IOException {
@@ -82,6 +83,7 @@ public class ServerApp {
 
 		// let state machine handle the message
 		if(!stateMachine.handleMessage(sender, iMsg)) {
+			//TODO: send ResultMessage with generic error message
 			System.err.println("Unhandled message, current state = "
 					+ stateMachine.getCurrentState().getClass().getSimpleName());
 		}

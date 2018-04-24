@@ -11,12 +11,23 @@ import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import shared.Player;
 
 public class LobbyState extends GameState {
+
+	/**
+	 * @see GameState#act()
+	 */
+	@Override
+	public void act() throws IOException {
+		logic.init();
+	}
+
 	/**
 	 * @see GameState#handleMessage(Player, ToServerMessage)
 	 */
 	@Override
 	public boolean handleMessage(Player sender, ToServerMessage msg) throws IOException {
 		if(msg instanceof JoinTableMessage) {
+			//TODO: if seat is occupied assign a free one
+			//TODO: if seat is null assign a free one
 			JoinTableMessage jtMsg = (JoinTableMessage) msg;
 			if(logic.addPlayerToTable(sender, jtMsg.preferedSeat)) {
 				sendResultMsg(ResultMessage.Code.OK, "", sender);

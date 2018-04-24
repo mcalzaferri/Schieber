@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
-import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.LeaveLobbyMessage;
@@ -25,24 +24,9 @@ import shared.Seat;
 public class StateMachine {
 	private GameState currentState;
 
-	/**
-	 * Init state machine with default initial state.
-	 * @throws IOException
-	 */
-	public StateMachine() throws IOException {
-		changeState(new LobbyState());
-	}
-
-	/**
-	 * Init state machine with a specific state.
-	 * @param state initial state
-	 */
-	public StateMachine(GameState state) {
-		currentState = state;
-	}
-
 	public void changeState(GameState state) throws IOException {
 		currentState = state;
+		System.out.println("Switched to new state: " + state.getClass().getSimpleName());
 		currentState.act();
 	}
 
@@ -57,6 +41,7 @@ public class StateMachine {
 		if (iMsg.message == null) {
 			GameState.sendResultMsg(ResultMessage.Code.PROTOCOL_ERROR,
 					"The data you sent was invalid. Fix your shit!", sender);
+			return false;
 		}
 
 		ToServerMessage msg;
@@ -73,6 +58,8 @@ public class StateMachine {
 		}
 
 		try {
+			//TODO: if message was processed successfully send ok else send error
+			//GameState.sendResultMsg(ResultMessage.Code.OK, "", sender);
 			if (msg instanceof JoinLobbyMessage) {
 				if(sender == null) {
 					// New player joined
@@ -83,24 +70,25 @@ public class StateMachine {
 						return true;
 					}
 					handleNewPlayer(playerData, iMsg.senderAddress);
-					return true;
 				} else {
 					System.out.println("Player tried to rejoin lobby");
-					return true;
 				}
-			} else if(msg instanceof LeaveLobbyMessage) {				
-				PlayerLeftLobbyInfoMessage pllim = new PlayerLeftLobbyInfoMessage();			
+				return true;
+			} else if(msg instanceof LeaveLobbyMessage) {
+				//TODO REV: perform action first then tell players about it
+				PlayerLeftLobbyInfoMessage pllim = new PlayerLeftLobbyInfoMessage();
 				GameState.broadcast(pllim);
-				GameState.logic.removePlayer(sender);			
-				return true;				
-			} else if(msg instanceof LeaveTableMessage) {				
+				GameState.logic.removePlayer(sender);
+				return true;
+			} else if(msg instanceof LeaveTableMessage) {
+				//TODO REV: perform action first then tell players about it
 				PlayerMovedToLobbyInfoMessage pmtlim = new PlayerMovedToLobbyInfoMessage();
-				GameState.broadcast(pmtlim);	
+				GameState.broadcast(pmtlim);
 				sender.setSeat(Seat.NOTATTABLE);
 				EndOfRoundInfoMessage eorim = new EndOfRoundInfoMessage();
 				GameState.broadcast(eorim);
-				changeState(new LobbyState());		
-				return true;				
+				changeState(new LobbyState());
+				return true;
 			} else {
 				// let current state handle message
 				return currentState.handleMessage(sender, msg);
@@ -108,11 +96,13 @@ public class StateMachine {
 		} catch (Exception e) {
 			GameState.sendResultMsg(ResultMessage.Code.PROTOCOL_ERROR,
 					"Something went wrong while processing the data you sent." +
-					" The server will just assume it's your fault and continue." +
-					" This might help you fix your code:" + System.lineSeparator() +
+					" The server will just assume it's your fault and continue ;)." +
+					" This might help you fix your code:\n" +
 					e.getMessage(),
+					//TODO: e.printStackTrace()?
 					sender);
-			return true;
+			//TODO: System.err.println(...);
+			return false;
 		}
 	}
 
@@ -121,6 +111,8 @@ public class StateMachine {
 		if(playerData.name == null || playerData.name.isEmpty()) {
 			playerData.name = "@" + playerAddr;
 		}
+		// TODO: fix player id?
+		// TODO: check if username already exists
 		Player sender = new Player(playerAddr, playerData.name, Seat.NOTATTABLE,
 				playerData.isBot, false, GameState.logic.getPlayerCount());
 		GameState.logic.addPlayer(sender);
@@ -129,6 +121,7 @@ public class StateMachine {
 		GameState.broadcast(new PlayerMovedToLobbyInfoMessage());
 
 		// send current game state to player
+		// TODO fix:
 		PlayerEntity[] players = GameState.logic.getPlayers().toArray(new PlayerEntity[0]);
 		if(currentState instanceof LobbyState) {
 			LobbyStateMessage lsm = new LobbyStateMessage();
@@ -137,14 +130,14 @@ public class StateMachine {
 		} else {
 			GameStateMessage gsm = new GameStateMessage();
 			gsm.players = players;
-			// TODO
+			//TODO: send gameStateMessage
 			//gsm.teams = ;
 			//gsm.currentPlayer = ;
 			//gsm.hands = ;
 			//gsm.deck = ;
 			//gsm.trump = ;
 			//gsm.score = ;
-			GameState.send(gsm, sender);
+			//GameState.send(gsm, sender);
 		}
 		System.out.println("Added " + playerData.name + " to the lobby");
 	}

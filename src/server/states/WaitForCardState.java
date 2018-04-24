@@ -16,7 +16,7 @@ import ch.ntb.jass.common.proto.server_messages.WrongCardMessage;
 import shared.Card;
 import shared.Player;
 
-public class waitForCardState extends GameState {
+public class WaitForCardState extends GameState {
 	/**
 	 * @see GameState#act()
 	 */
@@ -69,7 +69,6 @@ public class waitForCardState extends GameState {
 						broadcast(pmtlMsg);
 
 						// start new game
-						logic.init();
 						stateMachine.changeState(new LobbyState());
 					} else {
 						stateMachine.changeState(new StartRoundState());
