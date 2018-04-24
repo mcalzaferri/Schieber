@@ -62,8 +62,7 @@ public class ClientCommunication extends Communication implements Runnable{
 	 * @param serverAddress Address of the Game Server
 	 * @param username The username the connecting player prefers
 	 * @param isBot True if a bot wants to connect, false otherwise
-	 * @return returns the errocode or 0 if connected successfully
-	 * @throws Exception 
+	 * @throws Exception if the server denies the connect request or something else went wrong
 	 */
 	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws Exception {
 		this.serverAddress = serverAddress;
