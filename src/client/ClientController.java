@@ -136,6 +136,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 			super.connect(serverAddress, username, false);
 		} catch (Exception e) {
 			System.err.println("Connect fehlgeschlagen mit Fehlermessage: " + e.getMessage());
+			//TODO notify player about error
 		}
 	}
 	
