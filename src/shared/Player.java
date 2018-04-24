@@ -1,15 +1,13 @@
 package shared;
 
 import java.net.InetSocketAddress;
-import java.util.Arrays;
-import java.util.List;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
 
 public class Player {
 	private boolean isReady;
-	private List<Card> cards;	//cards on hand
+	private CardList cards;	//cards on hand
 	private InetSocketAddress address;
 	private PlayerEntity entity;
 
@@ -20,7 +18,7 @@ public class Player {
 		setBot(isBot);
 		setReady(isReady);
 		setId(id);
-		cards = null;
+		cards = new CardList();
 		if (name.isEmpty() && address != null) {
 			setName(address.toString());
 		} else {
@@ -88,11 +86,15 @@ public class Player {
 	}
 
 	public void putCards(Card[] cs) {
-		cards = Arrays.asList(cs);
+		cards.updateData(cs);
 	}
 
 	public void popCard(Card c) {
 		cards.remove(c);
+	}
+	
+	public CardList getCards() {
+		return cards;
 	}
 	
 	public Seat getSeat() {
