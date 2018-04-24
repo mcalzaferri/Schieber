@@ -1,5 +1,6 @@
 package client;
 
+import gui.Gui.MessageType;
 import shared.client.ClientModel;
 
 public abstract class AbstractClientView {
@@ -25,8 +26,33 @@ public abstract class AbstractClientView {
 	 */
 	public abstract ViewEnumeration getCurrentView();
 	
-	/**This method is called whenever information must be displayed to the user
+	/**Updates the specified view of the gui
+	 * While updating, the gui lets its subcomponents load the actual data
+	 * and display it.
+	 * 
+	 * @param view view to be updated
+	 */
+	public abstract void updateView(ViewEnumeration view);	
+	
+	/**Updates all views of the gui
+	 * While updating, the gui lets its subcomponents load the actual data
+	 * and display it.
+	 */
+	public abstract void updateAll();
+	
+	/**This method is called whenever relevant information about the game
+	 * must be displayed to the user
 	 * @param text The text that shall be displayed.
 	 */
 	public abstract void publishMessage(String text);
+	
+	/**Shows the message as a dialog
+	 * The dialog is implemented as a JOptionPane with a OK button.
+	 * Unless the user confirms the dialog, the graphical components of
+	 * the gui are disabled.
+	 * 
+	 * @param message Message to be displayed in the dialog
+	 * @param type	Type of the message
+	 */
+	public abstract void showDialog(String message, MessageType type);
 }
