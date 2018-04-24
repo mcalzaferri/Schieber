@@ -66,14 +66,13 @@ public class LobbyView extends ObservableView implements Viewable{
 		layoutButtons();
 		playerScrollPane = new JScrollPane();
 		layoutPlayerScrollPanel();
-		lobbyViewPanel = new JPanel();
-		lobbyViewPanel.setLayout(new BorderLayout());
-		lobbyViewPanel.add(playerScrollPane,BorderLayout.WEST);
-		lobbyViewPanel.add(lobbyPanel,BorderLayout.CENTER);
+
+		this.setLayout(new BorderLayout());
+		this.add(playerScrollPane,BorderLayout.WEST);
+		this.add(lobbyPanel,BorderLayout.CENTER);
 		
-		add(lobbyViewPanel);
-		setSize(width,height);
-		setLocation(left,top);
+		this.setPreferredSize(new Dimension(width,height));
+		this.setLocation(left,top);
 	}
 	
 	public void layoutPlayerScrollPanel()
@@ -339,7 +338,7 @@ public class LobbyView extends ObservableView implements Viewable{
 	@Override
 	public JPanel getContent() {
 		// TODO Auto-generated method stub
-		return this.lobbyViewPanel;
+		return this;
 	}
 
 	@Override
