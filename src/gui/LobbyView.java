@@ -1,21 +1,14 @@
 package gui;
 
 import javax.swing.*;
-import java.io.IOException;
-
 import client.ViewEnumeration;
 import client.ViewObserver;
-import gui.PictureFactory.Pictures;
 import shared.Player;
-import shared.Trump;
 import shared.client.ClientModel;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.Map;
 
 public class LobbyView extends ObservableView implements Viewable{
@@ -42,9 +35,6 @@ public class LobbyView extends ObservableView implements Viewable{
 	JButton chair4Button;
 	
 	//local variables
-	ViewEnumeration viewType;
-	ArrayList<ViewObserver> observers;
-	ClientModel data;
 	Map<Integer,Player> playersMap;
 	Player actPlayer;
 	int optionType1;
@@ -58,11 +48,7 @@ public class LobbyView extends ObservableView implements Viewable{
 	String optionString4;
 	
 	public LobbyView(ArrayList<ViewObserver> observers, ClientModel data) {
-		super(null, observers);
-		
-		this.viewType = viewType;
-		this.observers = observers;
-		this.data = data;
+		super(data, observers);
 		
 		playersMap = data.getPlayers();
 		actPlayer = data.getThisPlayer();
@@ -340,7 +326,7 @@ public class LobbyView extends ObservableView implements Viewable{
 	@Override
 	public JPanel getContent() {
 		// TODO Auto-generated method stub
-		return this;
+		return this.lobbyViewPanel;
 	}
 
 	@Override
