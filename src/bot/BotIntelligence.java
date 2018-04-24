@@ -242,7 +242,7 @@ public abstract class BotIntelligence {
 		
 		if (wiis.length < 1)
 		{
-			//Errorhandling
+			//Errorhandling 
 			System.out.println("Error - wiis is empty");
 		}
 		
