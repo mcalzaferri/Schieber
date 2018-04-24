@@ -19,7 +19,7 @@ public class SelectHostView extends ObservableView implements Viewable{
 	JPanel serverPanel;
 	
 	private JTextField serverIPText; 
-	private JTextField serverSocketText;
+	private JTextField serverPortText;
 	private JTextField usernameText;
 	private JButton startButton;
 	
@@ -44,7 +44,7 @@ public class SelectHostView extends ObservableView implements Viewable{
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
-					InetSocketAddress serverAddress = new InetSocketAddress(serverIPText.getText(), Integer.parseInt(serverSocketText.getText())); //TODO change port 
+					InetSocketAddress serverAddress = new InetSocketAddress(serverIPText.getText(), Integer.parseInt(serverPortText.getText())); //TODO change port 
 					observer.btnConnectClick(serverAddress,usernameText.getText());
 				}
 			}
@@ -66,19 +66,19 @@ public class SelectHostView extends ObservableView implements Viewable{
 		JLabel serverIPLabel = new JLabel("IP-Adresse:");
 		serverIPLabel.setFont(new Font(serverIPLabel.getFont().getFontName(), Font.PLAIN, 12));
 		serverIPText = new JTextField();
-		JLabel serverSocketLabel = new JLabel("Socket:");
-		serverSocketLabel.setFont(new Font(serverSocketLabel.getFont().getFontName(), Font.PLAIN, 12));
-		serverSocketText = new JTextField();
+		JLabel serverPortLabel = new JLabel("Port:");
+		serverPortLabel.setFont(new Font(serverPortLabel.getFont().getFontName(), Font.PLAIN, 12));
+		serverPortText = new JTextField();
 		JLabel usernameLabel = new JLabel("Username:");
-		usernameLabel.setFont(new Font(serverSocketLabel.getFont().getFontName(), Font.PLAIN, 12));
+		usernameLabel.setFont(new Font(serverPortLabel.getFont().getFontName(), Font.PLAIN, 12));
 		usernameText = new JTextField();
 		
 		JPanel serverIPSocketPanel = new JPanel();
 		serverIPSocketPanel.setLayout(new GridLayout(3,2,0,5));
 		serverIPSocketPanel.add(serverIPLabel);
 		serverIPSocketPanel.add(serverIPText);
-		serverIPSocketPanel.add(serverSocketLabel);
-		serverIPSocketPanel.add(serverSocketText);
+		serverIPSocketPanel.add(serverPortLabel);
+		serverIPSocketPanel.add(serverPortText);
 		serverIPSocketPanel.add(usernameLabel);
 		serverIPSocketPanel.add(usernameText);
 		
