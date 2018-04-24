@@ -5,32 +5,32 @@ import java.net.InetSocketAddress;
 import java.util.Random;
 
 import client.ClientCommunication;
+import shared.Communication;
 import shared.ServerAddress;
 import shared.client.ClientModel;
 
 public class BotApplication {
 
 	private static ClientCommunication communication;
-	private static final int port = 65000;
-	private static final ServerAddress address = new ServerAddress(port);
-	private static VirtualClient client;
-
 
 	public static void main(String[] args) throws IOException {
-		communication =  new ClientCommunication();
+		int listenPort = Communication.defaultListenPort;
+		String serverHostname = "146.136.43.84";
+		int serverPort = Communication.defaultListenPort;
+
+		try {
+			listenPort = Integer.parseInt(args[0]);
+			serverHostname = args[1];
+			serverPort = Integer.parseInt(args[2]);
+			communication =  new ClientCommunication(listenPort);
+		} catch (NumberFormatException|ArrayIndexOutOfBoundsException e) {
+			communication =  new ClientCommunication();
+		}
 		communication.open();
-		Random rm = new Random();
-		client = new VirtualClient(communication, new ClientModel(),
-				new InetSocketAddress("146.136.43.84",port),new IntelligenceNormal());
 
-
-		//client = new VirtualClient(communication, address);
-		//client.setIntelligence(new IntelligenceRandom());
-
-		//while(client.active) {
-
-		//}
-
+		new VirtualClient(communication, new ClientModel(),
+				new InetSocketAddress(serverHostname,serverPort),
+				new IntelligenceNormal());
 	}
 
 }

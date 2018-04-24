@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import client.BadResultException;
+import ch.ntb.jass.common.proto.player_messages.ChangeStateMessage;
+import ch.ntb.jass.common.proto.player_messages.JoinTableMessage;
 import client.ClientCommunication;
 import shared.Card;
 import shared.Player;
@@ -20,8 +22,11 @@ public class VirtualClient extends AbstractClient {
 	public Boolean active;
 	private int mySeatId;
 	private Score score;
-	private static String[] possibleBotNames = {"cat-bot","dog-bot","hot-bot","nt-bot","not-a-bot","definitely-not-a-bot","ro-bot","TheLegend27"};
-	
+	private static String[] possibleBotNames = { "cat-bot", "dog-bot",
+			"hot-bot", "nt-bot", "not-a-bot", "definitely-not-a-bot", "ro-bot",
+			"TheLegend27",
+			"MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW" };
+
 	public VirtualClient(ClientCommunication com, ClientModel model, InetSocketAddress serverAddress, BotIntelligence intelligence) {
 		super(com, model);
 		setIntelligence(intelligence);
@@ -35,8 +40,15 @@ public class VirtualClient extends AbstractClient {
 			} catch (BadResultException e) {
 				System.err.println("Connect fehlgeschlagen mit Fehlermessage: " + e.getMessage());
 			}
-		}while(!connected);
-		
+		} while(!connected);
+
+		JoinTableMessage jtMsg = new JoinTableMessage();
+		jtMsg.preferedSeat = null;
+		com.send(jtMsg);
+
+		ChangeStateMessage csMsg = new ChangeStateMessage();
+		csMsg.isReady = true;
+		com.send(csMsg);
 	}
 
 	@Override
@@ -81,15 +93,17 @@ public class VirtualClient extends AbstractClient {
 		if(!canSwitch) {
 			ki.setGeschoben(true);
 		}
-		
+
 	}
-	
+
+	@Override
 	public void doRequestWeis() {
 		ArrayList<Weis> wiisAl = ki.getWeise();
 		Weis[] wiis = new Weis[wiisAl.size()];
 		super.publishChosenWiis(wiisAl.toArray(wiis));
 		}
-	
+
+	@Override
 	public void doPlayerShowedWiis(Weis[] wiis, Player player) {
 		ki.showWeis(wiis, player.getId());
 	}
@@ -98,20 +112,20 @@ public class VirtualClient extends AbstractClient {
 	public void doUpdateDeck(Card[] deckCards) {
 		ki.setDeck(cardsToIds(deckCards));
 		ki.updateOutOfCardLists(cardsToIds(deckCards));
-		
+
 	}
 
 	@Override
 	public void doUpdateHand(Card[] handCards) {
 		ki.setHand(cardsToIds(handCards));
-		
+
 	}
 
 	@Override
 	public void doSetTrump(Trump trump) {
 		ki.setTrump(trump);
 	}
-	
+
 	/**
 	 * set strategy for the Schieber bot
 	 * @param intelligence
@@ -123,14 +137,14 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	public void doConnected() {
 		active = true;
-		
+
 	}
 
 	@Override
 	public void doDisconnected() {
 		active = false;
 	}
-	
+
 	/**
 	 * auxiliary function to cope with changes on the AbstractClient Interface
 	 * @param Card[]

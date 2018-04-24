@@ -11,7 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.ntb.jass.common.proto.Message;
 
 public class Communication {
-	protected int port = 65000;	// default listen port
+	public final static int defaultListenPort = 65000;
+	protected int port = defaultListenPort;
 	private final int bufferSize = 60000;
 	private byte[] receiveBuffer;
 	private DatagramSocket socket;
