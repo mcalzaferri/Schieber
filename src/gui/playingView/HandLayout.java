@@ -60,9 +60,8 @@ public class HandLayout implements LayoutManager{
 		Dimension act = parent.getSize();
 		
 		act.height = Math.max(act.height, min.height);	//Height defines the components size
-		double scale = act.height/(double)min.height; 	//Scale can not go below 1.0
-		act.width = Math.max(act.width, (int)(min.width*scale));	//Take biggest width		
-		parent.setSize(act);
+		double scale = act.height/(double)min.height; 	//Scale can not go below 1.0		
+		parent.setSize(act);	//Width of carpet should not be overwritten
 		
 		//SETS BOUNDS OF COMPONENTS
 		int minWidth = 0;
