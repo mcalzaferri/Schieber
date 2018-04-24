@@ -8,7 +8,6 @@ import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
 
 public class Player extends PlayerEntity {
-	private Seat seat;				//player seat number (0 to 4) (0 means not at the table)
 	private boolean isReady;
 	private List<Card> cards;	//cards on hand
 	private InetSocketAddress address;
@@ -67,11 +66,10 @@ public class Player extends PlayerEntity {
 	}
 	
 	public Seat getSeat() {
-		return seat;
+		return Seat.getBySeatNr(super.seat.getSeatNr());
 	}
 	
 	public void setSeat(Seat seat) {
-		this.seat = seat;
 		super.seat = SeatEntity.getBySeatNr(seat.getSeatNr());
 	}
 
@@ -80,7 +78,7 @@ public class Player extends PlayerEntity {
 	}
 
 	public int getSeatNr() {
-		return seat.getSeatEntity().getSeatNr();
+		return super.seat.getSeatNr();
 	}
 
 	public int getId() {
@@ -116,6 +114,6 @@ public class Player extends PlayerEntity {
 	}
 
 	public boolean isAtTable() {
-		return (seat != null && seat != Seat.NOTATTABLE);
+		return (seat != null && super.seat != SeatEntity.NOTATTABLE);
 	}
 }
