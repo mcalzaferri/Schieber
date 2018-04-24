@@ -2,6 +2,7 @@ package client;
 
 import java.net.InetSocketAddress;
 
+import gui.Gui.MessageType;
 import shared.*;
 import shared.client.*;
 
@@ -18,6 +19,15 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	}
 	
 	//Methods
+	/** if the guis don't want to do this i will. :)
+	 * @param v
+	 */
+	public void changeOrUpdateView(ViewEnumeration v) {
+		if(view.getCurrentView() != v)
+			view.changeView(v);
+		else
+			view.updateView(v);
+	}
 	
 	//Inherited methods from AbstractClient
 	/** Store broadcasted trump in the model and update view.
@@ -25,7 +35,8 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doSetTrump(Trump trump) {
-		view.changeView(ViewEnumeration.PLAYVIEW);
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+		view.publishMessage("New Trump is " + trump.toString() + " (Just in case you didn't notice the huge picture above)/n");
 	}
 
 	/** Store broadcasted score in the model and update view.
@@ -33,7 +44,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateScore(Score score) {
-		view.changeView(ViewEnumeration.PLAYVIEW);
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 
 	/** Round finished. Set active Seat to 0 (No seat active)
@@ -41,7 +52,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doEndRound() {
-		view.changeView(ViewEnumeration.PLAYVIEW);
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 
 	/** Game finished. Set view to GameOver.
@@ -49,7 +60,8 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doEndGame() {
-		view.changeView(ViewEnumeration.GAMEOVERVIEW);
+		changeOrUpdateView(ViewEnumeration.GAMEOVERVIEW);
+		view.publishMessage("This game is finally over. Took some time eh/n");
 	}
 	
 	/** Store seatId of this Client in the Model and update view.
@@ -58,7 +70,8 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doSetSeat(int seatId) {
-		view.changeView(ViewEnumeration.PLAYVIEW);
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+		//TODO is this still necessary? /Maurus
 	}
 
 	/** Store activeSeatId in the model and update view.
@@ -67,7 +80,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateActiveSeat(int activeSeatId) {
-		view.changeView(ViewEnumeration.PLAYVIEW);
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 
 	/** Store the cards on the deck in the model. The model is only updated, already existing objects are not recreated.
@@ -76,7 +89,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateDeck(Card[] deckCards) {
-		view.changeView(ViewEnumeration.PLAYVIEW);
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 
 	/** Store the cards on the hand in the model. The model is only updated, already existing objects are not recreated.
@@ -85,7 +98,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateHand(Card[] handCards) {
-		view.changeView(ViewEnumeration.PLAYVIEW);
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 	
 	/** This method is called when this Client needs to define the trump.
@@ -94,7 +107,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doRequestTrump(boolean canSwitch) {
-		view.changeView(ViewEnumeration.SELECTTRUMPVIEW);
+		changeOrUpdateView(ViewEnumeration.SELECTTRUMPVIEW);
 	}
 
 	@Override
@@ -116,20 +129,48 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	protected void doRequestCard(boolean selectWiis) {
-		view.changeView(ViewEnumeration.PLAYVIEW);
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 		
 	}
 	
 	@Override
 	protected void doPlayerShowedWiis(Weis[] wiis, Player player) {
-		// TODO Auto-generated method stub
-		
+		StringBuilder sb = new StringBuilder();
+		if(wiis == null || wiis.length == 0) {
+			sb.append(player.getName() + " had no wiis to show!");
+			if(Team.getTeamThatContainsPlayer(model.getTeams(), player).contains(model.getThisPlayer())) {
+				if(player.equals(model.getThisPlayer())) {
+					sb.append(" (As if you wouldn't know, right?)/n");
+				}else {
+					sb.append(" You should consider looking for a new partner/n");
+				}
+			}else {
+				sb.append(" Sucks to be him/n");
+			}	
+		}else {
+			sb.append(player.getName());
+			sb.append(" showed the following wiis:/n");
+			for(Weis weis : wiis) {
+				sb.append(weis.toString() + "/n");
+			}
+			if(player.equals(model.getThisPlayer())) {
+				sb.append(" (As if you wouldn't know, right?)/n");
+			}else {
+				sb.append(" what a lucky guy/n");
+			}
+		}
+		view.publishMessage(sb.toString());
 	}
 	
 	@Override
 	protected void doHandleBadResultException(BadResultException e) {
+		view.showDialog("You had one job!/n" + e.getMessage(), MessageType.WARNING);
 		System.err.println(e.getMessage());
-		//TODO notify player
+	}
+
+	@Override
+	protected void playerChanged(Player player) {
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 	
 	//Inherited methods from ViewObserver
