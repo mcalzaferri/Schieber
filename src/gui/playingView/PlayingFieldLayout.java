@@ -69,7 +69,7 @@ public class PlayingFieldLayout implements LayoutManager2{
 			//Calculate minimum height
 			int height = Math.max(carpet.height + hand.height, blackboard.height + info.height);
 			//Calculate minimum width
-			int width = Math.max(carpet.width + blackboard.width, hand.width + info.width);
+			int width = Math.max(carpet.width + blackboard.width, info.width);
 			return new Dimension(width, height);
 		}
 		return new Dimension(-1, -1); //Some default layout to prevent exceptions if returned null
@@ -81,7 +81,7 @@ public class PlayingFieldLayout implements LayoutManager2{
 		//Only works if all components are not null
 		if(isValid()) {
 			Dimension act = parent.getSize();
-			Dimension min = this.minimumLayoutSize(parent);
+			Dimension min = minimumLayoutSize(parent);
 			
 			/*
 			 * Scaling
@@ -109,7 +109,7 @@ public class PlayingFieldLayout implements LayoutManager2{
 			
 			//Hand located in the lower left below carpet
 			x = 0; y = (int)(scaling*(carpet.getMinimumSize().height));
-			w = (int)(scaling*hand.getMinimumSize().width); h = (int)(scaling*hand.getMinimumSize().height);
+			w = (int)(scaling*carpet.getMinimumSize().width); h = (int)(scaling*hand.getMinimumSize().height);
 			hand.setBounds(x, y, w, h);	
 			
 			//Infoboard located in the lower right
