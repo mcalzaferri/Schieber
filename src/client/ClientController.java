@@ -99,19 +99,19 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void doConnected() {
-		// TODO Auto-generated method stub
+		System.out.println("Successfully connected");
 		
 	}
 
 	@Override
 	public void doDisconnected() {
-		// TODO Auto-generated method stub
+		System.out.println("Successfully disconnected");
 		
 	}
 
 	@Override
 	public void doRequestWeis() {
-		// TODO 
+		view.changeView(ViewEnumeration.WEISVIEW);
 	}
 
 	@Override
@@ -126,6 +126,12 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		
 	}
 	
+	@Override
+	protected void doHandleBadResultException(BadResultException e) {
+		System.err.println(e.getMessage());
+		//TODO notify player
+	}
+	
 	//Inherited methods from ViewObserver
 	/** The Player pressed the connect button on the gui.
 	 * @param serverAddress Address where the player wants to connect to.
@@ -134,7 +140,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	public void btnConnectClick(InetSocketAddress serverAddress, String username) {
 		try {
 			super.connect(serverAddress, username, false);
-		} catch (Exception e) {
+		} catch (BadResultException e) {
 			System.err.println("Connect fehlgeschlagen mit Fehlermessage: " + e.getMessage());
 			//TODO notify player about error
 		}

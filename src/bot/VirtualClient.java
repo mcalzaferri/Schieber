@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
 
+import client.BadResultException;
 import client.ClientCommunication;
 import shared.Card;
 import shared.Player;
@@ -31,7 +32,7 @@ public class VirtualClient extends AbstractClient {
 				connect(serverAddress, possibleBotNames[rm.nextInt(possibleBotNames.length)], true);
 				//Wird keine Exception geworfen wurde connect erfolgreich durchgeführt
 				connected = true;
-			} catch (Exception e) {
+			} catch (BadResultException e) {
 				System.err.println("Connect fehlgeschlagen mit Fehlermessage: " + e.getMessage());
 			}
 		}while(!connected);
@@ -149,6 +150,13 @@ public class VirtualClient extends AbstractClient {
 		if(selectWiis) {
 			doRequestWeis();
 		}
+	}
+
+	@Override
+	protected void doHandleBadResultException(BadResultException e) {
+		//TODO handle bad result
+		System.err.println(e.getMessage());
+		
 	}
 	
 
