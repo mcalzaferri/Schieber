@@ -47,7 +47,6 @@ public class Communication {
 
 		// wait for message, blocking call
 		socket.receive(receivePacket);
-		System.out.println("Packet received");
 
 		InternalMessage msg = new InternalMessage();
 		msg.senderAddress = (InetSocketAddress)receivePacket.getSocketAddress();

@@ -13,19 +13,25 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
+import ch.ntb.jass.common.proto.ToServerMessage;
+import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinTableMessage;
-import client.ClientCommunication;
 import server.states.LobbyState;
+import shared.Communication;
+import shared.Seat;
 
 /**
  * Unit tests for the game engine and state machine.
  */
 public class ServerTest {
-	final int serverListenPort = 65000;
-	final int clientListenPort = 64000;
-	ServerApp app;
-	ClientCommunication cCom;
+	private final int serverListenPort = 65000;
+	private final int clientListenPort = 64000;
+	private final InetSocketAddress serverAddr = new InetSocketAddress("localhost", serverListenPort);
+	private final InetSocketAddress clientAddr = new InetSocketAddress("localhost", serverListenPort);
+	private ServerApp app;
+	private Communication client;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -41,40 +47,35 @@ public class ServerTest {
 		app.com.open();
 		app.com.setReceiveTimeout(100);
 
-		cCom = new ClientCommunication(clientListenPort);
-		cCom.open();
-		cCom.setReceiveTimeout(100);
+		client = new Communication(clientListenPort);
+		client.open();
+		client.setReceiveTimeout(100);
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		app.stop();
-		cCom.close();
-	}
-
-	@Test
-	public void testJoinLobby() throws Exception {
-		cCom.connect(new InetSocketAddress("localhost", serverListenPort), "ServerTestJoinLobby", true);
-
-		waitForMessage();
-
-		assertEquals(1, app.logic.getPlayerCount());
-		assertEquals(0, app.logic.getPlayer(
-				new InetSocketAddress("localhost", clientListenPort)).getSeatNr());
+		client.close();
 	}
 
 	@Test
 	public void testJoinTable() throws Exception {
-		app.stateMachine.changeState(new LobbyState());
-		cCom.connect(new InetSocketAddress("localhost", serverListenPort), "ServerTestJoinTable", true);
+		JoinLobbyMessage jlMsg = new JoinLobbyMessage();
+		jlMsg.playerData = new PlayerEntity();
+		sendMsgToServer(jlMsg);
+
 		waitForMessage();
 
-		JoinTableMessage msg = new JoinTableMessage();
-		msg.preferedSeat = SeatEntity.SEAT1;
-		cCom.send(msg);
+		assertEquals(1, app.logic.getPlayerCount());
+		assertEquals(Seat.NOTATTABLE, app.logic.getPlayer(clientAddr).getSeat());
+
+		JoinTableMessage jtMsg = new JoinTableMessage();
+		jtMsg.preferedSeat = SeatEntity.SEAT1;
+		sendMsgToServer(jtMsg);
+
 		waitForMessage();
-		assertEquals(msg.preferedSeat.getSeatNr(), app.logic.getPlayer(
-				new InetSocketAddress("localhost", clientListenPort)).getSeatNr());
+		assertEquals(jtMsg.preferedSeat, app.logic.getPlayer(
+				new InetSocketAddress("localhost", clientListenPort)).getSeat());
 	}
 
 	/**
@@ -86,5 +87,9 @@ public class ServerTest {
 		} catch (SocketTimeoutException e) {
 			fail("Timed out while waiting for the message.");
 		}
+	}
+
+	private void sendMsgToServer(ToServerMessage msg) throws IOException {
+		client.send(msg, serverAddr);
 	}
 }

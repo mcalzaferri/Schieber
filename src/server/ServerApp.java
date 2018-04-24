@@ -93,20 +93,4 @@ public class ServerApp {
 		running = false;
 		com.close();
 	}
-
-	/*
-	 * Functions for testing purposes
-	 */
-
-	public void setReceiveTimeout(int tmo) throws SocketException {
-		com.setReceiveTimeout(tmo);
-	}
-
-	public void setState(GameState state) throws IOException {
-		stateMachine.changeState(state);
-	}
-
-	public void open() throws SocketException {
-		com.open();
-	}
 }
