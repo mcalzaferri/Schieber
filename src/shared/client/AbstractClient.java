@@ -92,7 +92,8 @@ public abstract class AbstractClient {
 					if(msg.selectWeis) {
 						model.setPossibleWiis(model.getHand().getPossibleWiis(model.getTrump()));
 					}
-					doRequestCard(msg.selectWeis);
+					//Only request Weis if there is actually something to wiis
+					doRequestCard(msg.selectWeis && model.getHand().getPossibleWiis(model.getTrump()).length > 0);
 				}
 			}
 
@@ -240,8 +241,6 @@ public abstract class AbstractClient {
 	 * @param canSwitch determines whether the client can use "SCHIEBEN" or not
 	 */
 	protected abstract void doRequestTrump(boolean canSwitch);
-	
-	protected abstract void doRequestWeis();
 	
 	protected abstract void doRequestCard(boolean selectWiis);
 	

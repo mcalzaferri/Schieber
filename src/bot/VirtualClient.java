@@ -95,14 +95,7 @@ public class VirtualClient extends AbstractClient {
 		}
 
 	}
-
-	@Override
-	public void doRequestWeis() {
-		ArrayList<Weis> wiisAl = ki.getWeise();
-		Weis[] wiis = new Weis[wiisAl.size()];
-		super.publishChosenWiis(wiisAl.toArray(wiis));
-		}
-
+	
 	@Override
 	public void doPlayerShowedWiis(Weis[] wiis, Player player) {
 		ki.showWeis(wiis, player.getId());
@@ -162,7 +155,9 @@ public class VirtualClient extends AbstractClient {
 	protected void doRequestCard(boolean selectWiis) {
 		super.publishChosenCard(ki.getNextCard());
 		if(selectWiis) {
-			doRequestWeis();
+			ArrayList<Weis> wiisAl = ki.getWeise();
+			Weis[] wiis = new Weis[wiisAl.size()];
+			super.publishChosenWiis(wiisAl.toArray(wiis));
 		}
 	}
 

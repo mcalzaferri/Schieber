@@ -123,13 +123,11 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	}
 
 	@Override
-	public void doRequestWeis() {
-		view.changeView(ViewEnumeration.WEISVIEW);
-	}
-
-	@Override
 	protected void doRequestCard(boolean selectWiis) {
-		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+		if(selectWiis)
+			changeOrUpdateView(ViewEnumeration.WEISVIEW);
+		else
+			changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 		
 	}
 	
@@ -229,6 +227,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	@Override
 	public void btnWeisActionChosen(boolean allowBroadcast) {
 		super.publishChosenWiis(model.getPossibleWiis());
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 
 	@Override
