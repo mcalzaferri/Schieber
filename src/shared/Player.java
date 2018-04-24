@@ -78,6 +78,9 @@ public class Player {
 		}else if(obj instanceof Player){
 			Player p = (Player)obj;
 			return p.getId() == this.getId();
+		}else if(obj instanceof PlayerEntity){
+			PlayerEntity p = (PlayerEntity)obj;
+			return p.id == this.getId();
 		}else {
 			return false;
 		}
