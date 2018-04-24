@@ -31,6 +31,19 @@ public class Team {
 		this(entity, null);
 	}
 	
+	//static methods
+	/** Returns the team which contains the player. If none of the teams contain this player null is returned.
+	 * @param teams An array of teams which is checked
+	 * @param player The player to search in the teams
+	 * @return the players team or null if this player is not in a team.
+	 */
+	public static Team getTeamThatContainsPlayer(Team[] teams, Player player) {
+		for(Team team : teams) {
+			if(team.contains(player))
+				return team;
+		}
+		return null;
+	}
 	
 	//Methods
 	public void removePlayer(int id) {
@@ -51,6 +64,13 @@ public class Team {
 		return team;
 	}
 	
+	public boolean contains(Player player) {
+		for(Player p : players) {
+			if(p.equals(player))
+				return true;
+		}
+		return false;
+	}
 	
 	//Getters and Setters
 	public Player getPlayer(int index) {
