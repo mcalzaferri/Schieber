@@ -38,7 +38,7 @@ public abstract class BotIntelligence {
 		
 		if (currHand.length < 1)
 		{
-			//TODO: FKaiser Errorhandling? What to do?
+			//Error handling
 			System.out.println("Error - CurrHand is empty");
 		}
 		
@@ -143,7 +143,9 @@ public abstract class BotIntelligence {
 				modifier = 11;
 				break;
 			default:
-				modifier = 0; // shouldn't happen //TODO: FKaiser But what if it happens?
+				//Errorhandling
+				System.out.println("Card couldn't be recoginzed");
+				modifier = 0;
 				break;
 			}
 			values[c.getColor().getId()-1] += modifier;
@@ -240,7 +242,7 @@ public abstract class BotIntelligence {
 		
 		if (wiis.length < 1)
 		{
-			//TODO FKaiser Errorhandling - What to do?
+			//Errorhandling
 			System.out.println("Error - wiis is empty");
 		}
 		
