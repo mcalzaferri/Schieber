@@ -1,5 +1,6 @@
 package bot;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 import client.ClientCommunication;
@@ -13,13 +14,15 @@ import shared.client.ClientModel;
 
 public class VirtualClient extends AbstractClient {
 
-	private BotIntelligence ki = new IntelligenceNormal(); // set normal intelligence by default
+	private BotIntelligence ki; // set normal intelligence by default
 	public Boolean active;
 	private int mySeatId;
 	private Score score;
 	
-	public VirtualClient(ClientCommunication com, ClientModel model) {
+	public VirtualClient(ClientCommunication com, ClientModel model, InetSocketAddress serverAddress, String username, BotIntelligence intelligence) {
 		super(com, model);
+		setIntelligence(intelligence);
+		connect(serverAddress, username, true);
 	}
 
 	@Override

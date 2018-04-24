@@ -1,6 +1,7 @@
 package test;
 
 import java.net.InetSocketAddress;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -38,7 +39,8 @@ public class ServerBotIntegrationTest {
 		cCom =  new ClientCommunication();
 		cCom.setReceiveTimeout(100);
 		cCom.open();
-		client = new VirtualClient(cCom, new ClientModel());
+		Random rm = new Random();
+		client = new VirtualClient(cCom, new ClientModel(),new InetSocketAddress("146.136.43.84",65000),"cat-bot " + rm.nextInt(999),new IntelligenceNormal());
 		client.setIntelligence(new IntelligenceNormal());
 
 	}

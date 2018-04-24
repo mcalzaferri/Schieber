@@ -1,5 +1,7 @@
 package client.test;
 
+import java.net.InetSocketAddress;
+
 import bot.BotIntelligence;
 import bot.IntelligenceNormal;
 import bot.VirtualClient;
@@ -26,7 +28,7 @@ public class MainTest {
 		ClientCommunicationSimulator sim = new ClientCommunicationSimulator(players);
 		AbstractClient client;
 		if(testBot) {
-			client = new VirtualClient(sim, model);
+			client = new VirtualClient(sim, model, new InetSocketAddress("localhost", 65000), "cat-bot", new IntelligenceNormal());
 
 		}else {
 			 client = new ClientController(sim, model, new Gui(model));
