@@ -203,12 +203,12 @@ public class GameLogic {
 	
 	public TeamEntity getTeam1() {
 		TeamEntity team = new TeamEntity();
-		team.players = new Player[] {getPlayer(SeatEntity.SEAT1), getPlayer(SeatEntity.SEAT3)};
+		team.players = Player.getEntities(new Player[] {getPlayer(SeatEntity.SEAT1), getPlayer(SeatEntity.SEAT3)});
 		return team;
 	}
 	public TeamEntity getTeam2() {
 		TeamEntity team = new TeamEntity();
-		team.players = new Player[] {getPlayer(SeatEntity.SEAT2), getPlayer(SeatEntity.SEAT4)};
+		team.players = Player.getEntities(new Player[] {getPlayer(SeatEntity.SEAT2), getPlayer(SeatEntity.SEAT4)});
 		return team;
 	}
 

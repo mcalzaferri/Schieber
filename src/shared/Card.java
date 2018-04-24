@@ -1,30 +1,49 @@
 package shared;
 
-import ch.ntb.jass.common.entities.CardColorEntity;
 import ch.ntb.jass.common.entities.CardEntity;
-import ch.ntb.jass.common.entities.CardValueEntity;
 
-public class Card extends CardEntity{
+public class Card{
 	//Fields
 	private final CardColor color;
-	private final  CardValue value;
+	private final CardValue value;
+	private final CardEntity entity;
 
 	//Constructors
-	public Card(CardColor c, CardValue v) {
-		this.color = c;
-		this.value = v;
-		super.color = CardColorEntity.getById(getColorId(getId()));
-		super.value = CardValueEntity.getById(getValueId(getId()));
+	public Card(CardColor color, CardValue value) {
+		this.color = color;
+		this.value = value;
+		entity = CardEntity.getById(getId());
 	}
 	
 	public Card(int cardId) {
 		this(CardColor.getById(getColorId(cardId)),CardValue.getById(getValueId(cardId)));
 	}
 	
+	/** Use this constructor to cast a CardEntity into a Card
+	 * @param entity The entity to be cast
+	 */
 	public Card(CardEntity entity) {
 		this(entity.calcId());
 	}
-
+	
+	//Static methods
+	/** Use this method to cast an Array of CardEntities into an Array of Cards
+	 * @param cards the Array to be cast
+	 * @return The newly created Card Array
+	 */
+	public static CardEntity[] getEntities(Card[] cards) {
+		CardEntity[] ce;
+		if(cards != null) {
+			ce = new CardEntity[cards.length];
+			for(int i = 0; i < cards.length; i++){
+				ce[i] = cards[i].getEntity();
+			}
+		}else {
+			ce = null;
+		}
+		return ce;
+	}
+	
 	//Methods
 	@Override
 	public boolean equals(Object obj) {
@@ -44,6 +63,13 @@ public class Card extends CardEntity{
 		return new Card(cardId);
 	}
 	
+	/** Use this method to get the underlying entity of this class
+	 * @return An entity representing this class
+	 */
+	public CardEntity getEntity() {
+		return entity;
+	}
+
 	/**Compares this card to another. 
 	 * The method will always return 1 if the card is from another color unless that color is trump
 	 * @param card The card which this is compared to
@@ -134,6 +160,7 @@ public class Card extends CardEntity{
 	public CardValue getValue() {
 		return value;
 	}
+	
 	public CardColor getColor() {
 		return color;
 	}

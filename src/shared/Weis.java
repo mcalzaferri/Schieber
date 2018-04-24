@@ -4,26 +4,47 @@ import ch.ntb.jass.common.entities.CardEntity;
 import ch.ntb.jass.common.entities.WeisEntity;
 import ch.ntb.jass.common.entities.WeisTypeEntity;
 
-public class Weis extends WeisEntity{
+public class Weis{
 	//Datenfelder
 	private final WeisType type;
 	private final Card originCard;
+	private final WeisEntity entity;
 	
 
 	//Konstruktoren	
 	public Weis(WeisType type, Card originCard) {
 		this.type = type;
 		this.originCard = originCard;
-		super.type = WeisTypeEntity.getById(type.getId());
-		super.originCard = CardEntity.getById(originCard.getId());
+		entity = new WeisEntity();
+		entity.type = WeisTypeEntity.getById(type.getId());
+		entity.originCard = CardEntity.getById(originCard.getId());
 	}
-	
+	/** Use this constructor to cast a WeisEntity into a Weis
+	 * @param entity The entity to be cast
+	 */
 	public Weis(WeisEntity entity) {
 		this(WeisType.getByEntity(entity.type),new Card(entity.originCard));
 	}
 	
-	//Methoden
+	//Static methods
+	/** Use this method to cast an Array of WeisEntities into an Array of Weis
+	 * @param wiis the Array to be cast
+	 * @return The newly created Weis Array
+	 */
+	public static WeisEntity[] getEntities(Weis[] wiis) {
+		WeisEntity[] we;
+		if(wiis != null) {
+			we = new WeisEntity[wiis.length];
+			for(int i = 0; i < wiis.length; i++){
+				we[i] = wiis[i].getEntity();
+			}
+		}else {
+			we = null;
+		}
+		return we;
+	}
 	
+	//Methoden
 	public int compareTo(Weis o, Trump trump) {
 		if(type.compareTo(o.getType()) != 0) {
 			return type.compareTo(o.getType());
@@ -42,6 +63,10 @@ public class Weis extends WeisEntity{
 	}
 	
 	//Getter und Setter
+	public WeisEntity getEntity() {
+		return entity;
+	}
+	
 	public WeisType getType() {
 		return type;
 	}

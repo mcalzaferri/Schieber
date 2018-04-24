@@ -70,7 +70,7 @@ public class ClientModelView extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				thisPlayerPanel.setPlayer(model.getThisPlayer());
+				thisPlayerPanel.setPlayer(model.getThisPlayer().getEntity());
 			}
 		});
 	}
@@ -118,7 +118,7 @@ public class ClientModelView extends JFrame{
 					//Display all players
 					int i = 0;
 					for(Player player : model.getPlayers().values()) {
-						playerPanels.get(i).setPlayer(player);
+						playerPanels.get(i).setPlayer(player.getEntity());
 						playerPanels.get(i).setEnabled(false);
 						i++;
 					}
@@ -143,7 +143,7 @@ public class ClientModelView extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				for(int i = 0; i < cardPanels.length; i++) {
 					if(model.getHand() != null && model.getHand().size() > i) {
-						cardPanels[i].setCard(model.getHand().get(i));
+						cardPanels[i].setCard(model.getHand().get(i).getEntity());
 					}else {
 						cardPanels[i].setCard(null);
 					}
@@ -164,7 +164,7 @@ public class ClientModelView extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				for(int i = 0; i < cardPanels.length; i++) {
 					if(model.getDeck() != null && model.getDeck().size() > i) {
-						cardPanels[i].setCard(model.getDeck().get(i));
+						cardPanels[i].setCard(model.getDeck().get(i).getEntity());
 					}else {
 						cardPanels[i].setCard(null);
 					}
@@ -245,7 +245,7 @@ public class ClientModelView extends JFrame{
 					//Display all wiis
 					int i = 0;
 					for(Weis weis : model.getPossibleWiis()) {
-						wiisPanels.get(i).setWeis(weis);
+						wiisPanels.get(i).setWeis(weis.getEntity());
 						wiisPanels.get(i).setEnabled(false);
 						i++;
 					}
@@ -281,7 +281,7 @@ public class ClientModelView extends JFrame{
 					nullLabel.setVisible(true);
 				}else {
 					for(int i = 0; i < teamScorePanels.length; i++) {
-						teamScorePanels[i].setInt(model.getScore().scores.get((i+1)));
+						teamScorePanels[i].setInt(model.getScore().getEntity().scores.get((i+1)));
 						teamScorePanels[i].setVisible(true);
 					}
 					nullLabel.setVisible(false);

@@ -91,7 +91,7 @@ public class VirtualClient extends AbstractClient {
 		}
 	
 	public void doPlayerShowedWiis(Weis[] wiis, Player player) {
-		ki.showWeis(wiis, player.id);
+		ki.showWeis(wiis, player.getId());
 	}
 
 	@Override

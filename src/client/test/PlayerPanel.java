@@ -13,7 +13,6 @@ import javax.swing.border.TitledBorder;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
-import shared.Player;
 
 public class PlayerPanel extends JPanel {
 
@@ -80,12 +79,14 @@ public class PlayerPanel extends JPanel {
 				playerBox.setSelectedItem(p);
 				isBotBox.setSelected(p.isBot);
 				seatBox.setSelectedItem(p.seat);
+				/*
 				if(player instanceof Player) {
 					isReadyBox.setSelected(((Player)player).isReady());
 					isReadyBox.setVisible(true);
 				}else {
 					isReadyBox.setVisible(false);
 				}
+				*/ //TODO
 				return;
 			}else {
 				nullLabel.setText("            invalid id            ");
