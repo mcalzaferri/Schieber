@@ -56,6 +56,9 @@ public class WeisView extends ObservableView implements Viewable{
         
 	public WeisView(ClientModel data, ArrayList<ViewObserver> observers) {	
 		super(data, observers);
+		if(data == null) {
+			throw new IllegalArgumentException("Fatal Error: Weis must not be null");
+		}
 		weisList = data.getPossibleWiis();
 		if(weisList != null)
 			layoutWeisView(); //TODO Wenn das GUI erstellt wird ist getPossibleWiis null... /Maurus
