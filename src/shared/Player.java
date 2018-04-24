@@ -69,6 +69,21 @@ public class Player {
 		return getName();
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(this == null || obj == null) {
+			return false;
+		}else if(super.equals(obj)) {
+			return true;
+		}else if(obj instanceof Player){
+			Player p = (Player)obj;
+			return p.getId() == this.getId();
+		}else {
+			return false;
+		}
+		
+	}
+	
 	//Getters and Setters
 	/** Use this method to get the underlying entity of this class
 	 * @return An entity representing this class
