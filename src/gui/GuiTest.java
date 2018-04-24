@@ -8,9 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import client.AbstractClientView;
 import client.ViewEnumeration;
+import gui.Gui.MessageType;
+import shared.CardList;
 
 public class GuiTest extends JFrame{
 	private AbstractClientView gui;
+	private ClientModelTest data;
 
 	public static void main(String[] args) {
 		GuiTest t = new GuiTest();
@@ -18,7 +21,8 @@ public class GuiTest extends JFrame{
 	
 	public GuiTest() {
 		super();
-		this.gui = new Gui(new ClientModelTest());
+		data = new ClientModelTest();
+		gui = new Gui(data);
 		this.initFrame();
 	}
 
@@ -31,11 +35,20 @@ public class GuiTest extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {			
 				gui.changeView(ViewEnumeration.valueOf(box.getSelectedItem().toString()));
-				//label.setText(gui.getCurrentView().toString());
+				gui.showDialog("View changed", MessageType.INFORMATION);
+				
+				CardList list = new CardList();
+				for(int i = 0; i < 12; i++) {
+					list.add(ClientModelTest.createRandomCard());
+				}
+				data.setHand(list);
+				gui.updateView(ViewEnumeration.PLAYVIEW);
 			}
 			
 		});
 		
+		gui.showDialog("View changed", MessageType.INFORMATION);
+
 		this.add(box);
 		this.pack();
 		this.setVisible(true);
