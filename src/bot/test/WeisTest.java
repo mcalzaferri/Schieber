@@ -22,6 +22,7 @@ public class WeisTest {
 		System.out.println("Stöck:");
 		for(Weis w: weise) {
 			System.out.println(w.getType());
+			System.out.println(w.getOriginCard().getValue());
 		}
 		System.out.println();
 		

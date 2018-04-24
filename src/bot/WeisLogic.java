@@ -52,7 +52,7 @@ public class WeisLogic {
 				noOfCards++;
 			} else {
 				Card card;
-				card = new Card(cardIds[i-noOfCards]);
+				card = new Card(cardIds[i-1]);
 				WeisType weisType;
 				switch(noOfCards) {
 				case 3: 
