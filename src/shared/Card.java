@@ -1,6 +1,8 @@
 package shared;
 
+import ch.ntb.jass.common.entities.CardColorEntity;
 import ch.ntb.jass.common.entities.CardEntity;
+import ch.ntb.jass.common.entities.CardValueEntity;
 
 public class Card{
 	//Fields
@@ -12,7 +14,17 @@ public class Card{
 	public Card(CardColor color, CardValue value) {
 		this.color = color;
 		this.value = value;
-		entity = CardEntity.getById(getId());
+		if(color != null && value != null) {
+			entity = CardEntity.getById(getId());
+		}else {
+			entity = new CardEntity();
+			if(color != null) {
+				entity.color = CardColorEntity.getById(color.getId());
+			}
+			if(value != null) {
+				entity.value = CardValueEntity.getById(value.getId());
+			}
+		}
 	}
 	
 	public Card(int cardId) {
@@ -45,8 +57,17 @@ public class Card{
 	}
 	
 	//Methods
+	/** Checks if this Card is not properly defined and therefore its value is currently unknown
+	 * @return true if either value or color of the card are unknown. false if both values are defined.
+	 */
+	public boolean isUnknown() {
+		return value == null || color == null;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
+		if(this == null || obj == null)
+			return false;
 		if(obj instanceof Card) {
 			Card card = (Card)obj;
 			return (this.color == card.color && this.value == card.value);
@@ -171,6 +192,14 @@ public class Card{
 
 	@Override
 	public String toString() {
-		return color + " " + value;
+		String colorText = "Color is null";
+		String valueText = "Value is null";
+		if(color != null) {
+			colorText = color.toString();
+		}
+		if(value != null) {
+			valueText = value.toString();
+		}
+		return colorText + " " + valueText;
 	}
 }
