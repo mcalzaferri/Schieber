@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.HandOutCardsMessage;
+import shared.Card;
 import shared.Player;
 
 public class StartRoundState extends GameState {
@@ -22,7 +23,7 @@ public class StartRoundState extends GameState {
 	private void handOutCards() throws IOException {
 		for (Player p : logic.getPlayers()) {
 			HandOutCardsMessage msg = new HandOutCardsMessage();
-			msg.cards = logic.assignCardsToPlayer(p);
+			msg.cards = Card.getEntities(logic.assignCardsToPlayer(p));
 			send(msg, p);
 		}
 	}

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
+import ch.ntb.jass.common.entities.ScoreEntity;
 import shared.*;
 
 public class ClientModel {
@@ -28,7 +29,7 @@ public class ClientModel {
 	}
 	
 	//Methods
-	public void updateScore(Score score) {
+	public void updateScore(ScoreEntity score) {
 		this.score.updateScore(score);
 	}
 	

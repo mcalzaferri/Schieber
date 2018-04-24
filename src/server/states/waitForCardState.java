@@ -24,7 +24,7 @@ public class waitForCardState extends GameState {
 	public void act() throws IOException {
 		// Request card from player
 		NewTurnInfoMessage ntMsg = new NewTurnInfoMessage();
-		ntMsg.nextPlayer = logic.nextPlayer();
+		ntMsg.nextPlayer = logic.nextPlayer().getEntity();
 		ntMsg.selectWeis = logic.inFirstRun();
 		broadcast(ntMsg);
 	}
@@ -42,13 +42,13 @@ public class waitForCardState extends GameState {
 				if (logic.isRunOver()) {
 					StichInfoMessage siMsg = new StichInfoMessage();
 					siMsg.laidCard = pcMsg.card;
-					siMsg.player = sender;
-					siMsg.playerWhoWonStich = logic.getRunWinner();
+					siMsg.player = sender.getEntity();
+					siMsg.playerWhoWonStich = logic.getRunWinner().getEntity();
 					broadcast(siMsg);
 				} else {
 					TurnInfoMessage tiMsg = new TurnInfoMessage();
 					tiMsg.laidCard = pcMsg.card;
-					tiMsg.player = sender;
+					tiMsg.player = sender.getEntity();
 					broadcast(tiMsg);
 				}
 
@@ -56,16 +56,16 @@ public class waitForCardState extends GameState {
 					EndOfRoundInfoMessage eorMsg = new EndOfRoundInfoMessage();
 					boolean gameOver = logic.isGameOver();
 					eorMsg.gameOver = gameOver;
-					eorMsg.score = logic.getScore();
+					eorMsg.score = logic.getScore().getEntity();
 					if (gameOver) {
 						PlayerMovedToLobbyInfoMessage pmtlMsg = new PlayerMovedToLobbyInfoMessage();
-						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT1);
+						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT1).getEntity();
 						broadcast(pmtlMsg);
-						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT2);
+						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT2).getEntity();
 						broadcast(pmtlMsg);
-						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT3);
+						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT3).getEntity();
 						broadcast(pmtlMsg);
-						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT4);
+						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT4).getEntity();
 						broadcast(pmtlMsg);
 
 						// start new game

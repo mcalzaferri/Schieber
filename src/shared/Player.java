@@ -7,10 +7,11 @@ import java.util.List;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
 
-public class Player extends PlayerEntity {
+public class Player {
 	private boolean isReady;
 	private List<Card> cards;	//cards on hand
 	private InetSocketAddress address;
+	private PlayerEntity entity;
 
 	//Constructors
 	public Player(InetSocketAddress address, String name, Seat seat, boolean isBot, boolean isReady, int id) {
@@ -31,24 +32,53 @@ public class Player extends PlayerEntity {
 		this(address,name,seat,false,false,0);
 	}
 
+	/** Use this constructor to cast a PlayerEntity into a Player
+	 * @param entity The entity to be cast
+	 */
 	public Player(PlayerEntity entity) {
 		this(null, entity.name,Seat.getBySeatNr(entity.seat.getSeatNr()),entity.isBot,false,entity.id);
 	}
 
+	//Static Methods
+	/** Use this method to cast an Array of PlayerEntities into an Array of Players
+	 * @param players the Array to be cast
+	 * @return The newly created Player Array
+	 */
+	public static PlayerEntity[] getEntities(Player[] players) {
+		PlayerEntity[] pe;
+		if(players != null) {
+			pe = new PlayerEntity[players.length];
+			for(int i = 0; i < players.length; i++){
+				pe[i] = players[i].getEntity();
+			}
+		}else {
+			pe = null;
+		}
+		return pe;
+	}
+	
 	//Methods
 	public void update(PlayerEntity entity) {
-		if(id == entity.id) {
+		if(getId() == entity.id) {
 			setSeatNr(entity.seat.getSeatNr());
 			setName(entity.name);
 			setBot(entity.isBot);
 		}
 	}
+	
 	@Override
 	public String toString() {
-		return name;
+		return getName();
 	}
-
+	
 	//Getters and Setters
+	/** Use this method to get the underlying entity of this class
+	 * @return An entity representing this class
+	 */
+	public PlayerEntity getEntity() {
+		return entity;
+	}
+	
 	public InetSocketAddress getSocketAddress() {
 		return address;
 	}
@@ -66,11 +96,11 @@ public class Player extends PlayerEntity {
 	}
 	
 	public Seat getSeat() {
-		return Seat.getBySeatNr(super.seat.getSeatNr());
+		return Seat.getBySeatNr(entity.seat.getSeatNr());
 	}
 	
 	public void setSeat(Seat seat) {
-		super.seat = SeatEntity.getBySeatNr(seat.getSeatNr());
+		entity.seat = SeatEntity.getBySeatNr(seat.getSeatNr());
 	}
 
 	public void setSeatNr(int nr) {
@@ -78,31 +108,31 @@ public class Player extends PlayerEntity {
 	}
 
 	public int getSeatNr() {
-		return super.seat.getSeatNr();
+		return entity.seat.getSeatNr();
 	}
 
 	public int getId() {
-		return id;
+		return entity.id;
 	}
 	
 	public void setId(int id) {
-		this.id = id;
+		this.entity.id = id;
 	}
 
 	public boolean isBot() {
-		return isBot;
+		return entity.isBot;
 	}
 	
 	private void setBot(boolean isBot) {
-		this.isBot = isBot;
+		this.entity.isBot = isBot;
 	}
 
 	public String getName() {
-		return name;
+		return entity.name;
 	}
 	
 	private void setName(String name) {
-		this.name = name;
+		this.entity.name = name;
 	}
 
 	public boolean isReady() {
@@ -114,6 +144,6 @@ public class Player extends PlayerEntity {
 	}
 
 	public boolean isAtTable() {
-		return (seat != null && super.seat != SeatEntity.NOTATTABLE);
+		return (entity.seat != null && entity.seat != SeatEntity.NOTATTABLE);
 	}
 }

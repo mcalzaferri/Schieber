@@ -266,7 +266,7 @@ public abstract class AbstractClient {
 	}
 	protected void publishChosenWiis(Weis[] wiis) {
 		ChosenWiisMessage msg = new ChosenWiisMessage();
-		msg.wiis = wiis;
+		msg.wiis = Weis.getEntities(wiis);
 		com.send(msg);
 	}
 	protected void joinTable(Seat preferedSeat) {
@@ -284,7 +284,7 @@ public abstract class AbstractClient {
 	}
 	protected void publishChosenCard(Card card) {
 		PlaceCardMessage msg = new PlaceCardMessage();
-		msg.card = card;
+		msg.card = card.getEntity();
 		com.send(msg);
 	}
 	

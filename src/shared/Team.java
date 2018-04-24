@@ -24,6 +24,9 @@ public class Team {
 		}
 	}
 	
+	/** Use this constructor to cast a TeamEntity into a Team
+	 * @param entity The entity to be cast
+	 */
 	public Team(TeamEntity entity) {
 		this(entity, null);
 	}
@@ -38,10 +41,12 @@ public class Team {
 			}
 		}
 	}
-	
+	/** Use this method to get the underlying entity of this class
+	 * @return An entity representing this class
+	 */
 	public TeamEntity getEntity() {
 		TeamEntity team = new TeamEntity();
-		team.players = players;
+		team.players = Player.getEntities(players);
 		team.teamId = teamId;
 		return team;
 	}
