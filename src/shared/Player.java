@@ -13,6 +13,7 @@ public class Player {
 
 	//Constructors
 	public Player(InetSocketAddress address, String name, Seat seat, boolean isBot, boolean isReady, int id) {
+		entity = new PlayerEntity();	//TODO Because vm threw null pointer exception (marco)
 		setSocketAddress(address);
 		setSeat(seat);
 		setBot(isBot);
