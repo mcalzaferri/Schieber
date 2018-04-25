@@ -121,7 +121,13 @@ public class CarpetDrawer {
 			int stringHeight = g.getFontMetrics().getHeight();
 
 			Dimension cardSizeInv = new Dimension(cardSize.height, cardSize.width); //For images on the left/right
-			int nOfCards = 5;	// TODO Get number of cards in players hand
+			
+			int nOfCards = 0;
+			try {
+				nOfCards = player.getCards().size();
+			}catch(NullPointerException ex) {
+				//Do nothing => let cards be 0
+			}
 
 			/*
 			 * DRAW PLAYERS
