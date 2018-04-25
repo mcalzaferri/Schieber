@@ -19,6 +19,22 @@ import shared.*;
 
 public class ClientModelTest extends ClientModel{
 	public ClientModelTest() {
+		//Set players
+		Player player1 = new Player(null, "Peter", Seat.SEAT2);
+		Player player2 = new Player(null, "Hannah", Seat.NOTATTABLE); //TODO maybe this is partner? mcalzaferri
+		Player player3 = new Player(null, "Luise", Seat.SEAT4);
+		PlayerEntity e = new PlayerEntity();
+		Player actPlayer = new Player(null,"Leon",Seat.NOTATTABLE); //TODO maybe this is client? mcalzaferri
+		
+		Map<Integer,Player> players = new Hashtable<Integer, Player>();
+		players.put(1, player1);
+		players.put(2, player2);
+		players.put(3, player3);
+		
+		this.setThisPlayer(actPlayer);
+		this.setPlayers(players);
+		
+		//Set cards
 		CardList cards = new CardList();
 		for(int i = 0; i < 6; i++) {			
 			cards.add(this.createRandomCard());
@@ -60,19 +76,7 @@ public class ClientModelTest extends ClientModel{
 		
 		this.setPossibleWiis(weis);
 		
-		Player player1 = new Player(null, "Peter", Seat.SEAT2);
-		Player player2 = new Player(null, "Hannah", Seat.NOTATTABLE); //TODO maybe this is partner? mcalzaferri
-		Player player3 = new Player(null, "Luise", Seat.SEAT4);
 		
-		Player actPlayer = new Player(null,"Leon",Seat.NOTATTABLE); //TODO maybe this is client? mcalzaferri
-		
-		Map<Integer,Player> players = new Hashtable<Integer, Player>();
-		players.put(1, player1);
-		players.put(2, player2);
-		players.put(3, player3);
-		
-		this.setThisPlayer(actPlayer);
-		this.setPlayers(players);
 	}
 	
 	public static Card createRandomCard() {
