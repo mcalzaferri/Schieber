@@ -18,5 +18,6 @@ public class BlackBoardPaneTest extends JFrame{
 		this.add(pane);
 		this.setVisible(true);
 		this.setSize(500, 500);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 }
