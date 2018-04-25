@@ -25,12 +25,14 @@ public class Gui extends AbstractClientView implements Runnable{
 	private ArrayList<ViewObserver> observers;
 	private JFrame frame;
 	private JInternalFrame iFrame;
+	Thread dialog;
 	private PlayingFieldView main;
 	private Viewable current;
 	private ArrayList<Viewable> internals;
 		
 	public Gui(ClientModel data) {
 		super(data);
+		this.dialog = new Thread(this);
 		this.observers = new ArrayList<>();
 		this.frame = new JFrame("Schieber");
 		this.iFrame = new JInternalFrame("", false, false, false, false);
@@ -159,8 +161,30 @@ public class Gui extends AbstractClientView implements Runnable{
 		 */	
 		this.message = message;
 		this.type = type;
-		new Thread(this).start();
+		
+		//Ensure that only one dialog thread is active at the time
+		try {
+			dialog.stop();	//Forcefully stops the thread (not safe!!!)
+		} catch (Exception e) {
+			//Do nothing
+		}
+			
+		if(dialog.isAlive()) {
+			//If thread could not be stopped or is not stopped yet => wait for thread to die
+			try {
+				dialog.join();
+			} catch (InterruptedException e) {
+				//Fatal error => should not happen
+				e.printStackTrace();
+				return;	//If thread could not be stopped or joined, a new thread must not be created => leave method
+			}
+		}
+		
+		//If thread is not alive => start a new thread
+		dialog = new Thread(this);
+		dialog.start();	
 	}
+	
 	@Override
 	public void run() {
 		//Creates an option pane with OK button

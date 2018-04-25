@@ -36,6 +36,7 @@ public class GuiTest extends JFrame{
 			public void actionPerformed(ActionEvent e) {			
 				gui.changeView(ViewEnumeration.valueOf(box.getSelectedItem().toString()));
 				gui.showDialog("View changed", MessageType.INFORMATION);
+				gui.showDialog("This is to test if the thread stops", MessageType.INFORMATION);
 				
 				CardList list = new CardList();
 				for(int i = 0; i < 12; i++) {
