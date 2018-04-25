@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import ch.ntb.jass.common.entities.SeatEntity;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import gui.ClientModelTest;
 import shared.Card;
 import shared.CardColor;
 import shared.CardList;
@@ -33,13 +34,8 @@ public class PlayingFieldViewTest extends JFrame{
 	
 	public PlayingFieldViewTest() {
 		super();
-		this.data = new ClientModel();
+		this.data = new ClientModelTest();
 		
-		
-		CardList cards = new CardList();
-		for(int i = 0; i < 6; i++) {			
-			cards.add(this.createRandomCard());
-		}
 		ArrayList<ViewObserver> obs = new ArrayList<>();
 		obs.add(new ViewObserver() {
 
@@ -68,9 +64,9 @@ public class PlayingFieldViewTest extends JFrame{
 
 			@Override
 			public void btnCardClick(Card card) {
-				System.out.println(card.getColor().toString() + card.getValue());			
-				cards.remove(card);
-				cards.add(createRandomCard());
+				System.out.println(card.getColor().toString() + card.getValue());	
+				data.getHand().remove(card);
+				data.getHand().add(createRandomCard());
 				pfv.update();
 			}
 
@@ -99,20 +95,6 @@ public class PlayingFieldViewTest extends JFrame{
 			}
 			
 		});
-		this.data.setHand(cards);
-		data.setTrump(Trump.EICHEL);
-		data.setDeck(cards);
-		
-		Map<Integer,Player> players = new HashMap();
-		Seat s = Seat.SEAT1;
-		SeatEntity se = SeatEntity.SEAT1;
-		Seat.setClientSeat(se);
-		players.put(0, new Player(null, "This is a lenght test for carpet", Seat.SEAT1, false, false, 0));
-		players.put(1, new Player(null, "Sau", Seat.SEAT2, false, false, 0));
-		players.put(2, new Player(null, "Arsch", Seat.SEAT3, false, false, 0));
-		players.put(3, new Player(null, "Spinner", Seat.SEAT4, false, false, 0));
-		data.setPlayers(players);
-		
 		this.pfv = new PlayingFieldView(data, obs);
 		pfv.update();
 		setLayout(new BorderLayout());
@@ -123,6 +105,7 @@ public class PlayingFieldViewTest extends JFrame{
 		setSize(500, 500);
 		pack();
 		setVisible(true);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	private Card createRandomCard() {
 		Random r = new Random();
