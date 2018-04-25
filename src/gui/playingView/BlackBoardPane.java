@@ -15,6 +15,8 @@ import client.ViewObserver;
 import gui.Gui;
 import gui.ObservableView;
 import gui.PictureFactory.Pictures;
+import shared.Player;
+import shared.Team;
 import shared.client.ClientModel;
 
 /**
@@ -58,19 +60,41 @@ public class BlackBoardPane extends ObservableView{
 	Font f = font;
 	@Override
 	public void paint(Graphics g) {
+		//Calculating scale factor and bounds
 		double scale = this.getSize().getHeight()/minSize.getHeight();
 		r.setRect(scale*minInnerBounds.x, scale*minInnerBounds.y,
 				scale*minInnerBounds.width, scale*minInnerBounds.height);
 		dim.setSize(scale*minTrumpSize.width, scale*minTrumpSize.height);
-	
-		g.drawImage(Gui.pictureFactory.getScaledPicture(img, this.getSize()), 0, 0, null);
 		
+		//Getting scores for teams
+		int myScore = 0;
+		int enemyScore = 0;
+		
+		try {	
+			myScore = data.getScore().getScore(data.getTeams()[1]);
+			enemyScore = data.getScore().getScore(data.getTeams()[0]);
+			
+			for(Player p : data.getTeams()[0].getPlayers()) {
+				if(p.getId() == data.getThisPlayer().getId()) {
+					//Player is in team 0 => enemy team is team 1
+					myScore = data.getScore().getScore(data.getTeams()[0]);
+					enemyScore = data.getScore().getScore(data.getTeams()[1]);
+					break;	//Leave loop if player was found
+				}
+			}
+		}catch(Exception ex) {
+			//Do nothing if anything in getting score does not work => Scores = 0
+		}
+		
+		//Draw content on blackboard
 		g.setColor(Color.WHITE);
 		g.setFont(new Font(font.getFontName(), font.getStyle(), (int)(scale*font.getSize())));
+		g.drawImage(Gui.pictureFactory.getScaledPicture(img, this.getSize()), 0, 0, null);
+		
 		drawer.setBounds(r);
 		drawer.drawTitle(g, "Schieber");
-		//TODO get score
-		drawer.drawText(g, new String[]{"Score Team 1", "Score Team 2"});
+		drawer.drawText(g, new String[]{"Wir;" + myScore,
+				"Gegner;" + enemyScore});
 		drawer.drawTrump(g, data.getTrump(), dim);
 	}
 }

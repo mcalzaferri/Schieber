@@ -6,6 +6,9 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import javax.swing.text.PlainView;
+import javax.swing.text.Utilities;
+
 import gui.Gui;
 import shared.Trump;
 
@@ -59,12 +62,17 @@ public class BlackBoardDrawer {
 	 * @param text Text to be drawn onto component (each element resembles a line)
 	 */
 	public void drawText(Graphics g, String[] text) {
+		String[] strings;
 		int x = bounds.x;
 		int y = bounds.y + titleOffset + g.getFontMetrics().getHeight();
-				
+		
+		//Draw text
 		for(int i = 0; i < text.length; i++) {
-			//Draw text
-			g.drawString(text[i], x, y);
+			strings = text[i].split(";");
+			if(strings.length >= 2) {
+				g.drawString(strings[0], x, y);	//Draw text
+				g.drawString(strings[1], bounds.x + bounds.width - g.getFontMetrics().stringWidth(strings[1]), y);	//Draw score			
+			}
 			y += g.getFontMetrics().getHeight();
 		}
 		
