@@ -1,8 +1,5 @@
 package client.test;
 
-import java.awt.Color;
-import java.awt.Dimension;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
@@ -11,102 +8,74 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
+import shared.Player;
 
 public class PlayerPanel extends JPanel {
 
-	private static final long serialVersionUID = 4529969236622381523L;
+	private static final long serialVersionUID = 5790949079190636182L;
 	private String description;
-	private JComboBox<PlayerEntity> playerBox;
+	private JLabel playerLabel;
+	private JComboBox<SeatEntity> seatBox;
 	private JCheckBox isBotBox;
 	private JLabel nullLabel;
-	private JComboBox<SeatEntity> seatBox;
-	private PlayerEntity[] players;
 	private JCheckBox isReadyBox;
+	private Player player;
 	
-	public PlayerPanel(String text, PlayerEntity[] players) {
+	public PlayerPanel(String text) {
 		super();
 		description = text;
-		this.players = players;
 		initialComponents();
 	}
 	
 	private void initialComponents() {
-		playerBox = new JComboBox<>(players);
+		playerLabel = new JLabel("Undefined");
 		seatBox = new JComboBox<>(SeatEntity.values());
+		seatBox.setEnabled(false);
 		isBotBox = new JCheckBox("isBot");
+		isBotBox.setEnabled(false);
 		nullLabel = new JLabel("            null            ");
 		isReadyBox = new JCheckBox("isReady");
 		isReadyBox.setEnabled(false);
-		isReadyBox.setVisible(false);
-		playerBox.setMaximumSize(new Dimension(200, 30));
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		TitledBorder title;
 		title = BorderFactory.createTitledBorder(description);
 		this.setBorder(title);
-		this.add(playerBox);
+		this.add(playerLabel);
 		this.add(isBotBox);
 		this.add(seatBox);
 		this.add(isReadyBox);
 		this.add(nullLabel);
-		seatBox.setEnabled(false);
-		seatBox.setVisible(false);
-		nullLabel.setVisible(false);
-	}
-	
-	public PlayerEntity getPlayer() {
-		PlayerEntity p = (PlayerEntity)playerBox.getSelectedItem();
-		p.isBot = isBotBox.isSelected();
-		return p;
-	}
-	
-	public void setPlayer(PlayerEntity player) {
-		if(player != null) {
-			playerBox.setBackground(Color.WHITE);
-			playerBox.setVisible(true);
-			isBotBox.setVisible(true);
-			seatBox.setVisible(!playerBox.isEnabled());
-			nullLabel.setVisible(false);
-			PlayerEntity p = null;
-			for(int i = 0; i < players.length; i++) {
-				if(players[i].id == player.id) {
-					p = players[i];
-					break;
-				}
-			}
-			if(p != null) {
-				playerBox.setSelectedItem(p);
-				isBotBox.setSelected(p.isBot);
-				seatBox.setSelectedItem(p.seat);
-				/*
-				if(player instanceof Player) {
-					isReadyBox.setSelected(((Player)player).isReady());
-					isReadyBox.setVisible(true);
-				}else {
-					isReadyBox.setVisible(false);
-				}
-				*/ //TODO
-				return;
-			}else {
-				nullLabel.setText("            invalid id            ");
-			}
-		}else {
-			nullLabel.setText("            null            ");
-		}
-		playerBox.setVisible(false);
-		isBotBox.setVisible(false);
+		playerLabel.setVisible(false);
 		seatBox.setVisible(false);
 		nullLabel.setVisible(true);
-		
+		isReadyBox.setVisible(false);
+		isBotBox.setVisible(false);
 	}
 	
-	@Override
-	public void setEnabled(boolean value) {
-		playerBox.setEnabled(value);
-		isBotBox.setEnabled(value);
-		seatBox.setVisible(!value);
+	public Player getPlayer() {
+		return player;
 	}
 	
-	
+	public void setPlayer(Player player) {
+		this.player = player;
+		if(player != null) {
+			playerLabel.setText(player.getName() + " ID: " + player.getId());
+			playerLabel.setVisible(true);
+			isBotBox.setSelected(player.isBot());
+			isBotBox.setVisible(true);
+			isReadyBox.setSelected(player.isReady());
+			isReadyBox.setVisible(true);
+			seatBox.setSelectedItem(player.getSeat().getSeatEntity());
+			seatBox.setVisible(true);
+			isBotBox.setVisible(true);
+			nullLabel.setVisible(false);
+		}else {
+			playerLabel.setVisible(false);
+			isBotBox.setVisible(false);
+			isReadyBox.setVisible(false);
+			seatBox.setVisible(false);
+			nullLabel.setVisible(true);
+		}
+	}
 }

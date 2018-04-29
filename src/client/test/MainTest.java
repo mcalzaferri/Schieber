@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import bot.BotIntelligence;
 import bot.IntelligenceNormal;
 import bot.VirtualClient;
+import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
@@ -21,11 +22,9 @@ public class MainTest {
 
 	public static void main(String[] args) {
 		boolean testBot = false;
-		PlayerEntity[] players = initialPlayers();
 		ClientModel model = new ClientModel();
-		model.setThisPlayer(new Player(players[3]));
-		ClientModelView view = new ClientModelView(model, players);
-		ClientCommunicationSimulator sim = new ClientCommunicationSimulator(players);
+		ClientModelView view = new ClientModelView(model);
+		ClientCommunicationSimulator sim = new ClientCommunicationSimulator();
 		AbstractClient client;
 		if(testBot) {
 			client = new VirtualClient(sim, model, new InetSocketAddress("localhost", 65000), new IntelligenceNormal());

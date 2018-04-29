@@ -18,7 +18,9 @@ import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
 import client.ClientCommunication;
+import shared.Player;
 import shared.client.AbstractClient;
+import shared.client.ClientModel;
 
 public class ClientCommunicationSimulator extends ClientCommunication{
 	private AbstractClient client;
@@ -28,12 +30,10 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	private JPanel msgFrame;
 	private JButton btnReceive;
 	private JTextArea outputArea;
-	private PlayerEntity[] players;
 	
 	
 	
-	public ClientCommunicationSimulator(PlayerEntity[] players) {
-		this.players = players;
+	public ClientCommunicationSimulator() {
 		initialComponents();
 	}
 	
@@ -103,7 +103,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 		initialChooseTrumpMessage();
 		initialGameStateMessage();
 		initialHandOutCardsMessage();
-		initialLobbyStateMessage();
+		//initialLobbyStateMessage();
 		initialWrongCardMessage();
 	}
 	//server_info_messages
@@ -137,11 +137,11 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 		
 		//Add stuff from extended 
 		panel.add(new JLabel("-------Fields from StichInfoMessage--------"));
-		PlayerPanel playerWhoWonStichPanel = new PlayerPanel("Player who won Stich: ", players);
+		PlayerEntityPanel playerWhoWonStichPanel = new PlayerEntityPanel("Player who won Stich: ");
 		panel.add(playerWhoWonStichPanel);
 		CardPanel laidCardPanel = new CardPanel("laidCard:");
 		panel.add(laidCardPanel);
-		PlayerPanel playerPanel = new PlayerPanel("Player who made Turn:", players);
+		PlayerEntityPanel playerPanel = new PlayerEntityPanel("Player who made Turn:");
 		panel.add(playerPanel);
 		msgFrame.add(panel,MessageEnumeration.EndOfRoundInfoMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
@@ -173,12 +173,14 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if((MessageEnumeration)msgComboBox.getSelectedItem() == MessageEnumeration.GameStartedInfoMessage) {
+					ClientModel model = client.getModel();
+					ArrayList<Player> players = new ArrayList<>(model.getPlayers().values());
 					PlayerEntity[] playersTeam1 = new PlayerEntity[2];
 					for(int i = 0; i < playersTeam1.length; i++) {
 						//Es wird davon ausgegangen dass alle Spieler zugewiesen wurden
-						for(PlayerEntity player : players) {
-							if(player.seat.getSeatNr() == i) {
-								playersTeam1[i] = player;
+						for(Player player : players) {
+							if(player.getSeat().getSeatNr() == i) {
+								playersTeam1[i] = player.getEntity();
 								break;
 							}
 						}
@@ -186,9 +188,9 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 					PlayerEntity[] playersTeam2 = new PlayerEntity[2];
 					for(int i = 0; i < playersTeam2.length; i++) {
 						//Es wird davon ausgegangen dass alle Spieler zugewiesen wurden
-						for(PlayerEntity player : players) {
-							if(player.seat.getSeatNr() == i) {
-								playersTeam2[i] = player;
+						for(Player player : players) {
+							if(player.getSeat().getSeatNr() == i) {
+								playersTeam2[i] = player.getEntity();
 								break;
 							}
 						}
@@ -226,7 +228,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	private void initialNewTurnInfoMessage() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		PlayerPanel nextPlayerPanel = new PlayerPanel("nextPlayer", players);
+		PlayerEntityPanel nextPlayerPanel = new PlayerEntityPanel("nextPlayer");
 		panel.add(nextPlayerPanel);
 		JCheckBox selectWeisBox = new JCheckBox("selectWeis");
 		panel.add(selectWeisBox);
@@ -246,7 +248,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	private void initialPlayerChangedStateMessage() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		PlayerPanel playerPanel = new PlayerPanel("player", players);
+		PlayerEntityPanel playerPanel = new PlayerEntityPanel("player");
 		panel.add(playerPanel);
 		JCheckBox isReadyBox = new JCheckBox("isReady");
 		panel.add(isReadyBox);
@@ -266,7 +268,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	private void initialPlayerLeftLobbyInfoMessage() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		PlayerPanel playerPanel = new PlayerPanel("player", players);
+		PlayerEntityPanel playerPanel = new PlayerEntityPanel("player");
 		panel.add(playerPanel);
 		msgFrame.add(panel,MessageEnumeration.PlayerLeftLobbyInfoMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
@@ -283,7 +285,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	private void initialPlayerMovedToLobbyInfoMessage() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		PlayerPanel playerPanel = new PlayerPanel("player", players);
+		PlayerEntityPanel playerPanel = new PlayerEntityPanel("player");
 		panel.add(playerPanel);
 		msgFrame.add(panel,MessageEnumeration.PlayerMovedToLobbyInfoMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
@@ -301,7 +303,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	private void initialPlayerMovedToTableInfoMessage() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		PlayerPanel playerPanel = new PlayerPanel("player", players);
+		PlayerEntityPanel playerPanel = new PlayerEntityPanel("player");
 		panel.add(playerPanel);
 		JComboBox<SeatEntity> seatComboBox = new JComboBox<>(SeatEntity.values());
 		panel.add(seatComboBox);
@@ -322,14 +324,14 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
-		PlayerPanel playerWhoWonStichPanel = new PlayerPanel("Player who won Stich:", players);
+		PlayerEntityPanel playerWhoWonStichPanel = new PlayerEntityPanel("Player who won Stich:");
 		panel.add(playerWhoWonStichPanel);
 		
 		//Add stuff from extended 
 		panel.add(new JLabel("-------Fields from TurnInfoMessage--------"));
 		CardPanel laidCardPanel = new CardPanel("laidCard:");
 		panel.add(laidCardPanel);
-		PlayerPanel playerPanel = new PlayerPanel("Player who made Turn:", players);
+		PlayerEntityPanel playerPanel = new PlayerEntityPanel("Player who made Turn:");
 		panel.add(playerPanel);
 		msgFrame.add(panel,MessageEnumeration.TurnInfoMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
@@ -351,7 +353,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		CardPanel laidCardPanel = new CardPanel("laidCard:");
 		panel.add(laidCardPanel);
-		PlayerPanel playerPanel = new PlayerPanel("player", players);
+		PlayerEntityPanel playerPanel = new PlayerEntityPanel("player");
 		panel.add(playerPanel);
 		msgFrame.add(panel,MessageEnumeration.TurnInfoMessage.toString());
 		btnReceive.addActionListener(new ActionListener() {
@@ -369,7 +371,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	private void initialWiisInfoMessage() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		PlayerPanel player = new PlayerPanel("player", players);
+		PlayerEntityPanel player = new PlayerEntityPanel("player");
 		panel.add(player);
 		int maxWiisCount = 4;
 		WeisPanel[] wiisPanels = new WeisPanel[maxWiisCount];
@@ -479,6 +481,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			}
 		});
 	}
+	/*
 	private void initialLobbyStateMessage() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -496,6 +499,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 			}
 		});
 	}
+	*/
 	private void initialWrongCardMessage() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

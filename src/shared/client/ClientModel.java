@@ -78,7 +78,10 @@ public class ClientModel {
 		this.teams = teams;
 	}
 	public CardList getHand() {
-		return thisPlayer.getCards();
+		if(thisPlayer != null)
+			return thisPlayer.getCards();
+		else
+			return null;
 	}
 	public void setHand(CardList hand) {
 		thisPlayer.setCards(hand);

@@ -24,12 +24,10 @@ public class ClientModelView extends JFrame{
 	private static final long serialVersionUID = -7761420473524430597L;
 	ClientModel model;
 	JPanel mainFrame;
-	PlayerEntity[] players;
 	Timer updateTimer;
-	public ClientModelView(ClientModel model, PlayerEntity[] players) {
+	public ClientModelView(ClientModel model) {
 		super();
 		this.model = model;
-		this.players = players;
 		initialComponents();
 		this.add(mainFrame);
 		this.pack();
@@ -63,14 +61,14 @@ public class ClientModelView extends JFrame{
 	}
 	
 	private void initialThisPlayer() {
-		PlayerPanel thisPlayerPanel = new PlayerPanel("thisPlayer", players);
+		PlayerPanel thisPlayerPanel = new PlayerPanel("thisPlayer");
 		thisPlayerPanel.setEnabled(false);
 		mainFrame.add(thisPlayerPanel);
 		updateTimer.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				thisPlayerPanel.setPlayer(model.getThisPlayer().getEntity());
+				thisPlayerPanel.setPlayer(model.getThisPlayer());
 			}
 		});
 	}
@@ -110,7 +108,7 @@ public class ClientModelView extends JFrame{
 						playerPanel.remove(panelToRemove);
 					}
 					for(int i = 0; i < dif; i++) {
-						PlayerPanel panelToAdd = new PlayerPanel("Player#" + playerPanels.size(), players);
+						PlayerPanel panelToAdd = new PlayerPanel("Player#" + playerPanels.size());
 						playerPanels.add(panelToAdd);
 						playerPanel.add(panelToAdd);
 					}
@@ -118,8 +116,7 @@ public class ClientModelView extends JFrame{
 					//Display all players
 					int i = 0;
 					for(Player player : model.getPlayers().values()) {
-						playerPanels.get(i).setPlayer(player.getEntity());
-						playerPanels.get(i).setEnabled(false);
+						playerPanels.get(i).setPlayer(player);
 						i++;
 					}
 					playerPanel.setVisible(true);

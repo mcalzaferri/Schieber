@@ -91,12 +91,16 @@ public class LobbyView extends ObservableView implements Viewable{
 				tableData[rowCount][1]=player.getSeatNr();
 			rowCount++;
 		}
+		if(actPlayer != null) {
+			tableData[rowCount][0]=actPlayer.getName();
+			if(actPlayer.getSeatNr() == 0)
+				tableData[rowCount][1]="kein Sitzplatz";
+			else
+				tableData[rowCount][1]=actPlayer.getSeatNr();
+		}else {
+			//TODO actPlayer ist am Anfang noch nicht initialisiert
+		}
 		
-		tableData[rowCount][0]=actPlayer.getName();
-		if(actPlayer.getSeatNr() == 0)
-			tableData[rowCount][1]="kein Sitzplatz";
-		else
-			tableData[rowCount][1]=actPlayer.getSeatNr();
 		
 		playerTable	= new JTable(tableData,columnNames);
 		playerScrollPane.setViewportView(playerTable);
@@ -300,7 +304,10 @@ public class LobbyView extends ObservableView implements Viewable{
 			}
 		}
 		
-		int actPlayerseatNumber = actPlayer.getSeatNr();
+		int actPlayerseatNumber = 0;
+		if(actPlayer != null) {
+			actPlayerseatNumber = actPlayer.getSeatNr();
+		}
 		
 		if(actPlayerseatNumber>0 && actPlayerseatNumber<=4)
 		{
