@@ -30,7 +30,7 @@ public class PlayerEntityPanel extends JPanel {
 	
 	private void initialComponents() {
 		playerField = new JTextField();
-		playerField.setMinimumSize(new Dimension(300, 30));
+		playerField.setMaximumSize(new Dimension(300, 30));
 		seatBox = new JComboBox<>(SeatEntity.values());
 		isBotBox = new JCheckBox("isBot");
 		seatBox.setMaximumSize(new Dimension(200, 30));
