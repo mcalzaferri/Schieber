@@ -18,6 +18,7 @@ import client.ViewObserver;
 import client.test.MessageType;
 import gui.PictureFactory.Pictures;
 import gui.playingView.PlayingFieldView;
+import shared.Trump;
 import shared.client.ClientModel;
 
 public class Gui extends AbstractClientView implements Runnable{
@@ -68,7 +69,13 @@ public class Gui extends AbstractClientView implements Runnable{
 		            "Are you sure to exit the application?", "Really Closing?", 
 		            JOptionPane.YES_NO_OPTION,
 		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-		            System.exit(0);
+		        	//Notify client instead of System.exit /Maurus
+		        	for(ViewObserver observer: observers)
+					{
+						observer.btnDisconnectClick();
+					}
+		        	
+		            //System.exit(0);
 		        }
 		    }
 		});

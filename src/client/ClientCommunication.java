@@ -2,6 +2,8 @@ package client;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.proto.Message;
@@ -16,13 +18,15 @@ public class ClientCommunication extends Communication implements Runnable{
 	private InetSocketAddress serverAddress;
 	private AbstractClient client;
 	private boolean run;
+	private boolean blockConnect;
 
 	public ClientCommunication() {
-		super();
+		this(Communication.defaultListenPort);
 	}
 
 	public ClientCommunication(int listenPort) {
 		super(listenPort);
+		blockConnect = true;
 	}
 
 	// Internal methods
@@ -53,7 +57,7 @@ public class ClientCommunication extends Communication implements Runnable{
 	public void disconnect() {
 		LeaveTableMessage msg = new LeaveTableMessage();
 		send(msg);
-		// TODO what do now?
+		close();
 	}
 
 	/**
@@ -61,7 +65,7 @@ public class ClientCommunication extends Communication implements Runnable{
 	 * When connecting to the server the id is always 0 as the server has to calculate the id first.
 	 * @param serverAddress Address of the Game Server
 	 * @param username The username the connecting player prefers
-	 * @param isBot True if a bot wants to connect, false otherwise
+	 * @param isBot True if a bot wants to connect, false otherwise.
 	 * @throws Exception if the server denies the connect request or something else went wrong
 	 */
 	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws BadResultException {
@@ -72,7 +76,7 @@ public class ClientCommunication extends Communication implements Runnable{
 		msg.playerData.name = username;
 		send(msg);
 		//Wait until Result is received
-		boolean loop = true;
+		boolean loop = blockConnect;
 		while(loop) {
 			//Wait until result of msg is sent by server
 			try {
@@ -88,9 +92,6 @@ public class ClientCommunication extends Communication implements Runnable{
 				e.printStackTrace();
 			}
 		}
-		
-		//Start receive Thread after connection has been established
-		new Thread(this).start();
 	}
 	
 	@Override
@@ -101,15 +102,27 @@ public class ClientCommunication extends Communication implements Runnable{
 
 	@Override
 	public void run() {
-		run = true;
+		
+		try {
+			run = true;
+			setReceiveTimeout(5000); //Otherwise the task will never stop
+		} catch (SocketException e1) {
+			e1.printStackTrace();
+		}
 		while(run) {
 			try {
 				InternalMessage msg = receive();
 				handleReceivedMessage(msg);
+			} catch (SocketTimeoutException ste) {
+				System.out.println("Receive task running");
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
+	}
+	
+	public void setBlockConnect(boolean blockConnect) {
+		this.blockConnect = blockConnect;
 	}
 }

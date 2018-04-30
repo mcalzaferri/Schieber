@@ -34,6 +34,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	
 	
 	public ClientCommunicationSimulator() {
+		super(65013);
 		initialComponents();
 	}
 	

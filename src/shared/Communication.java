@@ -12,7 +12,7 @@ import ch.ntb.jass.common.proto.Message;
 
 public class Communication {
 	public final static int defaultListenPort = 65000;
-	protected int port = defaultListenPort;
+	protected int port;
 	private final int bufferSize = 60000;
 	private byte[] receiveBuffer;
 	private DatagramSocket socket;
@@ -20,10 +20,7 @@ public class Communication {
 	private ObjectMapper objectMapper;
 
 	public Communication() {
-		receiveBuffer = new byte[bufferSize];
-		receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
-
-		objectMapper = new ObjectMapper();
+		this(defaultListenPort);
 	}
 
 	/**
@@ -31,7 +28,9 @@ public class Communication {
 	 * @param port listen port
 	 */
 	public Communication(int port) {
-		this();
+		receiveBuffer = new byte[bufferSize];
+		receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
+		objectMapper = new ObjectMapper();
 		this.port = port;
 	}
 

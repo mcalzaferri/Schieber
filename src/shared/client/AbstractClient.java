@@ -16,6 +16,7 @@ public abstract class AbstractClient {
 	//Fields
 	private ClientCommunication com;
 	protected ClientModel model;
+	private Thread receiveThread;
 	
 	//Constructors
 	public AbstractClient(ClientCommunication com, ClientModel model) {
@@ -310,11 +311,21 @@ public abstract class AbstractClient {
 		com.connect(serverAddress, username, isBot);
 		doConnected();
 		
+		//Start receive Thread after connection has been established
+		receiveThread = new Thread(com);
+		receiveThread.start();
+		
+		//If this is a bot, try to join the table and set seat to true. If this fails the bot should be terminated
+		if(isBot) {
+			joinTable(Seat.SEAT1);
+			publishChangedState(true);
+		}
 	}
 	
 	public void disconnect() {
 		com.disconnect();
 		doDisconnected();
+		System.exit(0);
 	}
 	
 	//Getters and Setters

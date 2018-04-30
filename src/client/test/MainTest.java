@@ -1,6 +1,7 @@
 package client.test;
 
 import java.net.InetSocketAddress;
+import java.net.SocketException;
 
 import bot.BotIntelligence;
 import bot.IntelligenceNormal;
@@ -21,18 +22,29 @@ import shared.*;
 public class MainTest {
 
 	public static void main(String[] args) {
-		boolean testBot = false;
+		boolean testBot = true;
+		boolean blockConnect = false;
 		ClientModel model = new ClientModel();
 		ClientModelView view = new ClientModelView(model);
 		ClientCommunicationSimulator sim = new ClientCommunicationSimulator();
+		try {
+			sim.open();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		AbstractClient client;
 		if(testBot) {
-			client = new VirtualClient(sim, model, new InetSocketAddress("localhost", 65000), new IntelligenceNormal());
+			client = new VirtualClient(sim, model, new IntelligenceNormal());
+			sim.setClient(client);
+			sim.setBlockConnect(blockConnect);
+			((VirtualClient)client).connect(new InetSocketAddress("localhost", 65000));
 
 		}else {
 			 client = new ClientController(sim, model, new Gui(model));
+			 sim.setClient(client);
 		}
-		sim.setClient(client);
+		
 		//Automation of a few messages for faster progress
 		/*
 		for(PlayerEntity player : players) {

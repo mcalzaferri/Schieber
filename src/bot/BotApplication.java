@@ -28,9 +28,10 @@ public class BotApplication {
 		}
 		communication.open();
 
-		new VirtualClient(communication, new ClientModel(),
-				new InetSocketAddress(serverHostname,serverPort),
+		VirtualClient client = new VirtualClient(communication, new ClientModel(),
 				new IntelligenceNormal());
+		client.connect(new InetSocketAddress(serverHostname,serverPort));
+		
 	}
 
 }

@@ -27,9 +27,13 @@ public class VirtualClient extends AbstractClient {
 			"TheLegend27",
 			"MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW" };
 
-	public VirtualClient(ClientCommunication com, ClientModel model, InetSocketAddress serverAddress, BotIntelligence intelligence) {
+	public VirtualClient(ClientCommunication com, ClientModel model, BotIntelligence intelligence) {
 		super(com, model);
 		setIntelligence(intelligence);
+		
+	}
+
+	public void connect(InetSocketAddress serverAddress) {
 		boolean connected = false;
 		Random rm = new Random();
 		do {
@@ -41,7 +45,7 @@ public class VirtualClient extends AbstractClient {
 				System.err.println("Connect fehlgeschlagen mit Fehlermessage: " + e.getMessage());
 			}
 		} while(!connected);
-
+		/* Nicht mehr nötig. Wird vom AbstractClient übernommen /Maurus
 		JoinTableMessage jtMsg = new JoinTableMessage();
 		jtMsg.preferedSeat = null;
 		com.send(jtMsg);
@@ -49,8 +53,9 @@ public class VirtualClient extends AbstractClient {
 		ChangeStateMessage csMsg = new ChangeStateMessage();
 		csMsg.isReady = true;
 		com.send(csMsg);
+		*/
 	}
-
+	
 	@Override
 	// bot doesn't really care about score, but we still store it
 	public void doUpdateScore(Score score) {
