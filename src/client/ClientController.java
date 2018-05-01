@@ -29,6 +29,11 @@ public class ClientController extends AbstractClient implements ViewObserver{
 			view.updateView(v);
 	}
 	
+	@Override
+	protected void teamsChanged(Team[] teams) {
+		view.updateAll();
+	}
+	
 	//Inherited methods from AbstractClient
 	/** Store broadcasted trump in the model and update view.
 	 * @param trump Trump which was broadcasted
@@ -168,7 +173,17 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	protected void playerChanged(Player player) {
-		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+		if(player.equals(model.getThisPlayer()) || (model.getThisPlayer().getId() == 0 && player.getName().equals(model.getThisPlayer().getName()))) {
+			if(player.getSeat() == Seat.NOTATTABLE) {
+				changeOrUpdateView(ViewEnumeration.LOBBYVIEW);
+			}else {
+				view.updateView(ViewEnumeration.PLAYVIEW);
+			}
+			
+		}else {
+			view.updateAll();
+		}
+		
 	}
 	
 	//Inherited methods from ViewObserver
