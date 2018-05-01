@@ -12,7 +12,6 @@ public enum Seat{
 	
 	//Static fields
 	private final int seatNr;
-	private static SeatEntity clientSeat;
 	
 	//Constructors
 	private Seat(int seatNr) {
@@ -48,30 +47,16 @@ public enum Seat{
 	 * Only use this method for display purposes.
 	 * @return The relative Position to the client. (If the client is not at the table BOTTOM is SEAT1 ...)
 	 */
-	public RelativeSeat getRelativeSeat() {
-		if(clientSeat == null || clientSeat == SeatEntity.NOTATTABLE) {
+	public RelativeSeat getRelativeSeat(Seat clientSeat) {
+		if(clientSeat == null || clientSeat == Seat.NOTATTABLE) {
 			return RelativeSeat.getById(getSeatNr());
 		}else {
-			return RelativeSeat.getById(1 + (getSeatNr() - clientSeat.getSeatNr()) % 4);
+			return RelativeSeat.getById(1 + ((getSeatNr() - clientSeat.getSeatNr()+4) % 4));
 		}
 	}
 
 	
 	//Getters and setters
-	/** Use this method to change the actual location of the player at the table (Even tho the value of the player will always be PLAYER or NOTATTABLE)
-	 * This will update all occurences of Seat.
-	 * Usually this method should be called when the teams are defined and therefor the location of the players is broadcasted.
-	 * @param clientSeat The new value for the players actual position at the table
-	 */
-	public static void setClientSeat(SeatEntity clientSeat) {
-		Seat.clientSeat = clientSeat;
-	}
-	/** This method will return the current SeatEntity that is bound to the Seat enum. (Which contains the actual position of the player at the table)
-	 * @return The players current SeatNr
-	 */
-	public static SeatEntity getClientSeat() {
-		return Seat.clientSeat;
-	}
 	/** Returns the id of this seat
 	 * @return The id of this seat
 	 */
