@@ -198,7 +198,7 @@ public abstract class AbstractClient {
 			@Override
 			public void msgReceived(LobbyStateMessage msg) {
 				for(PlayerEntity player : msg.players) {
-					model.getPlayers().put(player.id, new Player(player));
+					model.updatePlayer(player);
 					playerChanged(model.getPlayer(player));
 				}
 			}
