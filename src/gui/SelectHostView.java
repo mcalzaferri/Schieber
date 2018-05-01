@@ -65,13 +65,13 @@ public class SelectHostView extends ObservableView implements Viewable{
 		//Server-IP and Server-Socket
 		JLabel serverIPLabel = new JLabel("IP-Adresse:");
 		serverIPLabel.setFont(new Font(serverIPLabel.getFont().getFontName(), Font.PLAIN, 12));
-		serverIPText = new JTextField();
+		serverIPText = new JTextField("localhost");
 		JLabel serverPortLabel = new JLabel("Port:");
 		serverPortLabel.setFont(new Font(serverPortLabel.getFont().getFontName(), Font.PLAIN, 12));
-		serverPortText = new JTextField();
+		serverPortText = new JTextField("65000");
 		JLabel usernameLabel = new JLabel("Username:");
 		usernameLabel.setFont(new Font(serverPortLabel.getFont().getFontName(), Font.PLAIN, 12));
-		usernameText = new JTextField();
+		usernameText = new JTextField("test");
 		
 		JPanel serverIPSocketPanel = new JPanel();
 		serverIPSocketPanel.setLayout(new GridLayout(3,2,0,5));
