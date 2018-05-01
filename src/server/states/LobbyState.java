@@ -7,7 +7,10 @@ import ch.ntb.jass.common.entities.TeamEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.GameStartedInfoMessage;
-import ch.ntb.jass.common.proto.server_messages.ResultMessage;
+import ch.ntb.jass.common.proto.server_info_messages.PlayerChangedStateMessage;
+import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToTableInfoMessage;
+import server.exceptions.ClientErrorException;
+import server.exceptions.UnhandledMessageException;
 import shared.Player;
 
 public class LobbyState extends GameState {
@@ -21,26 +24,29 @@ public class LobbyState extends GameState {
 	}
 
 	/**
+	 * @throws ClientErrorException
+	 * @throws UnhandledMessageException
 	 * @see GameState#handleMessage(Player, ToServerMessage)
 	 */
 	@Override
-	public boolean handleMessage(Player sender, ToServerMessage msg) throws IOException {
+	public void handleMessage(Player sender, ToServerMessage msg) throws IOException, ClientErrorException, UnhandledMessageException {
 		if(msg instanceof JoinTableMessage) {
-			//TODO: if seat is occupied assign a free one
-			//TODO: if seat is null assign a free one
 			JoinTableMessage jtMsg = (JoinTableMessage) msg;
-			if(logic.addPlayerToTable(sender, jtMsg.preferedSeat)) {
-				sendResultMsg(ResultMessage.Code.OK, "", sender);
-			} else {
-				sendResultMsg(ResultMessage.Code.FAILURE,
-						"Chosen seat is occupied. Please choose a free seat.",
-						sender);
-			}
-			return true;
+			logic.addPlayerToTable(sender, jtMsg.preferedSeat);
+
+			PlayerMovedToTableInfoMessage pmttMsg = new PlayerMovedToTableInfoMessage();
+			pmttMsg.player = sender.getEntity();
+			broadcast(pmttMsg);
+			System.out.println("added " + sender + " to the table (" + sender.getSeat() + ")");
 		} else if(msg instanceof ChangeStateMessage) {
 			ChangeStateMessage csMsg = (ChangeStateMessage) msg;
 
 			sender.setReady(csMsg.isReady);
+
+			PlayerChangedStateMessage pcsMsg = new PlayerChangedStateMessage();
+			pcsMsg.player = sender.getEntity();
+			pcsMsg.isReady = csMsg.isReady;
+			broadcast(pcsMsg);
 
 			if (logic.areAllPlayersReady()) {
 				GameStartedInfoMessage gsMsg = new GameStartedInfoMessage();
@@ -49,8 +55,8 @@ public class LobbyState extends GameState {
 				broadcast(gsMsg);
 				stateMachine.changeState(new StartRoundState());
 			}
-			return true;
+		} else {
+			throw(new UnhandledMessageException());
 		}
-		return false;
 	}
 }

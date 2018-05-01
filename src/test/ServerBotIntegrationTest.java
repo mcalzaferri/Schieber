@@ -1,21 +1,9 @@
 package test;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.Random;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 import bot.BotApplication;
-import bot.IntelligenceNormal;
-import bot.VirtualClient;
-import client.ClientCommunication;
 import server.ServerApp;
-import shared.client.ClientModel;
 
 public class ServerBotIntegrationTest {
 	static final int serverListenPort = 65000;

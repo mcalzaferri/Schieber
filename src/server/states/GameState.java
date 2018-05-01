@@ -4,8 +4,9 @@ import java.io.IOException;
 
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.ToServerMessage;
-import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import server.GameLogic;
+import server.exceptions.ClientErrorException;
+import server.exceptions.UnhandledMessageException;
 import shared.Communication;
 import shared.Player;
 
@@ -32,11 +33,12 @@ public abstract class GameState {
 	 * States that handle messages override this function.
 	 * @param sender the player that sent the message
 	 * @param msg the message
-	 * @return true if it was handled successfully, false otherwise
 	 * @throws IOException
+	 * @throws UnhandledMessageException
+	 * @throws ClientErrorException
 	 */
-	public boolean handleMessage(Player sender, ToServerMessage msg) throws IOException {
-		return false;
+	public void handleMessage(Player sender, ToServerMessage msg) throws IOException, UnhandledMessageException, ClientErrorException {
+		throw(new UnhandledMessageException());
 	}
 
 	/**
@@ -62,13 +64,7 @@ public abstract class GameState {
 
 	public static void send(Message msg, Player player) throws IOException {
 		com.send(msg, player.getSocketAddress());
-	}
-
-	public static void sendResultMsg(ResultMessage.Code errorCode,
-			String errorText, Player player) throws IOException {
-		ResultMessage resMsg = new ResultMessage();
-		resMsg.code = errorCode;
-		resMsg.message = errorText;
-		send(resMsg, player);
+		System.out.println("sent " + msg.getClass().getSimpleName() +
+				" to " + player);
 	}
 }

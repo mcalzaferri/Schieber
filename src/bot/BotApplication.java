@@ -31,7 +31,7 @@ public class BotApplication {
 		VirtualClient client = new VirtualClient(communication, new ClientModel(),
 				new IntelligenceNormal());
 		client.connect(new InetSocketAddress(serverHostname,serverPort));
-		
+
 	}
 
 }

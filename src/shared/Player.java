@@ -47,15 +47,15 @@ public class Player {
 		PlayerEntity[] pe;
 		if(players != null) {
 			pe = new PlayerEntity[players.length];
-			for(int i = 0; i < players.length; i++){
-				pe[i] = players[i].getEntity();
+			for(int i = 0; i < players.length; i++) {
+				pe[i] = players[i] == null ? null : players[i].getEntity();
 			}
 		}else {
 			pe = null;
 		}
 		return pe;
 	}
-	
+
 	//Methods
 	public void update(PlayerEntity entity) {
 		if(getId() == entity.id) {
@@ -64,12 +64,12 @@ public class Player {
 			setBot(entity.isBot);
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return getName();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if(this == null || obj == null) {
@@ -85,9 +85,9 @@ public class Player {
 		}else {
 			return false;
 		}
-		
+
 	}
-	
+
 	//Getters and Setters
 	/** Use this method to get the underlying entity of this class
 	 * @return An entity representing this class
@@ -95,11 +95,11 @@ public class Player {
 	public PlayerEntity getEntity() {
 		return entity;
 	}
-	
+
 	public InetSocketAddress getSocketAddress() {
 		return address;
 	}
-	
+
 	private void setSocketAddress(InetSocketAddress address) {
 		this.address = address;
 	}
@@ -111,19 +111,19 @@ public class Player {
 	public void popCard(Card c) {
 		cards.remove(c);
 	}
-	
+
 	public void setCards(CardList cards) {
 		this.cards = cards;
 	}
-	
+
 	public CardList getCards() {
 		return cards;
 	}
-	
+
 	public Seat getSeat() {
 		return Seat.getBySeatNr(entity.seat.getSeatNr());
 	}
-	
+
 	public void setSeat(Seat seat) {
 		entity.seat = SeatEntity.getBySeatNr(seat.getSeatNr());
 	}
@@ -139,7 +139,7 @@ public class Player {
 	public int getId() {
 		return entity.id;
 	}
-	
+
 	public void setId(int id) {
 		this.entity.id = id;
 	}
@@ -147,7 +147,7 @@ public class Player {
 	public boolean isBot() {
 		return entity.isBot;
 	}
-	
+
 	private void setBot(boolean isBot) {
 		this.entity.isBot = isBot;
 	}
@@ -155,7 +155,7 @@ public class Player {
 	public String getName() {
 		return entity.name;
 	}
-	
+
 	private void setName(String name) {
 		this.entity.name = name;
 	}

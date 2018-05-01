@@ -18,7 +18,6 @@ import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinTableMessage;
-import server.states.LobbyState;
 import shared.Communication;
 import shared.Seat;
 

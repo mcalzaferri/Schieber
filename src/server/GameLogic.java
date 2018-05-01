@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 
+import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.entities.TeamEntity;
 import shared.Card;
@@ -14,6 +15,7 @@ import shared.CardColor;
 import shared.CardValue;
 import shared.Player;
 import shared.Score;
+import shared.Seat;
 import shared.Trump;
 
 /**
@@ -28,7 +30,7 @@ import shared.Trump;
 public class GameLogic {
 	private Trump trump;
 	private ArrayList<Player> players;
-	private SeatEntity currentSeat;
+	private Seat currentSeat;
 	private Card[] deck;
 
 	public GameLogic() {
@@ -39,10 +41,10 @@ public class GameLogic {
 	 * Initialize new game.
 	 */
 	public void init() {
-		currentSeat = SeatEntity.NOTATTABLE;
+		currentSeat = Seat.NOTATTABLE;
 		for (Player p : players) {
 			p.putCards(null);
-			p.setSeatNr(SeatEntity.NOTATTABLE.getSeatNr());
+			p.setSeatNr(Seat.NOTATTABLE.getSeatNr());
 			p.setReady(false);
 		}
 		// TODO: possibly more stuff has to be done here
@@ -78,6 +80,14 @@ public class GameLogic {
 
 	public Collection<Player> getPlayers() {
 		return Collections.unmodifiableCollection(players);
+	}
+
+	public PlayerEntity[] getPlayerEntities() {
+		PlayerEntity[] playerEntities = new PlayerEntity[players.size()];
+		for(int i = 0; i < players.size(); i++) {
+			playerEntities[i] = players.get(i).getEntity();
+		}
+		return playerEntities;
 	}
 
 	/**
@@ -116,36 +126,58 @@ public class GameLogic {
 	/**
 	 * Add player to the table by assigning a seat to him
 	 * @param player player to add to the table
-	 * @param prefearedSeatNr the players preferred seat
-	 * @return true on success, false otherwise
+	 * @param preferredSeat the players preferred seat
 	 */
-	public boolean addPlayerToTable(Player player, SeatEntity seat) {
+	public void addPlayerToTable(Player player, SeatEntity preferredSeat) {
+		if (preferredSeat == null) {
+			player.setSeat(getFreeSeat());
+			return;
+		}
+
+		Seat seat = Seat.getBySeatNr(preferredSeat.getSeatNr());
+
 		if (player.getSeatNr() == seat.getSeatNr()) {
 			// Player is already sitting at this seat.
-			return true;
+			return;
 		}
 
 		for (Player p : players) {
 			if (p.getSeatNr() == seat.getSeatNr()) {
-				System.err.println("Failed to add player to table: seat occupied");
-				return false;
+				// seat is occupied: assign a free one
+				player.setSeat(getFreeSeat());
+				return;
 			}
 		}
 
 		player.setSeatNr(seat.getSeatNr());
-		return true;
+	}
+
+	private Seat getFreeSeat() {
+		for (Seat seat : Seat.values()) {
+			boolean used = false;
+			for (Player p : players) {
+				if(p.getSeat() == seat) {
+					used = true;
+				}
+			}
+			if (!used) {
+				return seat;
+			}
+		}
+		return null;
 	}
 
 	/**
-	 * @return true if all players at the table are ready, false otherwise
+	 * @return true if all four players at the table are ready, false otherwise
 	 */
 	public boolean areAllPlayersReady() {
+		int i = 0;
 		for (Player p : players) {
-			if (p.getSeatNr() > 0 && !p.isReady()) {
-				return false;
+			if (p.getSeat() != Seat.NOTATTABLE && !p.isReady()) {
+				i++;
 			}
 		}
-		return true;
+		return i == 4;
 	}
 
 	public Player getPlayer(InetSocketAddress addr) {
@@ -157,7 +189,7 @@ public class GameLogic {
 		return null;
 	}
 
-	public Player getPlayer(SeatEntity seat) {
+	public Player getPlayer(Seat seat) {
 		for (Player p : players) {
 			if(p.getSeatNr() == seat.getSeatNr()) {
 				return p;
@@ -167,33 +199,35 @@ public class GameLogic {
 	}
 
 	/**
-	 * Gets the Teammember
-	 * @param player
+	 * Get partner of player
+	 * @param player player to retrieve partner of
+	 * @return partner
 	 */
-	public Player getTeamMember(Player player){
-		switch(player.getSeat().getSeatEntity()){
+	public Player getPartner(Player player){
+		switch (player.getSeat()) {
 		case SEAT1 :
-			return getPlayer(SeatEntity.SEAT3);
+			return getPlayer(Seat.SEAT3);
 		case SEAT2 :
-			return getPlayer(SeatEntity.SEAT4);
+			return getPlayer(Seat.SEAT4);
 		case SEAT3 :
-			return getPlayer(SeatEntity.SEAT1);
+			return getPlayer(Seat.SEAT1);
 		case SEAT4 :
-			return getPlayer(SeatEntity.SEAT2);
+			return getPlayer(Seat.SEAT2);
 		default:
-			System.err.println("Unimplemented Seat");
-			}
-		return getCurrentPlayer();
+			break;
+		}
+		System.err.println("Unimplemented Seat");
+		return null;
 	}
 
 	public TeamEntity getTeam1() {
 		TeamEntity team = new TeamEntity();
-		team.players = Player.getEntities(new Player[] {getPlayer(SeatEntity.SEAT1), getPlayer(SeatEntity.SEAT3)});
+		team.players = Player.getEntities(new Player[] {getPlayer(Seat.SEAT1), getPlayer(Seat.SEAT3)});
 		return team;
 	}
 	public TeamEntity getTeam2() {
 		TeamEntity team = new TeamEntity();
-		team.players = Player.getEntities(new Player[] {getPlayer(SeatEntity.SEAT2), getPlayer(SeatEntity.SEAT4)});
+		team.players = Player.getEntities(new Player[] {getPlayer(Seat.SEAT2), getPlayer(Seat.SEAT4)});
 		return team;
 	}
 
@@ -205,19 +239,19 @@ public class GameLogic {
 	public Player nextPlayer() {
 		switch(currentSeat) {
 		case NOTATTABLE:
-			currentSeat = SeatEntity.SEAT1;
+			currentSeat = Seat.SEAT1;
 			break;
 		case SEAT1:
-			currentSeat = SeatEntity.SEAT2;
+			currentSeat = Seat.SEAT2;
 			break;
 		case SEAT2:
-			currentSeat = SeatEntity.SEAT3;
+			currentSeat = Seat.SEAT3;
 			break;
 		case SEAT3:
-			currentSeat = SeatEntity.SEAT4;
+			currentSeat = Seat.SEAT4;
 			break;
 		case SEAT4:
-			currentSeat = SeatEntity.SEAT1;
+			currentSeat = Seat.SEAT1;
 			break;
 		default:
 			System.err.println("Unimplemented Seat");

@@ -2,7 +2,6 @@ package server.states;
 
 import java.io.IOException;
 
-import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.ChosenWiisMessage;
 import ch.ntb.jass.common.proto.player_messages.PlaceCardMessage;
@@ -11,10 +10,11 @@ import ch.ntb.jass.common.proto.server_info_messages.NewTurnInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.StichInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.TurnInfoMessage;
-import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import ch.ntb.jass.common.proto.server_messages.WrongCardMessage;
+import server.exceptions.UnhandledMessageException;
 import shared.Card;
 import shared.Player;
+import shared.Seat;
 
 public class WaitForCardState extends GameState {
 	/**
@@ -30,15 +30,15 @@ public class WaitForCardState extends GameState {
 	}
 
 	/**
+	 * @throws UnhandledMessageException
 	 * @see GameState#handleMessage(Player, ToServerMessage)
 	 */
 	@Override
-	public boolean handleMessage(Player sender, ToServerMessage msg)
-			throws IOException {
+	public void handleMessage(Player sender, ToServerMessage msg)
+			throws IOException, UnhandledMessageException {
 		if (msg instanceof PlaceCardMessage) {
 			PlaceCardMessage pcMsg = (PlaceCardMessage)msg;
 			if (logic.placeCard(new Card(pcMsg.card))) {
-				sendResultMsg(ResultMessage.Code.OK, "", sender);
 				if (logic.isRunOver()) {
 					StichInfoMessage siMsg = new StichInfoMessage();
 					siMsg.laidCard = pcMsg.card;
@@ -59,13 +59,13 @@ public class WaitForCardState extends GameState {
 					eorMsg.score = logic.getScore().getEntity();
 					if (gameOver) {
 						PlayerMovedToLobbyInfoMessage pmtlMsg = new PlayerMovedToLobbyInfoMessage();
-						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT1).getEntity();
+						pmtlMsg.player = logic.getPlayer(Seat.SEAT1).getEntity();
 						broadcast(pmtlMsg);
-						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT2).getEntity();
+						pmtlMsg.player = logic.getPlayer(Seat.SEAT2).getEntity();
 						broadcast(pmtlMsg);
-						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT3).getEntity();
+						pmtlMsg.player = logic.getPlayer(Seat.SEAT3).getEntity();
 						broadcast(pmtlMsg);
-						pmtlMsg.player = logic.getPlayer(SeatEntity.SEAT4).getEntity();
+						pmtlMsg.player = logic.getPlayer(Seat.SEAT4).getEntity();
 						broadcast(pmtlMsg);
 
 						// start new game
@@ -78,15 +78,14 @@ public class WaitForCardState extends GameState {
 					act();
 				}
 			} else {
-				sendResultMsg(ResultMessage.Code.FAILURE,
-						"You placed an invalid card.", sender);
 				WrongCardMessage wcMsg = new WrongCardMessage();
 				wcMsg.wrongCard = pcMsg.card;
 				send(wcMsg, sender);
 			}
 		} else if (msg instanceof ChosenWiisMessage) {
 			//TODO: handle wiis stuff
+		} else {
+			throw(new UnhandledMessageException());
 		}
-		return true;
 	}
 }

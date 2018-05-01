@@ -2,12 +2,13 @@ package server.states;
 
 import java.io.IOException;
 
-import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.proto.*;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
+import server.exceptions.UnhandledMessageException;
 import shared.Player;
+import shared.Seat;
 import shared.Trump;
 
 public class WaitForTrumpState extends GameState {
@@ -19,14 +20,15 @@ public class WaitForTrumpState extends GameState {
 		ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
 		ctMsg.canSchieben = true;
 		//TODO REV: always letting player 1 choose the trump is wrong
-		send(ctMsg, logic.getPlayer(SeatEntity.SEAT1));
+		send(ctMsg, logic.getPlayer(Seat.SEAT1));
 	}
 
 	/**
+	 * @throws UnhandledMessageException
 	 * @see GameState#handleMessage(Player, ToServerMessage)
 	 */
 	@Override
-	public boolean handleMessage(Player sender, ToServerMessage msg) throws IOException{
+	public void handleMessage(Player sender, ToServerMessage msg) throws IOException, UnhandledMessageException{
 		if(msg instanceof ChosenTrumpMessage) {
 			//TODO REV: check first if this message is from the right sender
 
@@ -38,13 +40,13 @@ public class WaitForTrumpState extends GameState {
 			//TODO REV: you are comparing TrumpEntity with Trump
 			if(((ChosenTrumpMessage) msg).trump.equals(Trump.SCHIEBEN)) {
 				if(schiebenAlreadyChosen) {
-					//TODO REV: send ResultMessage
+					//TODO REV: throw ClientErrorException
 					send(ctMsg, sender);
-					return true;
+					return;
 				}
 
 				//Send request to choose trump to the teammember
-				send(ctMsg, logic.getTeamMember(sender));
+				send(ctMsg, logic.getPartner(sender));
 				schiebenAlreadyChosen = true;
 			} else {
 				ChosenTrumpInfoMessage ctiMsg = new ChosenTrumpInfoMessage();
@@ -54,8 +56,8 @@ public class WaitForTrumpState extends GameState {
 				broadcast(ctiMsg);
 				stateMachine.changeState(new WaitForCardState());
 			}
-			return true;
+		} else {
+			throw(new UnhandledMessageException());
 		}
-		return false;
 	}
 }

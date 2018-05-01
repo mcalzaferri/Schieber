@@ -1,8 +1,12 @@
 package server;
 
 import java.io.IOException;
-import java.net.SocketException;
+import java.net.InetSocketAddress;
 
+import ch.ntb.jass.common.proto.server_messages.ResultMessage;
+import server.exceptions.ClientErrorException;
+import server.exceptions.InvalidMessageDataException;
+import server.exceptions.UnhandledMessageException;
 import server.states.GameState;
 import server.states.LobbyState;
 import server.states.StateMachine;
@@ -61,7 +65,7 @@ public class ServerApp {
 	}
 
 	protected void handleMessage() throws ClassNotFoundException, IOException {
-		System.out.println("Waiting for Message...");
+		System.out.println("waiting for Message...");
 		InternalMessage iMsg = com.receive();
 
 		// try to get player from game
@@ -75,18 +79,44 @@ public class ServerApp {
 		} else {
 			System.out.print("invalid message");
 		}
-		if(sender != null) {
+		if (sender != null) {
 			System.out.println(" from " + sender.getName());
 		} else {
 			System.out.println();
 		}
 
-		// let state machine handle the message
-		if(!stateMachine.handleMessage(sender, iMsg)) {
-			//TODO: send ResultMessage with generic error message
-			System.err.println("Unhandled message, current state = "
+		try {
+			// let state machine handle the message
+			stateMachine.handleMessage(sender, iMsg);
+			sendResultMsg(ResultMessage.Code.OK, "you fine",
+					iMsg.senderAddress);
+		} catch (UnhandledMessageException e) {
+			System.err.println("unhandled message, current state = "
 					+ stateMachine.getCurrentState().getClass().getSimpleName());
+		} catch (InvalidMessageDataException e) {
+			sendResultMsg(ResultMessage.Code.PROTOCOL_ERROR,
+					e.getMessage(), iMsg.senderAddress);
+		} catch (ClientErrorException e) {
+			sendResultMsg(ResultMessage.Code.FAILURE, e.getMessage(),
+					iMsg.senderAddress);
+		} catch (NullPointerException e) {
+			sendResultMsg(ResultMessage.Code.PROTOCOL_ERROR,
+					"Something went wrong while processing the data you sent." +
+					" The server will just assume it's your fault and continue.",
+					iMsg.senderAddress);
+			e.printStackTrace();
 		}
+	}
+
+	private void sendResultMsg(ResultMessage.Code errorCode,
+			String errorText, InetSocketAddress playerAddr) throws IOException {
+		ResultMessage resMsg = new ResultMessage();
+		resMsg.code = errorCode;
+		resMsg.message = errorText;
+		if(errorCode != ResultMessage.Code.OK) {
+			System.err.println("client error (" + errorText + ")");
+		}
+		com.send(resMsg, playerAddr);
 	}
 
 	public void stop() {
