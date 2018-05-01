@@ -74,7 +74,17 @@ public class ClientModel {
 		return teams;
 	}
 	public void setTeams(Team[] teams) {
-		
+		//Search in team for this player
+		for(Team team : teams) {
+			for(Player player : team.getPlayers()) {
+				if(!player.equals(getThisPlayer())) {
+					player.getCards().clear();
+					for(int i = 0; i < 9; i++) {
+						player.getCards().add(new Card(null, null));
+					}
+				}
+			}
+		}
 		this.teams = teams;
 	}
 	public CardList getHand() {
