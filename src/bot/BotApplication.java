@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import java.util.Random;
 
 import client.ClientCommunication;
+import client.test.ClientModelView;
 import shared.Communication;
 import shared.ServerAddress;
 import shared.client.ClientModel;
@@ -27,9 +28,11 @@ public class BotApplication {
 			communication =  new ClientCommunication();
 		}
 		communication.open();
-
-		VirtualClient client = new VirtualClient(communication, new ClientModel(),
+		ClientModel model = new ClientModel();
+		new ClientModelView(model);
+		VirtualClient client = new VirtualClient(communication, model,
 				new IntelligenceNormal());
+		communication.setClient(client);
 		client.connect(new InetSocketAddress(serverHostname,serverPort));
 
 	}

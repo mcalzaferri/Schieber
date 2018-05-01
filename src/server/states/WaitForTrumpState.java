@@ -2,6 +2,7 @@ package server.states;
 
 import java.io.IOException;
 
+import ch.ntb.jass.common.entities.TrumpEntity;
 import ch.ntb.jass.common.proto.*;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
@@ -37,8 +38,7 @@ public class WaitForTrumpState extends GameState {
 			ctMsg.canSchieben = false;
 
 			//Sends request to choose trump back to the sender
-			//TODO REV: you are comparing TrumpEntity with Trump
-			if(((ChosenTrumpMessage) msg).trump.equals(Trump.SCHIEBEN)) {
+			if(((ChosenTrumpMessage) msg).trump.equals(TrumpEntity.SCHIEBEN)) {
 				if(schiebenAlreadyChosen) {
 					//TODO REV: throw ClientErrorException
 					send(ctMsg, sender);

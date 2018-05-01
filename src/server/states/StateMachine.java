@@ -86,10 +86,10 @@ public class StateMachine {
 		if(playerData.name == null || playerData.name.isEmpty()) {
 			playerData.name = "@" + playerAddr;
 		}
-		// TODO: fix player id?
+		// TODO: fix player id? (id != 0)
 		// TODO: check if username already exists
 		Player sender = new Player(playerAddr, playerData.name, Seat.NOTATTABLE,
-				playerData.isBot, false, GameState.logic.getPlayerCount());
+				playerData.isBot, false, GameState.logic.getPlayerCount() + 1);
 		GameState.logic.addPlayer(sender);
 		System.out.println("added " + playerData.name + " to the lobby");
 

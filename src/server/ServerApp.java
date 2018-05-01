@@ -117,6 +117,7 @@ public class ServerApp {
 			System.err.println("client error (" + errorText + ")");
 		}
 		com.send(resMsg, playerAddr);
+		System.out.println("sent result: " + errorCode);
 	}
 
 	public void stop() {

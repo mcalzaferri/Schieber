@@ -173,7 +173,7 @@ public class GameLogic {
 	public boolean areAllPlayersReady() {
 		int i = 0;
 		for (Player p : players) {
-			if (p.getSeat() != Seat.NOTATTABLE && !p.isReady()) {
+			if (p.getSeat() != Seat.NOTATTABLE && p.isReady()) {
 				i++;
 			}
 		}

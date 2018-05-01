@@ -8,6 +8,7 @@ import java.net.SocketTimeoutException;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.*;
+import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage.Code;
 import shared.Communication;
@@ -87,6 +88,11 @@ public class ClientCommunication extends Communication implements Runnable{
 					}else {
 						throw new BadResultException(((ResultMessage)imsg.message).message);
 					}
+				}else if(imsg.message instanceof LobbyStateMessage){
+					//Assume that result is ok
+					handleReceivedMessage(imsg);
+					loop = false;
+					
 				}
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
@@ -114,7 +120,7 @@ public class ClientCommunication extends Communication implements Runnable{
 				InternalMessage msg = receive();
 				handleReceivedMessage(msg);
 			} catch (SocketTimeoutException ste) {
-				System.out.println("Receive task running");
+				//System.out.println("Receive task running"); TODO
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
@@ -124,5 +130,9 @@ public class ClientCommunication extends Communication implements Runnable{
 	
 	public void setBlockConnect(boolean blockConnect) {
 		this.blockConnect = blockConnect;
+	}
+	
+	public void setClient(AbstractClient client) {
+		this.client = client;
 	}
 }
