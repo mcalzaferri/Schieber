@@ -4,6 +4,7 @@ import javax.swing.*;
 import client.ViewEnumeration;
 import client.ViewObserver;
 import shared.Player;
+import shared.Seat;
 import shared.client.ClientModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -36,7 +37,6 @@ public class LobbyView extends ObservableView implements Viewable{
 	
 	//local variables
 	Map<Integer,Player> playersMap;
-	Player actPlayer;
 	int optionType1;
 	int optionType2;
 	int optionType3;
@@ -53,8 +53,6 @@ public class LobbyView extends ObservableView implements Viewable{
 			throw new IllegalArgumentException("Fatal Error: Players must not be null");
 		}
 		playersMap = data.getPlayers();
-		actPlayer = data.getThisPlayer();
-		
 		lobbyPicturePanel = new LobbyPanel();
 		
 		layoutLobbyView();
@@ -91,14 +89,14 @@ public class LobbyView extends ObservableView implements Viewable{
 				tableData[rowCount][1]=player.getSeatNr();
 			rowCount++;
 		}
-		if(actPlayer != null) {
-			tableData[rowCount][0]=actPlayer.getName();
-			if(actPlayer.getSeatNr() == 0)
+		if(getActPlayer() != null) {
+			tableData[rowCount][0]=getActPlayer().getName();
+			if(getActPlayer().getSeatNr() == 0)
 				tableData[rowCount][1]="kein Sitzplatz";
 			else
-				tableData[rowCount][1]=actPlayer.getSeatNr();
+				tableData[rowCount][1]=getActPlayer().getSeatNr();
 		}else {
-			//TODO actPlayer ist am Anfang noch nicht initialisiert
+			//TODO getActPlayer() ist am Anfang noch nicht initialisiert
 		}
 		
 		
@@ -166,13 +164,14 @@ public class LobbyView extends ObservableView implements Viewable{
 							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString1, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 							if(response == JOptionPane.YES_NO_OPTION)
 							{
-								actPlayer.setSeatNr(1);
-								update();
+								for(ViewObserver observer : observers) {
+									observer.btnJoinTableClick(Seat.SEAT1);
+								}
 							}
 						
 			    		break;
 			    	case JOptionPane.INFORMATION_MESSAGE:
-			    			if(actPlayer.getSeatNr() == 1)
+			    			if(getActPlayer().getSeatNr() == 1)
 			    				optionString1="Sitzplatz 1 wurde reserviert";
 			    			
 			    			chooseSeatOptionPane.showMessageDialog(null, optionString1);
@@ -189,13 +188,14 @@ public class LobbyView extends ObservableView implements Viewable{
 							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString2, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 							if(response == JOptionPane.YES_NO_OPTION)
 							{
-								actPlayer.setSeatNr(2);
-								update();
+								for(ViewObserver observer : observers) {
+									observer.btnJoinTableClick(Seat.SEAT2);
+								}
 							}
 						
 			    		break;
 			    	case JOptionPane.INFORMATION_MESSAGE:
-			    			if(actPlayer.getSeatNr() == 2)
+			    			if(getActPlayer().getSeatNr() == 2)
 			    				optionString2="Sitzplatz 2 wurde reserviert";
 			    			
 			    			chooseSeatOptionPane.showMessageDialog(null, optionString2);
@@ -212,13 +212,14 @@ public class LobbyView extends ObservableView implements Viewable{
 							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString3, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 							if(response == JOptionPane.YES_NO_OPTION)
 							{
-								actPlayer.setSeatNr(3);
-								update();
+								for(ViewObserver observer : observers) {
+									observer.btnJoinTableClick(Seat.SEAT3);
+								}
 							}
 						
 			    		break;
 			    	case JOptionPane.INFORMATION_MESSAGE:
-		    			if(actPlayer.getSeatNr() == 3)
+		    			if(getActPlayer().getSeatNr() == 3)
 		    				optionString3="Sitzplatz 3 wurde reserviert";
 		    			
 			    			chooseSeatOptionPane.showMessageDialog(null, optionString3);
@@ -235,13 +236,14 @@ public class LobbyView extends ObservableView implements Viewable{
 							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString4, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 							if(response == JOptionPane.YES_NO_OPTION)
 							{
-								actPlayer.setSeatNr(4);
-								update();
+								for(ViewObserver observer : observers) {
+									observer.btnJoinTableClick(Seat.SEAT4);
+								}
 							}
 						
 			    		break;
 			    	case JOptionPane.INFORMATION_MESSAGE:
-			    			if(actPlayer.getSeatNr() == 4)
+			    			if(getActPlayer().getSeatNr() == 4)
 			    				optionString4="Sitzplatz 4 wurde reserviert";
 			    			
 			    			chooseSeatOptionPane.showMessageDialog(null, optionString4);
@@ -272,17 +274,23 @@ public class LobbyView extends ObservableView implements Viewable{
 	    
 	    readyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(actPlayer.getSeatNr()==0)
+				if(getActPlayer().getSeatNr()==0)
 				{
 					chooseSeatOptionPane.showMessageDialog(null, "Bitte wähle zuerst einen Sitzplatz aus");
 				}
 				else
 				{
-					actPlayer.setReady(true);
+					for(ViewObserver observer : observers) {
+						observer.btnChangeStateClick();
+					}
 					chooseSeatOptionPane.showMessageDialog(null, "Spieler ist nun bereit und wartet, bis sich alle Mitspieler platziert haben.");
-					showStatePanel.setBackground(Color.green);
+					if(getActPlayer().isReady()) {
+						showStatePanel.setBackground(Color.green);
+					}else {
+						showStatePanel.setBackground(Color.red);
+					}
+
 					showStatePanel.validate();
-					readyButton.setEnabled(false);
 				}
 			}
 		});
@@ -311,14 +319,14 @@ public class LobbyView extends ObservableView implements Viewable{
 			}
 		}
 		
-		int actPlayerseatNumber = 0;
-		if(actPlayer != null) {
-			actPlayerseatNumber = actPlayer.getSeatNr();
+		int actPlayerSeatNumber = 0;
+		if(getActPlayer() != null) {
+			actPlayerSeatNumber = getActPlayer().getSeatNr();
 		}
 		
-		if(actPlayerseatNumber>0 && actPlayerseatNumber<=4)
+		if(actPlayerSeatNumber>0 && actPlayerSeatNumber<=4)
 		{
-			setOptionPaneType(actPlayer);
+			setOptionPaneType(getActPlayer());
 		}
 	}
 	
@@ -344,6 +352,10 @@ public class LobbyView extends ObservableView implements Viewable{
 				break;
 			
 		}
+	}
+	
+	private Player getActPlayer() {
+		return data.getThisPlayer();
 	}
 	
 	@Override
