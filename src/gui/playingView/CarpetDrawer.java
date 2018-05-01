@@ -107,7 +107,7 @@ public class CarpetDrawer {
 	 * @param cardSize Size of the hidden cards of the player
 	 */
 
-	public void drawPlayer(Graphics g, Player player, Dimension carpetSize, Dimension cardSize) {
+	public void drawPlayer(Graphics g, Player player, Player thisPlayer, Dimension carpetSize, Dimension cardSize) {
 		//Only draw player if not null
 		if(player != null) {
 			//Set up text to be drawn
@@ -135,11 +135,10 @@ public class CarpetDrawer {
 			 */
 			RelativeSeat seat = RelativeSeat.NOTATTABLE;
 			try {
-				seat = player.getSeat().getRelativeSeat();
+				seat = player.getSeat().getRelativeSeat(thisPlayer.getSeat());
 			}
 			catch(NullPointerException ex) {
-				//Do nothing 
-				//TODO /Maurus
+				ex.printStackTrace();
 			}
 
 			switch(seat) {

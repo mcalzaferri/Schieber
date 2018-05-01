@@ -65,7 +65,7 @@ public class CarpetPane extends ObservableView{
 		g.setFont(new Font(font.getFontName(), font.getStyle(), (int)(scale*font.getSize())));
 		if(data.getPlayers() != null) {
 			for(Player p : data.getPlayers().values()) {
-				drawer.drawPlayer(g, p, carpetSize, coverSize);
+				drawer.drawPlayer(g, p, data.getThisPlayer(), carpetSize, coverSize);
 			}
 		}
 		
