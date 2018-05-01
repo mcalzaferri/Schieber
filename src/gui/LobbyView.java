@@ -110,14 +110,21 @@ public class LobbyView extends ObservableView implements Viewable{
 	
 	public void layoutButtons()
 	{
-		chair1Button = new JButton("Sitzplatz 1");
-		chair1Button.setOpaque(false);		
+		chair1Button = new JButton();
+		chair1Button.setOpaque(false);	
+		chair1Button.setToolTipText("Sitzplatz 1");
+		
 		chair2Button = new JButton();
 		chair2Button.setOpaque(false);	
+		chair2Button.setToolTipText("Sitzplatz 2");
+		
 		chair3Button= new JButton();
-		chair3Button.setOpaque(false);	
+		chair3Button.setOpaque(false);
+		chair3Button.setToolTipText("Sitzplatz 3");
+		
 		chair4Button = new JButton();
-		chair4Button.setOpaque(false);	
+		chair4Button.setOpaque(false);
+		chair4Button.setToolTipText("Sitzplatz 4");
 		
 		GridBagLayout gbl = new GridBagLayout();
 		gbl.columnWeights = new double[] {0.0709,0.0921,0.1773,0.0567,0.1702,0.1773,0.1631,0.0921};

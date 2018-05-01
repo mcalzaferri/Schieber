@@ -1,6 +1,10 @@
 package gui;
 
+
+
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -45,7 +49,16 @@ public class LobbyPanel extends JPanel{
 				(int)(this.getSize().getHeight()));
 		
 		//Draw content
+		String titleString = "Sitzplatz auswählen";
+		Font font = new Font("Monotype Corsiva", Font.BOLD, 30);
+		
+		g.setFont(font); 
+		g.setColor(Color.WHITE);
+	    
+		int stringWidth = g.getFontMetrics(font).stringWidth(titleString);
+		
 		g.drawImage(Gui.pictureFactory.getScaledPicture(imgLobby, lobbySize), 0, 0, null);
 		
+		g.drawString(titleString, (this.getWidth()-stringWidth)/2, (int)2*this.getHeight()/7);
 	}
 }
