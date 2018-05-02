@@ -11,6 +11,7 @@ public class ClientModel {
 	//Fields
 	private Player thisPlayer;
 	private Map<Integer,Player> players;
+	private Map<Card, RelativeSeat> deckOrientation;
 	private Team[] teams;
 	private CardList deck;
 	private Trump trump;
@@ -24,9 +25,19 @@ public class ClientModel {
 	public ClientModel() {
 		players = new HashMap<Integer, Player>();
 		deck = new CardList();
+		deckOrientation = new HashMap<Card, RelativeSeat>();
 	}
 	
 	//Methods
+	public void clearDeck() {
+		deck.clear();
+		deckOrientation.clear();
+	}
+	
+	public RelativeSeat getDeckCardOrientation(Card card) {
+		return deckOrientation.get(card);
+	}
+	
 	public void updateScore(ScoreEntity score) {
 		this.score.updateScore(score);
 	}
@@ -99,8 +110,9 @@ public class ClientModel {
 	public CardList getDeck() {
 		return deck;
 	}
-	public void setDeck(CardList deck) {
-		this.deck = deck;
+	public void addToDeck(Card card, PlayerEntity player) {
+		deckOrientation.put(card, getPlayer(player).getSeat().getRelativeSeat(thisPlayer.getSeat()));
+		deck.add(card);
 	}
 	public Trump getTrump() {
 		return trump;
@@ -166,5 +178,9 @@ public class ClientModel {
 
 	public void setPossibleWiis(Weis[] possibleWiis) {
 		this.possibleWiis = possibleWiis;
+	}
+
+	public Map<Card, RelativeSeat> getDeckOrientation() {
+		return deckOrientation;
 	}
 }

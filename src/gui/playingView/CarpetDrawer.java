@@ -13,6 +13,7 @@ import shared.CardList;
 import shared.Player;
 import shared.RelativeSeat;
 import shared.Seat;
+import shared.client.ClientModel;
 
 /**
  * This class draws the content of the carpet onto a given component
@@ -57,36 +58,39 @@ public class CarpetDrawer {
 	 * @param carpetSize Size of the component representing the carpet
 	 * @param cardSize Size for the decks cards
 	 */
-	public void drawDeck(Graphics g, CardList deck, Dimension carpetSize, Dimension cardSize) {
+	public void drawDeck(Graphics g, ClientModel model, Dimension carpetSize, Dimension cardSize) {
 		int index = 0; int x = 0; int y = 0;
 		int xOffset = -cardSize.width/2;
 		int yOffset = -cardSize.height/2;
-		
+		CardList deck = model.getDeck();
 		if(deck != null) {
 			for(Card c : deck) {
 				if(c != null) {
 					try {
 						img = Gui.pictureFactory.getPicture(c, cardSize);
-						switch(index) {
-						case 0:
+						switch(model.getDeckCardOrientation(c)) {
+						case BOTTOM:
 							x = carpetSize.getSize().width/2 + xOffset;
 							y = carpetSize.getSize().height*2/3 + yOffset;
 							g.drawImage(img, x, y, null);
 							break;
-						case 1:
+						case RIGHT:
 							x = carpetSize.getSize().width*2/3 + xOffset;
 							y = carpetSize.getSize().height/2 + yOffset;
 							g.drawImage(img, x, y, null);
 							break;
-						case 2:
+						case TOP:
 							x = carpetSize.getSize().width/2 + xOffset;
 							y = carpetSize.getSize().height*1/3 + yOffset;
 							g.drawImage(img, x, y, null);
 							break;
-						case 3:
+						case LEFT:
 							x = carpetSize.getSize().width*1/3 + xOffset;
 							y = carpetSize.getSize().height/2 + yOffset;
 							g.drawImage(img, x, y, null);
+							break;
+						default:
+							System.err.println("Error in CarpetDrawer. Unknown Orientation of Card!");
 							break;
 						}
 						index++;

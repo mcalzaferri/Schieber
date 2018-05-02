@@ -136,12 +136,12 @@ public abstract class AbstractClient {
 			@SuppressWarnings("unlikely-arg-type") //Du bischmer o kli unlikely
 			@Override
 			public void msgReceived(TurnInfoMessage msg) {
-				model.getDeck().add(new Card(msg.laidCard));
+				model.addToDeck(new Card(msg.laidCard), msg.player);
 				if(model.getThisPlayer().equals(msg.player)) { 
-					model.getThisPlayer().getCards().remove(0);
+					model.getThisPlayer().getCards().remove(msg.laidCard.calcId());
 					doUpdateHand(model.getHand().toArray());
 				}else {
-					model.getPlayer(msg.player).getCards().remove(msg.laidCard.calcId());
+					model.getPlayer(msg.player).getCards().remove(0);
 				}
 				playerChanged(model.getPlayer(msg.player));
 				doUpdateDeck(model.getDeck().toArray());

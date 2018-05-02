@@ -39,7 +39,7 @@ public class ClientModelTest extends ClientModel{
 		for(int i = 0; i < 6; i++) {			
 			cards.add(this.createRandomCard());
 		}
-		this.setDeck(cards);
+		//this.setDeck(cards);
 		cards = new CardList();
 		for(int i = 0; i < 6; i++) {			
 			cards.add(this.createRandomCard());

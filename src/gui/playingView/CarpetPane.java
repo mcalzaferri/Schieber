@@ -70,6 +70,6 @@ public class CarpetPane extends ObservableView{
 		}
 		
 		//Draw deck (must be drawn over players so that the cards are always on top)
-		drawer.drawDeck(g, data.getDeck(), carpetSize, cardSize);
+		drawer.drawDeck(g,data, carpetSize, cardSize);
 	}
 }
