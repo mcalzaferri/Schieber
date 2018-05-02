@@ -1,5 +1,7 @@
 package shared;
 
+import java.util.Collection;
+
 import ch.ntb.jass.common.entities.CardColorEntity;
 import ch.ntb.jass.common.entities.CardEntity;
 import ch.ntb.jass.common.entities.CardValueEntity;
@@ -26,18 +28,18 @@ public class Card{
 			}
 		}
 	}
-	
+
 	public Card(int cardId) {
 		this(CardColor.getById(getColorId(cardId)),CardValue.getById(getValueId(cardId)));
 	}
-	
+
 	/** Use this constructor to cast a CardEntity into a Card
 	 * @param entity The entity to be cast
 	 */
 	public Card(CardEntity entity) {
 		this(entity.calcId());
 	}
-	
+
 	//Static methods
 	/** Use this method to cast an Array of CardEntities into an Array of Cards
 	 * @param cards the Array to be cast
@@ -55,7 +57,7 @@ public class Card{
 		}
 		return ce;
 	}
-	
+
 	//Methods
 	/** Checks if this Card is not properly defined and therefore its value is currently unknown
 	 * @return true if either value or color of the card are unknown. false if both values are defined.
@@ -63,7 +65,7 @@ public class Card{
 	public boolean isUnknown() {
 		return value == null || color == null;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if(this == null || obj == null)
@@ -83,7 +85,25 @@ public class Card{
 	public static Card getCardById(int cardId) {
 		return new Card(cardId);
 	}
-	
+
+	/**
+	 * Get winning card
+	 * @param cards list of cards
+	 * @param firstCard the first card played
+	 * @param trump the trump
+	 * @return winning card
+	 */
+	public static Card highest(Collection<Card> cards, Card firstCard, Trump trump) {
+		Card highest = firstCard;
+		cards.remove(firstCard);
+		for(Card card : cards) {
+			if(highest.compareTo(card, trump) > 0) {
+				highest = card;
+			}
+		}
+		return highest;
+	}
+
 	/** Use this method to get the underlying entity of this class
 	 * @return An entity representing this class
 	 */
@@ -91,7 +111,7 @@ public class Card{
 		return entity;
 	}
 
-	/**Compares this card to another. 
+	/**Compares this card to another.
 	 * The method will always return 1 if the card is from another color unless that color is trump
 	 * @param card The card which this is compared to
 	 * @return <0 if less, =0 if equal >0 if greater then card
@@ -125,7 +145,7 @@ public class Card{
 				return 0;
 		}
 	}
-	
+
     /**
      * @param Decomposes a card ID into the ID of the color.
      * @return The ID representative of the color.
@@ -151,7 +171,7 @@ public class Card{
     	else if(firstCardOnDeck == null)
     		return true; //If there is no card on the deck all cards are allowed
     	//Now handle all other cases
-    	
+
     	if(firstCardOnDeck.getColor() == this.getColor())
     		return true; //Same colored cards are always allowed. Nothing to explain here
     	if(trump.getGameMode() == GameMode.TRUMPF && trump.getTrumpfColor() == this.getColor())
@@ -176,12 +196,41 @@ public class Card{
 			return true;
 		return false;
 	}
-    
+
 	//Getter and Setter
 	public CardValue getValue() {
 		return value;
 	}
-	
+
+	/**
+	 * @param trump the trump
+	 * @return score of the card
+	 */
+	public int getScore(Trump trump) {
+		int score = 0;
+		switch(trump) {
+		case EICHEL:
+		case ROSE:
+		case SCHELLE:
+		case SCHILTE:
+			if (color == trump.getTrumpfColor()) {
+				score = value.getTrumpScore();
+			} else {
+				score = value.getGeneralScore();
+			}
+			break;
+		case OBENABE:
+			score = value.getObenabeScore();
+			break;
+		case UNEUFE:
+			score = value.getUneufeScore();
+			break;
+		default:
+			return 0;
+		}
+		return score * trump.getScoreMultiplicator();
+	}
+
 	public CardColor getColor() {
 		return color;
 	}

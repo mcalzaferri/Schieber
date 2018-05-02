@@ -48,7 +48,7 @@ public class GameLogic {
 	/** counts placed cards */
 	private int cardCounter;
 	private int targetScore;
-	private Map<Seat, Card> cardsOnTable;
+	private Map<Card, Seat> cardsOnTable;
 	/** winner of last run */
 	Seat lastWinner;
 
@@ -65,6 +65,8 @@ public class GameLogic {
 		roundStarter = null;
 		targetScore = 1000;
 		scores.clear();
+		scores.put(team1Id, 0);
+		scores.put(team2Id, 0);
 		initRound();
 		initRun();
 	}
@@ -361,19 +363,30 @@ public class GameLogic {
 			return MoveStatus.INVALID;
 		}
 
-		cardsOnTable.put(currentSeat, card);
+		if (cardsOnTable.isEmpty()) {
+			firstCard = card;
+		}
+
+		cardsOnTable.put(card, currentSeat);
 
 		currentSeat = getNextSeat(currentSeat);
 
 		cardCounter++;
 
 		if (cardCounter % 4 == 0) {
-			calcRunWinner();
-			scores.put(getTeamId(lastWinner), calcTableScore());
+			// get run winner
+			Card highCard = Card.highest(cardsOnTable.keySet(), firstCard, trump);
+			lastWinner = cardsOnTable.get(highCard);
+
+			// add score to team
+			int teamId = getTeamId(lastWinner);
+			scores.put(teamId, scores.get(teamId) + calcTableScore());
+
 			if (cardCounter == 36) {
+				scores.put(teamId, 5 * trump.getScoreMultiplicator());
 				currentSeat = null;
-				for (Map.Entry<Integer, Integer> entry : scores.entrySet()) {
-					if (entry.getValue() >= targetScore) {
+				for (int score : scores.values()) {
+					if (score >= targetScore) {
 						return MoveStatus.GAMEOVER;
 					}
 				}
@@ -389,28 +402,11 @@ public class GameLogic {
 		NOTALLOWED, INVALID, OK, RUNOVER, ROUNDOVER, GAMEOVER;
 	}
 
-	private void calcRunWinner() {
-		Seat seat = roundStarter;
-		Seat winner = seat;
-		Card highCard = cardsOnTable.get(seat);
-		for (int i = 0; i < 3; i++) {
-			Card card = cardsOnTable.get(seat);
-			//TODO: angeben handled the right way?
-			if (card.compareTo(highCard, trump/*, firstCard*/) > 0) {
-				highCard = card;
-				winner = seat;
-			}
-			seat = getNextSeat(seat);
-		}
-		lastWinner = winner;
-	}
-
-	//TODO: calc score
 	private int calcTableScore() {
 		int score = 0;
-//		for (Map.Entry<Seat, Card> entry : cardsOnTable.entrySet()) {
-//			score += entry.getValue().getValue().
-//		}
+		for (Card c : cardsOnTable.keySet()) {
+			score += c.getScore(trump);
+		}
 		return score;
 	}
 
@@ -448,11 +444,15 @@ public class GameLogic {
 	/**
 	 * @return number of players that sit at the table
 	 */
-	public int getTablePlayerCount () {
+	public int getTablePlayerCount() {
 		return getPlayersAtTable().size();
 	}
 
 	public int generatePlayerId() {
 		return playerId++;
+	}
+
+	public Player getRoundStarter() {
+		return getPlayer(roundStarter);
 	}
 }

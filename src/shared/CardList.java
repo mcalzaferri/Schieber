@@ -9,7 +9,7 @@ public class CardList extends ArrayList<Card>{
 	//Fields
 	private static final long serialVersionUID = 6000012260383619668L;
 	//Constructors
-	
+
 	//Methods
 	public void setData(int[] cardIds) {
 		super.clear();
@@ -48,7 +48,7 @@ public class CardList extends ArrayList<Card>{
 		}
 		updateData(array);
 	}
-	
+
 	public void sort() {
 		super.sort(new Comparator<Card>() {
 			@Override
@@ -57,7 +57,7 @@ public class CardList extends ArrayList<Card>{
 			}
 		});
 	}
-	
+
 	/** Removes a Card from the CardList. Use 0 for cardId to remove the first card from an unknown set of cards.
 	 * 
 	 */
@@ -84,27 +84,18 @@ public class CardList extends ArrayList<Card>{
 		}
 		return false;
 	}
-	
+
 	public void add(int cardId) {
 		if(!contains(cardId))
 			super.add(new Card(cardId));
 	}
-	
-	public Card highest(Card firstCard, Trump trump) {
-		Card highest = firstCard;
-		for(Card card : this) {
-			if(highest.compareTo(card, trump) > 0) {
-				highest = card;
-			}
-		}
-		return highest;
-	}
-	
+
 	@Override
 	public CardList clone() {
 		return (CardList)super.clone();
 	}
-	
+
+	@Override
 	public Card[] toArray() {
 		Card[] array = new Card[size()];
 		int i = 0;
@@ -114,7 +105,7 @@ public class CardList extends ArrayList<Card>{
 		}
 		return array;
 	}
-	
+
 	/** Searches for possible wiis in this set of cards (This is only practicable if this CardList represents a hand of cards)
 	 * @param trump Current trump of the game. Necessary to find Stoeck and return the correct originCard
 	 * @return
@@ -123,14 +114,14 @@ public class CardList extends ArrayList<Card>{
 		ArrayList<Weis> wiis = new ArrayList<>();
 		CardList tempList = this.clone();
 		tempList.sort(); //First sort this set of cards for easy handling
-		
+
 		int id = 0;
 		int sequenceCount = 0;
 		int[] sameValueCount = new int[9];
 		for(int i = 0; i<tempList.size(); i++) {
 			//Remember cards of same Value
 			sameValueCount[tempList.get(i).getValue().getId() - 1]++;
-			
+
 			//Find card in a sequence
 			//If seqenceCount is 0 or id is 0 reinitial with 1
 			if(id == 0 || sequenceCount == 0) {
@@ -180,7 +171,7 @@ public class CardList extends ArrayList<Card>{
 				wiis.add(new Weis(type, tempList.getCardById(i + 10 + 1))); //+ 1 to change from 0 based i to 1 based id and + 10 to get a valid cardId
 			}
 		}
-		
+
 		//Return array of wiis
 		Weis[] wiisArray = new Weis[wiis.size()];
 		return wiis.toArray(wiisArray);

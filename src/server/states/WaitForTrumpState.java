@@ -9,7 +9,6 @@ import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
 import server.exceptions.UnhandledMessageException;
 import shared.Player;
-import shared.Seat;
 import shared.Trump;
 
 public class WaitForTrumpState extends GameState {
@@ -20,8 +19,7 @@ public class WaitForTrumpState extends GameState {
 		schiebenAlreadyChosen = false;
 		ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
 		ctMsg.canSchieben = true;
-		//TODO REV: always letting player 1 choose the trump is wrong
-		send(ctMsg, logic.getPlayer(Seat.SEAT1));
+		send(ctMsg, logic.getRoundStarter());
 	}
 
 	/**
