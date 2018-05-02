@@ -21,12 +21,11 @@ public class ServerApp {
 	protected GameLogic logic;
 
 	static public void main(String[] args) throws ClassNotFoundException, IOException {
-		ServerApp app;
-		try {
-			app = new ServerApp(Integer.parseInt(args[0]));
-		} catch (NumberFormatException|ArrayIndexOutOfBoundsException e) {
-			app = new ServerApp();
-		}
+		start(Integer.parseInt(args[0]));
+	}
+
+	static public void start(int listenPort) throws  ClassNotFoundException, IOException {
+		ServerApp app = new ServerApp(listenPort);
 
 		// TODO: check if this actually works:
 //		Runtime.getRuntime().addShutdownHook(new Thread() {

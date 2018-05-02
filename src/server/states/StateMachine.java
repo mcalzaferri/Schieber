@@ -81,20 +81,25 @@ public class StateMachine {
 		}
 	}
 
-	private void handleNewPlayer(PlayerEntity playerData, InetSocketAddress playerAddr) throws IOException {
+	private void handleNewPlayer(PlayerEntity playerData, InetSocketAddress playerAddr) throws IOException, ClientErrorException {
 		// create new player
 		if(playerData.name == null || playerData.name.isEmpty()) {
 			playerData.name = "@" + playerAddr;
 		}
-		// TODO: fix player id? (id != 0)
-		// TODO: check if username already exists
+
+		for (Player p : GameState.logic.getPlayers()) {
+			if (playerData.name.equals(p.getName())) {
+				throw(new ClientErrorException("Username is taken."));
+			}
+		}
+
 		Player sender = new Player(playerAddr, playerData.name, Seat.NOTATTABLE,
-				playerData.isBot, false, GameState.logic.getPlayerCount() + 1);
+				playerData.isBot, false, GameState.logic.generatePlayerId());
 		GameState.logic.addPlayer(sender);
 		System.out.println("added " + playerData.name + " to the lobby");
 
 		// send current game state to player
-		PlayerEntity[] players = GameState.logic.getPlayerEntities();
+		PlayerEntity[] players = Player.getEntities(GameState.logic.getPlayers().toArray(new Player[] {}));
 		if(currentState instanceof LobbyState) {
 			LobbyStateMessage lsm = new LobbyStateMessage();
 			lsm.players = players;

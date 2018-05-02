@@ -104,4 +104,8 @@ public class Communication {
 	public void setListenPort(int port) {
 		this.port = port;
 	}
+
+	public int getListenPort() {
+		return port;
+	}
 }

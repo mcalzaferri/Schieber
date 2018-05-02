@@ -3,17 +3,17 @@ package shared;
 import ch.ntb.jass.common.entities.CardValueEntity;
 
 public enum CardValue {
-	//(	ID,		Defaultvalue, 	Trumpfvalue, 	GeneralScore, 	TrumpfScore, 	UneufeScore, 	ObenabeScore)
-	SECHS(	1,		6,		6,		0,		0,		11,		0),
-	SIEBEN(	2,		7,		7,		0,		0,		0,		0),
-	ACHT(	3,		8,		8,		0,		0,		8,		8),
-	NEUN(	4,		9,		15,		0,		14,		0,		0),
-	ZEHN(	5,		10,		10,		10,		10,		10,		10),
-	UNDER(	6,		11,		16,		2,		20,		2,		2),
-	OBER(	7,		12,		12,		3,		3,		3,		3),
-	KOENIG(	8,		13,		13,		4,		4,		4,		4),
-	ASS(	9,		14,		14,		11,		11,		0,		11);
-	
+	//(    ID, Defaultvalue,  Trumpfvalue,  GeneralScore, TrumpfScore, UneufeScore, ObenabeScore)
+	SECHS(  1,            6,            6,             0,           0,          11,            0),
+	SIEBEN( 2,            7,            7,             0,           0,           0,            0),
+	ACHT(   3,            8,            8,             0,           0,           8,            8),
+	NEUN(   4,            9,           15,             0,          14,           0,            0),
+	ZEHN(   5,           10,           10,            10,          10,          10,           10),
+	UNDER(  6,           11,           16,             2,          20,           2,            2),
+	OBER(   7,           12,           12,             3,           3,           3,            3),
+	KOENIG( 8,           13,           13,             4,           4,           4,            4),
+	ASS(    9,           14,           14,            11,          11,           0,           11);
+
 	private final int id;
 	private final int defaultValue;
 	private final int trumpValue;
@@ -21,7 +21,7 @@ public enum CardValue {
 	private final int trumpScore;
 	private final int uneufeScore;
 	private final int obenabeScore;
-	
+
 	//Konstruktoren
 	CardValue(int id, int defaultValue, int trumpValue, int generalScore, int trumpScore, int uneufeScore, int obenabeScore){
 		this.id = id;
@@ -56,15 +56,15 @@ public enum CardValue {
 		}
 		return null;
 	}
-	
+
 	public static CardValue getByEntity(CardValueEntity entity) {
 		return getById(entity.getId());
 	}
-	
+
 	public CardValueEntity getEntity() {
 		return CardValueEntity.getById(id);
 	}
-	
+
 	//Getters und Setters
 	public int getId() {
 		return id;

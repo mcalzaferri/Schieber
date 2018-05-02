@@ -33,12 +33,11 @@ public class WaitForTrumpState extends GameState {
 		if(msg instanceof ChosenTrumpMessage) {
 			//TODO REV: check first if this message is from the right sender
 
-			ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
-
-			ctMsg.canSchieben = false;
-
 			//Sends request to choose trump back to the sender
 			if(((ChosenTrumpMessage) msg).trump.equals(TrumpEntity.SCHIEBEN)) {
+				ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
+				ctMsg.canSchieben = false;
+
 				if(schiebenAlreadyChosen) {
 					//TODO REV: throw ClientErrorException
 					send(ctMsg, sender);
@@ -54,6 +53,8 @@ public class WaitForTrumpState extends GameState {
 				Trump trump = Trump.getByEntity(((ChosenTrumpMessage) msg).trump);
 				logic.setTrump(trump);
 				broadcast(ctiMsg);
+				System.out.println(sender + " chose "
+						+ ((ChosenTrumpMessage) msg).trump + " as trump");
 				stateMachine.changeState(new WaitForCardState());
 			}
 		} else {

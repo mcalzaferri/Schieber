@@ -108,8 +108,8 @@ public class Player {
 		cards.updateData(cs);
 	}
 
-	public void popCard(Card c) {
-		cards.remove(c);
+	public boolean removeCard(Card c) {
+		return cards.remove(c);
 	}
 
 	public void setCards(CardList cards) {

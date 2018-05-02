@@ -25,8 +25,8 @@ public class ServerBotIntegrationTest {
 
 		// Start 4 bots
 		for (int i = 0; i < 4; i++) {
-			BotApplication.main(new String[] {Integer.toString(clientListenPort + i),
-					"localhost",  Integer.toString(serverListenPort)});
+			BotApplication.start(clientListenPort + i, "localhost",
+					serverListenPort);
 		}
 	}
 }
