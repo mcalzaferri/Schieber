@@ -58,8 +58,16 @@ public class CardList extends ArrayList<Card>{
 		});
 	}
 	
+	/** Removes a Card from the CardList. Use 0 for cardId to remove the first card from an unknown set of cards.
+	 * 
+	 */
 	@Override
 	public Card remove(int cardId) {
+		if(cardId == 0) {
+			Card card = get(0);
+			super.remove(card);
+			return card;
+		}
 		for(Card card : this) {
 			if(cardId == card.getId()) {
 				super.remove(card);
@@ -178,6 +186,18 @@ public class CardList extends ArrayList<Card>{
 		return wiis.toArray(wiisArray);
 	}
 
+	/** Checks if this CardList only contains unknown cards.
+	 * @return
+	 */
+	public boolean allUnknown() {
+		for(Card card : this) {
+			if(!card.isUnknown()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	//Getters and setters
 	/** Returns the card in this CardList with the given id. If there is no such card, null is returned.
 	 * @param id The id of the card that shall be returned.

@@ -63,35 +63,36 @@ public class CarpetDrawer {
 		int yOffset = -cardSize.height/2;
 		
 		if(deck != null) {
-			for(Card c : deck) {				
-				try {
-					img = Gui.pictureFactory.getPicture(c, cardSize);
-					switch(index) {
-					case 0:
-						x = carpetSize.getSize().width/2 + xOffset;
-						y = carpetSize.getSize().height*2/3 + yOffset;
-						g.drawImage(img, x, y, null);
-						break;
-					case 1:
-						x = carpetSize.getSize().width*2/3 + xOffset;
-						y = carpetSize.getSize().height/2 + yOffset;
-						g.drawImage(img, x, y, null);
-						break;
-					case 2:
-						x = carpetSize.getSize().width/2 + xOffset;
-						y = carpetSize.getSize().height*1/3 + yOffset;
-						g.drawImage(img, x, y, null);
-						break;
-					case 3:
-						x = carpetSize.getSize().width*1/3 + xOffset;
-						y = carpetSize.getSize().height/2 + yOffset;
-						g.drawImage(img, x, y, null);
-						break;
+			for(Card c : deck) {
+				if(c != null) {
+					try {
+						img = Gui.pictureFactory.getPicture(c, cardSize);
+						switch(index) {
+						case 0:
+							x = carpetSize.getSize().width/2 + xOffset;
+							y = carpetSize.getSize().height*2/3 + yOffset;
+							g.drawImage(img, x, y, null);
+							break;
+						case 1:
+							x = carpetSize.getSize().width*2/3 + xOffset;
+							y = carpetSize.getSize().height/2 + yOffset;
+							g.drawImage(img, x, y, null);
+							break;
+						case 2:
+							x = carpetSize.getSize().width/2 + xOffset;
+							y = carpetSize.getSize().height*1/3 + yOffset;
+							g.drawImage(img, x, y, null);
+							break;
+						case 3:
+							x = carpetSize.getSize().width*1/3 + xOffset;
+							y = carpetSize.getSize().height/2 + yOffset;
+							g.drawImage(img, x, y, null);
+							break;
+						}
+						index++;
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-					index++;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 		}

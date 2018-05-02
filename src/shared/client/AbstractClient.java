@@ -137,12 +137,14 @@ public abstract class AbstractClient {
 			@Override
 			public void msgReceived(TurnInfoMessage msg) {
 				model.getDeck().add(new Card(msg.laidCard));
-				model.getPlayer(msg.player).getCards().remove(msg.laidCard.calcId());
+				if(model.getThisPlayer().equals(msg.player)) { 
+					model.getThisPlayer().getCards().remove(0);
+					doUpdateHand(model.getHand().toArray());
+				}else {
+					model.getPlayer(msg.player).getCards().remove(msg.laidCard.calcId());
+				}
 				playerChanged(model.getPlayer(msg.player));
 				doUpdateDeck(model.getDeck().toArray());
-				if(model.getThisPlayer().equals(msg.player)) { 
-					doUpdateHand(model.getHand().toArray());
-				}
 				if(model.getGameState() != GameState.PLAYOVER)
 					model.setGameState(GameState.TURNOVER);
 			}
