@@ -7,6 +7,7 @@ import ch.ntb.jass.common.proto.*;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
+import server.exceptions.ClientErrorException;
 import server.exceptions.UnhandledMessageException;
 import shared.Player;
 import shared.Trump;
@@ -14,8 +15,12 @@ import shared.Trump;
 public class WaitForTrumpState extends GameState {
 
 	private boolean schiebenAlreadyChosen;
-	//TODO REV: use act method
+
 	public WaitForTrumpState() throws IOException {
+		act();
+	}
+	
+	public void act()throws IOException{
 		schiebenAlreadyChosen = false;
 		ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
 		ctMsg.canSchieben = true;
@@ -24,39 +29,52 @@ public class WaitForTrumpState extends GameState {
 
 	/**
 	 * @throws UnhandledMessageException
+	 * @throws ClientErrorException 
 	 * @see GameState#handleMessage(Player, ToServerMessage)
 	 */
-	@Override
-	public void handleMessage(Player sender, ToServerMessage msg) throws IOException, UnhandledMessageException{
+	public void handleMessage(Player sender, ToServerMessage msg) 
+			throws IOException, UnhandledMessageException, ClientErrorException{
+		
 		if(msg instanceof ChosenTrumpMessage) {
-			//TODO REV: check first if this message is from the right sender
-
-			//Sends request to choose trump back to the sender
-			if(((ChosenTrumpMessage) msg).trump.equals(TrumpEntity.SCHIEBEN)) {
-				ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
-				ctMsg.canSchieben = false;
-
-				if(schiebenAlreadyChosen) {
-					//TODO REV: throw ClientErrorException
-					send(ctMsg, sender);
-					return;
+			
+			if(!schiebenAlreadyChosen && (sender == logic.getRoundStarter())){
+				
+				if(((ChosenTrumpMessage) msg).trump.equals(TrumpEntity.SCHIEBEN)) {
+					ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
+					ctMsg.canSchieben = false;
+					//Send request to choose trump to the team partner
+					schiebenAlreadyChosen = true;
+					send(ctMsg, logic.getPartner(sender));
+				} else {
+					setTrump(msg, sender);					
 				}
-
-				//Send request to choose trump to the teammember
-				send(ctMsg, logic.getPartner(sender));
-				schiebenAlreadyChosen = true;
-			} else {
-				ChosenTrumpInfoMessage ctiMsg = new ChosenTrumpInfoMessage();
-				ctiMsg.trump = ((ChosenTrumpMessage) msg).trump;
-				Trump trump = Trump.getByEntity(((ChosenTrumpMessage) msg).trump);
-				logic.setTrump(trump);
-				broadcast(ctiMsg);
-				System.out.println(sender + " chose "
-						+ ((ChosenTrumpMessage) msg).trump + " as trump");
-				stateMachine.changeState(new WaitForCardState());
+			}
+			else if(schiebenAlreadyChosen && (sender == logic.getPartner(logic.getRoundStarter()))){
+				
+				if(((ChosenTrumpMessage) msg).trump.equals(TrumpEntity.SCHIEBEN)) {
+					throw(new ClientErrorException("You can't Schieben more than once"));
+				} else {
+					setTrump(msg, sender);
+				}
+			}
+			else{	
+				throw(new ClientErrorException("Wrong Player tries to choose Trump. PlayerID: " + sender.getId()));
 			}
 		} else {
 			throw(new UnhandledMessageException());
 		}
+	}
+	
+	private void setTrump(ToServerMessage msg, Player sender)
+			throws IOException, UnhandledMessageException, ClientErrorException{
+		
+		ChosenTrumpInfoMessage ctiMsg = new ChosenTrumpInfoMessage();
+		ctiMsg.trump = ((ChosenTrumpMessage) msg).trump;
+		Trump trump = Trump.getByEntity(((ChosenTrumpMessage) msg).trump);
+		logic.setTrump(trump);
+		broadcast(ctiMsg);
+		System.out.println(sender + " chose "
+				+ ((ChosenTrumpMessage) msg).trump + " as trump");
+		stateMachine.changeState(new WaitForCardState());
 	}
 }
