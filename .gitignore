@@ -1,2 +1,6 @@
 bin
 **/.emptyDir
+
+#IntelliJ
+.idea/workspace.xml
+.idea/tasks.xml
