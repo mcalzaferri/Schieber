@@ -149,7 +149,9 @@ public class CarpetDrawer {
 			switch(seat) {
 			case BOTTOM:
 				img = Gui.pictureFactory.getScaledPicture(imgSouth, cardSize);
-				g.drawString(text, (carpetSize.width - stringWidth)/2, carpetSize.height - gap - cardSize.height);
+				g.drawString(text, 
+						(carpetSize.width - stringWidth)/2, 
+						carpetSize.height - gap - cardSize.height);
 
 				break;
 			case LEFT:
@@ -158,7 +160,9 @@ public class CarpetDrawer {
 					g.drawImage(img, 0, 
 							(carpetSize.height - (nOfCards + 1)*cardSizeInv.height/2)/2 + i*cardSizeInv.height/2, null);
 				}
-				g.drawString(text, gap + cardSizeInv.width, (carpetSize.height + stringHeight)/2);
+				g.drawString(text, 
+						gap + cardSizeInv.width, 
+						(carpetSize.height + stringHeight)/2 + cardSize.height + gap);
 			
 				break;
 			case NOTATTABLE:
@@ -169,7 +173,9 @@ public class CarpetDrawer {
 					g.drawImage(img, (carpetSize.width + (nOfCards + 1)*cardSize.width/2)/2 - i*cardSize.width/2 - cardSize.width, 
 							0, null);
 				}
-				g.drawString(text, (carpetSize.width - stringWidth)/2, gap + stringHeight + cardSize.height);
+				g.drawString(text, 
+						(carpetSize.width - stringWidth)/2, 
+						gap + stringHeight + cardSize.height);
 				
 				break;
 			case RIGHT:
@@ -178,7 +184,9 @@ public class CarpetDrawer {
 					g.drawImage(img, carpetSize.width - cardSizeInv.width, 
 							(carpetSize.height + (nOfCards + 1)*cardSizeInv.height/2)/2 - i*cardSizeInv.height/2 - cardSizeInv.height, null);
 				}
-				g.drawString(text, (carpetSize.width - stringWidth - gap - cardSizeInv.width), (carpetSize.height + stringHeight)/2);
+				g.drawString(text, 
+						(carpetSize.width - stringWidth - gap - cardSizeInv.width), 
+						(carpetSize.height + stringHeight)/2 + cardSize.height + gap);
 				
 				break;
 			default:
