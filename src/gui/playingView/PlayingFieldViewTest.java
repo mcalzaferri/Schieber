@@ -65,8 +65,15 @@ public class PlayingFieldViewTest extends JFrame{
 			@Override
 			public void btnCardClick(Card card) {
 				System.out.println(card.getColor().toString() + card.getValue());	
-				data.getHand().remove(card);
-				data.getHand().add(createRandomCard());
+				//Change Hand V1 => Works
+//				data.getHand().remove(card);
+//				data.getHand().add(createRandomCard());
+//				pfv.update();
+				
+				//Change Hand V2 => Works but hand gets smaller???
+				Card[] cards = data.getHand().toArray();
+				cards[0] = createRandomCard();
+				data.updateHand(cards);
 				pfv.update();
 			}
 
