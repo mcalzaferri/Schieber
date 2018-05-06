@@ -2,8 +2,12 @@ package server.states;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 
+import ch.ntb.jass.common.entities.CardEntity;
 import ch.ntb.jass.common.entities.PlayerEntity;
+import ch.ntb.jass.common.entities.ScoreEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.LeaveLobbyMessage;
@@ -16,6 +20,7 @@ import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
 import server.exceptions.ClientErrorException;
 import server.exceptions.InvalidMessageDataException;
 import server.exceptions.UnhandledMessageException;
+import shared.Card;
 import shared.InternalMessage;
 import shared.Player;
 import shared.Seat;
@@ -55,7 +60,7 @@ public class StateMachine {
 		}
 
 		if (msg instanceof JoinLobbyMessage) {
-			if(sender == null) {
+			if (sender == null) {
 				// New player joined
 				PlayerEntity playerData = ((JoinLobbyMessage) msg).playerData;
 				handleNewPlayer(playerData, iMsg.senderAddress);
@@ -63,18 +68,29 @@ public class StateMachine {
 				System.out.println("Player tried to rejoin lobby");
 			}
 		} else if (msg instanceof LeaveLobbyMessage) {
-			//TODO REV: perform action first then tell players about it
-			PlayerLeftLobbyInfoMessage pllim = new PlayerLeftLobbyInfoMessage();
-			GameState.broadcast(pllim);
 			GameState.logic.removePlayer(sender);
+			PlayerLeftLobbyInfoMessage pllMsg = new PlayerLeftLobbyInfoMessage();
+			pllMsg.player = sender.getEntity();
+			GameState.broadcast(pllMsg);
 		} else if (msg instanceof LeaveTableMessage) {
-			//TODO REV: perform action first then tell players about it
-			PlayerMovedToLobbyInfoMessage pmtlim = new PlayerMovedToLobbyInfoMessage();
-			GameState.broadcast(pmtlim);
+			if (!sender.isAtTable()) {
+				return;
+			}
+
 			sender.setSeat(Seat.NOTATTABLE);
-			EndOfRoundInfoMessage eorim = new EndOfRoundInfoMessage();
-			GameState.broadcast(eorim);
-			changeState(new LobbyState());
+
+			PlayerMovedToLobbyInfoMessage pmtlMsg = new PlayerMovedToLobbyInfoMessage();
+			pmtlMsg.player = sender.getEntity();
+			GameState.broadcast(pmtlMsg);
+
+			// if a player is leaving an ongoing game the game is cancelled
+			if (!(currentState instanceof LobbyState)) {
+				EndOfRoundInfoMessage eorim = new EndOfRoundInfoMessage();
+				eorim.score = null;
+				eorim.gameOver = true;
+				GameState.broadcast(eorim);
+				changeState(new LobbyState());
+			}
 		} else {
 			// let current state handle message
 			currentState.handleMessage(sender, msg);
@@ -106,15 +122,32 @@ public class StateMachine {
 			GameState.send(lsm, sender);
 		} else {
 			GameStateMessage gsm = new GameStateMessage();
+
 			gsm.players = players;
-			//TODO: send gameStateMessage
-			//gsm.teams = ;
-			//gsm.currentPlayer = ;
-			//gsm.hands = ;
-			//gsm.deck = ;
-			//gsm.trump = ;
-			//gsm.score = ;
-			//GameState.send(gsm, sender);
+			gsm.teams = GameState.logic.getTeams();
+			gsm.currentPlayer = GameState.logic.getCurrentPlayer().getEntity();
+
+			Map<Integer, CardEntity[]> hands = new HashMap<>();
+			for (Player p : GameState.logic.getPlayers()) {
+				if (p.isAtTable()) {
+					CardEntity[] cs = Card.getEntities(p.getCards().toArray());
+					for (CardEntity c : cs) {
+						c.color = null;
+						c.value = null;
+					}
+					hands.put(p.getId(), cs);
+				}
+			}
+			gsm.hands = hands;
+
+			gsm.deck = Card.getEntities(GameState.logic.getCardsOnTable().toArray(new Card[] {}));
+			gsm.trump = GameState.logic.getTrump().getEntity();
+
+			ScoreEntity score = new ScoreEntity();
+			score.scores = GameState.logic.getScores();
+			gsm.score = score;
+
+			GameState.send(gsm, sender);
 		}
 
 		// inform others that a new player joined

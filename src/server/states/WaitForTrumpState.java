@@ -13,13 +13,12 @@ import shared.Player;
 import shared.Trump;
 
 public class WaitForTrumpState extends GameState {
-
 	private boolean schiebenAlreadyChosen;
 
-	public WaitForTrumpState() throws IOException {
-		act();
-	}
-	
+	/**
+	 * @see GameState#act()
+	 */
+	@Override
 	public void act()throws IOException{
 		schiebenAlreadyChosen = false;
 		ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
@@ -29,16 +28,14 @@ public class WaitForTrumpState extends GameState {
 
 	/**
 	 * @throws UnhandledMessageException
-	 * @throws ClientErrorException 
+	 * @throws ClientErrorException
 	 * @see GameState#handleMessage(Player, ToServerMessage)
 	 */
-	public void handleMessage(Player sender, ToServerMessage msg) 
-			throws IOException, UnhandledMessageException, ClientErrorException{
-		
-		if(msg instanceof ChosenTrumpMessage) {
-			
-			if(!schiebenAlreadyChosen && (sender == logic.getRoundStarter())){
-				
+	@Override
+	public void handleMessage(Player sender, ToServerMessage msg)
+			throws IOException, UnhandledMessageException, ClientErrorException {
+		if (msg instanceof ChosenTrumpMessage) {
+			if (!schiebenAlreadyChosen && (sender == logic.getRoundStarter())) {
 				if(((ChosenTrumpMessage) msg).trump.equals(TrumpEntity.SCHIEBEN)) {
 					ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
 					ctMsg.canSchieben = false;
@@ -46,28 +43,26 @@ public class WaitForTrumpState extends GameState {
 					schiebenAlreadyChosen = true;
 					send(ctMsg, logic.getPartner(sender));
 				} else {
-					setTrump(msg, sender);					
+					setTrump(msg, sender);
 				}
-			}
-			else if(schiebenAlreadyChosen && (sender == logic.getPartner(logic.getRoundStarter()))){
-				
+			} else if (schiebenAlreadyChosen &&
+			           (sender == logic.getPartner(logic.getRoundStarter()))) {
+
 				if(((ChosenTrumpMessage) msg).trump.equals(TrumpEntity.SCHIEBEN)) {
-					throw(new ClientErrorException("You can't Schieben more than once"));
+					throw(new ClientErrorException("You can't Schieben more than once!"));
 				} else {
 					setTrump(msg, sender);
 				}
-			}
-			else{	
-				throw(new ClientErrorException("Wrong Player tries to choose Trump. PlayerID: " + sender.getId()));
+			} else {
+				throw(new ClientErrorException("It's not your turn to choose the trump!"));
 			}
 		} else {
 			throw(new UnhandledMessageException());
 		}
 	}
-	
+
 	private void setTrump(ToServerMessage msg, Player sender)
-			throws IOException, UnhandledMessageException, ClientErrorException{
-		
+			throws IOException, UnhandledMessageException, ClientErrorException {
 		ChosenTrumpInfoMessage ctiMsg = new ChosenTrumpInfoMessage();
 		ctiMsg.trump = ((ChosenTrumpMessage) msg).trump;
 		Trump trump = Trump.getByEntity(((ChosenTrumpMessage) msg).trump);

@@ -1,14 +1,7 @@
 package server;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.TeamEntity;
@@ -43,19 +36,26 @@ public class GameLogic {
 	private Card firstCard;
 	/** maps team via team ID to their score */
 	private Map<Integer, Integer> scores;
-	/** seat that started the round */
+	/** seat that starts the round */
 	private Seat roundStarter;
 	/** counts placed cards */
 	private int cardCounter;
 	private int targetScore;
 	private Map<Card, Seat> cardsOnTable;
 	/** winner of last run */
-	Seat lastWinner;
+	private Seat lastWinner;
 
 	public GameLogic() {
 		players = new ArrayList<>();
 		scores = new HashMap<>();
 		cardsOnTable = new HashMap<>();
+		cardCounter = -1;
+		trump = null;
+		lastWinner = null;
+		currentSeat = null;
+		firstCard = null;
+		roundStarter = null;
+		targetScore = -1;
 	}
 
 	/**
@@ -67,8 +67,6 @@ public class GameLogic {
 		scores.clear();
 		scores.put(team1Id, 0);
 		scores.put(team2Id, 0);
-		initRound();
-		initRun();
 	}
 
 	/**
@@ -84,7 +82,6 @@ public class GameLogic {
 		} else {
 			roundStarter = getNextSeat(roundStarter);
 		}
-		currentSeat = roundStarter;
 
 		assignCardsToPlayers();
 		initRun();
@@ -97,6 +94,8 @@ public class GameLogic {
 		cardsOnTable.clear();
 		if (lastWinner != null) {
 			currentSeat = lastWinner;
+		} else {
+			currentSeat = roundStarter;
 		}
 		firstCard = null;
 	}
@@ -106,6 +105,10 @@ public class GameLogic {
 	 */
 	public void setTrump(Trump trump){
 		this.trump = trump;
+	}
+
+	public Trump getTrump() {
+		return trump;
 	}
 
 	/**
@@ -140,9 +143,10 @@ public class GameLogic {
 
 		// assign cards
 		for (Player player : getPlayersAtTable()) {
-			player.putCards(Arrays.copyOfRange(deck, 9 * (player.getSeatNr() - 1),
-	                9 * (player.getSeatNr() - 1) + 9));
-			}
+			player.putCards(Arrays.copyOfRange(deck,
+							9 * (player.getSeatNr() - 1),
+							9 * (player.getSeatNr() - 1) + 9));
+		}
 	}
 
 	/**
@@ -174,7 +178,7 @@ public class GameLogic {
 		}
 
 		if (player.getSeat().equals(preferredSeat)) {
-			// Player is already sitting at this seat.
+			// player is already sitting at this seat
 			return;
 		}
 
@@ -187,10 +191,11 @@ public class GameLogic {
 		}
 
 		player.setSeat(preferredSeat);
+		return;
 	}
 
 	/**
-	 * @return first free seat
+	 * @return first free seat if one is available, NOTATTABLE otherwise
 	 */
 	private Seat getFreeSeat() {
 		for (Seat seat : Seat.values()) {
@@ -200,7 +205,7 @@ public class GameLogic {
 
 			boolean free = true;
 			for (Player p : players) {
-				if(p.getSeat() == seat) {
+				if (p.getSeat() == seat) {
 					free = false;
 				}
 			}
@@ -209,7 +214,7 @@ public class GameLogic {
 				return seat;
 			}
 		}
-		return null;
+		return Seat.NOTATTABLE;
 	}
 
 	/**
@@ -232,7 +237,7 @@ public class GameLogic {
 	 */
 	public Player getPlayer(InetSocketAddress addr) {
 		for (Player p : players) {
-			if(p.getSocketAddress().equals(addr)) {
+			if (p.getSocketAddress().equals(addr)) {
 				return p;
 			}
 		}
@@ -247,7 +252,7 @@ public class GameLogic {
 	 */
 	public Player getPlayer(Seat seat) {
 		for (Player p : players) {
-			if(p.getSeat().equals(seat)) {
+			if (p.getSeat().equals(seat)) {
 				return p;
 			}
 		}
@@ -294,6 +299,9 @@ public class GameLogic {
 		team.players = new PlayerEntity[] {getPlayer(Seat.SEAT2).getEntity(),
 				getPlayer(Seat.SEAT4).getEntity()};
 		return team;
+	}
+	public TeamEntity[] getTeams() {
+		return new TeamEntity[] { getTeam1(), getTeam2() };
 	}
 	/** @} */
 
@@ -342,10 +350,10 @@ public class GameLogic {
 
 	/**
 	 * Place a card
-	 * A run starts every four cards.
-	 * A round starts evers 36 cards.
-	 * If the score limit has been reached the game is over.
-	 * @return move status enum
+	 * a new run starts every four cards.
+	 * a new round starts every 36 cards.
+	 * If the score target has been reached the game is over.
+	 * @return move status
 	 */
 	public MoveStatus placeCard(Card card) {
 		if (cardCounter == 36) {
@@ -414,6 +422,9 @@ public class GameLogic {
 		return getPlayer(lastWinner);
 	}
 
+	/**
+	 * @return true if it's the first run of the round, false otherwise
+	 */
 	public boolean inFirstRun() {
 		return cardCounter < 4;
 	}
@@ -454,5 +465,9 @@ public class GameLogic {
 
 	public Player getRoundStarter() {
 		return getPlayer(roundStarter);
+	}
+
+	public Collection<Card> getCardsOnTable() {
+		return cardsOnTable.keySet();
 	}
 }

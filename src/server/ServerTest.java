@@ -28,7 +28,7 @@ public class ServerTest {
 	private final int serverListenPort = 65000;
 	private final int clientListenPort = 64000;
 	private final InetSocketAddress serverAddr = new InetSocketAddress("localhost", serverListenPort);
-	private final InetSocketAddress clientAddr = new InetSocketAddress("localhost", serverListenPort);
+	private final InetSocketAddress clientAddr = new InetSocketAddress("localhost", clientListenPort);
 	private ServerApp app;
 	private Communication client;
 
@@ -73,8 +73,8 @@ public class ServerTest {
 		sendMsgToServer(jtMsg);
 
 		waitForMessage();
-		assertEquals(jtMsg.preferedSeat, app.logic.getPlayer(
-				new InetSocketAddress("localhost", clientListenPort)).getSeat());
+		assertEquals(jtMsg.preferedSeat,
+		             app.logic.getPlayer(clientAddr).getSeat().getSeatEntity());
 	}
 
 	/**
@@ -88,6 +88,11 @@ public class ServerTest {
 		}
 	}
 
+	/**
+	 * Helper function that sends a message from the client to the server
+	 * @param msg message to send
+	 * @throws IOException
+	 */
 	private void sendMsgToServer(ToServerMessage msg) throws IOException {
 		client.send(msg, serverAddr);
 	}

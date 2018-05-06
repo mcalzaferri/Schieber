@@ -8,7 +8,6 @@ import ch.ntb.jass.common.proto.player_messages.ChosenWiisMessage;
 import ch.ntb.jass.common.proto.player_messages.PlaceCardMessage;
 import ch.ntb.jass.common.proto.server_info_messages.EndOfRoundInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.NewTurnInfoMessage;
-import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.StichInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.TurnInfoMessage;
 import ch.ntb.jass.common.proto.server_messages.WrongCardMessage;
@@ -16,7 +15,6 @@ import server.exceptions.ClientErrorException;
 import server.exceptions.UnhandledMessageException;
 import shared.Card;
 import shared.Player;
-import shared.Seat;
 
 public class WaitForCardState extends GameState {
 	/**
@@ -73,33 +71,12 @@ public class WaitForCardState extends GameState {
 				break;
 			}
 			case ROUNDOVER: {
-				EndOfRoundInfoMessage eorMsg = new EndOfRoundInfoMessage();
-				eorMsg.gameOver = false;
-				ScoreEntity score = new ScoreEntity();
-				score.scores = logic.getScores();
-				eorMsg.score = score;
-				broadcast(eorMsg);
+				broadcastEndOfRound(false);
 				stateMachine.changeState(new StartRoundState());
 				break;
 			}
 			case GAMEOVER: {
-				EndOfRoundInfoMessage eorMsg = new EndOfRoundInfoMessage();
-				eorMsg.gameOver = true;
-				ScoreEntity score = new ScoreEntity();
-				score.scores = logic.getScores();
-				eorMsg.score = score;
-				stateMachine.changeState(new StartRoundState());
-
-				Player p;
-				PlayerMovedToLobbyInfoMessage pmtlMsg = new PlayerMovedToLobbyInfoMessage();
-
-				// move all players to lobby
-				for (Seat s : Seat.values()) {
-					p = logic.getPlayer(s);
-					p.setSeat(Seat.NOTATTABLE);
-					pmtlMsg.player = p.getEntity();
-					broadcast(pmtlMsg);
-				}
+				broadcastEndOfRound(true);
 
 				// start new game
 				stateMachine.changeState(new LobbyState());
@@ -113,5 +90,14 @@ public class WaitForCardState extends GameState {
 		} else {
 			throw(new UnhandledMessageException());
 		}
+	}
+
+	private void broadcastEndOfRound(boolean gameOver) throws IOException {
+		EndOfRoundInfoMessage eorMsg = new EndOfRoundInfoMessage();
+		eorMsg.gameOver = gameOver;
+		ScoreEntity score = new ScoreEntity();
+		score.scores = logic.getScores();
+		eorMsg.score = score;
+		broadcast(eorMsg);
 	}
 }

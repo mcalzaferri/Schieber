@@ -1,5 +1,6 @@
 package shared;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import ch.ntb.jass.common.entities.CardColorEntity;
@@ -94,9 +95,10 @@ public class Card{
 	 * @return winning card
 	 */
 	public static Card highest(Collection<Card> cards, Card firstCard, Trump trump) {
+		ArrayList<Card> cs = new ArrayList<>(cards);
 		Card highest = firstCard;
-		cards.remove(firstCard);
-		for(Card card : cards) {
+		cs.remove(firstCard);
+		for(Card card : cs) {
 			if(highest.compareTo(card, trump) > 0) {
 				highest = card;
 			}
