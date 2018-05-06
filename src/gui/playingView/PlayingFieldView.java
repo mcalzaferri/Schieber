@@ -1,15 +1,14 @@
 package gui.playingView;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import gui.BufferedDrawer;
 import gui.Gui;
 import gui.ObservableView;
 import gui.Viewable;
@@ -68,14 +67,21 @@ public class PlayingFieldView extends ObservableView implements Viewable{
 
 		//Set up content
 		content = new JPanel() {
+			BufferedDrawer bd = new BufferedDrawer(); //Has to be initialized before constructor
+			Graphics bg;
 			@Override
     		public void paintComponent(Graphics g) {
     			g.drawImage(Gui.pictureFactory.getScaledPicture(img, getSize()), 0, 0, null);
     		}
+			@Override
+			public void paint(Graphics g) {
+				bg = bd.getGraphics(getSize());
+				super.paint(bg);
+				bd.drawOnGraphics(g);
+			}
 		};
 		content.setLayout(new BorderLayout());
 		content.add(this, BorderLayout.CENTER);
-		content.setDoubleBuffered(true);
 	}
 	
 	public void publish(String text) {
@@ -98,5 +104,6 @@ public class PlayingFieldView extends ObservableView implements Viewable{
 	public ViewEnumeration getType() {
 		return ViewEnumeration.PLAYVIEW;
 	}
+	
 	
 }
