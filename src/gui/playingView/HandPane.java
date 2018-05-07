@@ -94,10 +94,15 @@ public class HandPane extends ObservableView implements ActionListener{
 
 	private void doEnableCard(ViewableCard vc) {
 		if(data.getDeck().toArray().length > 0) {
-			//isAllowed method can handle null values!!!
-			vc.setEnabled(vc.getCard().isAllowed(data.getHand().toArray(), 
-					data.getDeck().get(0), 
-					data.getTrump()));
+			//isAllowed method can handle null values!!! (But should not /Maurus)
+			if(data.getTrump() != null) {
+				vc.setEnabled(vc.getCard().isAllowed(data.getHand().toArray(), 
+						data.getDeck().get(0), 
+						data.getTrump()));
+			}else {
+				vc.setEnabled(true);
+			}
+			
 		}
 		else {
 			vc.setEnabled(vc.getCard().isAllowed(data.getHand().toArray(), 
