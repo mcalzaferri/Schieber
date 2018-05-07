@@ -11,6 +11,7 @@ import ch.ntb.jass.common.proto.server_info_messages.NewTurnInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.StichInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.TurnInfoMessage;
 import ch.ntb.jass.common.proto.server_messages.WrongCardMessage;
+import server.GameLogic.MoveStatus;
 import server.exceptions.ClientErrorException;
 import server.exceptions.UnhandledMessageException;
 import shared.Card;
@@ -44,60 +45,79 @@ public class WaitForCardState extends GameState {
 
 			PlaceCardMessage pcMsg = (PlaceCardMessage)msg;
 
-			switch(logic.placeCard(new Card(pcMsg.card))) {
-			case NOTALLOWED: {
-				WrongCardMessage wcMsg = new WrongCardMessage();
-				wcMsg.wrongCard = pcMsg.card;
-				send(wcMsg, sender);
-				break;
+			MoveStatus moveStatus = logic.placeCard(new Card(pcMsg.card));
+
+			TurnInfoMessage tiMsg = null;
+
+			switch(moveStatus) {
+				case INVALID:
+					throw (new ClientErrorException("You placed an invalid card!"));
+				case NOTALLOWED:
+					WrongCardMessage wcMsg = new WrongCardMessage();
+					wcMsg.wrongCard = pcMsg.card;
+					send(wcMsg, sender);
+					return;
+				case OK:
+					tiMsg = new TurnInfoMessage();
+					break;
+				case RUNOVER:
+					tiMsg = new StichInfoMessage();
+					break;
+				case ROUNDOVER:
+				case GAMEOVER:
+					tiMsg = new EndOfRoundInfoMessage();
+					break;
+				default:
+					System.err.println("Unhandled move status");
 			}
-			case OK: {
-				TurnInfoMessage tiMsg = new TurnInfoMessage();
-				tiMsg.laidCard = pcMsg.card;
-				tiMsg.player = sender.getEntity();
+
+			tiMsg.laidCard = pcMsg.card;
+			tiMsg.player = sender.getEntity();
+
+			if (moveStatus.equals(MoveStatus.OK)) {
 				broadcast(tiMsg);
 				// Request next card
 				act();
-				break;
+				return;
 			}
-			case RUNOVER: {
-				StichInfoMessage siMsg = new StichInfoMessage();
-				siMsg.laidCard = pcMsg.card;
-				siMsg.player = sender.getEntity();
-				siMsg.playerWhoWonStich = logic.getRunWinner().getEntity();
+
+			StichInfoMessage siMsg = (StichInfoMessage) tiMsg;
+			siMsg.playerWhoWonStich = logic.getRunWinner().getEntity();
+
+			if (moveStatus.equals(MoveStatus.RUNOVER)) {
 				broadcast(siMsg);
 				// Request next card
 				act();
-				break;
+				return;
 			}
-			case ROUNDOVER: {
-				broadcastEndOfRound(false);
+
+			EndOfRoundInfoMessage eorMsg = (EndOfRoundInfoMessage) siMsg;
+			ScoreEntity score = new ScoreEntity();
+			score.scores = logic.getScores();
+			eorMsg.score = score;
+			eorMsg.gameOver = false;
+
+			if (moveStatus.equals(MoveStatus.ROUNDOVER)) {
+				broadcast(eorMsg);
 				stateMachine.changeState(new StartRoundState());
-				break;
+				return;
 			}
-			case GAMEOVER: {
-				broadcastEndOfRound(true);
+
+			eorMsg.gameOver = true;
+
+			if (moveStatus.equals(MoveStatus.GAMEOVER)) {
+				broadcast(eorMsg);
 
 				// start new game
 				stateMachine.changeState(new LobbyState());
-				break;
+				return;
 			}
-			case INVALID: {
-				throw(new ClientErrorException("You placed an invalid card!"));
-			}}
+
+			System.err.println("Unhandled move status");
 		} else if (msg instanceof ChosenWiisMessage) {
 			//TODO: handle wiis stuff
 		} else {
 			throw(new UnhandledMessageException());
 		}
-	}
-
-	private void broadcastEndOfRound(boolean gameOver) throws IOException {
-		EndOfRoundInfoMessage eorMsg = new EndOfRoundInfoMessage();
-		eorMsg.gameOver = gameOver;
-		ScoreEntity score = new ScoreEntity();
-		score.scores = logic.getScores();
-		eorMsg.score = score;
-		broadcast(eorMsg);
 	}
 }
