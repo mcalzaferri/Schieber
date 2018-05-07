@@ -87,7 +87,7 @@ public class ServerApp {
 		try {
 			// let state machine handle the message
 			stateMachine.handleMessage(sender, iMsg);
-			sendResultMsg(ResultMessage.Code.OK, "you fine 👌",
+			sendResultMsg(ResultMessage.Code.OK, "you fine. ",
 					iMsg.senderAddress);
 		} catch (UnhandledMessageException e) {
 			System.err.println("unhandled message, current state = "
@@ -101,7 +101,7 @@ public class ServerApp {
 		} catch (NullPointerException e) {
 			sendResultMsg(ResultMessage.Code.PROTOCOL_ERROR,
 					"Something went wrong while processing the data you sent." +
-					" The server will just assume it's your fault and continue 😂.",
+					" The server will just assume it's your fault and continue. ",
 					iMsg.senderAddress);
 			e.printStackTrace();
 		}
