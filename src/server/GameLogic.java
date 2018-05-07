@@ -5,12 +5,14 @@ import java.util.*;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.TeamEntity;
+import ch.ntb.jass.common.entities.WeisEntity;
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
 import shared.Player;
 import shared.Seat;
 import shared.Trump;
+import shared.Weis;
 
 /**
  * This class does all the game specific stuff like handling players, keeping
@@ -30,6 +32,8 @@ public class GameLogic {
 	private int playerId = playerIdStart;
 	private Trump trump;
 	private ArrayList<Player> players;
+	/** connects the player with his Weises */
+	private Map<Player, WeisEntity[]> declaredWeise;
 	/** seat of player whose turn it is */
 	private Seat currentSeat;
 	/** first card played in run */
@@ -49,6 +53,7 @@ public class GameLogic {
 		players = new ArrayList<>();
 		scores = new HashMap<>();
 		cardsOnTable = new HashMap<>();
+		declaredWeise = new HashMap<>();
 		cardCounter = -1;
 		trump = null;
 		lastWinner = null;
@@ -428,10 +433,42 @@ public class GameLogic {
 	public boolean inFirstRun() {
 		return cardCounter < 4;
 	}
+	
+	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeis){
+		int truthCounter = 0;
+		WeisEntity[] verifiedWeis = Weis.getEntities(p.getCards().getPossibleWiis(trump));
+		for(int i = 0; i < claimedWeis.length; i++){
+			// TODO: check type not Entity
+			if(Arrays.asList(claimedWeis).contains(verifiedWeis[i].type)){
+				truthCounter++;
+			}		
+		}
+		if(truthCounter == claimedWeis.length){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public void addWeisToScoreBoard(){
+		//TODO: Implement Scoreboardbullshittery
+	}
 
 	public boolean wiis(Player p) {
 //		player.getCards().getPossibleWiis()
 		throw new UnsupportedOperationException("Function not implemented.");
+	}
+	
+	public Map<Player, WeisEntity[]> getDeclaredWeise(){
+		return declaredWeise;
+	}
+	public void setDeclaredWeise(Player player, WeisEntity[] weis){
+		declaredWeise.put(player, weis);
+	}
+	
+	public int getCardCounter(){
+		return cardCounter;
 	}
 
 	public Map<Integer, Integer> getScores() {

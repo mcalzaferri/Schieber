@@ -1,7 +1,7 @@
 package server.states;
 
 import java.io.IOException;
-
+import ch.ntb.jass.common.entities.*;
 import ch.ntb.jass.common.entities.ScoreEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.ChosenWiisMessage;
@@ -10,6 +10,7 @@ import ch.ntb.jass.common.proto.server_info_messages.EndOfRoundInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.NewTurnInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.StichInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.TurnInfoMessage;
+import ch.ntb.jass.common.proto.server_info_messages.WiisInfoMessage;
 import ch.ntb.jass.common.proto.server_messages.WrongCardMessage;
 import server.GameLogic.MoveStatus;
 import server.exceptions.ClientErrorException;
@@ -115,8 +116,38 @@ public class WaitForCardState extends GameState {
 
 			System.err.println("Unhandled move status");
 		} else if (msg instanceof ChosenWiisMessage) {
-			//TODO: handle wiis stuff
-		} else {
+			//Check if in first round.
+			if(logic.inFirstRun()){
+				
+				//Check if player does not declare Weise more than once.
+				if(!logic.getDeclaredWeise().containsKey(sender)){
+					WeisEntity[] weise = ((ChosenWiisMessage) msg).wiis;					
+					
+					//Check if Weise are valid.
+					if(logic.weiseAreValid(sender, weise)){
+						logic.setDeclaredWeise(sender, weise);
+						
+						//Set score
+						if(logic.getCardCounter() == 3){
+							logic.addWeisToScoreBoard();						
+						}
+						
+						WiisInfoMessage wiMsg = new WiisInfoMessage();
+						wiMsg.player = sender.getEntity();
+						wiMsg.wiis = weise;
+						broadcast(wiMsg);
+					}
+					else{
+						throw(new ClientErrorException("The Weis doesn't match your deck. PlayerID: " + sender.getId()));
+					}					
+				}				
+				else{
+					throw(new ClientErrorException("You already declared your Weis. PlayerID: " + sender.getId()));
+				}
+			}
+			else{
+				throw(new ClientErrorException("No Weis after the first round has finished."));
+			}		} else {
 			throw(new UnhandledMessageException());
 		}
 	}
