@@ -42,7 +42,9 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	@Override
 	public void doSetTrump(Trump trump) {
 		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
-		view.publishMessage("New Trump is " + trump.toString() + " (Just in case you didn't notice the huge picture above)\n");
+		if(trump != null) {
+			view.publishMessage("New Trump is " + trump.toString() + " (Just in case you didn't notice the huge picture above)\n");
+		}
 	}
 
 	/** Store broadcasted score in the model and update view.

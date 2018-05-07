@@ -25,7 +25,7 @@ public class VirtualClient extends AbstractClient {
 	private static String[] possibleBotNames = { "cat-bot", "dog-bot",
 			"hot-bot", "nt-bot", "not-a-bot", "definitely-not-a-bot", "ro-bot",
 			"TheLegend27",
-			"MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW" };
+			"MMWW" };
 
 	public VirtualClient(ClientCommunication com, ClientModel model, BotIntelligence intelligence) {
 		super(com, model);

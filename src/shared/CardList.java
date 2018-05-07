@@ -25,7 +25,7 @@ public class CardList extends ArrayList<Card>{
 		for(Card oldCard : this) {
 			exists = false;
 			for(Card newCard : cards) {
-				if(oldCard.equals(newCard)) {
+				if(oldCard.equals(newCard) && !newCard.isUnknown()) {
 					exists = true;
 					continue;
 				}
@@ -36,7 +36,7 @@ public class CardList extends ArrayList<Card>{
 		super.removeAll(cardsToDelete);
 		//Add all new cards
 		for(Card card : cards) {
-			if(!contains(card)) {
+			if(!contains(card) || card.isUnknown()) {
 				this.add(card);
 			}
 		}

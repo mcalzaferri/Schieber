@@ -48,7 +48,9 @@ public abstract class AbstractClient {
 			public void msgReceived(EndOfRoundInfoMessage msg) {
 				Score score = new Score(msg.score);
 				model.setScore(score);
+				model.setTrump(null);
 				doUpdateScore(score);
+				doSetTrump(null);
 				if(msg.gameOver) {
 					model.setGameState(GameState.GAMEOVER);
 					doEndGame();

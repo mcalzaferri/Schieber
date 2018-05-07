@@ -54,15 +54,17 @@ public abstract class BotIntelligence {
 	 * @param trump
 	 */
 	public void setTrump(Trump trump) {
-		this.trump = trump;	
-		if (trump.getGameMode() == GameMode.TRUMPF) {
-			maxCardsInPlay[trump.getTrumpfColor().getId()-1] = new Card(trump.getTrumpfColor(),CardValue.UNDER);
-			maxCardsInPlay[4] = new Card(trump.getTrumpfColor(),CardValue.UNDER);
-		} else if (trump.getGameMode() == GameMode.UNEUFE) {
-			maxCardsInPlay[0] = new Card(CardColor.EICHEL, CardValue.SECHS);
-			maxCardsInPlay[1] = new Card(CardColor.ROSE, CardValue.SECHS);
-			maxCardsInPlay[2] = new Card(CardColor.SCHILTE, CardValue.SECHS);
-			maxCardsInPlay[3] = new Card(CardColor.SCHELLE, CardValue.SECHS);
+		if(trump != null) {
+			this.trump = trump;	
+			if (trump.getGameMode() == GameMode.TRUMPF) {
+				maxCardsInPlay[trump.getTrumpfColor().getId()-1] = new Card(trump.getTrumpfColor(),CardValue.UNDER);
+				maxCardsInPlay[4] = new Card(trump.getTrumpfColor(),CardValue.UNDER);
+			} else if (trump.getGameMode() == GameMode.UNEUFE) {
+				maxCardsInPlay[0] = new Card(CardColor.EICHEL, CardValue.SECHS);
+				maxCardsInPlay[1] = new Card(CardColor.ROSE, CardValue.SECHS);
+				maxCardsInPlay[2] = new Card(CardColor.SCHILTE, CardValue.SECHS);
+				maxCardsInPlay[3] = new Card(CardColor.SCHELLE, CardValue.SECHS);
+			}
 		}
 	}
 	
