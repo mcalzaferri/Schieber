@@ -39,17 +39,8 @@ public class ViewableCard extends JButton{
 	 * @throws IOException 
 	 */
 	public ViewableCard(Card card){
-		super();
-		if(card == null) {
-			throw new IllegalArgumentException("Fatal Error: Card must not be null");
-		}
-		this.card = card;	
-		try {
-			this.img  = Gui.pictureFactory.getPicture(card);
-		} catch (IOException e) {
-			//Fatal error => Should not occur
-			e.printStackTrace();
-		}
+		super();	
+		setCard(card);
 		this.initializeComponents();
 	}
 
@@ -60,6 +51,20 @@ public class ViewableCard extends JButton{
 	private void initializeComponents() {
 		this.setMinimumSize(minCardSize);	
 		this.setOpaque(false);	//Ensures that the underlying pixels show through
+	}
+	public void setCard(Card c) {
+		if(c == null) {
+			throw new IllegalArgumentException("Fatal Error: Card must not be null");
+		}		
+		this.card = c;	
+		
+		try {
+			this.img  = Gui.pictureFactory.getPicture(card);
+		} catch (IOException e) {
+			//Fatal error => Should not occur
+			e.printStackTrace();
+		}
+		repaint();
 	}
 	
 	public Card getCard() {
