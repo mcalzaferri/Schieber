@@ -5,28 +5,56 @@ import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.GrayFilter;
 
 import shared.Card;
+import shared.CardColor;
+import shared.CardValue;
 import shared.Trump;
 
+
 public class PictureFactory {
+	private HashMap<String, BufferedImage> pictures;
+	
+	public PictureFactory() throws IOException {
+		pictures = new HashMap<>();
+		
+		/*
+		 * By having the pictures loaded only once into an array, the time
+		 * to load from file system falls away which results in much shorter
+		 * method calls (in the moment only for card pictures)
+		 */
+		Path path;
+		String name;
+		for(CardValue cv : CardValue.values()) {
+			for(CardColor cc : CardColor.values()) {
+				name = cc.toString() + cv.getDefaultValue();
+				path = Paths.get("res", "cards", name + ".png");
+				pictures.put(name, loadImage(path.toString()));
+			}		
+		}
+	}
+	
 	public enum Pictures{
 		Carpet, BlackBoard, CoverNorth, CoverEast, CoverSouth, CoverWest, Table, Lobby;
 	}
+	
 	public BufferedImage getPicture(Card card) throws IOException {
-		Path path = Paths.get("res", "cards", card.getColor().toString() + card.getValue().getDefaultValue() + ".png");
-		return this.loadImage(path.toString());
+		//Return a deep copy of the picture in the hash map => prevents original picture in map from changing
+		return deepCopy(pictures.get(card.getColor().toString() + card.getValue().getDefaultValue()));
 	}
 	public Image getPicture(Card card, Dimension size) throws IOException {
 		return this.getScaledPicture(this.getPicture(card), size);
@@ -64,6 +92,14 @@ public class PictureFactory {
     	URL url = new File(path).toURI().toURL();
         return  ImageIO.read(url);
     }
+	
+	public static BufferedImage deepCopy(BufferedImage bi) {
+	    ColorModel cm = bi.getColorModel();
+	    boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+	    WritableRaster raster = bi.copyData(bi.getRaster().createCompatibleWritableRaster());
+	    return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+	}
+	
 	public static BufferedImage toBufferedImage(Image img)
 	{
 	    if (img instanceof BufferedImage)
