@@ -42,54 +42,46 @@ public class HandPane extends ObservableView implements ActionListener{
 	/**Creates a graphical representation of the clients hand.
 	 * In order to prevent the cards from flickering due to repeatedly
 	 * calling this method, the cards in the components array are compared
-	 * to the hand. Only if data has changed, the buttons will be repainted.
-	 * TODO Find a better solution if there is time, e.g. draw cards directly
-	 * without using buttons
+	 * to the hand and only modified if necessary.
 	 */
 	public void update() {
-		ViewableCard vc;
-		boolean changed = false;
-		
-		//Check if cards have changed
-		if(data.getHand() == null || getComponentCount() != data.getHand().size()) {
-			//If array size differs, the hand has surely changed
-			changed = true;
-		}
-		else {
-			/*
-			 * TODO Compare hand to components if size is the same
-			 * During regular game this should not occur. When a card is
-			 * played, the hand becomes smaller automatically.
-			 */
-		}
-
-		if(changed) {
-			//Create new components from hand
-			this.removeAll();
+		if(data.getHand() != null) {
+			Card c;
+			ViewableCard vc;
 			
-			if(data.getHand() != null) {
-				for(Card c : data.getHand()) {
+			//Remove components if component array is bigger than hand
+			if(getComponentCount() > data.getHand().size()) {
+				for(int i = 0; i < getComponentCount() - data.getHand().size(); i++) {
+					this.remove(getComponentCount() - 1 - i);
+				}
+			}
+			
+			//Update components (Viewable cards) and add new ones if necessary
+			for(int i = 0; i < data.getHand().size(); i++) {
+				c = data.getHand().get(i);
+				
+				if(i >= getComponentCount()) {
+					//Not enough positions in component array => add new ones
 					vc = new ViewableCard(c);
 					vc.addActionListener(this);
 					doEnableCard(vc);
 					add(vc);
 				}
-			}	
-			validate();	//Redo the layout
-			
-		}else {
-			//Just do enabling of cards
-			if(data.getHand() != null) {
-				for(Component c : getComponents()) {
-					if(c instanceof ViewableCard) {
-						vc = (ViewableCard) c;
-						doEnableCard(vc);
+				else if(getComponent(i) instanceof ViewableCard){
+					vc = (ViewableCard) getComponent(i);
+					doEnableCard(vc);
+					
+					if(!vc.getCard().equals(c)) {
+						//Component on position i is not the same as in hand => change card
+						vc.setCard(c);
 					}
 				}
-			}	
+			}
+			if(!isValid()) {
+				validate(); //can be time consuming => only call if necessary
+			}
 		}
-	
-		repaint();	//Let panel draw its components
+		repaint();
 	}
 
 	private void doEnableCard(ViewableCard vc) {
