@@ -1,10 +1,11 @@
 package gui.playingView;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import client.ViewObserver;
 import gui.ObservableView;
 import shared.Card;
@@ -21,6 +22,7 @@ public class HandPane extends ObservableView implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = -8159517916094656762L;
+	private HashMap<Card, ViewableCard> cards;
 	
 	public HandPane(ClientModel data, ArrayList<ViewObserver> observers) {
 		super(data, observers);
@@ -34,6 +36,7 @@ public class HandPane extends ObservableView implements ActionListener{
 	 * Initialize the class' graphics
 	 */
 	private void initializeComponents() {
+		cards = new HashMap<>(9);
 		setOpaque(false);
 		this.setLayout(new HandLayout());
 		this.setMinimumSize(new Dimension(CarpetPane.minCarpetSize.width, ViewableCard.minCardSize.height));
@@ -46,35 +49,46 @@ public class HandPane extends ObservableView implements ActionListener{
 	 */
 	public void update() {
 		if(data.getHand() != null) {
-			Card c;
-			ViewableCard vc;
-			
-			//Remove components if component array is bigger than hand
-			if(getComponentCount() > data.getHand().size()) {
-				for(int i = 0; i < getComponentCount() - data.getHand().size(); i++) {
-					this.remove(getComponentCount() - 1 - i);
-				}
-			}
-			
-			//Update components (Viewable cards) and add new ones if necessary
-			for(int i = 0; i < data.getHand().size(); i++) {
-				c = data.getHand().get(i);
-				
-				if(i >= getComponentCount()) {
-					//Not enough positions in component array => add new ones
-					vc = new ViewableCard(c);
+			if(cards.isEmpty()) {
+				//Initialize cards if cards is currently empty
+				for(Card c : data.getHand()) {
+					ViewableCard vc = new ViewableCard(c);
 					vc.addActionListener(this);
 					doEnableCard(vc);
-					add(vc);
+					cards.put(c, vc);
+					// Do not add until all cards are created add(vc);
 				}
-				else if(getComponent(i) instanceof ViewableCard){
-					vc = (ViewableCard) getComponent(i);
-					doEnableCard(vc);
-					
-					if(!vc.getCard().equals(c)) {
-						//Component on position i is not the same as in hand => change card
-						vc.setCard(c);
+				for(Card c : cards.keySet()) {
+					//Now add all cards together for smoother display
+					add(cards.get(c));
+				}
+			}else {
+				//Update components
+				//Add non existing cards
+				for(Card c : data.getHand()) {
+					if(!cards.containsKey(c)) {
+						//Create new Card only if it is non existing
+						ViewableCard vc = new ViewableCard(c);
+						vc.addActionListener(this);
+						doEnableCard(vc);
+						add(vc);
+						cards.put(c, vc);
+					}else {
+						//Otherwise just update Card
+						doEnableCard(cards.get(c));
 					}
+				}
+				//Search for deletedCards
+				ArrayList<Card> deletedCards = new ArrayList<>();
+				for(Card c : cards.keySet()) {
+					if(!data.getHand().contains(c)) {
+						deletedCards.add(c);
+					}
+				}
+				//Remove deletedCards
+				for(Card c : deletedCards) {
+					this.remove(cards.get(c));
+					cards.remove(c);
 				}
 			}
 			if(!isValid()) {
