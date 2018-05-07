@@ -181,6 +181,7 @@ public abstract class AbstractClient {
 			public void msgReceived(HandOutCardsMessage msg) {
 				//First set players hand
 				model.getHand().updateData(msg.cards);
+				model.getHand().sort();
 				doUpdateHand(model.getHand().toArray());
 				//Now set the other players hand to 9 unknown cards
 				Card unknownCard = new Card(null, null);

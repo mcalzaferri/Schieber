@@ -53,7 +53,10 @@ public class CardList extends ArrayList<Card>{
 		super.sort(new Comparator<Card>() {
 			@Override
 			public int compare(Card o1, Card o2) {
-				return o1.compareTo(o2, Trump.OBENABE);
+				if(o1.getId() > o2.getId())
+					return 1;
+				else
+					return -1;
 			}
 		});
 	}
