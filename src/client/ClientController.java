@@ -31,7 +31,8 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	
 	@Override
 	protected void teamsChanged(Team[] teams) {
-		view.updateAll();
+		view.updateView(ViewEnumeration.PLAYVIEW);
+		view.updateView(ViewEnumeration.LOBBYVIEW);
 	}
 	
 	//Inherited methods from AbstractClient
@@ -41,7 +42,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	@Override
 	public void doSetTrump(Trump trump) {
 		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
-		view.publishMessage("New Trump is " + trump.toString() + " (Just in case you didn't notice the huge picture above)/n");
+		view.publishMessage("New Trump is " + trump.toString() + " (Just in case you didn't notice the huge picture above)\n");
 	}
 
 	/** Store broadcasted score in the model and update view.
@@ -75,7 +76,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doSetSeat(int seatId) {
-		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+		//changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 		//TODO is this still necessary? /Maurus
 	}
 
@@ -85,7 +86,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateActiveSeat(int activeSeatId) {
-		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+		//changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 
 	/** Store the cards on the deck in the model. The model is only updated, already existing objects are not recreated.
@@ -143,23 +144,23 @@ public class ClientController extends AbstractClient implements ViewObserver{
 			sb.append(player.getName() + " had no wiis to show!");
 			if(Team.getTeamThatContainsPlayer(model.getTeams(), player).contains(model.getThisPlayer())) {
 				if(player.equals(model.getThisPlayer())) {
-					sb.append(" (As if you wouldn't know, right?)/n");
+					sb.append(" (As if you wouldn't know, right?)\n");
 				}else {
-					sb.append(" You should consider looking for a new partner/n");
+					sb.append(" You should consider looking for a new partner\n");
 				}
 			}else {
-				sb.append(" Sucks to be him/n");
+				sb.append(" Sucks to be him\n");
 			}	
 		}else {
 			sb.append(player.getName());
-			sb.append(" showed the following wiis:/n");
+			sb.append(" showed the following wiis:\n");
 			for(Weis weis : wiis) {
-				sb.append(weis.toString() + "/n");
+				sb.append(weis.toString() + "\n");
 			}
 			if(player.equals(model.getThisPlayer())) {
-				sb.append(" (As if you wouldn't know, right?)/n");
+				sb.append(" (As if you wouldn't know, right?)\n");
 			}else {
-				sb.append(" what a lucky guy/n");
+				sb.append(" what a lucky guy\n");
 			}
 		}
 		view.publishMessage(sb.toString());
@@ -167,7 +168,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	
 	@Override
 	protected void doHandleBadResultException(BadResultException e) {
-		view.showDialog("You had one job!/n" + e.getMessage(), MessageType.WARNING);
+		view.showDialog("You had one job!\n" + e.getMessage(), MessageType.WARNING);
 		System.err.println(e.getMessage());
 	}
 
@@ -177,11 +178,11 @@ public class ClientController extends AbstractClient implements ViewObserver{
 			if(player.getSeat() == Seat.NOTATTABLE) {
 				changeOrUpdateView(ViewEnumeration.LOBBYVIEW);
 			}else {
-				view.updateView(ViewEnumeration.PLAYVIEW);
+				//TODO is this still necessary? view.updateView(ViewEnumeration.PLAYVIEW);
 			}
 			
 		}else {
-			view.updateAll();
+			//TODO is this still necessary? view.updateView(view.getCurrentView());
 		}
 		
 	}
