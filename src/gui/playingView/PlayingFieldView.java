@@ -14,6 +14,7 @@ import gui.ObservableView;
 import gui.Viewable;
 import gui.PictureFactory.Pictures;
 import shared.client.ClientModel;
+import test.TestHelper;
 
 /**
  * This class represents a playing field with a hand panel showing the
@@ -90,8 +91,6 @@ public class PlayingFieldView extends ObservableView implements Viewable{
 	@Override
 	public void update() {
 		this.hand.update();
-		this.blackBoard.repaint();
-		this.carpet.repaint();	
 		this.repaint();
 	}
 
