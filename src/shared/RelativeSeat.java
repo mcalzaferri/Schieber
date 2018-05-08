@@ -3,9 +3,9 @@ package shared;
 public enum RelativeSeat {
 	NOTATTABLE(0),
 	BOTTOM(1),
-	LEFT(2),
+	RIGHT(2),
 	TOP(3),
-	RIGHT(4);
+	LEFT(4);
 	
 	private final int id;
 	
@@ -17,11 +17,11 @@ public enum RelativeSeat {
 		switch(id) {
 		case 1:
 			return BOTTOM;
-		case 2:
+		case 4:
 			return LEFT;
 		case 3:
 			return TOP;
-		case 4:
+		case 2:
 			return RIGHT;
 		default:
 			return NOTATTABLE;
