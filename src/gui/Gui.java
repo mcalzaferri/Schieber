@@ -1,43 +1,41 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.awt.Container;
+import java.awt.Dialog.ModalityType;
+import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import client.AbstractClientView;
 import client.ViewEnumeration;
 import client.ViewObserver;
-import client.test.MessageType;
-import gui.PictureFactory.Pictures;
 import gui.playingView.PlayingFieldView;
-import shared.Trump;
 import shared.client.ClientModel;
 
-public class Gui extends AbstractClientView implements Runnable{
+public class Gui extends AbstractClientView{
 	public static PictureFactory pictureFactory = PictureFactory.instance;
 	private ArrayList<ViewObserver> observers;
 	private JFrame frame;
 	private JInternalFrame iFrame;
-	Thread dialog;
+	private Dialog dialog;
 	private PlayingFieldView main;
 	private Viewable current;
 	private ArrayList<Viewable> internals;
 	
 	public Gui(ClientModel data) {
 		super(data);
-		this.dialog = new Thread(this);
 		this.observers = new ArrayList<>();
 		this.frame = new JFrame("Schieber");
 		this.iFrame = new JInternalFrame("", false, false, false, false);
 		this.main = new PlayingFieldView(data, observers);
+		this.dialog = new Dialog(frame, ModalityType.MODELESS);
 		
 		this.internals = new ArrayList<>();		
 		internals.add(new SelectHostView(observers));
@@ -57,8 +55,9 @@ public class Gui extends AbstractClientView implements Runnable{
 		//Set up main frame	
 		frame.setLayout(new BorderLayout());
 		frame.add(main.getContent(), BorderLayout.CENTER);
-		frame.setMinimumSize(main.getContent().getMinimumSize());
-		frame.setVisible(true);
+		frame.setVisible(true);	//!!!Set visible has to stand before calculating the minimum size => Creating insets
+		frame.setMinimumSize(getFramesizeForContent(main.getContent().getMinimumSize()));
+		frame.pack();
 		
 		//Change close operation
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -69,13 +68,49 @@ public class Gui extends AbstractClientView implements Runnable{
 		            "Are you sure to exit the application?", "Really Closing?", 
 		            JOptionPane.YES_NO_OPTION,
 		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-		        	//Notify client instead of System.exit /Maurus
+
 		        	for(ViewObserver observer: observers)
 					{
 						observer.btnCloseWindowClick(getCurrentView());
 					}
 		        }
 		    }
+		});
+		
+		frame.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				for(ViewObserver vo : observers) {
+					vo.playViewClick();
+				}
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
 		});
 		
 		//Refresh all components
@@ -96,9 +131,19 @@ public class Gui extends AbstractClientView implements Runnable{
 				this.current = v;
 				this.iFrame.setContentPane(v.getContent());
 				this.iFrame.pack();
+
 				this.iFrame.setTitle(v.getType().toString());
 				this.iFrame.setVisible(true);
-				return;
+				Container c = iFrame.getContentPane();
+				//Enlarge frame that iFrame can fit
+				if(frame.getContentPane().getWidth() < iFrame.getWidth()) {
+					frame.setSize(getFramesizeForContent(new Dimension(iFrame.getWidth(), frame.getContentPane().getHeight())));
+				}
+				if(frame.getContentPane().getHeight() < iFrame.getHeight()) {
+					frame.setSize(getFramesizeForContent(new Dimension(frame.getContentPane().getWidth(), iFrame.getHeight())));
+				}
+				
+				return; 
 			}
 		}
 		//Set main as current view
@@ -134,74 +179,22 @@ public class Gui extends AbstractClientView implements Runnable{
 		main.update();
 	}
 	
-	/**This enumeration resembles the values to configure a JOptionPane
-	 * 
-	 * @author mstieger
-	 *
-	 */
-	public enum MessageType{
-		/*
-		 * Index values of elements must agree with the values for message types
-		 * of JOptionPane
-		 */
-		ERROR(0), 
-		INFORMATION(1), 
-		WARNING(2), 
-		QUESTION(3), 
-		PLAIN(-1);
-		
-		private final int index;
-		
-		MessageType(int index){
-			this.index = index;
-		}
-	};
-	
-	String message;
-	MessageType type;
 	@Override
-	public void showDialog(String message, MessageType type) {
+	public void closeDialog() {
+		dialog.dispose();		
+	}
+	
+	@Override
+	public void showDialog(String message, gui.Dialog.MessageType type) {
 		/*Makes a dialog from a new thread => Needed because JOptionPane stops the
 		 * execution of the calling thread and therefore the calling program
 		 */	
-		this.message = message;
-		this.type = type;
-		
-		//Ensure that only one dialog thread is active at the time
-		try {
-			dialog.stop();	//Forcefully stops the thread (not safe!!!)
-		} catch (Exception e) {
-			//Do nothing
-		}
-			
-		if(dialog.isAlive()) {
-			//If thread could not be stopped or is not stopped yet => wait for thread to die
-			try {
-				dialog.join();
-			} catch (InterruptedException e) {
-				//Fatal error => should not happen
-				e.printStackTrace();
-				return;	//If thread could not be stopped or joined, a new thread must not be created => leave method
-			}
-		}
-		
-		//If thread is not alive => start a new thread
-		dialog = new Thread(this);
-		dialog.start();	
+		closeDialog();
+		dialog.showDialog(message, type);
 	}
 	
-	@Override
-	public void run() {
-		//Creates an option pane with OK button
-				JOptionPane.showConfirmDialog(frame, 
-			            message, type.toString(), 
-			            JOptionPane.DEFAULT_OPTION,
-			            type.index);
+	private Dimension getFramesizeForContent(Dimension content) {
+		return new Dimension(frame.getInsets().left + frame.getInsets().right + content.width,
+				frame.getInsets().top + frame.getInsets().bottom + content.height);
 	}
-	@Override
-	public void closeDialog() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

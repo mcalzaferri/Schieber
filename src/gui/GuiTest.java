@@ -1,15 +1,20 @@
 package gui;
 
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.InetSocketAddress;
+
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import client.AbstractClientView;
 import client.ViewEnumeration;
 import client.ViewObserver;
-import gui.Gui.MessageType;
+import gui.Dialog.MessageType;
 import shared.Card;
 import shared.Seat;
 import shared.Trump;
@@ -39,15 +44,26 @@ public class GuiTest extends JFrame implements ViewObserver{
 			@Override
 			public void actionPerformed(ActionEvent e) {			
 				gui.changeView(ViewEnumeration.valueOf(box.getSelectedItem().toString()));
-				gui.showDialog("View changed", MessageType.INFORMATION);
-				gui.showDialog("This is to test if the thread stops", MessageType.INFORMATION);
+				gui.showDialog("View changed to: " + ViewEnumeration.valueOf(box.getSelectedItem().toString()), MessageType.ERROR);
 				gui.updateView(ViewEnumeration.PLAYVIEW);
 			}
 			
 		});
 		
-		gui.showDialog("View changed", MessageType.INFORMATION);
+		JButton btn = new JButton("Close Dialog");
+		btn.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gui.closeDialog();
+				
+			}
+			
+		});
+		
+		this.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE); //Prevents test frame to be excluded from dialogs
+		this.setLayout(new FlowLayout());
+		this.add(btn);
 		this.add(box);
 		this.pack();
 		this.setVisible(true);

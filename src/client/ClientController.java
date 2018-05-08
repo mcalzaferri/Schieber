@@ -2,7 +2,7 @@ package client;
 
 import java.net.InetSocketAddress;
 
-import gui.Gui.MessageType;
+import gui.Dialog.MessageType;
 import shared.*;
 import shared.client.*;
 

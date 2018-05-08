@@ -1,6 +1,6 @@
 package client;
 
-import gui.Gui.MessageType;
+import gui.Dialog.MessageType;
 import shared.client.ClientModel;
 
 public abstract class AbstractClientView {
