@@ -397,7 +397,7 @@ public class GameLogic {
 			addScore(teamId, calcTableScore());
 
 			// check for match
-			if (teamId != getTeamId(lastWinner)) {
+			if (lastWinner != null && teamId != getTeamId(lastWinner)) {
 				// if the team that just won is different from the team that
 				// won prior, a match is not possible anymore
 				match = false;
