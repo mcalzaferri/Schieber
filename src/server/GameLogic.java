@@ -47,7 +47,9 @@ public class GameLogic {
 	private int targetScore;
 	private Map<Card, Seat> cardsOnTable;
 	/** winner of last run */
-	private Seat lastWinner;
+	private Seat winner;
+	/** used to check for match */
+	private boolean match;
 
 	public GameLogic() {
 		players = new ArrayList<>();
@@ -56,7 +58,7 @@ public class GameLogic {
 		declaredWeise = new HashMap<>();
 		cardCounter = -1;
 		trump = null;
-		lastWinner = null;
+		winner = null;
 		currentSeat = null;
 		firstCard = null;
 		roundStarter = null;
@@ -80,7 +82,8 @@ public class GameLogic {
 	public void initRound() {
 		cardCounter = 0;
 		trump = null;
-		lastWinner = null;
+		winner = null;
+		match = true;
 
 		if (roundStarter == null) {
 			roundStarter = Seat.SEAT1;
@@ -97,8 +100,8 @@ public class GameLogic {
 	 */
 	private void initRun() {
 		cardsOnTable.clear();
-		if (lastWinner != null) {
-			currentSeat = lastWinner;
+		if (winner != null) {
+			currentSeat = winner;
 		} else {
 			currentSeat = roundStarter;
 		}
@@ -386,14 +389,25 @@ public class GameLogic {
 		if (cardCounter % 4 == 0) {
 			// get run winner
 			Card highCard = Card.highest(cardsOnTable.keySet(), firstCard, trump);
-			lastWinner = cardsOnTable.get(highCard);
+			Seat lastWinner = winner;
+			winner = cardsOnTable.get(highCard);
 
 			// add score to team
-			int teamId = getTeamId(lastWinner);
+			int teamId = getTeamId(winner);
 			addScore(teamId, calcTableScore());
+
+			// check for match
+			if (teamId != getTeamId(lastWinner)) {
+				// if the team that just won is different from the team that
+				// won prior, a match is not possible anymore
+				match = false;
+			}
 
 			if (cardCounter == 36) {
 				addScore(teamId, 5 * trump.getScoreMultiplicator());
+				if (match) {
+					addScore(teamId, 100 * trump.getScoreMultiplicator());
+				}
 			}
 
 			for (int score : scores.values()) {
@@ -425,7 +439,7 @@ public class GameLogic {
 	}
 
 	public Player getRunWinner() {
-		return getPlayer(lastWinner);
+		return getPlayer(winner);
 	}
 
 	/**
