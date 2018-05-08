@@ -412,10 +412,6 @@ public class GameLogic {
 		return MoveStatus.OK;
 	}
 
-	public enum MoveStatus {
-		NOTALLOWED, INVALID, OK, RUNOVER, ROUNDOVER, GAMEOVER;
-	}
-
 	private void addScore(int teamId, int value) {
 		scores.put(teamId, scores.get(teamId) + value);
 	}

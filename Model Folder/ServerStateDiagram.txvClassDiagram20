@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhjgxqlk8j-26cinr">
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="$name" value="ServerStateDiagram"/>
+		<property name="__options" value="AllNonPublicMembers=false&#10;NonPublicClasses=false&#10;Long Shortcuts=false"/>
+		<reference referencedUin="jdt:e_class:src:server.MoveStatus">
+			<property name="bounds" value="450,295,105,145"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.ServerApp">
+			<property name="bounds" value="455,95,95,136"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:e_method:src:server.ServerApp.ServerApp:ServerApp~I">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:server.ServerApp:stateMachine">
+				<property name="sourceAnchor" value="460,130"/>
+				<property name="targetAnchor" value="401,130"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:server.ServerApp:logic">
+				<property name="sourceAnchor" value="555,183"/>
+				<property name="targetAnchor" value="600,183"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:server.ServerApp:com">
+				<property name="sourceAnchor" value="460,228"/>
+				<property name="targetAnchor" value="401,228"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.GameLogic">
+			<property name="bounds" value="595,95,178,391"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.states.StateMachine">
+			<property name="bounds" value="255,75,141,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Communication">
+			<property name="bounds" value="237,215,159,212"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:e_method:src:shared.Communication.Communication:Communication">
+				<property name="$hidden" value="true"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>

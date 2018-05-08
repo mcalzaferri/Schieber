@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhjgxqdzp1-eh3xck">
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="__options" value="AllPackages=true&#10;Long Shortcuts=false"/>
+		<property name="$name" value="ServerStateMachineClassDiagram"/>
+		<reference referencedUin="jdt:e_class:src:server.states.GameState">
+			<property name="bounds" value="279,5,178,182"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:server.states.GameState:logic">
+				<property name="sourceAnchor" value="462,164"/>
+				<property name="targetAnchor" value="760,164"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:server.states.GameState:stateMachine">
+				<property name="sourceAnchor" value="284,82"/>
+				<property name="targetAnchor" value="164,82"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.states.LobbyState">
+			<property name="bounds" value="63,257,141,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:server.states.LobbyState:GameState">
+				<property name="sourceAnchor" value="138,262"/>
+				<property name="targetAnchor" value="305,192"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.states.StartRoundState">
+			<property name="bounds" value="385,257,122,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:server.states.StartRoundState:GameState">
+				<property name="sourceAnchor" value="426,262"/>
+				<property name="targetAnchor" value="426,192"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.states.StateMachine">
+			<property name="bounds" value="5,42,154,107"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:e_method:src:server.states.StateMachine.handleNewPlayer:handleNewPlayer~QPlayerEntity;~QInetSocketAddress;">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:server.states.StateMachine:currentState">
+				<property name="sourceAnchor" value="164,118"/>
+				<property name="targetAnchor" value="284,118"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.states.WaitForCardState">
+			<property name="bounds" value="527,257,141,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:server.states.WaitForCardState:GameState">
+				<property name="sourceAnchor" value="602,262"/>
+				<property name="targetAnchor" value="444,192"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.states.WaitForTrumpState">
+			<property name="bounds" value="224,257,141,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:e_method:src:server.states.WaitForTrumpState.setTrump:setTrump~QToServerMessage;~QPlayer;">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_field:src:server.states.WaitForTrumpState.schiebenAlreadyChosen">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_gnt:src:server.states.WaitForTrumpState:GameState">
+				<property name="sourceAnchor" value="327,262"/>
+				<property name="targetAnchor" value="327,192"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:server.GameLogic">
+			<property name="bounds" value="755,55,200,798"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="$hidden" value="true"/>
+		</reference>
+	</view>
+</nodeSet>
