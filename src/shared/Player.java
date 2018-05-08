@@ -1,6 +1,7 @@
 package shared;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
@@ -105,6 +106,10 @@ public class Player {
 	}
 
 	public void putCards(Card[] cs) {
+		cards.updateData(cs);
+	}
+	
+	public void putCards(ArrayList<Card> cs) {
 		cards.updateData(cs);
 	}
 

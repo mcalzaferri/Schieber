@@ -17,6 +17,11 @@ public class CardList extends ArrayList<Card>{
 			this.add(id);
 		}
 	}
+	
+	public void updateData(ArrayList<Card> cards) {
+		Card[] cA = new Card[cards.size()];
+		updateData(cards.toArray(cA));
+	}
 
 	public void updateData(Card[] cards) {
 		//Remove all non existent cards

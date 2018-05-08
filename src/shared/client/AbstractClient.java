@@ -1,6 +1,7 @@
 package shared.client;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 
 import ch.ntb.jass.common.entities.*;
 import ch.ntb.jass.common.proto.Message;
@@ -181,6 +182,12 @@ public abstract class AbstractClient {
 
 			@Override
 			public void msgReceived(HandOutCardsMessage msg) {
+				//First remove all cards
+				for(Team team : model.getTeams()) {
+					for(Player player : team.getPlayers()) {
+						player.getCards().clear();
+					}
+				}
 				model.setGameState(GameState.STARTED);
 				//New handling
 				//First check if this player is a bot or not
@@ -192,11 +199,10 @@ public abstract class AbstractClient {
 					Card unknownCard = new Card(null, null);
 					
 					int i = 0;
+					ArrayList<Card> cards = new ArrayList<>(9);
 					while(i < 9) {
-						i += 3;
-						Card[] ca = new Card[i];
-						for(int j = 0; j < i; j++) {
-							ca[j] = unknownCard;
+						for(int j = 0; j < 3; j++, i++) {
+							cards.add(unknownCard);
 						}
 						for(int j = 1; j <= 4; j++) {
 							for(Team team : model.getTeams()) {
@@ -212,7 +218,7 @@ public abstract class AbstractClient {
 										}
 										lastRefresh = System.currentTimeMillis();
 										//Store a copy of the array in each unknown player
-										player.putCards(ca);
+										player.putCards(cards);
 										playerChanged(player);
 									}
 								}
