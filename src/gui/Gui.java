@@ -22,7 +22,7 @@ import shared.Trump;
 import shared.client.ClientModel;
 
 public class Gui extends AbstractClientView implements Runnable{
-	public static PictureFactory pictureFactory;
+	public static PictureFactory pictureFactory = PictureFactory.instance;
 	private ArrayList<ViewObserver> observers;
 	private JFrame frame;
 	private JInternalFrame iFrame;
@@ -30,15 +30,6 @@ public class Gui extends AbstractClientView implements Runnable{
 	private PlayingFieldView main;
 	private Viewable current;
 	private ArrayList<Viewable> internals;
-	
-	static{
-		try {
-			pictureFactory = new PictureFactory();
-		} catch (IOException e) {
-			// Fatal error => Should not happen
-			e.printStackTrace();
-		}
-	}
 	
 	public Gui(ClientModel data) {
 		super(data);
@@ -208,6 +199,11 @@ public class Gui extends AbstractClientView implements Runnable{
 			            message, type.toString(), 
 			            JOptionPane.DEFAULT_OPTION,
 			            type.index);
+	}
+	@Override
+	public void closeDialog() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

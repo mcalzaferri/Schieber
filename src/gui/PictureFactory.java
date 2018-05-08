@@ -27,9 +27,19 @@ import shared.Trump;
 
 
 public class PictureFactory {
+	public static PictureFactory instance;	//For singleton
 	private HashMap<String, BufferedImage> pictures;
 	
-	public PictureFactory() throws IOException {
+	static {
+		try {
+			//Create Singleton
+			instance = new PictureFactory();
+		} catch (IOException e) {
+			// Fatal Error => Should not happen
+			e.printStackTrace();
+		}
+	}
+	private PictureFactory() throws IOException {
 		pictures = new HashMap<>();
 		
 		/*
@@ -93,14 +103,14 @@ public class PictureFactory {
         return  ImageIO.read(url);
     }
 	
-	public static BufferedImage deepCopy(BufferedImage bi) {
+	public BufferedImage deepCopy(BufferedImage bi) {
 	    ColorModel cm = bi.getColorModel();
 	    boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
 	    WritableRaster raster = bi.copyData(bi.getRaster().createCompatibleWritableRaster());
 	    return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
 	
-	public static BufferedImage toBufferedImage(Image img)
+	public BufferedImage toBufferedImage(Image img)
 	{
 	    if (img instanceof BufferedImage)
 	    {
