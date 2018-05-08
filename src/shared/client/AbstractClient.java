@@ -93,7 +93,7 @@ public abstract class AbstractClient {
 					doEndGame();
 				}else {
 					model.setGameState(GameState.ROUNDOVER);
-					doEndRound();
+					doEndRound(model.getPlayer(msg.playerWhoWonStich));
 				}
 			}
 
@@ -306,7 +306,7 @@ public abstract class AbstractClient {
 	
 	protected abstract void doUpdateScore(Score score);
 	
-	protected abstract void doEndRound();
+	protected abstract void doEndRound(Player playerWhoWonStich);
 	
 	protected abstract void doEndGame();
 	

@@ -63,7 +63,7 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	public void doEndRound() {
+	public void doEndRound(Player playerWhoWonStich) {
 		// update max cards with knowledge from deck cards
 		ki.updateMaxCards();
 	}

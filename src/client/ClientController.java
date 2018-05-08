@@ -74,8 +74,14 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 * 
 	 */
 	@Override
-	public void doEndRound() {
+	public void doEndRound(Player playerWhoWonStich) {
 		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+		if(playerWhoWonStich.equals(model.getThisPlayer())) {
+			view.showDialog("You won this stich!", MessageType.INFORMATION);
+		}else {
+			view.showDialog(playerWhoWonStich.getName() + " won this stich!", MessageType.INFORMATION);
+		}
+		
 	}
 
 	/** Game finished. Set view to GameOver.
