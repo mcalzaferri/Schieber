@@ -149,6 +149,12 @@ public class CarpetDrawer {
 			switch(seat) {
 			case BOTTOM:
 				img = Gui.pictureFactory.getScaledPicture(imgSouth, cardSize);
+				for(int i = 0; i < nOfCards; i++) {
+					if(player.getCards().get(i).isUnknown()) {
+						g.drawImage(img, (carpetSize.width + (nOfCards + 1)*cardSize.width/2)/2 - i*cardSize.width/2 - cardSize.width, 
+								carpetSize.height - cardSize.height, null);
+					}
+				}
 				g.drawString(text, 
 						(carpetSize.width - stringWidth)/2, 
 						carpetSize.height - gap - cardSize.height);
