@@ -99,7 +99,7 @@ public class Card{
 		Card highest = firstCard;
 		cs.remove(firstCard);
 		for(Card card : cs) {
-			if(highest.compareTo(card, trump) > 0) {
+			if(highest.compareTo(card, trump) < 0) {
 				highest = card;
 			}
 		}
