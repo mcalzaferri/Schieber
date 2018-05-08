@@ -300,5 +300,17 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	public long getRefreshDelay() {
 		return refreshDelay;
 	}
+
+	@Override
+	public void playViewClick() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void btnFillWithBots() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

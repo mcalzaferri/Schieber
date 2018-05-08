@@ -26,4 +26,14 @@ public interface ViewObserver {
 	 * (The isReady field of thisPlayer)
 	 */
 	public abstract void btnChangeStateClick();
+	
+	/** The player clicked the play view
+	 * 
+	 */
+	public abstract void playViewClick();
+	
+	/** Fills the remaining seats with bots
+	 * 
+	 */
+	public abstract void btnFillWithBots();
 }

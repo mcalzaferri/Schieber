@@ -55,4 +55,9 @@ public abstract class AbstractClientView {
 	 * @param type	Type of the message
 	 */
 	public abstract void showDialog(String message, MessageType type);
+	
+	/** Closes any open dialogs
+	 * If there are no dialogs, none of them will be closed.
+	 */
+	public abstract void closeDialog();
 }

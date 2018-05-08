@@ -84,6 +84,18 @@ public class HandPaneTest extends JFrame{
 				// TODO Auto-generated method stub
 				
 			}
+
+			@Override
+			public void playViewClick() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void btnFillWithBots() {
+				// TODO Auto-generated method stub
+				
+			}
 			
 		});
 
