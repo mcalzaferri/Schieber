@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import gui.ObservableView;
 import gui.PictureFactory.Pictures;
 import shared.Player;
 import shared.client.ClientModel;
+import test.TestHelper;
 
 public class CarpetPane extends ObservableView{
 	/**
@@ -21,7 +23,8 @@ public class CarpetPane extends ObservableView{
 	 */
 	private static final long serialVersionUID = 6681250484175442412L;
 	private BufferedImage imgCarpet;
-	
+	private Image imgScaledCarpet;
+	private Dimension oldCarpetSize;
 	public static final Dimension minCardSize = new Dimension(60, 96);
 	public static final Dimension minCoverSize = new Dimension(30, 48);
 	public static final Dimension minCarpetSize = new Dimension(500, 500);
@@ -41,12 +44,13 @@ public class CarpetPane extends ObservableView{
 		this.drawer = new CarpetDrawer(15);
 		setOpaque(true);
 		this.setMinimumSize(this.minCarpetSize);
+		oldCarpetSize = new  Dimension(0, 0);
 	}
 	
 	CarpetDrawer drawer;
 	Font font;
 	@Override
-	public void paint(Graphics g) {			
+	public void paint(Graphics g) {
 		//Calculate image sizes
 		double scale = this.getSize().getWidth()/this.minCarpetSize.getWidth();
 		Dimension carpetSize = new Dimension((int)(scale * this.minCarpetSize.getWidth()),
@@ -55,10 +59,13 @@ public class CarpetPane extends ObservableView{
 				(int)(scale * this.minCardSize.getHeight()));
 		Dimension coverSize = new Dimension((int)(scale * this.minCoverSize.getWidth()),
 				(int)(scale * this.minCoverSize.getHeight()));
-		
 		//Draw carpet as background
-		g.drawImage(Gui.pictureFactory.getScaledPicture(imgCarpet, carpetSize), 0, 0, null);
-		
+		if(oldCarpetSize.width != carpetSize.width || oldCarpetSize.height != carpetSize.height) {
+			//If carpet size changed get new scaled picture
+			oldCarpetSize = carpetSize;
+			imgScaledCarpet = Gui.pictureFactory.getScaledPicture(imgCarpet, carpetSize);
+		}
+		g.drawImage(imgScaledCarpet, 0, 0, null);
 		//Draw players
 		g.setColor(Color.WHITE);
 		font = BlackBoardPane.font;
