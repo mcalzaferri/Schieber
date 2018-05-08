@@ -222,6 +222,7 @@ public abstract class AbstractClient {
 					//At the end show cards
 					model.getHand().updateData(msg.cards);
 					model.getHand().sort();
+					doUpdateHand(model.getHand().toArray());
 				}else {
 					//If its a bot, no need for fancy animations
 					
