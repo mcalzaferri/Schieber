@@ -39,15 +39,19 @@ public abstract class AbstractClient {
 	}
 	
 	//Methods for AbstractClient
-	private void showHandOutCardsAnimation(long refreshDelay) {
+	private void showHandOutCardsAnimation(CardEntity[] handEntity, long refreshDelay) {
 		long lastRefresh = 0;
+		CardList handCl = new CardList();
+		handCl.updateData(handEntity);
+		handCl.sort();
 		Card unknownCard = new Card(null, null);
-		
 		int i = 0;
 		ArrayList<Card> cards = new ArrayList<>(9);
+		ArrayList<Card> cardsOnHand = new ArrayList<>(9);
 		while(i < 9) {
 			for(int j = 0; j < 3; j++, i++) {
 				cards.add(unknownCard);
+				cardsOnHand.add(handCl.get(i));
 			}
 			for(int j = 1; j <= 4; j++) {
 				for(Team team : model.getTeams()) {
@@ -63,7 +67,11 @@ public abstract class AbstractClient {
 							}
 							lastRefresh = System.currentTimeMillis();
 							//Store a copy of the array in each unknown player
-							player.putCards(cards);
+							if(player.equals(model.getThisPlayer())) {
+								player.putCards(cardsOnHand);
+							}else {
+								player.putCards(cards);
+							}
 							playerChanged(player);
 						}
 					}
@@ -236,7 +244,7 @@ public abstract class AbstractClient {
 				//New handling
 				//First check if this player is a bot or not
 				if(caller instanceof ClientController) {
-					showHandOutCardsAnimation(((ClientController)caller).getRefreshDelay());
+					showHandOutCardsAnimation(msg.cards, ((ClientController)caller).getRefreshDelay());
 				}else {
 					//If its a bot, no need for fancy animations
 					//Now set the other players hand to 9 unknown cards
