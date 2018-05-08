@@ -399,7 +399,6 @@ public abstract class AbstractClient {
 	public void disconnect() {
 		com.disconnect();
 		doDisconnected();
-		System.exit(0);
 	}
 	
 	//Getters and Setters

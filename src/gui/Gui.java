@@ -72,10 +72,8 @@ public class Gui extends AbstractClientView implements Runnable{
 		        	//Notify client instead of System.exit /Maurus
 		        	for(ViewObserver observer: observers)
 					{
-						observer.btnDisconnectClick();
+						observer.btnCloseWindowClick(getCurrentView());
 					}
-		        	
-		            //System.exit(0);
 		        }
 		    }
 		});

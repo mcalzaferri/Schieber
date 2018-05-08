@@ -12,7 +12,7 @@ import ch.ntb.jass.common.proto.server_info_messages.StichInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.TurnInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.WiisInfoMessage;
 import ch.ntb.jass.common.proto.server_messages.WrongCardMessage;
-import server.GameLogic.MoveStatus;
+import server.MoveStatus;
 import server.exceptions.ClientErrorException;
 import server.exceptions.UnhandledMessageException;
 import shared.Card;
