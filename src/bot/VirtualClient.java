@@ -1,8 +1,11 @@
 package bot;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import client.BadResultException;
 import ch.ntb.jass.common.proto.player_messages.ChangeStateMessage;
@@ -22,15 +25,30 @@ public class VirtualClient extends AbstractClient {
 	public Boolean active;
 	private int mySeatId;
 	private Score score;
-	private static String[] possibleBotNames = { "cat-bot", "dog-bot",
-			"hot-bot", "nt-bot", "not-a-bot", "definitely-not-a-bot", "ro-bot",
-			"TheLegend27",
-			"MMWW" };
+	private static ArrayList<String> possibleBotNames;
 
 	public VirtualClient(ClientCommunication com, ClientModel model, BotIntelligence intelligence) {
 		super(com, model);
 		setIntelligence(intelligence);
 		
+		setBotNames();
+		
+	}
+
+	private void setBotNames() { // read botnames from a textfile
+		Scanner in;
+		possibleBotNames = new ArrayList<>();
+		try {
+			in = new Scanner(new FileReader("botnames.txt"));
+			in.useDelimiter("\r\n");
+			while(in.hasNext()) {
+			    possibleBotNames.add(in.next());
+			}
+			in.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	public void connect(InetSocketAddress serverAddress) {
@@ -38,7 +56,8 @@ public class VirtualClient extends AbstractClient {
 		Random rm = new Random();
 		do {
 			try {
-				connect(serverAddress, possibleBotNames[rm.nextInt(possibleBotNames.length)], true);
+				//connect(serverAddress, possibleBotNames[rm.nextInt(possibleBotNames.length)], true);
+				connect(serverAddress, possibleBotNames.get(rm.nextInt(possibleBotNames.size())), true);
 				//Wird keine Exception geworfen wurde connect erfolgreich durchgeführt
 				connected = true;
 			} catch (BadResultException e) {
