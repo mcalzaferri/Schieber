@@ -9,6 +9,8 @@ import shared.client.*;
 public class ClientController extends AbstractClient implements ViewObserver{
 	//Fields
 	private AbstractClientView view;
+	private long lastRefresh;
+	private long refreshDelay;
 	
 	//Constructor
 	public ClientController(ClientCommunication com, ClientModel model, AbstractClientView view) {
@@ -16,6 +18,8 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		this.view = view;
 		view.addObserver(this);
 		view.changeView(ViewEnumeration.SELECTHOSTVIEW);
+		lastRefresh = System.currentTimeMillis();
+		refreshDelay = 0;
 	}
 	
 	//Methods
@@ -27,6 +31,17 @@ public class ClientController extends AbstractClient implements ViewObserver{
 			view.changeView(v);
 		else
 			view.updateView(v);
+	}
+	
+	public void waitRefresh() {
+		while(lastRefresh > System.currentTimeMillis() - refreshDelay) {
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		lastRefresh = System.currentTimeMillis();
 	}
 	
 	@Override
@@ -97,6 +112,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doUpdateDeck(Card[] deckCards) {
+		waitRefresh();
 		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 
@@ -107,6 +123,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	@Override
 	public void doUpdateHand(Card[] handCards) {
 		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+		waitRefresh();
 	}
 	
 	/** This method is called when this Client needs to define the trump.
@@ -259,4 +276,10 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		model.getThisPlayer().setReady(!model.getThisPlayer().isReady());
 		super.publishChangedState(model.getThisPlayer().isReady());
 	}
+	
+	//Getters and setters
+	public void setRefreshDelay(long refreshDelay) {
+		this.refreshDelay = refreshDelay;
+	}
+	
 }
