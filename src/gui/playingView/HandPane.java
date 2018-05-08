@@ -115,9 +115,9 @@ public class HandPane extends ObservableView implements ActionListener{
 			
 		}
 		else {
-			vc.setEnabled(vc.getCard().isAllowed(data.getHand().toArray(), 
-					null, 
-					data.getTrump()));
+			vc.setEnabled(true);
+			//vc.setEnabled(vc.getCard().isAllowed(data.getHand().toArray(), null, data.getTrump()));
+			//TODO What is the line above good for necessary? /Maurus
 		}
 	}
 	
