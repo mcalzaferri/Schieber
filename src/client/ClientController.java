@@ -143,6 +143,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void doRequestTrump(boolean canSwitch) {
+		view.updateView(ViewEnumeration.PLAYVIEW);
 		changeOrUpdateView(ViewEnumeration.SELECTTRUMPVIEW);
 	}
 

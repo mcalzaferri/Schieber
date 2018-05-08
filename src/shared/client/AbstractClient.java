@@ -30,6 +30,14 @@ public abstract class AbstractClient {
 		this(com, new ClientModel());
 	}
 	
+	//Internal methods
+	private void clearDeck() {
+		if(model.getDeck() != null) {
+			model.getDeck().clear();
+			doUpdateDeck(model.getDeck().toArray());
+		}
+	}
+	
 	//Methods for AbstractClient
 	private void showHandOutCardsAnimation(long refreshDelay) {
 		long lastRefresh = 0;
@@ -121,9 +129,8 @@ public abstract class AbstractClient {
 			
 			public void msgReceived(NewTurnInfoMessage msg) {
 				//If the previous GameState wasnt TURNOVER (This means it was GAMEOVER OR ROUNDOVER OR PLAYOVER) the deck must be emptied
-				if(model.getGameState() != GameState.TURNOVER && model.getDeck() != null) {
-					model.getDeck().clear();
-					doUpdateDeck(model.getDeck().toArray());
+				if(model.getGameState() != GameState.TURNOVER) {
+					clearDeck();
 				}
 				model.setGameState(GameState.TURNACTIVE);
 				model.setActiveSeatId(msg.nextPlayer.seat.getSeatNr());
@@ -217,6 +224,8 @@ public abstract class AbstractClient {
 
 			@Override
 			public void msgReceived(HandOutCardsMessage msg) {
+				//Clear deck
+				clearDeck();
 				//First remove all cards
 				for(Team team : model.getTeams()) {
 					for(Player player : team.getPlayers()) {
