@@ -5,11 +5,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.Timer;
+
 import client.ViewObserver;
+import gui.Animation;
 import gui.Gui;
 import gui.ObservableView;
 import gui.PictureFactory.Pictures;
@@ -25,6 +30,8 @@ public class CarpetPane extends ObservableView{
 	private BufferedImage imgCarpet;
 	private Image imgScaledCarpet;
 	private Dimension oldCarpetSize;
+	private ArrayList<Animation> animations;
+	private Timer animationTimer;
 	public static final Dimension minCardSize = new Dimension(60, 96);
 	public static final Dimension minCoverSize = new Dimension(30, 48);
 	public static final Dimension minCarpetSize = new Dimension(500, 500);
@@ -45,6 +52,19 @@ public class CarpetPane extends ObservableView{
 		setOpaque(true);
 		this.setMinimumSize(this.minCarpetSize);
 		oldCarpetSize = new  Dimension(0, 0);
+		
+		//Set up animations
+		animations = new ArrayList<>();
+		CarpetPane caller = this;
+		animationTimer = new Timer(30, new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!animations.isEmpty()) {
+					caller.repaint();
+				}
+			}
+		});
+		animationTimer.start();
 	}
 	
 	CarpetDrawer drawer;
@@ -78,5 +98,10 @@ public class CarpetPane extends ObservableView{
 		
 		//Draw deck (must be drawn over players so that the cards are always on top)
 		drawer.drawDeck(g,data, carpetSize, cardSize);
+		
+		//Draw animations
+		for(Animation animation : animations) {
+			animation.paint(g);
+		}
 	}
 }
