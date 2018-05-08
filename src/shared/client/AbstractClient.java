@@ -93,7 +93,7 @@ public abstract class AbstractClient {
 					doEndGame();
 				}else {
 					model.setGameState(GameState.ROUNDOVER);
-					doEndRound(model.getPlayer(msg.playerWhoWonStich));
+					doEndRound();
 				}
 			}
 
@@ -191,6 +191,7 @@ public abstract class AbstractClient {
 			@Override
 			public void msgReceived(StichInfoMessage msg) {
 				model.setGameState(GameState.PLAYOVER);
+				stichInfo(model.getPlayer(msg.playerWhoWonStich));
 			}
 			
 			@Override
@@ -275,6 +276,7 @@ public abstract class AbstractClient {
 		});
 	}
 	//Non Abstract Template methods for Server -> Client
+	protected void stichInfo(Player playerWhoWonStich) {}
 	protected void playerChanged(Player player) {}
 	protected void teamsChanged(Team[] teams) {}
 	protected void goodResultReceived(String message) {}
@@ -306,7 +308,7 @@ public abstract class AbstractClient {
 	
 	protected abstract void doUpdateScore(Score score);
 	
-	protected abstract void doEndRound(Player playerWhoWonStich);
+	protected abstract void doEndRound();
 	
 	protected abstract void doEndGame();
 	

@@ -390,7 +390,7 @@ public class GameLogic {
 
 			// add score to team
 			int teamId = getTeamId(lastWinner);
-			addScore(teamId,scores.get(teamId) + calcTableScore());
+			addScore(teamId, calcTableScore());
 
 			if (cardCounter == 36) {
 				addScore(teamId, 5 * trump.getScoreMultiplicator());
