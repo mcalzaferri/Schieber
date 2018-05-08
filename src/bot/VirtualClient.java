@@ -39,7 +39,8 @@ public class VirtualClient extends AbstractClient {
 		Scanner in;
 		possibleBotNames = new ArrayList<>();
 		try {
-			in = new Scanner(new FileReader("botnames.txt"));
+			// use "botnames.txt" or "femaleBotNames.txt"
+			in = new Scanner(new FileReader("femaleBotNames.txt"));
 			in.useDelimiter("\n");
 			while(in.hasNext()) {
 			    possibleBotNames.add(in.next());
@@ -56,7 +57,6 @@ public class VirtualClient extends AbstractClient {
 		Random rm = new Random();
 		do {
 			try {
-				//connect(serverAddress, possibleBotNames[rm.nextInt(possibleBotNames.length)], true);
 				connect(serverAddress, possibleBotNames.get(rm.nextInt(possibleBotNames.size())), true);
 				//Wird keine Exception geworfen wurde connect erfolgreich durchgeführt
 				connected = true;
@@ -83,8 +83,7 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	public void doEndRound() {
-		// update max cards with knowledge from deck cards
-		ki.updateMaxCards();
+		ki.resetBot();
 	}
 
 	@Override
@@ -129,6 +128,10 @@ public class VirtualClient extends AbstractClient {
 	public void doUpdateDeck(Card[] deckCards) {
 		ki.setDeck(cardsToIds(deckCards));
 		ki.updateOutOfCardLists(cardsToIds(deckCards));
+		
+		if(deckCards.length == 4) {
+			ki.updateMaxCards();
+		}
 
 	}
 

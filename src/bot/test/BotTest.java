@@ -21,7 +21,7 @@ public class BotTest {
 	static IntelligenceNormal bot4;
 	
 	static final int noOfGames = 10000;
-	static final long initialSeed = 1;
+	static final long initialSeed = 106;
 
 	public static void main(String[] args) {
 		
@@ -30,18 +30,21 @@ public class BotTest {
 		bot3 = new IntelligenceNormal();
 		bot4 = new IntelligenceNormal();
 		
-		long seed = 0;
-		
 		long now = System.currentTimeMillis();
 		
 		// do a huge amount of games to test for unwanted exceptions
-		 for(seed = initialSeed; seed < initialSeed + noOfGames; seed++) {
+		 for(long seed = initialSeed; seed < initialSeed + noOfGames; seed++) {
+			 
+			bot1.resetBot();
+			bot2.resetBot();
+			bot3.resetBot();
+			bot4.resetBot();
 		
 			System.out.println("Seed: " + seed);
 
-			//r = new Random(seed);
-			// Alternative: do tests without fixed seeds to do even more different combinations
-			 r = new Random();
+			r = new Random(seed);
+			 //Alternative: do tests without fixed seeds to do even more different combinations
+			 //r = new Random();
 			
 			allCards = new ArrayList<>();
 			allCards = generateAllCards();
@@ -247,6 +250,7 @@ public class BotTest {
 				bot3.setHand(al2A(bot3Hand));
 				bot4Hand.remove((Integer) card4.getId());
 				bot4.setHand(al2A(bot4Hand));
+				
 
 				System.out.println();
 		}

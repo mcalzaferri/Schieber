@@ -296,7 +296,7 @@ public abstract class BotIntelligence {
 			else { enemyCards.add(c); }
 			if(folge) {
 				for(int i = 1; i<noOfCards; i++) {
-					c = new Card(originCardID+i);
+					c = new Card(originCardID-i);
 					knownCards.add(new KnownCard(c, playerID, false));
 					if(partner) { partnerCards.add(c); }
 					else { enemyCards.add(c); }
@@ -329,29 +329,52 @@ public abstract class BotIntelligence {
 	 * This function checks the deck and updates the current list of highest cards
 	 */
 	public void updateMaxCards() {
-		for(Card c : deck) {
-			int index = c.getColor().getId()-1;
-			if(c.equals(maxCardsInPlay[index])) {
-				if(c.getValue() == CardValue.SECHS) {
-					this.maxCardsInPlay[index] = null;
-				} else {
-					if(c.getColor() == trump.getTrumpfColor()) { // different logic for Trumpf
-						if(this.maxCardsInPlay[index].getValue() == CardValue.UNDER) { // Bauer
-							this.maxCardsInPlay[index] = new Card(c.getId()-2); // set to Nell
-						} else if (this.maxCardsInPlay[index].getValue() == CardValue.NEUN){ // Nell
-							this.maxCardsInPlay[index] = new Card(c.getId()+5); // set to Ass
+		boolean checkAgain = true;
+		
+		while(checkAgain) { // if the list is updated the deck needs to be checked again
+			checkAgain = false;
+			for(Card c : deck) {
+				int index = c.getColor().getId()-1;
+				if(c.equals(maxCardsInPlay[index])) {
+					if(trump == Trump.UNEUFE) { // different logic for UNEUFE
+						if(c.getValue() == CardValue.ASS) {
+							this.maxCardsInPlay[index] = null;
 						} else {
-							this.maxCardsInPlay[index] = new Card(c.getId()-1);
-							if(this.maxCardsInPlay[index].getValue() == CardValue.UNDER || this.maxCardsInPlay[index].getValue() == CardValue.NEUN) {
-								this.maxCardsInPlay[index] = new Card(c.getId()-1);
-							}
+							this.maxCardsInPlay[index] = new Card(c.getId()+1);
+							checkAgain = true;
 						}
 					} else {
-						this.maxCardsInPlay[index] = new Card(c.getId()-1);
+						if(c.getValue() == CardValue.SECHS) {
+							this.maxCardsInPlay[index] = null;
+						} else {
+							if(c.getColor() == trump.getTrumpfColor()) { // different logic for Trumpf
+								if(this.maxCardsInPlay[index].getValue() == CardValue.UNDER) { // Bauer
+									this.maxCardsInPlay[index] = new Card(c.getId()-2); // set to Nell
+									checkAgain = true;
+								} else if (this.maxCardsInPlay[index].getValue() == CardValue.NEUN){ // Nell
+									this.maxCardsInPlay[index] = new Card(c.getId()+5); // set to Ass
+									checkAgain = true;
+								} else {
+									this.maxCardsInPlay[index] = new Card(c.getId()-1);
+									if(this.maxCardsInPlay[index].getValue() == CardValue.UNDER || this.maxCardsInPlay[index].getValue() == CardValue.NEUN) {
+										this.maxCardsInPlay[index] = new Card(c.getId()-1);
+										checkAgain = true;
+									}
+								}
+							} else {
+								this.maxCardsInPlay[index] = new Card(c.getId()-1);
+								checkAgain = true;
+							}
+						}
 					}
+
 				}
 			}
 		}
+		
+		// end while
+		
+		
 	}
 	
 	/**
@@ -415,6 +438,29 @@ public abstract class BotIntelligence {
 			ids[i] = cards.get(i).getId();
 		}
 		return ids;
+	}
+	
+	public void resetBot() {
+		cardsPlayed = new ArrayList<>();	
+
+		maxCardsInPlay[0] = new Card(19);
+		maxCardsInPlay[1] = new Card(29);
+		maxCardsInPlay[2] = new Card(39);
+		maxCardsInPlay[3] = new Card(49);
+		maxCardsInPlay[4] = null;
+		
+		knownCards = new ArrayList<>();
+		partnerCards = new ArrayList<>(); 
+		enemyCards = new ArrayList<>(); 
+
+		for(int i = 0; i < 4; i++) {
+			partnerOutOfColor[i] = false;
+			enemyLeftOutOfColor[i] = false;
+			enemyRightOutOfColor[i] = false;
+		}
+
+		geschoben = false;
+		trumpfGemacht = false;
 	}
 	
 	// methods depending on strategy

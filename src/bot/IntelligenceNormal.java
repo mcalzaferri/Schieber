@@ -35,7 +35,7 @@ public class IntelligenceNormal extends BotIntelligence {
 		if(deck.isEmpty()) { //I'm first to go
 			
 			//austrumpfen if we made trumpf and enemy still has them
-			if(trumpfGemacht && trump.getTrumpfColor() != null && !(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1])) {
+			if(trumpfGemacht && trump.getTrumpfColor() != null && !(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyRightOutOfColor[trump.getTrumpfColor().getId()-1])) {
 				for(Card c : allowedCards) {
 					if(c.isBuur(trump)) {
 						return c;
@@ -49,7 +49,7 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 			
 			for(Card wc : winningCards) {
-				if(wc.getColor() == trump.getTrumpfColor() && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) {
+				if(wc.getColor() == trump.getTrumpfColor() && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyRightOutOfColor[trump.getTrumpfColor().getId()-1]) {
 					// Don't play trump card if enemy has none
 				} else {
 					return wc;
@@ -60,7 +60,7 @@ public class IntelligenceNormal extends BotIntelligence {
 			for(Card pc : this.getSicherenStichDuringPlay(partnerCards)) {
 				for(Card oc : allowedCards) {
 					if(pc.getColor() == oc.getColor()) {
-						if(pc.getColor() == trump.getTrumpfColor() && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) {
+						if(pc.getColor() == trump.getTrumpfColor() && enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyRightOutOfColor[trump.getTrumpfColor().getId()-1]) {
 							// Don't play trump card if enemy has none
 						} else {
 							return oc;
