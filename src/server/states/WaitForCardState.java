@@ -139,18 +139,16 @@ public class WaitForCardState extends GameState {
 						wiMsg.player = sender.getEntity();
 						wiMsg.wiis = weise;
 						broadcast(wiMsg);
-					}
-					else{
+					} else {
 						throw(new ClientErrorException("The Weis doesn't match your deck. PlayerID: " + sender.getId()));
 					}					
-				}				
-				else{
+				} else {
 					throw(new ClientErrorException("You already declared your Weis. PlayerID: " + sender.getId()));
 				}
-			}
-			else{
+			} else {
 				throw(new ClientErrorException("No Weis after the first round has finished."));
-			}		} else {
+			}		
+		} else {
 			throw(new UnhandledMessageException());
 		}
 	}

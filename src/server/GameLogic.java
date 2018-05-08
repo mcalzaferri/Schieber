@@ -435,16 +435,23 @@ public class GameLogic {
 		return cardCounter < 4;
 	}
 	
-	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeis){
+	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeisEntity){
 		int truthCounter = 0;
-		WeisEntity[] verifiedWeis = Weis.getEntities(p.getCards().getPossibleWiis(trump));
-		for(int i = 0; i < claimedWeis.length; i++){
-			// TODO: check type not Entity
-			if(Arrays.asList(claimedWeis).contains(verifiedWeis[i].type)){
-				truthCounter++;
+		int provisionalWeis = 0;
+		Weis[] verifyWeisArray = p.getCards().getPossibleWiis(trump);
+		Weis[] claimedWeisArray = new Weis[claimedWeisEntity.length];
+		
+		for(int i = 0; i < claimedWeisEntity.length; i++){
+			Weis claimedWeis = new Weis(claimedWeisEntity[i]);			
+			claimedWeisArray[i] = claimedWeis;						
+			for(int j = 0; j < claimedWeisEntity.length; j++) {
+								
+				if(claimedWeisArray[i].compareTo(verifyWeisArray[j], trump) == 0) {
+					truthCounter++;					
+				}				
 			}		
 		}
-		if(truthCounter == claimedWeis.length){
+		if(truthCounter == claimedWeisEntity.length){
 			return true;
 		}
 		else{

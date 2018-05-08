@@ -45,6 +45,13 @@ public class Weis{
 	}
 	
 	//Methoden
+	/** Returns -1 if the given weis o is higher then this weis
+	 * 	Returns 0 if the given weis is the same value as this weis
+	 *  Returns 1 if the given weis o is smaller then this weis
+	 * @param o
+	 * @param trump
+	 * @return
+	 */
 	public int compareTo(Weis o, Trump trump) {
 		if(type.compareTo(o.getType()) != 0) {
 			return type.compareTo(o.getType());
