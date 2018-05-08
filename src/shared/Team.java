@@ -16,6 +16,7 @@ public class Team {
 	
 	public Team(TeamEntity entity, Map<Integer,Player> dictionary) {
 		players = new Player[2];
+		teamId = entity.teamId;
 		for(int i = 0; i <= 1; i++) {
 			if(dictionary != null && dictionary.get(entity.players[i].id) != null)
 				players[i] = dictionary.get(entity.players[i].id);

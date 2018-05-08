@@ -69,21 +69,17 @@ public class BlackBoardPane extends ObservableView{
 		//Getting scores for teams
 		int myScore = 0;
 		int enemyScore = 0;
-		
-		try {	
-			myScore = data.getScore().getScore(data.getTeams()[1]);
-			enemyScore = data.getScore().getScore(data.getTeams()[0]);
-			
-			for(Player p : data.getTeams()[0].getPlayers()) {
-				if(p.getId() == data.getThisPlayer().getId()) {
-					//Player is in team 0 => enemy team is team 1
-					myScore = data.getScore().getScore(data.getTeams()[0]);
-					enemyScore = data.getScore().getScore(data.getTeams()[1]);
-					break;	//Leave loop if player was found
+		if(data.getScore() != null && data.getTeams() != null) {
+			Team myTeam = Team.getTeamThatContainsPlayer(data.getTeams(), data.getThisPlayer());
+			for(Team team : data.getTeams()) {
+				if(myTeam == null)
+					myTeam = team;
+				if(myTeam == team) {
+					myScore = data.getScore().getScore(team);
+				}else {
+					enemyScore = data.getScore().getScore(team);
 				}
 			}
-		}catch(Exception ex) {
-			//Do nothing if anything in getting score does not work => Scores = 0
 		}
 		
 		//Draw content on blackboard
