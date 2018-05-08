@@ -10,17 +10,17 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.Timer;
 
 import client.ViewObserver;
-import gui.Animation;
 import gui.Gui;
 import gui.ObservableView;
 import gui.PictureFactory.Pictures;
+import gui.animation.Animation;
 import shared.Player;
 import shared.client.ClientModel;
-import test.TestHelper;
 
 public class CarpetPane extends ObservableView{
 	/**
@@ -54,17 +54,7 @@ public class CarpetPane extends ObservableView{
 		oldCarpetSize = new  Dimension(0, 0);
 		
 		//Set up animations
-		animations = new ArrayList<>();
-		CarpetPane caller = this;
-		animationTimer = new Timer(30, new ActionListener() {		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(!animations.isEmpty()) {
-					caller.repaint();
-				}
-			}
-		});
-		animationTimer.start();
+		initializeAnimations();
 	}
 	
 	CarpetDrawer drawer;
@@ -103,5 +93,32 @@ public class CarpetPane extends ObservableView{
 		for(Animation animation : animations) {
 			animation.paint(g);
 		}
+	}
+
+	private void initializeAnimations() {
+		animations = new ArrayList<>();
+		CarpetPane caller = this;
+		animationTimer = new Timer(Animation.tickRate, new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!animations.isEmpty()) {
+					caller.repaint();
+					Collection<Animation> finishedAnimations = new ArrayList<>();
+					for(Animation animation : animations) {
+						if(animation.hasFinished()) {
+							finishedAnimations.add(animation);
+						}else {
+							animation.tick();
+						}
+					}
+					animations.removeAll(finishedAnimations);
+				}
+			}
+		});
+		animationTimer.start();
+	}
+
+	public void showAnimation(Animation animation) {
+		animations.add(animation);
 	}
 }
