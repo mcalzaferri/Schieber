@@ -30,6 +30,40 @@ public abstract class AbstractClient {
 		this(com, new ClientModel());
 	}
 	
+	//Methods for AbstractClient
+	private void showHandOutCardsAnimation(long refreshDelay) {
+		long lastRefresh = 0;
+		Card unknownCard = new Card(null, null);
+		
+		int i = 0;
+		ArrayList<Card> cards = new ArrayList<>(9);
+		while(i < 9) {
+			for(int j = 0; j < 3; j++, i++) {
+				cards.add(unknownCard);
+			}
+			for(int j = 1; j <= 4; j++) {
+				for(Team team : model.getTeams()) {
+					for(Player player : team.getPlayers()) {
+						//Wait for Refresh delay
+						if(player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId() == j) {
+							while(lastRefresh > System.currentTimeMillis() - refreshDelay) {
+								try {
+									Thread.sleep(5);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+							lastRefresh = System.currentTimeMillis();
+							//Store a copy of the array in each unknown player
+							player.putCards(cards);
+							playerChanged(player);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	//Methods for Communication -> Client
 	/** This method is called by the communication class when a new message has been received.
 	 * Its main purpose is to parse the message and then handle the specific  message.
@@ -192,51 +226,9 @@ public abstract class AbstractClient {
 				//New handling
 				//First check if this player is a bot or not
 				if(caller instanceof ClientController) {
-					//Caller is a ClientController -> not a bot
-					//Get refreshDelay of controller
-					long refreshDelay = ((ClientController)caller).getRefreshDelay();
-					long lastRefresh = 0;
-					Card unknownCard = new Card(null, null);
-					
-					int i = 0;
-					ArrayList<Card> cards = new ArrayList<>(9);
-					while(i < 9) {
-						for(int j = 0; j < 3; j++, i++) {
-							cards.add(unknownCard);
-						}
-						for(int j = 1; j <= 4; j++) {
-							for(Team team : model.getTeams()) {
-								for(Player player : team.getPlayers()) {
-									//Wait for Refresh delay
-									if(player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId() == j) {
-										while(lastRefresh > System.currentTimeMillis() - refreshDelay) {
-											try {
-												Thread.sleep(5);
-											} catch (InterruptedException e) {
-												e.printStackTrace();
-											}
-										}
-										lastRefresh = System.currentTimeMillis();
-										//Store a copy of the array in each unknown player
-										player.putCards(cards);
-										playerChanged(player);
-									}
-								}
-							}
-						}
-					}
-					//At the end show cards
-					model.getHand().updateData(msg.cards);
-					model.getHand().sort();
-					doUpdateHand(model.getHand().toArray());
+					showHandOutCardsAnimation(((ClientController)caller).getRefreshDelay());
 				}else {
 					//If its a bot, no need for fancy animations
-					
-					//Old handling
-					//First set players hand
-					model.getHand().updateData(msg.cards);
-					model.getHand().sort();
-					doUpdateHand(model.getHand().toArray());
 					//Now set the other players hand to 9 unknown cards
 					Card unknownCard = new Card(null, null);
 					Card[] ca = new Card[9];
@@ -253,6 +245,9 @@ public abstract class AbstractClient {
 						}
 					}
 				}
+				model.getHand().updateData(msg.cards);
+				model.getHand().sort();
+				doUpdateHand(model.getHand().toArray());
 			}
 
 			@Override
