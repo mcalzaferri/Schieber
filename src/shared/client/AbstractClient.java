@@ -10,6 +10,7 @@ import ch.ntb.jass.common.proto.server_messages.*;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage.Code;
 import client.BadResultException;
 import client.ClientCommunication;
+import client.ClientController;
 import shared.*;
 
 public abstract class AbstractClient {
@@ -34,6 +35,7 @@ public abstract class AbstractClient {
 	 * @param msg The Message that has been received.
 	 */
 	public void handleReceivedMessage(Message msg) {
+		AbstractClient caller = this;
 		ClientMessageDecoder.decodeMessage(msg, new ClientMessageDecoder() {
 
 			//server_info_messages
@@ -179,23 +181,69 @@ public abstract class AbstractClient {
 
 			@Override
 			public void msgReceived(HandOutCardsMessage msg) {
-				//First set players hand
-				model.getHand().updateData(msg.cards);
-				model.getHand().sort();
-				doUpdateHand(model.getHand().toArray());
-				//Now set the other players hand to 9 unknown cards
-				Card unknownCard = new Card(null, null);
-				Card[] ca = new Card[9];
-				for(int i = 0; i < ca.length; i++) {
-					ca[i] = unknownCard;
-				}
-				for(Team team : model.getTeams()) {
-					for(Player player : team.getPlayers()) {
-						if(player.equals(model.getThisPlayer())) {
-							continue;
+				model.setGameState(GameState.STARTED);
+				//New handling
+				//First check if this player is a bot or not
+				if(caller instanceof ClientController) {
+					//Caller is a ClientController -> not a bot
+					//Get refreshDelay of controller
+					long refreshDelay = ((ClientController)caller).getRefreshDelay();
+					long lastRefresh = 0;
+					Card unknownCard = new Card(null, null);
+					
+					int i = 0;
+					while(i < 9) {
+						i += 3;
+						Card[] ca = new Card[i];
+						for(int j = 0; j < i; j++) {
+							ca[j] = unknownCard;
 						}
-						//Store a copy of the array in each unknown player
-						player.putCards(ca.clone());
+						for(int j = 1; j <= 4; j++) {
+							for(Team team : model.getTeams()) {
+								for(Player player : team.getPlayers()) {
+									//Wait for Refresh delay
+									if(player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId() == j) {
+										while(lastRefresh > System.currentTimeMillis() - refreshDelay) {
+											try {
+												Thread.sleep(5);
+											} catch (InterruptedException e) {
+												e.printStackTrace();
+											}
+										}
+										lastRefresh = System.currentTimeMillis();
+										//Store a copy of the array in each unknown player
+										player.putCards(ca);
+										playerChanged(player);
+									}
+								}
+							}
+						}
+					}
+					//At the end show cards
+					model.getHand().updateData(msg.cards);
+					model.getHand().sort();
+				}else {
+					//If its a bot, no need for fancy animations
+					
+					//Old handling
+					//First set players hand
+					model.getHand().updateData(msg.cards);
+					model.getHand().sort();
+					doUpdateHand(model.getHand().toArray());
+					//Now set the other players hand to 9 unknown cards
+					Card unknownCard = new Card(null, null);
+					Card[] ca = new Card[9];
+					for(int i = 0; i < ca.length; i++) {
+						ca[i] = unknownCard;
+					}
+					for(Team team : model.getTeams()) {
+						for(Player player : team.getPlayers()) {
+							if(player.equals(model.getThisPlayer())) {
+								continue;
+							}
+							//Store a copy of the array in each unknown player
+							player.putCards(ca.clone());
+						}
 					}
 				}
 			}

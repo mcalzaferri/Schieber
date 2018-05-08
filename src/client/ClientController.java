@@ -193,6 +193,9 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	protected void playerChanged(Player player) {
+		if(model.getThisPlayer().isAtTable() && model.getGameState() == GameState.STARTED) {
+			changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+		}
 		if(player.equals(model.getThisPlayer()) || (model.getThisPlayer().getId() == 0 && player.getName().equals(model.getThisPlayer().getName()))) {
 			if(player.getSeat() == Seat.NOTATTABLE) {
 				changeOrUpdateView(ViewEnumeration.LOBBYVIEW);
@@ -280,6 +283,10 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	//Getters and setters
 	public void setRefreshDelay(long refreshDelay) {
 		this.refreshDelay = refreshDelay;
+	}
+	
+	public long getRefreshDelay() {
+		return refreshDelay;
 	}
 	
 }

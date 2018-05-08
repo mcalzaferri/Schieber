@@ -53,12 +53,14 @@ public class HandPane extends ObservableView implements ActionListener{
 				ArrayList<ViewableCard> newCards = new ArrayList<>(9);
 				//Initialize cards if cards is currently empty
 				for(Card c : data.getHand()) {
-					ViewableCard vc = new ViewableCard(c);
-					vc.addActionListener(this);
-					doEnableCard(vc);
-					cards.put(c, vc);
-					newCards.add(vc);
-					// Do not add until all cards are created add(vc);
+					if(!c.isUnknown()) {
+						ViewableCard vc = new ViewableCard(c);
+						vc.addActionListener(this);
+						doEnableCard(vc);
+						cards.put(c, vc);
+						newCards.add(vc);
+						// Do not add until all cards are created add(vc);
+					}
 				}
 				for(ViewableCard vc : newCards) {
 					//Now add all cards together for smoother display
