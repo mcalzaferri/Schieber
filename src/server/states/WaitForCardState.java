@@ -77,6 +77,7 @@ public class WaitForCardState extends GameState {
 
 			if (moveStatus.equals(MoveStatus.OK)) {
 				broadcast(tiMsg);
+
 				// Request next card
 				act();
 				return;
@@ -87,6 +88,7 @@ public class WaitForCardState extends GameState {
 
 			if (moveStatus.equals(MoveStatus.RUNOVER)) {
 				broadcast(siMsg);
+
 				// Request next card
 				act();
 				return;
@@ -96,17 +98,18 @@ public class WaitForCardState extends GameState {
 			ScoreEntity score = new ScoreEntity();
 			score.scores = logic.getScores();
 			eorMsg.score = score;
-			eorMsg.gameOver = false;
 
 			if (moveStatus.equals(MoveStatus.ROUNDOVER)) {
+				eorMsg.gameOver = false;
 				broadcast(eorMsg);
+
+				// start new round
 				stateMachine.changeState(new StartRoundState());
 				return;
 			}
 
-			eorMsg.gameOver = true;
-
 			if (moveStatus.equals(MoveStatus.GAMEOVER)) {
+				eorMsg.gameOver = true;
 				broadcast(eorMsg);
 
 				// start new game

@@ -125,8 +125,6 @@ public class GameLogic {
 
 	/**
 	 * Create shuffled deck of cards and assign it to the players.
-	 * @param player player to assign cards to
-	 * @return array with nine cards
 	 */
 	private void assignCardsToPlayers() {
 		Card[] deck = new Card[36];
@@ -196,7 +194,6 @@ public class GameLogic {
 		}
 
 		player.setSeat(preferredSeat);
-		return;
 	}
 
 	/**
@@ -291,14 +288,14 @@ public class GameLogic {
 	 * @return team entity
 	 * @{
 	 */
-	public TeamEntity getTeam1() {
+	private TeamEntity getTeam1() {
 		TeamEntity team = new TeamEntity();
 		team.teamId = team1Id;
 		team.players = new PlayerEntity[] {getPlayer(Seat.SEAT1).getEntity(),
 				getPlayer(Seat.SEAT3).getEntity()};
 		return team;
 	}
-	public TeamEntity getTeam2() {
+	private TeamEntity getTeam2() {
 		TeamEntity team = new TeamEntity();
 		team.teamId = team2Id;
 		team.players = new PlayerEntity[] {getPlayer(Seat.SEAT2).getEntity(),
@@ -393,16 +390,20 @@ public class GameLogic {
 
 			// add score to team
 			int teamId = getTeamId(lastWinner);
-			scores.put(teamId, scores.get(teamId) + calcTableScore());
+			addScore(teamId,scores.get(teamId) + calcTableScore());
 
 			if (cardCounter == 36) {
-				scores.put(teamId, 5 * trump.getScoreMultiplicator());
-				currentSeat = null;
-				for (int score : scores.values()) {
-					if (score >= targetScore) {
-						return MoveStatus.GAMEOVER;
-					}
+				addScore(teamId, 5 * trump.getScoreMultiplicator());
+			}
+
+			for (int score : scores.values()) {
+				if (score >= targetScore) {
+					return MoveStatus.GAMEOVER;
 				}
+			}
+
+			if (cardCounter == 36) {
+				currentSeat = null;
 				return MoveStatus.ROUNDOVER;
 			}
 			initRun();
@@ -413,6 +414,10 @@ public class GameLogic {
 
 	public enum MoveStatus {
 		NOTALLOWED, INVALID, OK, RUNOVER, ROUNDOVER, GAMEOVER;
+	}
+
+	private void addScore(int teamId, int value) {
+		scores.put(teamId, scores.get(teamId) + value);
 	}
 
 	private int calcTableScore() {
