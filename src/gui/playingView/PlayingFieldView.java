@@ -13,6 +13,7 @@ import gui.Gui;
 import gui.ObservableView;
 import gui.Viewable;
 import gui.PictureFactory.Pictures;
+import gui.animation.AnimationRegion;
 import shared.client.ClientModel;
 import test.TestHelper;
 
@@ -33,6 +34,7 @@ public class PlayingFieldView extends ObservableView implements Viewable{
 	private BlackBoardPane blackBoard;
 	private CarpetPane carpet;
 	private MessageBoard msgBoard;
+	private AnimationRegion animationRegion;
 	private JPanel content;
 	private BufferedImage img;
 	
@@ -46,6 +48,7 @@ public class PlayingFieldView extends ObservableView implements Viewable{
 		this.carpet = new CarpetPane(data, observers);
 		this.msgBoard = new MessageBoard();
 		this.content = new JPanel();
+		this.animationRegion = new AnimationRegion();
 		try {
 			this.img = Gui.pictureFactory.getPicture(Pictures.Table);
 		} catch (IOException e) {
@@ -57,6 +60,7 @@ public class PlayingFieldView extends ObservableView implements Viewable{
 	private void initializeComponents() {
 		PlayingFieldLayout l = new PlayingFieldLayout();
 		this.setLayout(l);
+		this.add(this.animationRegion, PlayingFieldLayout.ANIMATIONREGION);
 		this.add(this.hand, PlayingFieldLayout.HAND);
 		this.add(this.blackBoard, PlayingFieldLayout.BLACKBOARD);
 		this.add(this.carpet, PlayingFieldLayout.CARPET);
