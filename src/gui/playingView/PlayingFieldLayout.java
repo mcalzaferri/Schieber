@@ -23,25 +23,29 @@ public class PlayingFieldLayout implements LayoutManager2{
     public static final String BLACKBOARD  = "Blackboard";
     public static final String HAND = "Hand";
     public static final String INFO = "Info";
+    public static final String ANIMATIONREGION = "AnimationRegion";
     
     private Component carpet;
     private Component blackboard;
     private Component hand;
     private Component info;
+    private Component animationRegion;
     
 	@Override
 	public void addLayoutComponent(String name, Component comp) {
 		synchronized (comp.getTreeLock()) {
 	        /* Asign the component to one of the known regions of the layout.
 	         */
-	        if ("Carpet".equals(name) || name == null) {
+	        if (CARPET.equals(name) || name == null) {
 	        	carpet = comp;
-	        } else if ("Blackboard".equals(name)) {
+	        } else if (BLACKBOARD.equals(name)) {
 	        	blackboard = comp;
-	        } else if ("Hand".equals(name)) {
+	        } else if (HAND.equals(name)) {
 	        	hand = comp;
-	        } else if ("Info".equals(name)){
+	        } else if (INFO.equals(name)){
 	        	info = comp;
+	        } else if (ANIMATIONREGION.equals(name)) {
+	        	animationRegion = comp;
             }else {
             	throw new IllegalArgumentException("cannot add to layout: unknown constraint: " + name);
             }
@@ -116,6 +120,11 @@ public class PlayingFieldLayout implements LayoutManager2{
 			x = (int)(scaling*blackboard.getMinimumSize().height); y = (int)(scaling*(blackboard.getMinimumSize().height));
 			w = (int)(scaling*info.getMinimumSize().width); h = (int)(scaling*info.getMinimumSize().height);
 			info.setBounds(x, y, w, h);
+			
+			//AnimationRegion located above Blackboard and Hand
+			x = 0; y = 0;
+			w=(int)(scaling*carpet.getMinimumSize().width); h = (int)(scaling*carpet.getMinimumSize().height) + (int)(scaling*hand.getMinimumSize().height);
+			animationRegion.setBounds(x, y, w, h);
 		}
 		
 	}
