@@ -3,11 +3,13 @@ package gui.animation;
 import java.awt.Graphics;
 
 public abstract class Animation {
-	public static final int tickRate = 30; //30ms
-	protected int tickCount;
+	public static final int tickRate = 80; //30ms
+	private long startTime;
 	private int duration;
 	protected AnimationListener listener;
 	protected double scale;
+	private boolean started;
+	private boolean finished;
 	
 	/** Creats a new Animation which will last for the given duration
 	 * @param duration Duration in ms. After this time the animation will finish.
@@ -15,32 +17,36 @@ public abstract class Animation {
 	 */
 	public Animation(int duration, AnimationListener listener) {
 		this.duration = duration;
-		this.tickCount = 0;
 		this.scale = 1;
 		this.listener = listener;
+		this.startTime = 0;
+		started = false;
+		finished = false;
 	}
 	
 	public Animation(int duration) {
 		this(duration,null);
 	}
 	
-	public void tick() {
-		if(tickCount <= 0) {
-			animationStarted();
-		}
-		if(tickCount < (duration / Animation.tickRate)) {
-			tickCount++;
-		}
-		if(hasFinished()) {
-			animationFinished();
-		}
-	}
-	
 	public boolean hasFinished() {
-		return tickCount >= (duration / Animation.tickRate);
+		return finished;
 	}
 	
-	public abstract void paint(Graphics g);
+	protected abstract void doPaint(Graphics g);
+	
+	public final void paintAnimation(Graphics g) {
+		if(!started) {
+			startTime = System.currentTimeMillis();
+			animationStarted();
+			started = true;
+		}
+		doPaint(g);
+		if(getElapsedTime() >= duration && !finished) {
+			animationFinished();
+			finished = true;
+		}
+		
+	}
 	
 	private void animationStarted() {
 		if(listener != null) {
@@ -52,6 +58,7 @@ public abstract class Animation {
 			listener.animationFinished(new AnimationEvent(getAnimatedObject()));
 		}
 	}
+	
 	protected abstract Object getAnimatedObject();
 	
 	public void setScale(double scale) {
@@ -62,6 +69,10 @@ public abstract class Animation {
 	 * @return Value from 0 to 1. Beginning at 0 when animation starts and finishing at 1 when animation stopps.
 	 */
 	public double getProgress() {
-		return (double)(tickCount * tickRate) / (double)duration;
+		return Math.min(((double)(getElapsedTime()) / (double)duration),1.0);
+	}
+	
+	protected int getElapsedTime() {
+		return (int)(System.currentTimeMillis() - startTime);
 	}
 }
