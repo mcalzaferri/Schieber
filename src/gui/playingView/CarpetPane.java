@@ -35,8 +35,6 @@ public class CarpetPane extends ObservableView{
 	private BufferedImage imgCarpet;
 	private Image imgScaledCarpet;
 	private Dimension oldCarpetSize;
-	private ArrayList<Animation> animations;
-	private Timer animationTimer;
 	public static final Dimension minCardSize = new Dimension(60, 96);
 	public static final Dimension minCoverSize = new Dimension(30, 48);
 	public static final Dimension minCarpetSize = new Dimension(500, 500);
@@ -57,9 +55,6 @@ public class CarpetPane extends ObservableView{
 		setOpaque(true);
 		this.setMinimumSize(this.minCarpetSize);
 		oldCarpetSize = new  Dimension(0, 0);
-		
-		//Set up animations
-		initializeAnimations();
 	}
 	
 	CarpetDrawer drawer;
@@ -93,48 +88,6 @@ public class CarpetPane extends ObservableView{
 		
 		//Draw deck (must be drawn over players so that the cards are always on top)
 		drawer.drawDeck(g,data, carpetSize, cardSize);
-		
-		//Draw animations
-		for(Animation animation : animations) {
-			animation.setScale(scale);
-			animation.paint(g);
-		}
-	}
-
-	private void initializeAnimations() {
-		animations = new ArrayList<>();
-		CarpetPane caller = this;
-		animationTimer = new Timer(Animation.tickRate, new ActionListener() {		
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(!animations.isEmpty()) {
-					caller.repaint();
-					Collection<Animation> finishedAnimations = new ArrayList<>();
-					for(Animation animation : animations) {
-						if(animation.hasFinished()) {
-							finishedAnimations.add(animation);
-						}else {
-							animation.tick();
-						}
-					}
-					animations.removeAll(finishedAnimations);
-				}
-			}
-		});
-		animationTimer.start();
-		try {
-			showAnimation(new MovePictureAnimation(Gui.pictureFactory.getPicture(Trump.EICHEL), 100000, new AnimationProperty(0, 0, 50, 50, 0), new AnimationProperty(500, 500, 200, 200, 180)));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-
-	public void showAnimation(Animation animation) {
-		animations.add(animation);
-	}
-	
-	public boolean animationisRunning() {
-		return !animations.isEmpty();
+		System.out.println("Repaint carpet");
 	}
 }
