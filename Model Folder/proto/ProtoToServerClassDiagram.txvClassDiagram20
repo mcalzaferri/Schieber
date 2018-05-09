@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhjgzb0gb0-9wiwpa">
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="$name" value="ProtoToServerClassDiagram"/>
+		<property name="__options" value="Long Shortcuts=false"/>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.ToServerMessage">
+			<property name="bounds" value="203,315,122,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.player_messages.ChangeStateMessage">
+			<property name="bounds" value="339,145,147,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:ch.ntb.jass.common.proto.player_messages.ChangeStateMessage:ToServerMessage">
+				<property name="sourceAnchor" value="381,230"/>
+				<property name="targetAnchor" value="304,320"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.player_messages.ChosenTrumpMessage">
+			<property name="bounds" value="167,145,152,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:ch.ntb.jass.common.proto.player_messages.ChosenTrumpMessage:ToServerMessage">
+				<property name="sourceAnchor" value="282,230"/>
+				<property name="targetAnchor" value="282,320"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.player_messages.ChosenWiisMessage">
+			<property name="bounds" value="455,255,139,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:ch.ntb.jass.common.proto.player_messages.ChosenWiisMessage:ToServerMessage">
+				<property name="sourceAnchor" value="460,330"/>
+				<property name="targetAnchor" value="330,330"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.player_messages.FillEmptySeatsMessage">
+			<property name="bounds" value="-25,335,156,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:ch.ntb.jass.common.proto.player_messages.FillEmptySeatsMessage:ToServerMessage">
+				<property name="sourceAnchor" value="136,360"/>
+				<property name="targetAnchor" value="208,360"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage">
+			<property name="bounds" value="9,475,154,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage:ToServerMessage">
+				<property name="sourceAnchor" value="135,480"/>
+				<property name="targetAnchor" value="224,400"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.player_messages.JoinTableMessage">
+			<property name="bounds" value="375,475,154,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:ch.ntb.jass.common.proto.player_messages.JoinTableMessage:ToServerMessage">
+				<property name="sourceAnchor" value="410,480"/>
+				<property name="targetAnchor" value="315,400"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.player_messages.LeaveLobbyMessage">
+			<property name="bounds" value="15,195,142,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:ch.ntb.jass.common.proto.player_messages.LeaveLobbyMessage:ToServerMessage">
+				<property name="sourceAnchor" value="150,280"/>
+				<property name="targetAnchor" value="209,320"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.player_messages.LeaveTableMessage">
+			<property name="bounds" value="195,495,138,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:ch.ntb.jass.common.proto.player_messages.LeaveTableMessage:ToServerMessage">
+				<property name="sourceAnchor" value="261,500"/>
+				<property name="targetAnchor" value="261,400"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.proto.player_messages.PlaceCardMessage">
+			<property name="bounds" value="460,374,130,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:ch.ntb.jass.common.proto.player_messages.PlaceCardMessage:ToServerMessage">
+				<property name="sourceAnchor" value="465,379"/>
+				<property name="targetAnchor" value="330,379"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>
