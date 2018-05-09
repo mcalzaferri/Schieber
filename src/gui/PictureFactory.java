@@ -59,7 +59,7 @@ public class PictureFactory {
 	}
 	
 	public enum Pictures{
-		Carpet, BlackBoard, CoverNorth, CoverEast, CoverSouth, CoverWest, Table, Lobby;
+		Carpet, BlackBoard, CoverNorth, CoverEast, CoverSouth, CoverWest, Table, Lobby, SelectHostViewBackground;
 	}
 	
 	public BufferedImage getPicture(Card card) throws IOException {
