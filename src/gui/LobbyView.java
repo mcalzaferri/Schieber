@@ -26,6 +26,8 @@ public class LobbyView extends ObservableView implements Viewable{
 	JPanel lobbyViewPanel;
 	LobbyPanel lobbyPicturePanel;
 	JPanel lobbyPanel;
+	JPanel playerTablePanel;
+	JPanel readyStatePanel;
 	JScrollPane playerScrollPane;
 	JOptionPane chooseSeatOptionPane;
 	JTable playerTable;
@@ -53,20 +55,23 @@ public class LobbyView extends ObservableView implements Viewable{
 
 	public void layoutLobbyView()
 	{
-		layoutButtons();
 		playerScrollPane = new JScrollPane();
-		layoutPlayerScrollPanel();
+		playerTablePanel = new JPanel();
+		layoutPlayerTable();
+		layoutFillRemainingSeatsButton();
+		layoutLobbyPanel();
 
 		this.setLayout(new BorderLayout());
-		this.add(playerScrollPane,BorderLayout.WEST);
+		this.add(playerTablePanel,BorderLayout.WEST);
 		this.add(lobbyPanel,BorderLayout.CENTER);
 		
 		this.setPreferredSize(new Dimension(width,height));
 		this.setLocation(left,top);
 	}
 	
-	public void layoutPlayerScrollPanel()
+	public void layoutPlayerTable()
 	{
+		//layout Table
 		String[] columnNames = {"Name", "Sitzplatz"};
 		Object[][] tableData = new Object[playersMap.size()+1][2];
 		int rowCount=0;
@@ -91,15 +96,40 @@ public class LobbyView extends ObservableView implements Viewable{
 			//TODO getActPlayer() ist am Anfang noch nicht initialisiert
 		}
 		
-		
 		playerTable	= new JTable(tableData,columnNames);
 		playerScrollPane.setViewportView(playerTable);
+		playerTablePanel.setLayout(new BorderLayout());
+		playerTablePanel.add(playerScrollPane, BorderLayout.CENTER);
 		playerScrollPane.setPreferredSize(new Dimension(width/4,height));
 	}
-
 	
-	public void layoutButtons()
+	public void layoutFillRemainingSeatsButton()
 	{
+	    JButton fillSeatsWithBotsButton = new JButton("restliche Plätze mit Computerspieler besetzen");
+		playerTablePanel.add(fillSeatsWithBotsButton, BorderLayout.SOUTH);
+		
+	    fillSeatsWithBotsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				for(ViewObserver observer : observers) {
+					observer.btnFillWithBots();
+				}
+			}
+		});
+	}
+
+	public void layoutLobbyPanel()
+	{
+		layoutLobbyPictureButtons();
+		layoutReadyStatePanel();
+	    lobbyPanel = new JPanel();
+	    lobbyPanel.setLayout(new BorderLayout());
+	    lobbyPanel.add(lobbyPicturePanel, BorderLayout.CENTER);
+	    lobbyPanel.add(readyStatePanel, BorderLayout.SOUTH);
+	}
+	
+	public void layoutLobbyPictureButtons()
+	{
+		//Layout Buttons on Lobby Picture
 		chair1Button = new JButton();
 		chair1Button.setOpaque(false);	
 		chair1Button.setToolTipText("Sitzplatz 1");
@@ -180,6 +210,7 @@ public class LobbyView extends ObservableView implements Viewable{
 					for(ViewObserver observer : observers) {
 						observer.btnJoinTableClick(Seat.SEAT3);
 					}
+					getActPlayer().setSeatNr(3);
 					update();
 	    		}
 			}
@@ -196,27 +227,21 @@ public class LobbyView extends ObservableView implements Viewable{
 	    		}
 			}
 		});
+	}
+	
+	public void layoutReadyStatePanel()
+	{
+	    readyStatePanel = new JPanel();
+	    readyStatePanel.setLayout(new FlowLayout());
 	    
-	    
-	    JPanel readyButtonPanel = new JPanel();
-	    readyButtonPanel.setLayout(new FlowLayout());
-	    
-	    JButton readyButton = new JButton("Spieler ist bereit");
-	    readyButtonPanel.add(readyButton);
-	    
+	    JButton readyStateButton = new JButton("Spieler ist bereit");
 	    JPanel showStatePanel = new JPanel();
 	    showStatePanel.setBackground(Color.red);
 	    
-	    readyButtonPanel.add(showStatePanel);
+	    readyStatePanel.add(showStatePanel);
+	    readyStatePanel.add(readyStateButton);
 	    
-	    lobbyPanel = new JPanel();
-	    lobbyPanel.setLayout(new BorderLayout());
-	    lobbyPanel.add(lobbyPicturePanel, BorderLayout.CENTER);
-	    lobbyPanel.add(readyButtonPanel, BorderLayout.SOUTH);
-	    
-	    JOptionPane readyMessageOptionPane = new JOptionPane();
-	    
-	    readyButton.addActionListener(new ActionListener() {
+	    readyStateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer : observers) {
 					observer.btnChangeStateClick();
@@ -256,9 +281,10 @@ public class LobbyView extends ObservableView implements Viewable{
 	@Override
 	public void update() {
 		playersMap = data.getPlayers();
-		layoutPlayerScrollPanel();
+		layoutPlayerTable();
 		playerTable.repaint();
 		playerScrollPane.repaint();
+		playerTablePanel.repaint();
 		this.repaint();
 	}
 	
