@@ -1,50 +1,20 @@
 package gui.animation;
 
+import java.awt.Dimension;
+import java.awt.Point;
+
 public class AnimationProperty {
-	private int x;
-	private int y;
-	private int height;
-	private int width;
+	private Point point;
+	private Dimension dimension;
 	private int rotation; //-180..180 Grad
 	
 	public AnimationProperty(int x, int y, int height, int width, int rotation) {
-		this.x = x;
-		this.y = y;
-		this.height = height;
-		this.width = width;
+		this(new Point(x,y), new Dimension(height,width),rotation);
+	}
+	public AnimationProperty(Point point, Dimension dimension, int rotation) {
+		this.setPoint(point);
+		this.setDimension(dimension);
 		this.rotation = rotation;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
 	}
 
 	public int getRotation() {
@@ -53,6 +23,18 @@ public class AnimationProperty {
 
 	public void setRotation(int rotation) {
 		this.rotation = rotation;
+	}
+	public Point getPoint() {
+		return point;
+	}
+	public void setPoint(Point point) {
+		this.point = point;
+	}
+	public Dimension getDimension() {
+		return dimension;
+	}
+	public void setDimension(Dimension dimension) {
+		this.dimension = dimension;
 	}
 	
 }

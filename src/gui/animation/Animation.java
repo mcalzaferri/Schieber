@@ -7,6 +7,7 @@ public abstract class Animation {
 	protected int tickCount;
 	private int duration;
 	protected AnimationListener listener;
+	protected double scale;
 	
 	/** Creats a new Animation which will last for the given duration
 	 * @param duration Duration in ms. After this time the animation will finish.
@@ -15,6 +16,7 @@ public abstract class Animation {
 	public Animation(int duration, AnimationListener listener) {
 		this.duration = duration;
 		this.tickCount = 0;
+		this.scale = 1;
 		this.listener = listener;
 	}
 	
@@ -51,6 +53,10 @@ public abstract class Animation {
 		}
 	}
 	protected abstract Object getAnimatedObject();
+	
+	public void setScale(double scale) {
+		this.scale = scale;
+	}
 	
 	/** Returns the progress of this animation
 	 * @return Value from 0 to 1. Beginning at 0 when animation starts and finishing at 1 when animation stopps.

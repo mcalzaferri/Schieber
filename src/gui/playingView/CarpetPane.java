@@ -96,6 +96,7 @@ public class CarpetPane extends ObservableView{
 		
 		//Draw animations
 		for(Animation animation : animations) {
+			animation.setScale(scale);
 			animation.paint(g);
 		}
 	}
@@ -122,7 +123,7 @@ public class CarpetPane extends ObservableView{
 		});
 		animationTimer.start();
 		try {
-			showAnimation(new MovePictureAnimation(Gui.pictureFactory.getPicture(Trump.EICHEL), 100000, new AnimationProperty(0, 0, 100, 100, 0), new AnimationProperty(500, 500, 100, 100, 180)));
+			showAnimation(new MovePictureAnimation(Gui.pictureFactory.getPicture(Trump.EICHEL), 100000, new AnimationProperty(0, 0, 50, 50, 0), new AnimationProperty(500, 500, 200, 200, 180)));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
