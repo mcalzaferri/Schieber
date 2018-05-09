@@ -35,46 +35,117 @@ public class TrumpView extends ObservableView implements Viewable{
 	public TrumpView(ArrayList<ViewObserver> observers) {
 		super(null, observers);
 		
-		JPanel trumpViewPanel = new JPanel();
-		trumpViewPanel.setLayout(new GridLayout(7,2));
+	    GridBagConstraints c = new GridBagConstraints();
+	    c.fill=GridBagConstraints.BOTH;
+	    c.insets = new Insets(0,0,10,0);
+	    
+		GridBagLayout gbl = new GridBagLayout();
+		gbl.columnWeights = new double[] {0.1,0.4,0.4,0.1};
+		gbl.rowWeights = new double[] {0.1,0.8/7,0.8/7,0.8/7,0.8/7,0.8/7,0.8/7,0.8/7,0.1};
+		this.setLayout(gbl);
 		
 		try{
+		    
+		    c.gridx = 0;
+		    c.gridy = 0;
+		    c.gridwidth = 4;
+		    this.add(Box.createGlue(),c);
+		    
+		    c.gridx = 0;
+		    c.gridy = 8;
+		    this.add(Box.createGlue(),c);
+		    
+		    
+		    
+		    //EICHEL
+		    c.gridx = 1;
+		    c.gridy = 1;
+		    c.gridwidth = 1;    
+			this.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.EICHEL))),c);
 			
-			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.EICHEL))));
+		    c.gridx = 2;
+		    c.gridy = 1; 
 			eichelButton = new JButton("Eichel");
-			trumpViewPanel.add(eichelButton);
+			this.add(eichelButton,c);
 			
-			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.ROSE))));
+			
+			
+			//ROSE
+		    c.gridx = 1;
+		    c.gridy = 2;
+			this.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.ROSE))),c);
+			
+		    c.gridx = 2;
+		    c.gridy = 2;
 			roseButton = new JButton("Rose");
-			trumpViewPanel.add(roseButton);
+			this.add(roseButton,c);
 			
-			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.SCHILTE))));
+			
+			
+			//SCHILTE
+		    c.gridx = 1;
+		    c.gridy = 3;
+			this.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.SCHILTE))),c);
+			
+		    c.gridx = 2;
+		    c.gridy = 3;
 			schilteButton = new JButton("Schilte");
-			trumpViewPanel.add(schilteButton);
+			this.add(schilteButton,c);
 			
-			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.SCHELLE))));
+			
+			
+			//SCHELLE
+		    c.gridx = 1;
+		    c.gridy = 4;
+			this.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.SCHELLE))),c);
+			
+		    c.gridx = 2;
+		    c.gridy = 4;
 			schelleButton = new JButton("Schelle");
-			trumpViewPanel.add(schelleButton);
+			this.add(schelleButton,c);
 			
-			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.OBENABE))));
+			
+			
+			//OBNEABE
+		    c.gridx = 1;
+		    c.gridy = 5;
+			this.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.OBENABE))),c);
+			
+		    c.gridx = 2;
+		    c.gridy = 5;
 			obenabeButton = new JButton("Obenabe");
-			trumpViewPanel.add(obenabeButton);
+			this.add(obenabeButton,c);
 			
-			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.UNEUFE))));
+			
+			
+			//UNEUFE
+		    c.gridx = 1;
+		    c.gridy = 6;
+			this.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.UNEUFE))),c);
+			
+		    c.gridx = 2;
+		    c.gridy = 6;
 			undenufeButton = new JButton("Undenufe");
-			trumpViewPanel.add(undenufeButton);
+			this.add(undenufeButton,c);
 			
-			trumpViewPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.SCHIEBEN))));
+			
+			
+			//SCHIEBEN
+		    c.gridx = 1;
+		    c.gridy = 7;
+			this.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(Trump.SCHIEBEN))),c);
+			
+		    c.gridx = 2;
+		    c.gridy = 7;
 			schiebenButton = new JButton("Schieben");
-			trumpViewPanel.add(schiebenButton);
+			this.add(schiebenButton,c);
 		
 		}catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		add(trumpViewPanel);
-		setSize(width,height);
+	    
+		setPreferredSize(new Dimension(width,height));
 		setLocation(left,top);
 		
 		
