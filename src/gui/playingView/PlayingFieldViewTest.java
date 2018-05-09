@@ -19,7 +19,6 @@ import shared.CardList;
 import shared.CardValue;
 import shared.Player;
 import shared.Seat;
-import shared.ServerAddress;
 import shared.Trump;
 import shared.client.ClientModel;
 

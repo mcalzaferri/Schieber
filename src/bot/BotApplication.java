@@ -8,7 +8,6 @@ import java.util.Random;
 import client.ClientCommunication;
 import client.test.ClientModelView;
 import shared.Communication;
-import shared.ServerAddress;
 import shared.client.ClientModel;
 
 public class BotApplication {

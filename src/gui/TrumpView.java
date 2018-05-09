@@ -3,7 +3,6 @@ package gui;
 import java.util.ArrayList;
 import client.ViewEnumeration;
 import client.ViewObserver;
-import shared.ServerAddress;
 import shared.Trump;
 
 import javax.swing.*;

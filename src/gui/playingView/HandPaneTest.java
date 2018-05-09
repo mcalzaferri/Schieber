@@ -15,7 +15,6 @@ import shared.CardColor;
 import shared.CardList;
 import shared.CardValue;
 import shared.Seat;
-import shared.ServerAddress;
 import shared.Trump;
 
 public class HandPaneTest extends JFrame{
