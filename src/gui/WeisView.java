@@ -97,7 +97,7 @@ public class WeisView extends ObservableView implements Viewable{
 		}
 
 		add(weisViewPanel);
-		setSize(width,height);
+		//setPreferredSize(new Dimension(width,height));
 		setLocation(left,top);
 		
 		swipeLeftButton.addActionListener(new ActionListener() {
@@ -152,13 +152,19 @@ public class WeisView extends ObservableView implements Viewable{
 	
 	public void layoutCardsPanel()
 	{	
+		int columnCount= (getCardCount(weisList[index].getType())+3-1)/3;
+		int rowCount = 3;
+		Dimension cardDimension = new Dimension((int)(cardWidth*scale),(int)(cardHeight*scale));
+		Dimension cardsPanelDimension = new Dimension((int)(columnCount*(cardDimension.getWidth()+hgap)),(int)(rowCount*(cardDimension.getHeight()+vgap)));
+		
+		cardsPanel.setPreferredSize(cardsPanelDimension);
 		cardsPanel.setLayout(new GridLayout((getCardCount(weisList[index].getType())+3-1)/3,3,hgap,vgap));
 		cardsPanel.removeAll();
 		CardList cardList = getCardsFromWeis(weisList[index]);
 		try{
 			for(int i=0; i<cardList.size();i++)
 			{
-				cardsPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(cardList.get(i),new Dimension((int)(cardWidth*scale),(int)(cardHeight*scale))))));
+				cardsPanel.add(new JLabel(new ImageIcon(Gui.pictureFactory.getPicture(cardList.get(i),cardDimension))));
 			}
 		}
 		catch (IOException e1) {
