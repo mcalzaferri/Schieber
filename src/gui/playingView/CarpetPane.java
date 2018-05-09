@@ -17,9 +17,14 @@ import javax.swing.Timer;
 import client.ViewObserver;
 import gui.Gui;
 import gui.ObservableView;
+import gui.PictureFactory;
 import gui.PictureFactory.Pictures;
 import gui.animation.Animation;
+import gui.animation.AnimationProperty;
+import gui.animation.MovePictureAnimation;
+import gui.animation.TestAnimation;
 import shared.Player;
+import shared.Trump;
 import shared.client.ClientModel;
 
 public class CarpetPane extends ObservableView{
@@ -116,9 +121,19 @@ public class CarpetPane extends ObservableView{
 			}
 		});
 		animationTimer.start();
+		try {
+			showAnimation(new MovePictureAnimation(Gui.pictureFactory.getPicture(Trump.EICHEL), 100000, new AnimationProperty(0, 0, 100, 100, 0), new AnimationProperty(500, 500, 100, 100, 180)));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	public void showAnimation(Animation animation) {
 		animations.add(animation);
+	}
+	
+	public boolean animationisRunning() {
+		return !animations.isEmpty();
 	}
 }
