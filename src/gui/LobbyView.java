@@ -37,15 +37,7 @@ public class LobbyView extends ObservableView implements Viewable{
 	
 	//local variables
 	Map<Integer,Player> playersMap;
-	int optionType1;
-	int optionType2;
-	int optionType3;
-	int optionType4;
-	
-	String optionString1;
-	String optionString2;
-	String optionString3;
-	String optionString4;
+	boolean readyState = false;
 	
 	public LobbyView(ArrayList<ViewObserver> observers, ClientModel data) {
 		super(data, observers);
@@ -158,200 +150,103 @@ public class LobbyView extends ObservableView implements Viewable{
 	    
 	    chair1Button.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
-		    	switch(optionType1)
-		    	{
-			    	case JOptionPane.QUESTION_MESSAGE:
-							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString1, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-							if(response == JOptionPane.YES_NO_OPTION)
-							{
-								for(ViewObserver observer : observers) {
-									observer.btnJoinTableClick(Seat.SEAT1);
-								}
-							}
-						
-			    		break;
-			    	case JOptionPane.INFORMATION_MESSAGE:
-			    			if(getActPlayer().getSeatNr() == 1)
-			    				optionString1="Sitzplatz 1 wurde reserviert";
-			    			
-			    			chooseSeatOptionPane.showMessageDialog(null, optionString1);
-			    		break;
-		    	}
+
+	    		if(isSeatFree(1))
+	    		{
+					for(ViewObserver observer : observers) {
+						observer.btnJoinTableClick(Seat.SEAT1);
+					}
+					update();
+	    		}
 	    	}
 		});
 	    
 	    chair2Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-		    	switch(optionType2)
-		    	{
-			    	case JOptionPane.QUESTION_MESSAGE:
-							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString2, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-							if(response == JOptionPane.YES_NO_OPTION)
-							{
-								for(ViewObserver observer : observers) {
-									observer.btnJoinTableClick(Seat.SEAT2);
-								}
-							}
-						
-			    		break;
-			    	case JOptionPane.INFORMATION_MESSAGE:
-			    			if(getActPlayer().getSeatNr() == 2)
-			    				optionString2="Sitzplatz 2 wurde reserviert";
-			    			
-			    			chooseSeatOptionPane.showMessageDialog(null, optionString2);
-			    		break;
-		    	}
+	    		if(isSeatFree(2))
+	    		{
+					for(ViewObserver observer : observers) {
+						observer.btnJoinTableClick(Seat.SEAT2);
+					}
+					update();
+	    		}
 			}
 		});
 	    
 	    chair3Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-		    	switch(optionType3)
-		    	{
-			    	case JOptionPane.QUESTION_MESSAGE:
-							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString3, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-							if(response == JOptionPane.YES_NO_OPTION)
-							{
-								for(ViewObserver observer : observers) {
-									observer.btnJoinTableClick(Seat.SEAT3);
-								}
-							}
-						
-			    		break;
-			    	case JOptionPane.INFORMATION_MESSAGE:
-		    			if(getActPlayer().getSeatNr() == 3)
-		    				optionString3="Sitzplatz 3 wurde reserviert";
-		    			
-			    			chooseSeatOptionPane.showMessageDialog(null, optionString3);
-			    		break;
-		    	}
+	    		if(isSeatFree(3))
+	    		{
+					for(ViewObserver observer : observers) {
+						observer.btnJoinTableClick(Seat.SEAT3);
+					}
+					update();
+	    		}
 			}
 		});
 	    
 	    chair4Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-		    	switch(optionType4)
-		    	{
-			    	case JOptionPane.QUESTION_MESSAGE:
-							int response = chooseSeatOptionPane.showConfirmDialog(null,optionString4, "Sitzplatz wählen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-							if(response == JOptionPane.YES_NO_OPTION)
-							{
-								for(ViewObserver observer : observers) {
-									observer.btnJoinTableClick(Seat.SEAT4);
-								}
-							}
-						
-			    		break;
-			    	case JOptionPane.INFORMATION_MESSAGE:
-			    			if(getActPlayer().getSeatNr() == 4)
-			    				optionString4="Sitzplatz 4 wurde reserviert";
-			    			
-			    			chooseSeatOptionPane.showMessageDialog(null, optionString4);
-			    		break;
-		    	}
+	    		if(isSeatFree(4))
+	    		{
+					for(ViewObserver observer : observers) {
+						observer.btnJoinTableClick(Seat.SEAT4);
+					}
+					update();
+	    		}
 			}
 		});
 	    
-	    checkFreeSeats();
 	    
-	    JPanel continueButtonPanel = new JPanel();
-	    continueButtonPanel.setLayout(new FlowLayout());
+	    JPanel readyButtonPanel = new JPanel();
+	    readyButtonPanel.setLayout(new FlowLayout());
 	    
 	    JButton readyButton = new JButton("Spieler ist bereit");
-	    continueButtonPanel.add(readyButton);
+	    readyButtonPanel.add(readyButton);
 	    
 	    JPanel showStatePanel = new JPanel();
 	    showStatePanel.setBackground(Color.red);
 	    
-	    continueButtonPanel.add(showStatePanel);
+	    readyButtonPanel.add(showStatePanel);
 	    
 	    lobbyPanel = new JPanel();
 	    lobbyPanel.setLayout(new BorderLayout());
 	    lobbyPanel.add(lobbyPicturePanel, BorderLayout.CENTER);
-	    lobbyPanel.add(continueButtonPanel, BorderLayout.SOUTH);
+	    lobbyPanel.add(readyButtonPanel, BorderLayout.SOUTH);
 	    
 	    JOptionPane readyMessageOptionPane = new JOptionPane();
 	    
 	    readyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(getActPlayer().getSeatNr()==0)
+				for(ViewObserver observer : observers) {
+					observer.btnChangeStateClick();
+				}
+				readyState= !readyState;
+				
+				if(readyState)
 				{
-					chooseSeatOptionPane.showMessageDialog(null, "Bitte wähle zuerst einen Sitzplatz aus");
+					showStatePanel.setBackground(Color.green);
 				}
 				else
 				{
-					for(ViewObserver observer : observers) {
-						observer.btnChangeStateClick();
-					}
-					chooseSeatOptionPane.showMessageDialog(null, "Spieler ist nun bereit und wartet, bis sich alle Mitspieler platziert haben.");
-					if(getActPlayer().isReady()) {
-						showStatePanel.setBackground(Color.green);
-					}else {
-						showStatePanel.setBackground(Color.red);
-					}
-
-					showStatePanel.validate();
+					showStatePanel.setBackground(Color.red);
 				}
 			}
 		});
 	}
 	
-	public void checkFreeSeats()
+	public boolean isSeatFree(int actSeatNumber)
 	{	
-		optionType1 = JOptionPane.QUESTION_MESSAGE;
-		optionType2 = JOptionPane.QUESTION_MESSAGE;
-		optionType3 = JOptionPane.QUESTION_MESSAGE;
-		optionType4 = JOptionPane.QUESTION_MESSAGE;
-		
-		optionString1 = "Möchten Sie Sitzplatz 1 auswählen?";
-		optionString2 = "Möchten Sie Sitzplatz 2 auswählen?";
-		optionString3 = "Möchten Sie Sitzplatz 3 auswählen?";
-		optionString4 = "Möchten Sie Sitzplatz 4 auswählen?";
-				
 		for(Map.Entry<Integer,Player> entry: playersMap.entrySet())
 		{
 			int seatNumber = entry.getValue().getSeatNr();
-			Player player = entry.getValue();
-			
-			if(seatNumber>0 && seatNumber<=4)
+
+			if(seatNumber == actSeatNumber)
 			{
-				setOptionPaneType(player);
+				return false;
 			}
 		}
-		
-		int actPlayerSeatNumber = 0;
-		if(getActPlayer() != null) {
-			actPlayerSeatNumber = getActPlayer().getSeatNr();
-		}
-		
-		if(actPlayerSeatNumber>0 && actPlayerSeatNumber<=4)
-		{
-			setOptionPaneType(getActPlayer());
-		}
-	}
-	
-	public void setOptionPaneType(Player p)
-	{
-		switch(p.getSeatNr())
-		{
-			case 1:
-				optionType1 = JOptionPane.INFORMATION_MESSAGE;
-				optionString1 = "Dieser Platz ist schon besetzt von "+p.getName();
-				break;
-			case 2:
-				optionType2 = JOptionPane.INFORMATION_MESSAGE;
-				optionString2 = "Dieser Platz ist schon besetzt von "+p.getName();
-				break;
-			case 3:
-				optionType3 = JOptionPane.INFORMATION_MESSAGE;
-				optionString3 = "Dieser Platz ist schon besetzt von "+p.getName();
-				break;
-			case 4:
-				optionType4 = JOptionPane.INFORMATION_MESSAGE;
-				optionString4 = "Dieser Platz ist schon besetzt von "+p.getName();
-				break;
-			
-		}
+		return true;
 	}
 	
 	private Player getActPlayer() {
@@ -364,10 +259,9 @@ public class LobbyView extends ObservableView implements Viewable{
 		layoutPlayerScrollPanel();
 		playerTable.repaint();
 		playerScrollPane.repaint();
-		checkFreeSeats();
 		this.repaint();
 	}
-
+	
 	@Override
 	public JPanel getContent() {
 		// TODO Auto-generated method stub
