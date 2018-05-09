@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="93ox1wjgzb5sa0rl9ft8">
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="$name" value="EntityClassDiagram"/>
+		<property name="__options" value="Long Shortcuts=false"/>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.CardEntity">
+			<property name="bounds" value="93,479,147,152"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:ch.ntb.jass.common.entities.CardEntity:value">
+				<property name="sourceAnchor" value="98,636"/>
+				<property name="targetAnchor" value="98,760"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:ch.ntb.jass.common.entities.CardEntity:color">
+				<property name="sourceAnchor" value="232,636"/>
+				<property name="targetAnchor" value="232,860"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.PlayerEntity">
+			<property name="bounds" value="388,208,113,137"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:ch.ntb.jass.common.entities.PlayerEntity:seat">
+				<property name="sourceAnchor" value="393,281"/>
+				<property name="targetAnchor" value="313,281"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.ScoreEntity">
+			<property name="bounds" value="620,35,186,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.TeamEntity">
+			<property name="bounds" value="373,-1,143,107"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:ch.ntb.jass.common.entities.TeamEntity:players">
+				<property name="sourceAnchor" value="449,111"/>
+				<property name="targetAnchor" value="449,213"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.WeisEntity">
+			<property name="bounds" value="275,495,147,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:ch.ntb.jass.common.entities.WeisEntity:originCard">
+				<property name="sourceAnchor" value="280,560"/>
+				<property name="targetAnchor" value="245,560"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:ch.ntb.jass.common.entities.WeisEntity:type">
+				<property name="sourceAnchor" value="427,572"/>
+				<property name="targetAnchor" value="460,572"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.CardColorEntity">
+			<property name="bounds" value="215,855,160,205"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.CardValueEntity">
+			<property name="bounds" value="5,755,159,285"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.GameModeEntity">
+			<property name="bounds" value="644,875,168,205"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.SeatEntity">
+			<property name="bounds" value="155,166,153,221"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.TargetScoreEntity">
+			<property name="bounds" value="635,166,131,158"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.TrumpEntity">
+			<property name="bounds" value="421,875,189,283"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:ch.ntb.jass.common.entities.TrumpEntity:trumpColor">
+				<property name="sourceAnchor" value="426,902"/>
+				<property name="targetAnchor" value="380,902"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:ch.ntb.jass.common.entities.TrumpEntity:gameMode">
+				<property name="sourceAnchor" value="615,902"/>
+				<property name="targetAnchor" value="649,902"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:ch.ntb.jass.common.entities.WeisTypeEntity">
+			<property name="bounds" value="455,515,156,317"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+	</view>
+</nodeSet>

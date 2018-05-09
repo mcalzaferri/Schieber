@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhjgzb77qrr71r5w">
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="$name" value="SharedClassDiagram"/>
+		<reference referencedUin="jdt:e_class:src:shared.Card">
+			<property name="bounds" value="435,655,154,392"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:shared.Card:color">
+				<property name="sourceAnchor" value="594,991"/>
+				<property name="targetAnchor" value="639,991"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:shared.Card:value">
+				<property name="sourceAnchor" value="594,764"/>
+				<property name="targetAnchor" value="640,764"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.CardList">
+			<property name="bounds" value="235,295,151,287"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Communication">
+			<property name="bounds" value="1032,5,192,332"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.InternalMessage">
+			<property name="bounds" value="1015,355,200,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Player">
+			<property name="bounds" value="-5,5,200,558"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:shared.Player:cards">
+				<property name="sourceAnchor" value="200,529"/>
+				<property name="targetAnchor" value="240,529"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Score">
+			<property name="bounds" value="1244,5,200,152"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Team">
+			<property name="bounds" value="236,5,200,257"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:shared.Team:players">
+				<property name="sourceAnchor" value="241,138"/>
+				<property name="targetAnchor" value="200,138"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Weis">
+			<property name="bounds" value="255,655,154,197"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:shared.Weis:originCard">
+				<property name="sourceAnchor" value="414,758"/>
+				<property name="targetAnchor" value="440,758"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:shared.Weis:type">
+				<property name="sourceAnchor" value="260,763"/>
+				<property name="targetAnchor" value="223,763"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.CardColor">
+			<property name="bounds" value="634,915,167,250"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.CardValue">
+			<property name="bounds" value="635,447,166,405"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.GameMode">
+			<property name="bounds" value="1095,930,175,235"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.RelativeSeat">
+			<property name="bounds" value="873,5,139,221"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Seat">
+			<property name="bounds" value="1244,175,179,251"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Trump">
+			<property name="bounds" value="855,915,175,343"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:shared.Trump:trumpColor">
+				<property name="sourceAnchor" value="860,1000"/>
+				<property name="targetAnchor" value="805,1000"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:shared.Trump:gameMode">
+				<property name="sourceAnchor" value="1035,1000"/>
+				<property name="targetAnchor" value="1100,1000"/>
+				<property name="location_set_by_user" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.WeisType">
+			<property name="bounds" value="55,655,163,377"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+	</view>
+</nodeSet>
