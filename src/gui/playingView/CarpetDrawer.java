@@ -122,7 +122,7 @@ public class CarpetDrawer {
 			if(text == null) {
 				text = "No name";
 			}
-			text = getString(g, text, carpetSize.width/4);	//Reduce text to given length that it fits in graphics
+			text = getString(g, text, carpetSize.width/3);	//Reduce text to given length that it fits in graphics
 			
 			int stringWidth = g.getFontMetrics().stringWidth(text);
 			int stringHeight = g.getFontMetrics().getHeight();
@@ -224,7 +224,11 @@ public class CarpetDrawer {
 			sub = s.substring(0, i);
 
 			if( g.getFontMetrics().stringWidth(sub) > max) {
-				return sub + "~";	//String needs to be shorted
+				//String needs to be shorted
+				if(sub.length() > 1) {
+					return sub.substring(0, sub.length()-2) + "~";
+				}
+				return sub + "~";	
 			}
 		}
 		return s;	//String lies within size
