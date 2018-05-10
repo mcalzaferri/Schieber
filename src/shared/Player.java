@@ -86,7 +86,10 @@ public class Player {
 		}else {
 			return false;
 		}
-
+	}
+	
+	public boolean equals(PlayerEntity obj) {
+		return this.equals((Object)obj);
 	}
 
 	//Getters and Setters

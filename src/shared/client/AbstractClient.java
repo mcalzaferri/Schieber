@@ -180,7 +180,6 @@ public abstract class AbstractClient {
 				playerChanged(model.getPlayer(msg.player));
 			}
 
-			@SuppressWarnings("unlikely-arg-type") //Du bischmer o kli unlikely
 			@Override
 			public void msgReceived(TurnInfoMessage msg) {
 				model.addToDeck(new Card(msg.laidCard), msg.player);
