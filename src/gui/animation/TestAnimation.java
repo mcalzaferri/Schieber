@@ -10,7 +10,6 @@ public class TestAnimation extends Animation {
 		super(100000000);
 	}
 
-	@Override
 	public void doPaint(Graphics g) {
 		g.setColor(Color.pink);
 		//Draw some balls
@@ -26,5 +25,11 @@ public class TestAnimation extends Animation {
 	@Override
 	protected Object getAnimatedObject() {
 		return null;
+	}
+
+	@Override
+	protected void doPaint(Graphics g, double progress) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -31,17 +31,18 @@ public class AnimationRegion extends JComponent {
 	
 	@Override
 	public void paint(Graphics g) {
+		super.paintComponent(g);
+		paintAnimation(g);
+	}
+	
+	public void paintAnimation(Graphics g) {
 		if(g != null) {
-			super.paintComponent(g);
-			TestHelper.registerThread();
-			TestHelper.printAndResetElapsedTime("Start");
 			//Draw animations
 			for(Animation animation : animations) {
 				double scale = this.getSize().getWidth()/CarpetPane.minCarpetSize.getWidth();
 				animation.setScale(scale);
-				animation.doPaint(g);
+				animation.paintAnimation(g);
 			}
-			TestHelper.printAndResetElapsedTime();
 		}
 	}
 	
@@ -52,8 +53,13 @@ public class AnimationRegion extends JComponent {
 		animationTimer = new Timer(Animation.tickRate, new ActionListener() {		
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				if(!animations.isEmpty()) {
-					caller.repaint();
+					TestHelper.registerThread();
+					TestHelper.printAndResetElapsedTime("Start");
+					//paintAnimation(caller.getGraphics());
+					TestHelper.printElapsedTime("End paintAnimation1");
+					paintImmediately(0, 0, caller.getWidth(), caller.getHeight());
 					Collection<Animation> finishedAnimations = new ArrayList<>();
 					for(Animation animation : animations) {
 						if(animation.hasFinished()) {

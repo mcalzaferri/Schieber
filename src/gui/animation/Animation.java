@@ -3,7 +3,7 @@ package gui.animation;
 import java.awt.Graphics;
 
 public abstract class Animation {
-	public static final int tickRate = 80; //30ms
+	public static final int tickRate = 1; //30ms
 	private long startTime;
 	private int duration;
 	protected AnimationListener listener;
@@ -32,7 +32,7 @@ public abstract class Animation {
 		return finished;
 	}
 	
-	protected abstract void doPaint(Graphics g);
+	protected abstract void doPaint(Graphics g, double progress);
 	
 	public final void paintAnimation(Graphics g) {
 		if(!started) {
@@ -40,7 +40,10 @@ public abstract class Animation {
 			animationStarted();
 			started = true;
 		}
-		doPaint(g);
+		if(started && !finished) {
+			double progress = getProgress();
+			doPaint(g, progress);
+		}
 		if(getElapsedTime() >= duration && !finished) {
 			animationFinished();
 			finished = true;
@@ -69,7 +72,7 @@ public abstract class Animation {
 	 * @return Value from 0 to 1. Beginning at 0 when animation starts and finishing at 1 when animation stopps.
 	 */
 	public double getProgress() {
-		return Math.min(((double)(getElapsedTime()) / (double)duration),1.0);
+		return Math.min(((double)(getElapsedTime()) / (double)duration) * 200% 1.0,1.0);
 	}
 	
 	protected int getElapsedTime() {

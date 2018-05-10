@@ -117,7 +117,7 @@ public class PlayingFieldLayout implements LayoutManager2{
 			hand.setBounds(x, y, w, h);	
 			
 			//Infoboard located in the lower right
-			x = (int)(scaling*blackboard.getMinimumSize().height); y = (int)(scaling*(blackboard.getMinimumSize().height));
+			x = (int)(scaling*carpet.getMinimumSize().width); y = (int)(scaling*(blackboard.getMinimumSize().height));
 			w = (int)(scaling*info.getMinimumSize().width); h = (int)(scaling*info.getMinimumSize().height);
 			info.setBounds(x, y, w, h);
 			
