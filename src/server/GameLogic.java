@@ -13,6 +13,7 @@ import shared.Player;
 import shared.Seat;
 import shared.Trump;
 import shared.Weis;
+import shared.WeisType;
 
 /**
  * This class does all the game specific stuff like handling players, keeping
@@ -33,7 +34,7 @@ public class GameLogic {
 	private Trump trump;
 	private ArrayList<Player> players;
 	/** connects the player with his Weises */
-	private Map<Player, WeisEntity[]> declaredWeise;
+	private LinkedHashMap<Player, WeisEntity[]> declaredWeise;
 	/** seat of player whose turn it is */
 	private Seat currentSeat;
 	/** first card played in run */
@@ -55,7 +56,7 @@ public class GameLogic {
 		players = new ArrayList<>();
 		scores = new HashMap<>();
 		cardsOnTable = new HashMap<>();
-		declaredWeise = new HashMap<>();
+		declaredWeise = new LinkedHashMap<>();
 		cardCounter = -1;
 		trump = null;
 		winner = null;
@@ -449,20 +450,19 @@ public class GameLogic {
 		return cardCounter < 4;
 	}
 	
-	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeisEntity){
+	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeisEntity){		
 		int truthCounter = 0;
-		int provisionalWeis = 0;
-		Weis[] verifyWeisArray = p.getCards().getPossibleWiis(trump);
-		Weis[] claimedWeisArray = new Weis[claimedWeisEntity.length];
-		
-		for(int i = 0; i < claimedWeisEntity.length; i++){
+		List<WeisType> alreadyApprovedWeises = new ArrayList<WeisType>();
+		Weis[] approvedWeises = p.getCards().getPossibleWiis(trump);		
+		for(int i = 0; i < claimedWeisEntity.length; i++){					
 			Weis claimedWeis = new Weis(claimedWeisEntity[i]);			
-			claimedWeisArray[i] = claimedWeis;						
-			for(int j = 0; j < claimedWeisEntity.length; j++) {
-								
-				if(claimedWeisArray[i].compareTo(verifyWeisArray[j], trump) == 0) {
-					truthCounter++;					
-				}				
+			for(int j = 0; j < approvedWeises.length; j++) {					
+				if(approvedWeises[j].compareTo(claimedWeis, trump) == 0){					
+					if(!alreadyApprovedWeises.contains(claimedWeis.getType())){						
+						alreadyApprovedWeises.add(claimedWeis.getType());
+						truthCounter++;										
+					}
+				}
 			}		
 		}
 		if(truthCounter == claimedWeisEntity.length){
@@ -473,16 +473,13 @@ public class GameLogic {
 		}
 	}
 	
-	public void addWeisToScoreBoard(){
-		//TODO: Implement Scoreboardbullshittery
+	public void addWeisToScoreBoard(){		
+		WeisToScoreBoardHandler weisToScoreBoard = new WeisToScoreBoardHandler(declaredWeise, trump);
+		weisToScoreBoard.execute();
+		addScore(weisToScoreBoard.getTeamId(), weisToScoreBoard.getWeisScore());
 	}
-
-	public boolean wiis(Player p) {
-//		player.getCards().getPossibleWiis()
-		throw new UnsupportedOperationException("Function not implemented.");
-	}
-	
-	public Map<Player, WeisEntity[]> getDeclaredWeise(){
+		
+	public LinkedHashMap<Player, WeisEntity[]> getDeclaredWeise(){
 		return declaredWeise;
 	}
 	public void setDeclaredWeise(Player player, WeisEntity[] weis){
