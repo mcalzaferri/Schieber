@@ -63,7 +63,7 @@ public abstract class AbstractClientView {
 	 */
 	public abstract void closeDialog();
 	
-	public abstract void showMoveCardAnimation(Card card,int duration,int source,int sourcePos,int destination,int destinationPos, AnimationListener listener);
+	public abstract void showMoveCardAnimation(Card card,int duration,int source,int sourcePos, int sourceCount,int destination,int destinationPos, int destinationCount, AnimationListener listener);
 	
 	public abstract void sleepAnimationFinished();
 }

@@ -201,8 +201,8 @@ public class Gui extends AbstractClientView{
 	}
 	
 	@Override
-	public void showMoveCardAnimation(Card card,int duration,int source,int sourcePos,int destination,int destinationPos, AnimationListener listener) {
-		main.getAnimationRegion().showMoveCardAnimation(card, duration, source, sourcePos, destination, destinationPos, listener);
+	public void showMoveCardAnimation(Card card,int duration,int source,int sourcePos, int sourceCount ,int destination,int destinationPos, int destinationCount, AnimationListener listener) {
+		main.getAnimationRegion().showMoveCardAnimation(card, duration, source, sourcePos, sourceCount, destination, destinationPos, destinationCount, listener);
 	}
 	
 	@Override

@@ -15,7 +15,6 @@ import gui.playingView.CarpetDrawer;
 import gui.playingView.CarpetPane;
 import gui.playingView.ViewableCard;
 import shared.Card;
-import shared.Player;
 import shared.RelativeSeat;
 import shared.client.ClientModel;
 
@@ -28,6 +27,7 @@ public class AnimationRegion extends JComponent {
 	public static final int LEFTPLAYER = 4;
 	public static final int DECK = 5;
 	public static final int HAND = 6;
+	@SuppressWarnings("unused")
 	private ClientModel model;
 	
 	private ArrayList<Animation> animations;
@@ -83,20 +83,19 @@ public class AnimationRegion extends JComponent {
 		animationTimer.start();
 	}
 	
-	public void showMoveCardAnimation(Card card, int duration, int source, int sourcePos, int destination, int destinationPos , AnimationListener listener) {
+	public void showMoveCardAnimation(Card card, int duration, int source, int sourcePos, int sourceCount, int destination, int destinationPos, int destinationCount , AnimationListener listener) {
 		try {
 			showAnimation(new MoveCardAnimation(card, duration, 
-					getCardAnimationProperty(source, sourcePos),
-					getCardAnimationProperty(destination, destinationPos),listener));
+					getCardAnimationProperty(source, sourcePos, sourceCount),
+					getCardAnimationProperty(destination, destinationPos, destinationCount),listener));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private AnimationProperty getCardAnimationProperty(int location, int locationPos) {
+	private AnimationProperty getCardAnimationProperty(int location, int locationPos, int cardCount) {
 		AnimationProperty ap = null;
-		int cardCount = 0;
 		switch(location) {
 		case DEALER:
 			ap = new AnimationProperty(new Point(-100,-100), 
@@ -108,14 +107,11 @@ public class AnimationRegion extends JComponent {
 					CarpetPane.minCardSize, 0);	
 			break;
 		case HAND:
-			if(model.getThisPlayer() != null && model.getThisPlayer().getCards() != null) {
-				cardCount = model.getThisPlayer().getCards().size();
-			}
 			//Now the hard part. Calculate exactly the same position as the card in the players hand
 			//All cards are not overlapping
 			if(ViewableCard.minCardSize.width*cardCount <= CarpetPane.minCarpetSize.width) {
 				ap = new AnimationProperty(new Point(
-						(CarpetPane.minCarpetSize.width - ViewableCard.minCardSize.width*(cardCount + 2))/2 + ViewableCard.minCardSize.width*locationPos,
+						(CarpetPane.minCarpetSize.width - ViewableCard.minCardSize.width*cardCount)/2 + ViewableCard.minCardSize.width*locationPos,
 						CarpetPane.minCarpetSize.height), 
 						ViewableCard.minCardSize, 
 						0);
@@ -123,7 +119,7 @@ public class AnimationRegion extends JComponent {
 			//Horizontally overlap components
 			else {
 				ap = new AnimationProperty(new Point(
-						((CarpetPane.minCarpetSize.width - ViewableCard.minCardSize.width*2)/(cardCount-1))*locationPos,
+						((CarpetPane.minCarpetSize.width - ViewableCard.minCardSize.width)/(cardCount-1))*locationPos,
 						CarpetPane.minCarpetSize.height),
 						ViewableCard.minCardSize, 
 						0);
@@ -134,12 +130,6 @@ public class AnimationRegion extends JComponent {
 		case RIGHTPLAYER:
 		case TOPPLAYER:
 			RelativeSeat seat = RelativeSeat.getById(location);
-			Player player = model.getPlayer(seat);
-			if(player != null) {
-				if(player.getCards() != null) {
-					cardCount = player.getCards().size();
-				}
-			}
 			ap = new AnimationProperty(CarpetDrawer.getPlayerCardLocation(seat, Math.max(cardCount,locationPos), locationPos, CarpetPane.minCarpetSize, CarpetPane.minCoverSize), //Point
 					CarpetPane.minCoverSize, //Dimension
 					(location -1)*-90);		//Rotation

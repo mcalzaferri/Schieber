@@ -226,17 +226,17 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	@Override
 	protected void showHandOutCardAnimation(Player cardReceiver, ArrayList<Card> newHand) {
 		if(cardReceiver == model.getThisPlayer()) {
-			int i = 0;
+			int i = cardReceiver.getCards().size();
 			for(Card newCard : newHand) {
 				if(!cardReceiver.getCards().contains(newCard.getId())) {
-					view.showMoveCardAnimation(newCard, 500, AnimationRegion.DEALER, 0, AnimationRegion.HAND, cardReceiver.getCards().size() + i, null);
+					view.showMoveCardAnimation(newCard, 500, AnimationRegion.DEALER, 0,0, AnimationRegion.HAND, i, cardReceiver.getCards().size() + 3 , null);
 					i++;
 				}
 			}
 		}else {
 			for(int i = cardReceiver.getCards().size(); i < newHand.size(); i++) {
-				view.showMoveCardAnimation(newHand.get(i), 500, AnimationRegion.DEALER, 0, 
-						cardReceiver.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId(), cardReceiver.getCards().size() + i, null);
+				view.showMoveCardAnimation(newHand.get(i), 500, AnimationRegion.DEALER, 0, 0,
+						cardReceiver.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId(), i, cardReceiver.getCards().size() + 3, null);
 			}
 		}
 		view.sleepAnimationFinished();
