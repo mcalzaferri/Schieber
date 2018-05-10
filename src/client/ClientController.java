@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 import gui.Dialog.MessageType;
+import gui.animation.Animation;
 import gui.animation.AnimationRegion;
 import shared.*;
 import shared.client.*;
@@ -225,19 +226,31 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	
 	@Override
 	protected void showHandOutCardAnimation(Player cardReceiver, ArrayList<Card> newHand) {
-		if(cardReceiver == model.getThisPlayer()) {
+		if(cardReceiver.equals(model.getThisPlayer())) {
 			int i = cardReceiver.getCards().size();
 			for(Card newCard : newHand) {
 				if(!cardReceiver.getCards().contains(newCard.getId())) {
-					view.showMoveCardAnimation(newCard, 500, AnimationRegion.DEALER, 0,0, AnimationRegion.HAND, i, cardReceiver.getCards().size() + 3 , null);
+					view.showMoveCardAnimation(newCard, Animation.handOutCardDuration, AnimationRegion.DEALER, 0,0, AnimationRegion.HAND, i, cardReceiver.getCards().size() + 3 , null);
 					i++;
 				}
 			}
 		}else {
 			for(int i = cardReceiver.getCards().size(); i < newHand.size(); i++) {
-				view.showMoveCardAnimation(newHand.get(i), 500, AnimationRegion.DEALER, 0, 0,
+				view.showMoveCardAnimation(newHand.get(i), Animation.handOutCardDuration, AnimationRegion.DEALER, 0, 0,
 						cardReceiver.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId(), i, cardReceiver.getCards().size() + 3, null);
 			}
+		}
+		view.sleepAnimationFinished();
+	}
+
+	@Override
+	protected void showLayCardAnimation(Player player, Card card, int cardPos) {
+		if(model.getThisPlayer().equals(player)) {
+			//From Hand to Bottom Deck
+			view.showMoveCardAnimation(card, Animation.layCardDuration, AnimationRegion.HAND, cardPos, player.getCards().size()+1, AnimationRegion.DECK, RelativeSeat.BOTTOM.getId(), 0 , null);
+		}else {
+			RelativeSeat seat = player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat());
+			view.showMoveCardAnimation(card, Animation.layCardDuration, seat.getId(), cardPos, player.getCards().size()+1, AnimationRegion.DECK, seat.getId(), 0 , null);
 		}
 		view.sleepAnimationFinished();
 	}

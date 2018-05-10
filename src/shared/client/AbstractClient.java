@@ -182,15 +182,24 @@ public abstract class AbstractClient {
 
 			@Override
 			public void msgReceived(TurnInfoMessage msg) {
-				model.addToDeck(new Card(msg.laidCard), msg.player);
-				if(model.getThisPlayer().equals(msg.player)) { 
-					model.getThisPlayer().getCards().remove(msg.laidCard.calcId());
+				Card removedCard;
+				Player player = model.getPlayer(msg.player);
+				int cardPos = 0;
+				if(model.getThisPlayer().equals(player)) {
+					removedCard = player.getCards().getCardById(msg.laidCard.calcId());
+					cardPos = player.getCards().indexOf(removedCard);
+					player.getCards().remove(removedCard);
 					doUpdateHand(model.getHand().toArray());
+					showLayCardAnimation(model.getThisPlayer(), removedCard, cardPos);
 				}else {
-					model.getPlayer(msg.player).getCards().remove(0);
+					player.getCards().remove(0);
+					removedCard = new Card(msg.laidCard);
+					showLayCardAnimation(player, removedCard, cardPos);
+					
 				}
-				playerChanged(model.getPlayer(msg.player));
+				model.addToDeck(removedCard, msg.player);
 				doUpdateDeck(model.getDeck().toArray());
+				playerChanged(player);
 				if(model.getGameState() != GameState.PLAYOVER)
 					model.setGameState(GameState.TURNOVER);
 			}
@@ -290,6 +299,7 @@ public abstract class AbstractClient {
 	protected void teamsChanged(Team[] teams) {}
 	protected void goodResultReceived(String message) {}
 	protected void showHandOutCardAnimation(Player cardReceiver, ArrayList<Card> newHand) {}
+	protected void showLayCardAnimation(Player player, Card card, int cardPos) {}
 	
 	
 	//Abstract Template methods for Server -> Client
