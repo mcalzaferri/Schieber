@@ -40,7 +40,6 @@ public abstract class AbstractClient {
 	
 	//Methods for AbstractClient
 	private void showHandOutCardsAnimation(CardEntity[] handEntity, long refreshDelay) {
-		long lastRefresh = 0;
 		CardList handCl = new CardList();
 		handCl.updateData(handEntity);
 		handCl.sort();
@@ -58,18 +57,12 @@ public abstract class AbstractClient {
 					for(Player player : team.getPlayers()) {
 						//Wait for Refresh delay
 						if(player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId() == j) {
-							while(lastRefresh > System.currentTimeMillis() - refreshDelay) {
-								try {
-									Thread.sleep(5);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-							lastRefresh = System.currentTimeMillis();
-							//Store a copy of the array in each unknown player
+							
 							if(player.equals(model.getThisPlayer())) {
+								showHandOutCardAnimation(player, cardsOnHand);
 								player.putCards(cardsOnHand);
 							}else {
+								showHandOutCardAnimation(player, cards);
 								player.putCards(cards);
 							}
 							playerChanged(player);
@@ -297,6 +290,8 @@ public abstract class AbstractClient {
 	protected void playerChanged(Player player) {}
 	protected void teamsChanged(Team[] teams) {}
 	protected void goodResultReceived(String message) {}
+	protected void showHandOutCardAnimation(Player cardReceiver, ArrayList<Card> newHand) {}
+	
 	
 	//Abstract Template methods for Server -> Client
 	protected abstract void doSetTrump(Trump trump);

@@ -1,6 +1,7 @@
 package gui.animation;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -10,17 +11,30 @@ import java.util.Collection;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
-import gui.Gui;
+import gui.playingView.CarpetDrawer;
 import gui.playingView.CarpetPane;
-import shared.Trump;
-import test.TestHelper;
+import gui.playingView.ViewableCard;
+import shared.Card;
+import shared.Player;
+import shared.RelativeSeat;
+import shared.client.ClientModel;
 
 public class AnimationRegion extends JComponent {
 	private static final long serialVersionUID = -8199381015785514955L;
+	public static final int DEALER = 0;
+	public static final int BOTTOMPLAYER = 1;
+	public static final int RIGHTPLAYER = 2;
+	public static final int TOPPLAYER = 3;
+	public static final int LEFTPLAYER = 4;
+	public static final int DECK = 5;
+	public static final int HAND = 6;
+	private ClientModel model;
+	
 	private ArrayList<Animation> animations;
 	private Timer animationTimer;
 	
-	public AnimationRegion() {
+	public AnimationRegion(ClientModel model) {
+		this.model = model;
 		initializeComponents();
 	}
 	
@@ -55,10 +69,6 @@ public class AnimationRegion extends JComponent {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(!animations.isEmpty()) {
-					TestHelper.registerThread();
-					TestHelper.printAndResetElapsedTime("Start");
-					//paintAnimation(caller.getGraphics());
-					TestHelper.printElapsedTime("End paintAnimation1");
 					paintImmediately(0, 0, caller.getWidth(), caller.getHeight());
 					Collection<Animation> finishedAnimations = new ArrayList<>();
 					for(Animation animation : animations) {
@@ -71,14 +81,73 @@ public class AnimationRegion extends JComponent {
 			}
 		});
 		animationTimer.start();
+	}
+	
+	public void showMoveCardAnimation(Card card, int duration, int source, int sourcePos, int destination, int destinationPos , AnimationListener listener) {
 		try {
-			showAnimation(new MovePictureAnimation(Gui.pictureFactory.getPicture(Trump.EICHEL), 50000, new AnimationProperty(0, 0, 50, 50, 0), new AnimationProperty(500, 700, 200, 200, 180)));
-		} catch (IOException e1) {
+			showAnimation(new MoveCardAnimation(card, duration, 
+					getCardAnimationProperty(source, sourcePos),
+					getCardAnimationProperty(destination, destinationPos),listener));
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
+	private AnimationProperty getCardAnimationProperty(int location, int locationPos) {
+		AnimationProperty ap = null;
+		int cardCount = 0;
+		switch(location) {
+		case DEALER:
+			ap = new AnimationProperty(new Point(-100,-100), 
+					CarpetPane.minCardSize, 0);
+			break;
+		case DECK:
+			ap = new AnimationProperty(CarpetDrawer.getDeckCardLocation(
+					RelativeSeat.getById(locationPos),CarpetPane.minCarpetSize, CarpetPane.minCardSize), 
+					CarpetPane.minCardSize, 0);	
+			break;
+		case HAND:
+			if(model.getThisPlayer() != null && model.getThisPlayer().getCards() != null) {
+				cardCount = model.getThisPlayer().getCards().size();
+			}
+			//Now the hard part. Calculate exactly the same position as the card in the players hand
+			//All cards are not overlapping
+			if(ViewableCard.minCardSize.width*cardCount <= CarpetPane.minCarpetSize.width) {
+				ap = new AnimationProperty(new Point(
+						(CarpetPane.minCarpetSize.width - ViewableCard.minCardSize.width*(cardCount + 2))/2 + ViewableCard.minCardSize.width*locationPos,
+						CarpetPane.minCarpetSize.height), 
+						ViewableCard.minCardSize, 
+						0);
+			}
+			//Horizontally overlap components
+			else {
+				ap = new AnimationProperty(new Point(
+						((CarpetPane.minCarpetSize.width - ViewableCard.minCardSize.width*2)/(cardCount-1))*locationPos,
+						CarpetPane.minCarpetSize.height),
+						ViewableCard.minCardSize, 
+						0);
+			}
+			break;
+		case BOTTOMPLAYER:
+		case LEFTPLAYER:
+		case RIGHTPLAYER:
+		case TOPPLAYER:
+			RelativeSeat seat = RelativeSeat.getById(location);
+			Player player = model.getPlayer(seat);
+			if(player != null) {
+				if(player.getCards() != null) {
+					cardCount = player.getCards().size();
+				}
+			}
+			ap = new AnimationProperty(CarpetDrawer.getPlayerCardLocation(seat, Math.max(cardCount,locationPos), locationPos, CarpetPane.minCarpetSize, CarpetPane.minCoverSize), //Point
+					CarpetPane.minCoverSize, //Dimension
+					(location -1)*-90);		//Rotation
+			break;
+		}
+		return ap;
+	}
+	
 	public void showAnimation(Animation animation) {
 		animations.add(animation);
 	}

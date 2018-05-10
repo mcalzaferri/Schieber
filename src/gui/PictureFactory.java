@@ -64,7 +64,11 @@ public class PictureFactory {
 	
 	public BufferedImage getPicture(Card card) throws IOException {
 		//Return a deep copy of the picture in the hash map => prevents original picture in map from changing
-		return deepCopy(pictures.get(card.getColor().toString() + card.getValue().getDefaultValue()));
+		if(card.isUnknown()) {
+			return getPicture(Pictures.CoverSouth);
+		}else {
+			return deepCopy(pictures.get(card.getColor().toString() + card.getValue().getDefaultValue()));
+		}
 	}
 	public Image getPicture(Card card, Dimension size) throws IOException {
 		return this.getScaledPicture(this.getPicture(card), size);

@@ -72,7 +72,7 @@ public abstract class Animation {
 	 * @return Value from 0 to 1. Beginning at 0 when animation starts and finishing at 1 when animation stopps.
 	 */
 	public double getProgress() {
-		return Math.min(((double)(getElapsedTime()) / (double)duration) * 200% 1.0,1.0);
+		return Math.min(((double)(getElapsedTime()) / (double)duration),1.0);
 	}
 	
 	protected int getElapsedTime() {

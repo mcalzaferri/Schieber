@@ -48,7 +48,7 @@ public class PlayingFieldView extends ObservableView implements Viewable{
 		this.carpet = new CarpetPane(data, observers);
 		this.msgBoard = new MessageBoard();
 		this.content = new JPanel();
-		this.animationRegion = new AnimationRegion();
+		this.animationRegion = new AnimationRegion(data);
 		try {
 			this.img = Gui.pictureFactory.getPicture(Pictures.Table);
 		} catch (IOException e) {
@@ -108,5 +108,8 @@ public class PlayingFieldView extends ObservableView implements Viewable{
 		return ViewEnumeration.PLAYVIEW;
 	}
 	
+	public AnimationRegion getAnimationRegion() {
+		return animationRegion;
+	}
 	
 }

@@ -1,6 +1,8 @@
 package client;
 
 import gui.Dialog.MessageType;
+import gui.animation.AnimationListener;
+import shared.Card;
 import shared.client.ClientModel;
 
 public abstract class AbstractClientView {
@@ -60,4 +62,8 @@ public abstract class AbstractClientView {
 	 * If there are no dialogs, none of them will be closed.
 	 */
 	public abstract void closeDialog();
+	
+	public abstract void showMoveCardAnimation(Card card,int duration,int source,int sourcePos,int destination,int destinationPos, AnimationListener listener);
+	
+	public abstract void sleepAnimationFinished();
 }

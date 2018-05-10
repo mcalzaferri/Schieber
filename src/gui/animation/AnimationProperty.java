@@ -14,7 +14,7 @@ public class AnimationProperty {
 	public AnimationProperty(Point point, Dimension dimension, int rotation) {
 		this.setPoint(point);
 		this.setDimension(dimension);
-		this.rotation = rotation;
+		this.rotation = ((rotation + 540) % 360) -180 ;
 	}
 
 	public int getRotation() {

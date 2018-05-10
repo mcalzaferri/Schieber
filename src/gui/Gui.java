@@ -16,7 +16,9 @@ import javax.swing.JOptionPane;
 import client.AbstractClientView;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import gui.animation.AnimationListener;
 import gui.playingView.PlayingFieldView;
+import shared.Card;
 import shared.client.ClientModel;
 
 public class Gui extends AbstractClientView{
@@ -196,5 +198,21 @@ public class Gui extends AbstractClientView{
 	private Dimension getFramesizeForContent(Dimension content) {
 		return new Dimension(frame.getInsets().left + frame.getInsets().right + content.width,
 				frame.getInsets().top + frame.getInsets().bottom + content.height);
+	}
+	
+	@Override
+	public void showMoveCardAnimation(Card card,int duration,int source,int sourcePos,int destination,int destinationPos, AnimationListener listener) {
+		main.getAnimationRegion().showMoveCardAnimation(card, duration, source, sourcePos, destination, destinationPos, listener);
+	}
+	
+	@Override
+	public void sleepAnimationFinished() {
+		while(main.getAnimationRegion().animationisRunning()) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

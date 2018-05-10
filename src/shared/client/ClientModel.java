@@ -62,6 +62,17 @@ public class ClientModel {
 		return getPlayer(player.id);
 	}
 	
+	public Player getPlayer(RelativeSeat relativeSeat) {
+		if(thisPlayer != null && players != null && relativeSeat != null) {
+			for(Player p : players.values()) {
+				if(p.getSeat().getRelativeSeat(getThisPlayer().getSeat()) == relativeSeat) {
+					return p;
+				}
+			}
+		}
+		return null;
+	}
+	
 	/** Update the model with a PlayerEntity
 	 * If thisPlayer has not received its id yet (id == 0) then and only then the method tries to identify thisPlayer by its username
 	 * If it is the username of thisPlayer then the id of the entity is stored and thisPlayer is added to the players map.

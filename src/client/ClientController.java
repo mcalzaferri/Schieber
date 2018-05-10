@@ -1,8 +1,10 @@
 package client;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 
 import gui.Dialog.MessageType;
+import gui.animation.AnimationRegion;
 import shared.*;
 import shared.client.*;
 
@@ -219,6 +221,25 @@ public class ClientController extends AbstractClient implements ViewObserver{
 			//TODO is this still necessary? view.updateView(view.getCurrentView());
 		}
 		
+	}
+	
+	@Override
+	protected void showHandOutCardAnimation(Player cardReceiver, ArrayList<Card> newHand) {
+		if(cardReceiver == model.getThisPlayer()) {
+			int i = 0;
+			for(Card newCard : newHand) {
+				if(!cardReceiver.getCards().contains(newCard.getId())) {
+					view.showMoveCardAnimation(newCard, 500, AnimationRegion.DEALER, 0, AnimationRegion.HAND, cardReceiver.getCards().size() + i, null);
+					i++;
+				}
+			}
+		}else {
+			for(int i = cardReceiver.getCards().size(); i < newHand.size(); i++) {
+				view.showMoveCardAnimation(newHand.get(i), 500, AnimationRegion.DEALER, 0, 
+						cardReceiver.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId(), cardReceiver.getCards().size() + i, null);
+			}
+		}
+		view.sleepAnimationFinished();
 	}
 	
 	//Inherited methods from ViewObserver
