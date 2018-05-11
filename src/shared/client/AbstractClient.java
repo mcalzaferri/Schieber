@@ -32,14 +32,15 @@ public abstract class AbstractClient {
 	
 	//Internal methods
 	private void clearDeck() {
-		if(model.getDeck() != null) {
+		//Only clear deck if there is something to clear
+		if(model.getDeck() != null && !model.getDeck().isEmpty()) {
 			model.getDeck().clear();
 			doUpdateDeck(model.getDeck().toArray());
 		}
 	}
 	
 	//Methods for AbstractClient
-	private void showHandOutCardsAnimation(CardEntity[] handEntity, long refreshDelay) {
+	private void internalHandOutCardAnimation(CardEntity[] handEntity, long refreshDelay) {
 		CardList handCl = new CardList();
 		handCl.updateData(handEntity);
 		handCl.sort();
@@ -60,10 +61,14 @@ public abstract class AbstractClient {
 							
 							if(player.equals(model.getThisPlayer())) {
 								showHandOutCardAnimation(player, cardsOnHand);
+								waitEndAnimation();
 								player.putCards(cardsOnHand);
+								clearAnimation();
 							}else {
 								showHandOutCardAnimation(player, cards);
+								waitEndAnimation();
 								player.putCards(cards);
+								clearAnimation();
 							}
 							playerChanged(player);
 						}
@@ -104,6 +109,12 @@ public abstract class AbstractClient {
 					model.setGameState(GameState.ROUNDOVER);
 					doEndRound();
 				}
+				//Clear all cards on stack of each player
+				for(Team team : model.getTeams()) {
+					for(Player player : team.getPlayers()) {
+						player.getCardsOnStack().clear();
+					}
+				}
 			}
 
 			@Override
@@ -129,10 +140,6 @@ public abstract class AbstractClient {
 			}
 			
 			public void msgReceived(NewTurnInfoMessage msg) {
-				//If the previous GameState wasnt TURNOVER (This means it was GAMEOVER OR ROUNDOVER OR PLAYOVER) the deck must be emptied
-				if(model.getGameState() != GameState.TURNOVER) {
-					clearDeck();
-				}
 				model.setGameState(GameState.TURNACTIVE);
 				model.setActiveSeatId(msg.nextPlayer.seat.getSeatNr());
 				//If the player is you, select card
@@ -189,16 +196,19 @@ public abstract class AbstractClient {
 					removedCard = player.getCards().getCardById(msg.laidCard.calcId());
 					cardPos = player.getCards().indexOf(removedCard);
 					player.getCards().remove(removedCard);
-					doUpdateHand(model.getHand().toArray());
 					showLayCardAnimation(model.getThisPlayer(), removedCard, cardPos);
+					doUpdateHand(model.getHand().toArray());
+					waitEndAnimation();
 				}else {
-					player.getCards().remove(0);
 					removedCard = new Card(msg.laidCard);
 					showLayCardAnimation(player, removedCard, cardPos);
+					player.getCards().remove(0);
+					waitEndAnimation();
 					
 				}
 				model.addToDeck(removedCard, msg.player);
 				doUpdateDeck(model.getDeck().toArray());
+				clearAnimation();
 				playerChanged(player);
 				if(model.getGameState() != GameState.PLAYOVER)
 					model.setGameState(GameState.TURNOVER);
@@ -207,7 +217,17 @@ public abstract class AbstractClient {
 			@Override
 			public void msgReceived(StichInfoMessage msg) {
 				model.setGameState(GameState.PLAYOVER);
-				stichInfo(model.getPlayer(msg.playerWhoWonStich));
+				Player player = model.getPlayer(msg.playerWhoWonStich);
+				stichInfo(player);
+				//Clear deck
+				Card[] cardsOnDeck = model.getDeck().toArray();
+				model.getDeck().clear();
+				showCardsToStackAnimation(player, cardsOnDeck);
+				doUpdateDeck(model.getDeck().toArray());
+				waitEndAnimation();
+				player.addCardsToStack(cardsOnDeck);
+				clearAnimation();
+				playerChanged(player);
 			}
 			
 			@Override
@@ -245,7 +265,7 @@ public abstract class AbstractClient {
 				//New handling
 				//First check if this player is a bot or not
 				if(caller instanceof ClientController) {
-					showHandOutCardsAnimation(msg.cards, ((ClientController)caller).getRefreshDelay());
+					internalHandOutCardAnimation(msg.cards, ((ClientController)caller).getRefreshDelay());
 				}else {
 					//If its a bot, no need for fancy animations
 					//Now set the other players hand to 9 unknown cards
@@ -300,7 +320,9 @@ public abstract class AbstractClient {
 	protected void goodResultReceived(String message) {}
 	protected void showHandOutCardAnimation(Player cardReceiver, ArrayList<Card> newHand) {}
 	protected void showLayCardAnimation(Player player, Card card, int cardPos) {}
-	
+	protected void showCardsToStackAnimation(Player player, Card[] cards) {}
+	protected void waitEndAnimation() {}
+	protected void clearAnimation() {}
 	
 	//Abstract Template methods for Server -> Client
 	protected abstract void doSetTrump(Trump trump);

@@ -85,6 +85,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	
 	@Override
 	protected void stichInfo(Player playerWhoWonStich) {
+		//TODO Wait for user to click on screen
 		if(playerWhoWonStich.equals(model.getThisPlayer())) {
 			view.publishMessage("You won this stich!");
 		}else {
@@ -247,12 +248,41 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	protected void showLayCardAnimation(Player player, Card card, int cardPos) {
 		if(model.getThisPlayer().equals(player)) {
 			//From Hand to Bottom Deck
-			view.showMoveCardAnimation(card, Animation.layCardDuration, AnimationRegion.HAND, cardPos, player.getCards().size()+1, AnimationRegion.DECK, RelativeSeat.BOTTOM.getId(), 0 , null);
+			view.showMoveCardAnimation(card, Animation.layCardDuration, 
+					AnimationRegion.HAND, cardPos, player.getCards().size(), 		//Source
+					AnimationRegion.DECK, RelativeSeat.BOTTOM.getId(), 0,			//Destination
+					null);
 		}else {
 			RelativeSeat seat = player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat());
-			view.showMoveCardAnimation(card, Animation.layCardDuration, seat.getId(), cardPos, player.getCards().size()+1, AnimationRegion.DECK, seat.getId(), 0 , null);
+			view.showMoveCardAnimation(card, Animation.layCardDuration, 
+					seat.getId(), cardPos, player.getCards().size(), 	//Source
+					AnimationRegion.DECK, seat.getId(), 0 , 			//Destination
+					null);
 		}
+	}
+	@Override
+	protected void waitEndAnimation() {
 		view.sleepAnimationFinished();
+	}
+	
+	@Override
+	protected void clearAnimation() {
+		view.removeFinishedAnimations();
+	}
+	
+	@Override
+	protected void showCardsToStackAnimation(Player player, Card[] cards) {
+		if(cards.length == 4) {
+			RelativeSeat seat = player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat());
+			int cardsOnStack = player.getCardsOnStack().size();
+			for(int i = 0; i < cards.length; i++) {
+				view.showMoveCardAnimation(cards[i], Animation.cardToStackDuration, 
+						AnimationRegion.DECK, i+1, 4,									//Source
+						seat.getId() + 10, cardsOnStack + i, cardsOnStack + 4,		//Destination
+						null);
+			}
+			view.sleepAnimationFinished();
+		}
 	}
 	
 	//Inherited methods from ViewObserver
