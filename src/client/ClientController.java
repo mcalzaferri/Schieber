@@ -60,9 +60,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	@Override
 	public void doSetTrump(Trump trump) {
 		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
-		if(trump != null) {
-			view.publishMessage("New Trump is " + trump.toString() + " (Just in case you didn't notice the huge picture above)\n");
-		}
 	}
 
 	/** Store broadcasted score in the model and update view.
@@ -81,16 +78,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 		
 		
-	}
-	
-	@Override
-	protected void stichInfo(Player playerWhoWonStich) {
-		//TODO Wait for user to click on screen
-		if(playerWhoWonStich.equals(model.getThisPlayer())) {
-			view.publishMessage("You won this stich!");
-		}else {
-			view.publishMessage(playerWhoWonStich.getName() + " won this stich!");
-		}
 	}
 
 	/** Game finished. Set view to GameOver.
@@ -208,6 +195,26 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	}
 
 	@Override
+	protected void trumpInfo(Trump trump) {
+		if(trump != null) {
+			if(trump != Trump.SCHIEBEN)
+				view.publishMessage("New Trump is " + trump.toString() + " (Just in case you didn't notice the huge picture above)\n");
+			else
+				view.publishMessage("Spieler hat geschoben. Anderer spieler waehlt nun den Trumpf");
+		}
+	}
+	
+	@Override
+	protected void stichInfo(Player playerWhoWonStich) {
+		//TODO Wait for user to click on screen
+		if(playerWhoWonStich.equals(model.getThisPlayer())) {
+			view.publishMessage("You won this stich!");
+		}else {
+			view.publishMessage(playerWhoWonStich.getName() + " won this stich!");
+		}
+	}
+	
+	@Override
 	protected void playerChanged(Player player) {
 		if(model.getThisPlayer().isAtTable() && model.getGameState() == GameState.STARTED) {
 			changeOrUpdateView(ViewEnumeration.PLAYVIEW);
@@ -260,6 +267,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 					null);
 		}
 	}
+	
 	@Override
 	protected void waitEndAnimation() {
 		view.sleepAnimationFinished();
@@ -277,11 +285,10 @@ public class ClientController extends AbstractClient implements ViewObserver{
 			int cardsOnStack = player.getCardsOnStack().size();
 			for(int i = 0; i < cards.length; i++) {
 				view.showMoveCardAnimation(cards[i], Animation.cardToStackDuration, 
-						AnimationRegion.DECK, i+1, 4,									//Source
-						seat.getId() + 10, cardsOnStack + i, cardsOnStack + 4,		//Destination
+						AnimationRegion.DECK, model.getDeckCardOrientation(cards[i]).getId(), 4,	//Source
+						seat.getId() + 10, cardsOnStack + i, cardsOnStack + 4,						//Destination
 						null);
 			}
-			view.sleepAnimationFinished();
 		}
 	}
 	

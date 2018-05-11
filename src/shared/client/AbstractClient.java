@@ -91,8 +91,11 @@ public abstract class AbstractClient {
 			@Override
 			public void msgReceived(ChosenTrumpInfoMessage msg) {
 				Trump trump = Trump.getByEntity(msg.trump);
-				model.setTrump(trump);
-				doSetTrump(trump);
+				if(trump != Trump.SCHIEBEN) {
+					model.setTrump(trump);
+					doSetTrump(trump);
+				}
+				trumpInfo(trump);
 			}
 
 			@Override
@@ -195,8 +198,8 @@ public abstract class AbstractClient {
 				if(model.getThisPlayer().equals(player)) {
 					removedCard = player.getCards().getCardById(msg.laidCard.calcId());
 					cardPos = player.getCards().indexOf(removedCard);
-					player.getCards().remove(removedCard);
 					showLayCardAnimation(model.getThisPlayer(), removedCard, cardPos);
+					player.getCards().remove(removedCard);
 					doUpdateHand(model.getHand().toArray());
 					waitEndAnimation();
 				}else {
@@ -221,8 +224,8 @@ public abstract class AbstractClient {
 				stichInfo(player);
 				//Clear deck
 				Card[] cardsOnDeck = model.getDeck().toArray();
-				model.getDeck().clear();
 				showCardsToStackAnimation(player, cardsOnDeck);
+				model.getDeck().clear();
 				doUpdateDeck(model.getDeck().toArray());
 				waitEndAnimation();
 				player.addCardsToStack(cardsOnDeck);
@@ -314,6 +317,7 @@ public abstract class AbstractClient {
 		});
 	}
 	//Non Abstract Template methods for Server -> Client
+	protected void trumpInfo(Trump trump) {}
 	protected void stichInfo(Player playerWhoWonStich) {}
 	protected void playerChanged(Player player) {}
 	protected void teamsChanged(Team[] teams) {}
