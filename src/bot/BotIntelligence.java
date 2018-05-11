@@ -14,7 +14,7 @@ public abstract class BotIntelligence {
 	
 	protected ArrayList<Card> cardsInHand;
 	protected ArrayList<Card> cardsPlayed = new ArrayList<>();							
-	protected ArrayList<Card> deck;
+	protected ArrayList<Card> deck = new ArrayList<>();
 	 // store the current highest cards, EICHEL, ROSE, SCHILTE, SCHELLE, generally highest card
 	protected Card[] maxCardsInPlay = {new Card(19),new Card(29),new Card(39),new Card(49),null};
 	protected ArrayList<KnownCard> knownCards = new ArrayList<>();
