@@ -215,4 +215,9 @@ public class Gui extends AbstractClientView{
 			}
 		}
 	}
+	@Override
+	public void removeFinishedAnimations() {
+		main.getAnimationRegion().removeFinishedAnimations();
+		
+	}
 }
