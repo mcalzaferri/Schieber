@@ -16,8 +16,6 @@ public interface ClientMessageDecoder {
 		//server_info_messages
 		if(msg instanceof ChosenTrumpInfoMessage)
 			decoder.msgReceived((ChosenTrumpInfoMessage)msg);
-		if(msg instanceof EndOfRoundInfoMessage)
-			decoder.msgReceived((EndOfRoundInfoMessage)msg);
 		if(msg instanceof GameStartedInfoMessage)
 			decoder.msgReceived((GameStartedInfoMessage)msg);
 		if(msg instanceof NewRoundInfoMessage)
@@ -32,22 +30,27 @@ public interface ClientMessageDecoder {
 			decoder.msgReceived((PlayerMovedToLobbyInfoMessage)msg);
 		if(msg instanceof PlayerMovedToTableInfoMessage)
 			decoder.msgReceived((PlayerMovedToTableInfoMessage)msg);
-		if(msg instanceof StichInfoMessage)
-			decoder.msgReceived((StichInfoMessage)msg);
-		if(msg instanceof TurnInfoMessage)
+		if(msg instanceof TurnInfoMessage) {
 			decoder.msgReceived((TurnInfoMessage)msg);
+			if(msg instanceof StichInfoMessage) {
+				decoder.msgReceived((StichInfoMessage)msg);
+				if(msg instanceof EndOfRoundInfoMessage)
+					decoder.msgReceived((EndOfRoundInfoMessage)msg);
+			}
+		}
 		if(msg instanceof WiisInfoMessage)
 			decoder.msgReceived((WiisInfoMessage)msg);
 		
 		//server_messages
 		if(msg instanceof ChooseTrumpMessage)
 			decoder.msgReceived((ChooseTrumpMessage)msg);
-		if(msg instanceof GameStateMessage)
-			decoder.msgReceived((GameStateMessage)msg);
 		if(msg instanceof HandOutCardsMessage)
 			decoder.msgReceived((HandOutCardsMessage)msg);
-		if(msg instanceof LobbyStateMessage)
+		if(msg instanceof LobbyStateMessage) {
 			decoder.msgReceived((LobbyStateMessage)msg);
+			if(msg instanceof GameStateMessage)
+				decoder.msgReceived((GameStateMessage)msg);
+		}
 		if(msg instanceof ResultMessage)
 			decoder.msgReceived((ResultMessage)msg);
 		if(msg instanceof WrongCardMessage)
