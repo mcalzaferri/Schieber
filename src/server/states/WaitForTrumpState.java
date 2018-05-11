@@ -35,7 +35,11 @@ public class WaitForTrumpState extends GameState {
 	public void handleMessage(Player sender, ToServerMessage msg)
 			throws IOException, UnhandledMessageException, ClientErrorException {
 		if (msg instanceof ChosenTrumpMessage) {
+			ChosenTrumpInfoMessage ctiMsg = new ChosenTrumpInfoMessage();
+			ctiMsg.trump = ((ChosenTrumpMessage) msg).trump;
+
 			if (!schiebenAlreadyChosen && (sender == logic.getRoundStarter())) {
+				broadcast(ctiMsg);
 				if(((ChosenTrumpMessage) msg).trump.equals(TrumpEntity.SCHIEBEN)) {
 					ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
 					ctMsg.canSchieben = false;
@@ -51,6 +55,7 @@ public class WaitForTrumpState extends GameState {
 				if(((ChosenTrumpMessage) msg).trump.equals(TrumpEntity.SCHIEBEN)) {
 					throw(new ClientErrorException("You can't Schieben more than once!"));
 				} else {
+					broadcast(ctiMsg);
 					setTrump(msg, sender);
 				}
 			} else {
@@ -61,13 +66,9 @@ public class WaitForTrumpState extends GameState {
 		}
 	}
 
-	private void setTrump(ToServerMessage msg, Player sender)
-			throws IOException, UnhandledMessageException, ClientErrorException {
-		ChosenTrumpInfoMessage ctiMsg = new ChosenTrumpInfoMessage();
-		ctiMsg.trump = ((ChosenTrumpMessage) msg).trump;
+	private void setTrump(ToServerMessage msg, Player sender) throws IOException {
 		Trump trump = Trump.getByEntity(((ChosenTrumpMessage) msg).trump);
 		logic.setTrump(trump);
-		broadcast(ctiMsg);
 		System.out.println(sender + " chose "
 				+ ((ChosenTrumpMessage) msg).trump + " as trump");
 		stateMachine.changeState(new WaitForCardState());
