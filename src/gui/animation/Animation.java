@@ -3,10 +3,10 @@ package gui.animation;
 import java.awt.Graphics;
 
 public abstract class Animation {
-	public static final int tickRate = 1; //30ms
+	public static final int tickRate = 5; //30ms
 	public static final int handOutCardDuration = 500;
 	public static final int layCardDuration = 200;
-	public static final int fadeStichDuration = 500;
+	public static final int cardToStackDuration = 500;
 	private long startTime;
 	private int duration;
 	protected AnimationListener listener;
