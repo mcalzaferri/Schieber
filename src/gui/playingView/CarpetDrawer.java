@@ -148,9 +148,11 @@ public class CarpetDrawer {
 				ex.printStackTrace();
 			}
 			Image img;
+			Image invImg;
 			switch(seat) {
 			case BOTTOM:
 				img = Gui.pictureFactory.getScaledPicture(imgSouth, cardSize);
+				invImg = Gui.pictureFactory.getScaledPicture(imgEast, cardSizeInv);
 				g.drawString(text, 
 						(carpetSize.width - stringWidth)/2, 
 						carpetSize.height - gap - cardSize.height);
@@ -158,6 +160,7 @@ public class CarpetDrawer {
 				break;
 			case LEFT:
 				img = Gui.pictureFactory.getScaledPicture(imgWest, cardSizeInv);
+				invImg = Gui.pictureFactory.getScaledPicture(imgSouth, cardSize);
 				g.drawString(text, 
 						gap + cardSizeInv.width, 
 						(carpetSize.height + stringHeight)/2 + cardSize.height + gap);
@@ -167,6 +170,7 @@ public class CarpetDrawer {
 				return;
 			case TOP:
 				img = Gui.pictureFactory.getScaledPicture(imgNorth, cardSize);
+				invImg = Gui.pictureFactory.getScaledPicture(imgWest, cardSizeInv);
 				g.drawString(text, 
 						(carpetSize.width - stringWidth)/2, 
 						gap + stringHeight + cardSize.height);
@@ -174,6 +178,7 @@ public class CarpetDrawer {
 				break;
 			case RIGHT:
 				img = Gui.pictureFactory.getScaledPicture(imgEast, cardSizeInv);
+				invImg = Gui.pictureFactory.getScaledPicture(imgNorth, cardSize);
 				g.drawString(text, 
 						(carpetSize.width - stringWidth - gap - cardSizeInv.width), 
 						(carpetSize.height + stringHeight)/2 + cardSize.height + gap);
@@ -190,6 +195,13 @@ public class CarpetDrawer {
 				if(player.getCards().get(i).isUnknown()) {
 					g.drawImage(img, cardP.x, cardP.y, null);
 				}
+			}
+			
+			//Now draw the players card stack (The stichs he won)
+			nOfCards = player.getCardsOnStack().size();
+			for(int i = 0; i < nOfCards; i++) {
+				cardP = getPlayerCardStackLocation(seat, nOfCards, i, carpetSize, cardSize);
+				g.drawImage(invImg, cardP.x, cardP.y, null);
 			}
 		}	
 	}
@@ -211,6 +223,30 @@ public class CarpetDrawer {
 			break;
 		case RIGHT:
 			p.setLocation(carpetSize.width - cardSizeInv.width, (carpetSize.height + (nOfCards + 1)*cardSizeInv.height/2)/2 - cardNr*cardSizeInv.height/2 - cardSizeInv.height);
+			break;
+		default:
+			break;
+		}
+		return p;
+	}
+	
+	public static Point getPlayerCardStackLocation(RelativeSeat seat, int nOfCards, int cardNr, Dimension carpetSize, Dimension cardSize) {
+		Point p = new Point();
+		int gap = cardSize.width / 4;
+		switch(seat) {
+		case BOTTOM:
+			p.setLocation((carpetSize.width*4)/6, -gap + carpetSize.height - cardSize.width*2 + (cardNr*cardSize.width)/(Math.max(nOfCards - 1,1)));
+			break;
+		case LEFT:
+			p.setLocation(gap + (cardSize.width) - (cardNr*cardSize.width)/(Math.max(nOfCards - 1,1)),(carpetSize.height*4)/6);
+			break;
+		case NOTATTABLE:
+			break;
+		case TOP:
+			p.setLocation((carpetSize.width*2)/6 - cardSize.height,gap + (cardSize.width) - (cardNr*cardSize.width)/(Math.max(nOfCards - 1,1)));
+			break;
+		case RIGHT:
+			p.setLocation(-gap + (carpetSize.width - cardSize.width*2) + (cardNr*cardSize.width)/(Math.max(nOfCards - 1,1)),(carpetSize.height*2)/6 - cardSize.height);
 			break;
 		default:
 			break;

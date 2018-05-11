@@ -9,6 +9,7 @@ import ch.ntb.jass.common.entities.SeatEntity;
 public class Player {
 	private boolean isReady;
 	private CardList cards;	//cards on hand
+	private CardList cardsOnStack; //cards on stack
 	private InetSocketAddress address;
 	private PlayerEntity entity;
 
@@ -21,6 +22,7 @@ public class Player {
 		setReady(isReady);
 		setId(id);
 		cards = new CardList();
+		cardsOnStack = new CardList();
 		if (name.isEmpty() && address != null) {
 			setName(address.toString());
 		} else {
@@ -126,6 +128,22 @@ public class Player {
 
 	public CardList getCards() {
 		return cards;
+	}
+	
+	public void addCardsToStack(Card[] cs) {
+		for(Card c : cs) {
+			cardsOnStack.add(c);
+		}
+	}
+	
+	public void addCardsToStack(ArrayList<Card> cs) {
+		for(Card c : cs) {
+			cardsOnStack.add(c);
+		}
+	}
+
+	public CardList getCardsOnStack() {
+		return cardsOnStack;
 	}
 
 	public Seat getSeat() {
