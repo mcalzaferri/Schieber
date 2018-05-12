@@ -23,7 +23,7 @@ public class TestAnimation extends Animation {
 	}
 
 	@Override
-	protected Object getAnimatedObject() {
+	protected Object doGetAnimatedObject() {
 		return null;
 	}
 

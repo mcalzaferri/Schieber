@@ -27,7 +27,7 @@ public class MovePictureAnimation extends Animation {
 
 
 	@Override
-	protected Object getAnimatedObject() {
+	protected Object doGetAnimatedObject() {
 		return animatedImage;
 	}
 	

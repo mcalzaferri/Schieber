@@ -2,8 +2,12 @@ package gui.animation;
 
 import java.awt.Graphics;
 
+/** Template class for several Animations. When displaying new Animations make use of the constants in this class.
+ * @author Maurus Calzaferri
+ *
+ */
 public abstract class Animation {
-	public static final int tickRate = 5; //30ms
+	public static final int tickRate = 5; //The maximum rate at which all animations are rendered. The actual render interval is usually slower due to high gui latency.
 	public static final int handOutCardDuration = 500;
 	public static final int layCardDuration = 200;
 	public static final int cardToStackDuration = 500;
@@ -27,46 +31,72 @@ public abstract class Animation {
 		finished = false;
 	}
 	
+	/** Creates a new Animatino which will last for the given duration
+	 * @param duration Duration in ms. After this time the animation will finish.
+	 */
 	public Animation(int duration) {
 		this(duration,null);
 	}
 	
+	/** Check if this animation has finished or not.
+	 * @return True if the animation has finished. False otherwise.
+	 */
 	public boolean hasFinished() {
 		return finished;
 	}
 	
+	/** Template method to paint the animation on a Graphics object.
+	 * @param g The Graphics object where the animation should be painted on.
+	 * @param progress The current progress of this animation from 0.0 to 1.0. (0.0 = started, 1.0 = finished)
+	 */
 	protected abstract void doPaint(Graphics g, double progress);
 	
+	/** Algorithm to paint each animation. It will call other template methods inside.
+	 * @param g The Graphics object where the animation should be painted on.
+	 */
 	public final void paintAnimation(Graphics g) {
 		if(!started) {
 			startTime = System.currentTimeMillis();
-			animationStarted();
+			animationStarted(); //Notify listener
 			started = true;
 		}
 		if(started && !finished) {
 			double progress = getProgress();
-			doPaint(g, progress);
+			doPaint(g, progress); //Paint the animation
 		}
 		if(getElapsedTime() >= duration && !finished) {
-			animationFinished();
+			animationFinished(); //Notify listener
 			finished = true;
 		}
 		
 	}
 	
+	/** Internal method to notify the AnimationListener that the animation has started.
+	 * 
+	 */
 	private void animationStarted() {
 		if(listener != null) {
-			listener.animationStarted(new AnimationEvent(getAnimatedObject()));
+			listener.animationStarted(new AnimationEvent(doGetAnimatedObject()));
 		}
 	}
+	
+	/** Internal method to notify the AnimationListener that the animation has finished
+	 * 
+	 */
 	private void animationFinished() {
 		if(listener != null) {
-			listener.animationFinished(new AnimationEvent(getAnimatedObject()));
+			listener.animationFinished(new AnimationEvent(doGetAnimatedObject()));
 		}
 	}
 	
-	protected abstract Object getAnimatedObject();
+	/** Template method to gather some information about the animation which will be returned in an AnimationEvent
+	 * @return Some data of the animation object
+	 */
+	protected abstract Object doGetAnimatedObject();
 	
+	/** Scales the content of this animation to the given scale. All subclasses have to use this when painting the animation.
+	 * @param scale The new scale of this animation
+	 */
 	public void setScale(double scale) {
 		this.scale = scale;
 	}
@@ -78,6 +108,9 @@ public abstract class Animation {
 		return Math.min(((double)(getElapsedTime()) / (double)duration),1.0);
 	}
 	
+	/** Returns the elapsed time in ms since the animation started.
+	 * @return Elapsed time in ms since the animation started.
+	 */
 	protected int getElapsedTime() {
 		return (int)(System.currentTimeMillis() - startTime);
 	}
