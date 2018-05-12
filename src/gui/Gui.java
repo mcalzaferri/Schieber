@@ -207,7 +207,7 @@ public class Gui extends AbstractClientView{
 	
 	@Override
 	public void sleepAnimationFinished() {
-		while(main.getAnimationRegion().animationisRunning()) {
+		while(main.getAnimationRegion().animationIsRunning()) {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {

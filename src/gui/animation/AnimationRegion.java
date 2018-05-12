@@ -17,10 +17,13 @@ import gui.playingView.CarpetPane;
 import gui.playingView.ViewableCard;
 import shared.Card;
 import shared.RelativeSeat;
-import shared.client.ClientModel;
 
+/** Region on the gui where animations can be rendered on. 
+ * This is a completly invisible component. Only if animations are running, those are painted on top of everything.
+ */
 public class AnimationRegion extends JComponent {
 	private static final long serialVersionUID = -8199381015785514955L;
+	//Some constants which represent possible start and end locations of animations.
 	public static final int DEALER = 0;
 	public static final int BOTTOMPLAYERHAND = 1;
 	public static final int RIGHTPLAYERHAND = 2;
@@ -32,28 +35,35 @@ public class AnimationRegion extends JComponent {
 	public static final int RIGHTPLAYERSTACK = 12;
 	public static final int TOPPLAYERSTACK = 13;
 	public static final int LEFTPLAYERSTACK = 14;
-	@SuppressWarnings("unused")
-	private ClientModel model;
 	
+	//Vector instead of ArrayList as ArrayList is not threadsafe
 	private Vector<Animation> animations;
 	private Timer animationTimer;
 	
-	public AnimationRegion(ClientModel model) {
-		this.model = model;
+	public AnimationRegion() {
 		initializeComponents();
 	}
 	
+	/** Internal method to initialize all components in this class.
+	 * 
+	 */
 	private void initializeComponents() {
 		//Set up animations
 		initializeAnimations();
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	 */
 	@Override
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		paintAnimation(g);
 	}
 	
+	/** Paints all running animations on top of the Graphics object.
+	 * @param g The Graphics object to paint on
+	 */
 	public void paintAnimation(Graphics g) {
 		if(g != null) {
 			//Draw animations
@@ -66,6 +76,9 @@ public class AnimationRegion extends JComponent {
 	}
 	
 
+	/** Internal method to initialize all required fields for animations.
+	 * 
+	 */
 	private void initializeAnimations() {
 		animations = new Vector<>();
 		AnimationRegion caller = this;
@@ -81,6 +94,17 @@ public class AnimationRegion extends JComponent {
 		animationTimer.start();
 	}
 	
+	/** Starts a new CardAnimation specified by the given parameters
+	 * @param card The card which should be displayed
+	 * @param duration The duration of this animation in ms
+	 * @param source Start position of this animation. See constants of this class for possible values
+	 * @param sourcePos Position of the card at the specified start position (Not all positions require this information)
+	 * @param sourceCount Total number of cards at the specified start position (Not all positions require this information)
+	 * @param destination End position of this animation. See constants of this class for possible values
+	 * @param destinationPos Position of the card at the specified end position (Not all positions require this information)
+	 * @param destinationCount Total number of cards at the specified end position (Not all positions require this information)
+	 * @param listener Optional listener which will be called when an AnimationEvent occurs
+	 */
 	public void showMoveCardAnimation(Card card, int duration, int source, int sourcePos, int sourceCount, int destination, int destinationPos, int destinationCount , AnimationListener listener) {
 		try {
 			showAnimation(new MoveCardAnimation(card, duration, 
@@ -92,6 +116,12 @@ public class AnimationRegion extends JComponent {
 		}
 	}
 
+	/** Translates the given paramters to a more usefull AnimationProperty
+	 * @param location The position of the returned AnimationPropery. See constants of this class for possible values
+	 * @param locationPos Position of the card at the specified position. (Not all positions require  this information)
+	 * @param cardCount Total number of cards at the specified position. (Not all positions require this information)
+	 * @return
+	 */
 	private AnimationProperty getCardAnimationProperty(int location, int locationPos, int cardCount) {
 		AnimationProperty ap = null;
 		RelativeSeat seat;
@@ -145,11 +175,17 @@ public class AnimationRegion extends JComponent {
 		return ap;
 	}
 	
+	/** Adds the given animation to the list of running animations.
+	 * @param animation The animation which should be rendered.
+	 */
 	public void showAnimation(Animation animation) {
 		animations.add(animation);
 	}
 	
-	public boolean animationisRunning() {
+	/** Checks if one or more animations are running.
+	 * @return True if at least one animation has not yet finished. False otherwise.
+	 */
+	public boolean animationIsRunning() {
 		for(Animation a : animations) {
 			if(!a.hasFinished()) {
 				return true;
@@ -158,6 +194,9 @@ public class AnimationRegion extends JComponent {
 		return false;
 	}
 	
+	/** Removes all animations which are in the finished state.
+	 * 
+	 */
 	public void removeFinishedAnimations() {
 		if(!animations.isEmpty()) {
 			Collection<Animation> finishedAnimations = new ArrayList<>();
