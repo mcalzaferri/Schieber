@@ -20,14 +20,15 @@ import shared.WeisType;
  * track of the cards that were played and calculating scores.
  *
  * Terms:
- * game  - multiple rounds (until target score is reached)
- * round - 9 runs (36 card played)
  * run   - one iteration (4 cards played)
+ * round - 9 runs (36 card played)
+ * game  - multiple rounds (until target score is reached)
  */
 public class GameLogic {
 	private final int team1Id = 1;
 	private final int team2Id = 2;
 
+	/** used to generate unique player IDs */
 	private final int playerIdStart = 1;
 	/** used to generate new player IDs */
 	private int playerId = playerIdStart;
@@ -44,32 +45,38 @@ public class GameLogic {
 	/** seat that starts the round */
 	private Seat roundStarter;
 	/** counts placed cards */
-	private int cardCounter;
-	private int targetScore;
+	private Integer cardCounter;
+	/** if a team reaches this score the game is over */
+	private Integer targetScore;
+	/** maps the card on the table to the seat that played the card */
 	private Map<Card, Seat> cardsOnTable;
 	/** winner of last run */
 	private Seat winner;
 	/** used to check for match */
 	private boolean match;
+	/** ID of the team that won the game */
+	private Integer gameWinnerId;
 
 	public GameLogic() {
 		players = new ArrayList<>();
 		scores = new HashMap<>();
 		cardsOnTable = new HashMap<>();
 		declaredWeise = new LinkedHashMap<>();
-		cardCounter = -1;
+		cardCounter = null;
 		trump = null;
 		winner = null;
 		currentSeat = null;
 		firstCard = null;
 		roundStarter = null;
-		targetScore = -1;
+		targetScore = null;
+		gameWinnerId = null;
 	}
 
 	/**
 	 * Initialize a new game
 	 */
 	public void init() {
+		gameWinnerId = null;
 		roundStarter = null;
 		targetScore = 1000;
 		scores.clear();
@@ -101,11 +108,13 @@ public class GameLogic {
 	 */
 	private void initRun() {
 		cardsOnTable.clear();
+
 		if (winner != null) {
 			currentSeat = winner;
 		} else {
 			currentSeat = roundStarter;
 		}
+
 		firstCard = null;
 	}
 
@@ -387,7 +396,7 @@ public class GameLogic {
 		}
 
 		if (!p.removeCard(card)) {
-			System.err.println("player tried to play a card that he does not have");
+			System.err.println(p + " tried to play a card that he does not have");
 			return MoveStatus.INVALID;
 		}
 
@@ -425,14 +434,18 @@ public class GameLogic {
 				}
 			}
 
-			for (int score : scores.values()) {
-				if (score >= targetScore) {
-					return MoveStatus.GAMEOVER;
+			// check if a team reached the target score
+			for (Map.Entry<Integer, Integer> entry : scores.entrySet()) {
+				if (entry.getValue() >= targetScore) {
+					gameWinnerId = entry.getKey();
 				}
 			}
 
 			if (cardCounter == 36) {
 				currentSeat = null;
+				if (gameWinnerId != null) {
+					return MoveStatus.GAMEOVER;
+				}
 				return MoveStatus.ROUNDOVER;
 			}
 			initRun();
@@ -466,6 +479,13 @@ public class GameLogic {
 	 */
 	public Player getRunWinner() {
 		return getPlayer(winner);
+	}
+
+	/**
+	 * @return ID of the team that won the game
+	 */
+	public Integer getGameWinner() {
+		return gameWinnerId;
 	}
 
 	/**
@@ -510,14 +530,14 @@ public class GameLogic {
 		return declaredWeise;
 	}
 
-	public void setDeclaredWeise(Player player, WeisEntity[] weis){
+	public void setDeclaredWeise(Player player, WeisEntity[] weis) {
 		declaredWeise.put(player, weis);
 	}
 
 	/**
 	 * @return number of cards that were played in the current round
 	 */
-	public int getCardCounter(){
+	public int getCardCounter() {
 		return cardCounter;
 	}
 

@@ -123,8 +123,21 @@ public class WaitForCardState extends GameState {
 		}
 
 		if (msg instanceof ChosenWiisMessage) {
+			// TODO REV: i'd check for errors first and then do the rest
+			// like:
+//			if (!logic.inFirstRun()) {
+//				throw(new ClientErrorException("No Weis after the first round has finished."));
+//			}
+//
+//			if (logic.getDeclaredWeise().containsKey(sender)) {
+//				throw(new ClientErrorException("You already declared your Weis. PlayerID: " + sender.getId()));
+//			}
+			// makes the code allot more readable IMO
+			// if you disagree just delete this comment
+
+
 			//Check if in first round.
-			if (logic.inFirstRun()){
+			if (logic.inFirstRun()) {
 
 				//Check if player does not declare Weise more than once.
 				if (!logic.getDeclaredWeise().containsKey(sender)) {
