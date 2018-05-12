@@ -116,6 +116,9 @@ public class GameLogic {
 		this.trump = trump;
 	}
 
+	/**
+	 * @return current trump
+	 */
 	public Trump getTrump() {
 		return trump;
 	}
@@ -290,7 +293,13 @@ public class GameLogic {
 	/**
 	 * Get teams as player entity array
 	 * @return team entity
-	 * @{
+	 */
+	public TeamEntity[] getTeams() {
+		return new TeamEntity[] { getTeam1(), getTeam2() };
+	}
+
+	/**
+	 * @see GameLogic#getTeams()
 	 */
 	private TeamEntity getTeam1() {
 		TeamEntity team = new TeamEntity();
@@ -299,6 +308,10 @@ public class GameLogic {
 				getPlayer(Seat.SEAT3).getEntity()};
 		return team;
 	}
+
+	/**
+	 * @see GameLogic#getTeams()
+	 */
 	private TeamEntity getTeam2() {
 		TeamEntity team = new TeamEntity();
 		team.teamId = team2Id;
@@ -306,11 +319,12 @@ public class GameLogic {
 				getPlayer(Seat.SEAT4).getEntity()};
 		return team;
 	}
-	public TeamEntity[] getTeams() {
-		return new TeamEntity[] { getTeam1(), getTeam2() };
-	}
-	/** @} */
 
+	/**
+	 * Get team ID via the seat of one team member
+	 * @param seat the seat of one team member
+	 * @return the ID of the team
+	 */
 	private int getTeamId(Seat seat) {
 		switch(seat) {
 		case SEAT1:
@@ -356,9 +370,9 @@ public class GameLogic {
 
 	/**
 	 * Place a card
-	 * a new run starts every four cards.
-	 * a new round starts every 36 cards.
-	 * If the score target has been reached the game is over.
+	 * A new run starts every four cards.
+	 * A new round starts every 36 cards.
+	 * If the score target is reached the game is over.
 	 * @return move status
 	 */
 	public MoveStatus placeCard(Card card) {
@@ -395,7 +409,7 @@ public class GameLogic {
 
 			// add score to team
 			int teamId = getTeamId(winner);
-			addScore(teamId, calcTableScore());
+			addScore(teamId, getTableScore());
 
 			// check for match
 			if (lastWinner != null && teamId != getTeamId(lastWinner)) {
@@ -427,11 +441,19 @@ public class GameLogic {
 		return MoveStatus.OK;
 	}
 
+	/**
+	 * Increment score of a team
+	 * @param teamId ID of the team
+	 * @param value points to add to the score
+	 */
 	private void addScore(int teamId, int value) {
 		scores.put(teamId, scores.get(teamId) + value);
 	}
 
-	private int calcTableScore() {
+	/**
+	 * @return combined score of the cards that are on the table
+	 */
+	private int getTableScore() {
 		int score = 0;
 		for (Card c : cardsOnTable.keySet()) {
 			score += c.getScore(trump);
@@ -439,6 +461,9 @@ public class GameLogic {
 		return score;
 	}
 
+	/**
+	 * @return winner of the run
+	 */
 	public Player getRunWinner() {
 		return getPlayer(winner);
 	}
@@ -449,55 +474,70 @@ public class GameLogic {
 	public boolean inFirstRun() {
 		return cardCounter < 4;
 	}
-	
-	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeisEntity){		
+
+	// TODO REV: add some doc
+	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeisEntity) {
 		int truthCounter = 0;
 		List<WeisType> alreadyApprovedWeises = new ArrayList<WeisType>();
-		Weis[] approvedWeises = p.getCards().getPossibleWiis(trump);		
-		for(int i = 0; i < claimedWeisEntity.length; i++){					
-			Weis claimedWeis = new Weis(claimedWeisEntity[i]);			
-			for(int j = 0; j < approvedWeises.length; j++) {					
-				if(approvedWeises[j].compareTo(claimedWeis, trump) == 0){					
-					if(!alreadyApprovedWeises.contains(claimedWeis.getType())){						
+		Weis[] approvedWeises = p.getCards().getPossibleWiis(trump);
+
+		for(int i = 0; i < claimedWeisEntity.length; i++){
+			Weis claimedWeis = new Weis(claimedWeisEntity[i]);
+			for(int j = 0; j < approvedWeises.length; j++) {
+				if(approvedWeises[j].compareTo(claimedWeis, trump) == 0){
+					if(!alreadyApprovedWeises.contains(claimedWeis.getType())){
 						alreadyApprovedWeises.add(claimedWeis.getType());
-						truthCounter++;										
+						truthCounter++;
 					}
 				}
-			}		
+			}
 		}
-		if(truthCounter == claimedWeisEntity.length){
+
+		if (truthCounter == claimedWeisEntity.length) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
-	
-	public void addWeisToScoreBoard(){		
+
+	public void addWeisToScoreBoard() {
 		WeisToScoreBoardHandler weisToScoreBoard = new WeisToScoreBoardHandler(declaredWeise, trump);
 		weisToScoreBoard.execute();
 		addScore(weisToScoreBoard.getTeamId(), weisToScoreBoard.getWeisScore());
 	}
-		
-	public LinkedHashMap<Player, WeisEntity[]> getDeclaredWeise(){
+
+	public LinkedHashMap<Player, WeisEntity[]> getDeclaredWeise() {
 		return declaredWeise;
 	}
+
 	public void setDeclaredWeise(Player player, WeisEntity[] weis){
 		declaredWeise.put(player, weis);
 	}
-	
+
+	/**
+	 * @return number of cards that were played in the current round
+	 */
 	public int getCardCounter(){
 		return cardCounter;
 	}
 
+	/**
+	 * @return current scores of the teams
+	 */
 	public Map<Integer, Integer> getScores() {
 		return scores;
 	}
 
+	/**
+	 * @return number of game participants (lobby + players)
+	 */
 	public int getPlayerCount() {
 		return players.size();
 	}
 
+	/**
+	 * @return list of players that sit at the table
+	 */
 	private List<Player> getPlayersAtTable() {
 		ArrayList<Player> tablePlayers = new ArrayList<>();
 		for (Player p : players) {
@@ -515,14 +555,23 @@ public class GameLogic {
 		return getPlayersAtTable().size();
 	}
 
+	/**
+	 * @return unique player ID
+	 */
 	public int generatePlayerId() {
 		return playerId++;
 	}
 
+	/**
+	 * @return player that has to opens the round
+	 */
 	public Player getRoundStarter() {
 		return getPlayer(roundStarter);
 	}
 
+	/**
+	 * @return list of cards that are on the table
+	 */
 	public Collection<Card> getCardsOnTable() {
 		return cardsOnTable.keySet();
 	}

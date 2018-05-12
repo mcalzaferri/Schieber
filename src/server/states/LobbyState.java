@@ -18,7 +18,7 @@ import shared.Seat;
 
 public class LobbyState extends GameState {
 	/**
-	 * @see GameState#act()
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void act() throws IOException {
@@ -44,12 +44,11 @@ public class LobbyState extends GameState {
 	/**
 	 * @throws ClientErrorException
 	 * @throws UnhandledMessageException
-	 * @see GameState#handleMessage(Player, ToServerMessage)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void handleMessage(Player sender, ToServerMessage msg)
-			throws IOException, ClientErrorException,
-			UnhandledMessageException {
+			throws IOException, UnhandledMessageException {
 		if (msg instanceof JoinTableMessage) {
 			JoinTableMessage jtMsg = (JoinTableMessage) msg;
 			Seat seat = jtMsg.preferedSeat == null ? null : Seat.getBySeatNr(jtMsg.preferedSeat.getSeatNr());
@@ -61,7 +60,10 @@ public class LobbyState extends GameState {
 				broadcast(pmttMsg);
 				System.out.println("added " + sender + " to the table (" + sender.getSeat() + ")");
 			}
-		} else if (msg instanceof ChangeStateMessage) {
+			return;
+		}
+
+		if (msg instanceof ChangeStateMessage) {
 			ChangeStateMessage csMsg = (ChangeStateMessage) msg;
 
 			if (sender.isReady() != csMsg.isReady) {
@@ -81,7 +83,10 @@ public class LobbyState extends GameState {
 					stateMachine.changeState(new StartRoundState());
 				}
 			}
-		} else if (msg instanceof FillEmptySeatsMessage) {
+			return;
+		}
+
+		if (msg instanceof FillEmptySeatsMessage) {
 			// fill empty seats with bots
 
 			Thread[] botThreads = new Thread[4 - logic.getTablePlayerCount()];
@@ -100,8 +105,9 @@ public class LobbyState extends GameState {
 					}
 				});
 			}
-		} else {
-			throw(new UnhandledMessageException());
+			return;
 		}
+
+		throw(new UnhandledMessageException());
 	}
 }

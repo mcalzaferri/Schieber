@@ -18,6 +18,7 @@ import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToLobbyInfoMessa
 import ch.ntb.jass.common.proto.server_messages.GameStateMessage;
 import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
 import server.exceptions.ClientErrorException;
+import server.exceptions.GameException;
 import server.exceptions.InvalidMessageDataException;
 import server.exceptions.UnhandledMessageException;
 import shared.Card;
@@ -26,24 +27,46 @@ import shared.Player;
 import shared.Seat;
 
 /**
- * Keeps track of the current state and handles joining and leaving players.
+ * Keeps track of the state the game is in and handles joining and leaving
+ * players.
  */
 public class StateMachine {
 	private GameState currentState;
 
+	/**
+	 * Switch to specified game state and executes its entry action
+	 * @param state game state to switch to
+	 * @throws IOException
+	 */
 	public void changeState(GameState state) throws IOException {
 		currentState = state;
-		System.out.println("switched to new state: " + state.getClass().getSimpleName());
+		System.out.println("switched to new state: " +
+				state.getClass().getSimpleName());
 		currentState.act();
 	}
 
+	/**
+	 * @return the current state to game
+	 */
 	public GameState getCurrentState() {
 		return currentState;
 	}
 
-	public void handleMessage(Player sender, InternalMessage iMsg) throws IOException, InvalidMessageDataException, UnhandledMessageException, ClientErrorException {
-		// joining and leaving players are handled here
-		// all other messages are handled by the current state
+	/**
+	 * Handle message
+	 * Join and leave messages are handled here all other messages are
+	 * handled by the current state.
+	 * @param sender the player that sent the message
+	 * @param iMsg the sent message and the senders address
+	 * @throws IOException
+	 * @throws InvalidMessageDataException
+	 * @throws UnhandledMessageException
+	 * @throws ClientErrorException
+	 * @throws GameException
+	 */
+	public void handleMessage(Player sender, InternalMessage iMsg)
+			throws IOException, InvalidMessageDataException,
+			UnhandledMessageException, ClientErrorException, GameException {
 
 		if (iMsg.message == null) {
 			throw(new InvalidMessageDataException("The data you sent was"
@@ -86,10 +109,11 @@ public class StateMachine {
 			// if a player is leaving an ongoing game the game is cancelled
 			if (!(currentState instanceof LobbyState)) {
 				EndOfRoundInfoMessage eorim = new EndOfRoundInfoMessage();
-				eorim.score = null;
 				eorim.gameOver = true;
 				GameState.broadcast(eorim);
 				changeState(new LobbyState());
+				throw(new GameException("Game is cancelled. " + sender +
+						" left"));
 			}
 		} else {
 			// let current state handle message
@@ -97,7 +121,17 @@ public class StateMachine {
 		}
 	}
 
-	private void handleNewPlayer(PlayerEntity playerData, InetSocketAddress playerAddr) throws IOException, ClientErrorException {
+	/**
+	 * Handle new player
+	 * @param playerData info about the new player
+	 * @param playerAddr the players address
+	 * @throws IOException
+	 * @throws ClientErrorException
+	 */
+	private void handleNewPlayer(PlayerEntity playerData,
+			InetSocketAddress playerAddr) throws IOException,
+			ClientErrorException {
+
 		// create new player
 		if(playerData.name == null || playerData.name.isEmpty()) {
 			playerData.name = "@" + playerAddr;

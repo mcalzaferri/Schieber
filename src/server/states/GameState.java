@@ -16,12 +16,20 @@ import shared.Player;
  * function.
  * The static data fields are used by the states to send messages and to talk
  * to the game engine.
+ * State diagram with all messages:
+ * <img src="{@docRoot}/common/StateDiagram.png">
  */
 public abstract class GameState {
 	static protected Communication com;
 	static protected GameLogic logic;
 	static protected StateMachine stateMachine;
 
+	/**
+	 * Initialize game state
+	 * @param sc used to switch to new states
+	 * @param c used to dispatch messages
+	 * @param l used to talk to the game engine
+	 */
 	static public void init(StateMachine sc, Communication c, GameLogic l) {
 		stateMachine = sc;
 		com = c;
@@ -32,7 +40,7 @@ public abstract class GameState {
 	 * Handle message
 	 * States that handle messages override this function.
 	 * @param sender the player that sent the message
-	 * @param msg the message
+	 * @param msg the sent message
 	 * @throws IOException
 	 * @throws UnhandledMessageException
 	 * @throws ClientErrorException
@@ -53,7 +61,7 @@ public abstract class GameState {
 	 */
 
 	/**
-	 * Helper function that sends a message to all players.
+	 * Send a message to all players
 	 * @param msg message to broadcast
 	 */
 	public static void broadcast(Message msg) throws IOException {
@@ -62,9 +70,15 @@ public abstract class GameState {
 		}
 	}
 
+	/**
+	 * Send a message to the specified player
+	 * @param msg message to send
+	 * @param player recipient
+	 * @throws IOException
+	 */
 	public static void send(Message msg, Player player) throws IOException {
 		com.send(msg, player.getSocketAddress());
-		System.out.println("sent " + msg.getClass().getSimpleName() +
-				" to " + player);
+//		System.out.println("sent " + msg.getClass().getSimpleName() +
+//				" to " + player);
 	}
 }

@@ -20,7 +20,7 @@ import shared.Player;
 
 public class WaitForCardState extends GameState {
 	/**
-	 * @see GameState#act()
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void act() throws IOException {
@@ -34,11 +34,12 @@ public class WaitForCardState extends GameState {
 	/**
 	 * @throws UnhandledMessageException
 	 * @throws ClientErrorException
-	 * @see GameState#handleMessage(Player, ToServerMessage)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void handleMessage(Player sender, ToServerMessage msg)
 			throws IOException, UnhandledMessageException, ClientErrorException {
+
 		if (msg instanceof PlaceCardMessage) {
 			if (sender != logic.getCurrentPlayer()) {
 				throw(new ClientErrorException("It's not your turn!"));
@@ -118,38 +119,43 @@ public class WaitForCardState extends GameState {
 			}
 
 			System.err.println("Unhandled move status");
-		} else if (msg instanceof ChosenWiisMessage) {
+			return;
+		}
+
+		if (msg instanceof ChosenWiisMessage) {
 			//Check if in first round.
-			if(logic.inFirstRun()){
-				
+			if (logic.inFirstRun()){
+
 				//Check if player does not declare Weise more than once.
-				if(!logic.getDeclaredWeise().containsKey(sender)){
-					WeisEntity[] weise = ((ChosenWiisMessage) msg).wiis;					
-					
+				if (!logic.getDeclaredWeise().containsKey(sender)) {
+					WeisEntity[] weise = ((ChosenWiisMessage) msg).wiis;
+
 					//Check if Weise are valid.
-					if(logic.weiseAreValid(sender, weise)){
+					if (logic.weiseAreValid(sender, weise)) {
 						logic.setDeclaredWeise(sender, weise);
-						
+
 						//Set score
-						if(logic.getCardCounter() == 3){
-							logic.addWeisToScoreBoard();						
+						if (logic.getCardCounter() == 3) {
+							logic.addWeisToScoreBoard();
 						}
-						
+
 						WiisInfoMessage wiMsg = new WiisInfoMessage();
 						wiMsg.player = sender.getEntity();
 						wiMsg.wiis = weise;
 						broadcast(wiMsg);
 					} else {
 						throw(new ClientErrorException("The Weis doesn't match your deck. PlayerID: " + sender.getId()));
-					}					
+					}
 				} else {
 					throw(new ClientErrorException("You already declared your Weis. PlayerID: " + sender.getId()));
 				}
 			} else {
 				throw(new ClientErrorException("No Weis after the first round has finished."));
-			}		
-		} else {
-			throw(new UnhandledMessageException());
+			}
+
+			return;
 		}
+
+		throw(new UnhandledMessageException());
 	}
 }

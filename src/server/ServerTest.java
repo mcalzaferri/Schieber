@@ -33,11 +33,11 @@ public class ServerTest {
 	private Communication client;
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 	}
 
 	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+	public static void tearDownAfterClass() {
 	}
 
 	@Before
@@ -52,29 +52,9 @@ public class ServerTest {
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		app.stop();
 		client.close();
-	}
-
-	@Test
-	public void testJoinTable() throws Exception {
-		JoinLobbyMessage jlMsg = new JoinLobbyMessage();
-		jlMsg.playerData = new PlayerEntity();
-		sendMsgToServer(jlMsg);
-
-		waitForMessage();
-
-		assertEquals(1, app.logic.getPlayerCount());
-		assertEquals(Seat.NOTATTABLE, app.logic.getPlayer(clientAddr).getSeat());
-
-		JoinTableMessage jtMsg = new JoinTableMessage();
-		jtMsg.preferedSeat = SeatEntity.SEAT1;
-		sendMsgToServer(jtMsg);
-
-		waitForMessage();
-		assertEquals(jtMsg.preferedSeat,
-		             app.logic.getPlayer(clientAddr).getSeat().getSeatEntity());
 	}
 
 	/**
@@ -95,5 +75,25 @@ public class ServerTest {
 	 */
 	private void sendMsgToServer(ToServerMessage msg) throws IOException {
 		client.send(msg, serverAddr);
+	}
+
+	@Test
+	public void testJoinTable() throws Exception {
+		JoinLobbyMessage jlMsg = new JoinLobbyMessage();
+		jlMsg.playerData = new PlayerEntity();
+		sendMsgToServer(jlMsg);
+
+		waitForMessage();
+
+		assertEquals(1, app.logic.getPlayerCount());
+		assertEquals(Seat.NOTATTABLE, app.logic.getPlayer(clientAddr).getSeat());
+
+		JoinTableMessage jtMsg = new JoinTableMessage();
+		jtMsg.preferedSeat = SeatEntity.SEAT1;
+		sendMsgToServer(jtMsg);
+
+		waitForMessage();
+		assertEquals(jtMsg.preferedSeat,
+				app.logic.getPlayer(clientAddr).getSeat().getSeatEntity());
 	}
 }

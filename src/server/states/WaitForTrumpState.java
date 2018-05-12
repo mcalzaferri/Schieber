@@ -16,7 +16,7 @@ public class WaitForTrumpState extends GameState {
 	private boolean schiebenAlreadyChosen;
 
 	/**
-	 * @see GameState#act()
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void act()throws IOException{
@@ -29,11 +29,12 @@ public class WaitForTrumpState extends GameState {
 	/**
 	 * @throws UnhandledMessageException
 	 * @throws ClientErrorException
-	 * @see GameState#handleMessage(Player, ToServerMessage)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void handleMessage(Player sender, ToServerMessage msg)
 			throws IOException, UnhandledMessageException, ClientErrorException {
+
 		if (msg instanceof ChosenTrumpMessage) {
 			ChosenTrumpInfoMessage ctiMsg = new ChosenTrumpInfoMessage();
 			ctiMsg.trump = ((ChosenTrumpMessage) msg).trump;
@@ -61,9 +62,11 @@ public class WaitForTrumpState extends GameState {
 			} else {
 				throw(new ClientErrorException("It's not your turn to choose the trump!"));
 			}
-		} else {
-			throw(new UnhandledMessageException());
+
+			return;
 		}
+
+		throw(new UnhandledMessageException());
 	}
 
 	private void setTrump(ToServerMessage msg, Player sender) throws IOException {

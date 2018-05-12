@@ -39,7 +39,7 @@ public abstract class BotIntelligence {
 		if (currHand.length < 1)
 		{
 			//Error handling
-			System.out.println("Error - CurrHand is empty");
+			System.err.println("Error - CurrHand is empty");
 		}
 		
 		this.cardsInHand = getCardListByIds(currHand, true);
@@ -146,7 +146,7 @@ public abstract class BotIntelligence {
 				break;
 			default:
 				//Errorhandling
-				System.out.println("Card couldn't be recoginzed");
+				System.err.println("Card couldn't be recoginzed");
 				modifier = 0;
 				break;
 			}
@@ -245,7 +245,7 @@ public abstract class BotIntelligence {
 		if (wiis.length < 1)
 		{
 			//Errorhandling 
-			System.out.println("Error - wiis is empty");
+			System.err.println("Error - wiis is empty");
 		}
 		
 		int noOfCards;

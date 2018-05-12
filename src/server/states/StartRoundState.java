@@ -9,7 +9,7 @@ import shared.Player;
 
 public class StartRoundState extends GameState {
 	/**
-	 * @see GameState#act()
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void act() throws IOException {
