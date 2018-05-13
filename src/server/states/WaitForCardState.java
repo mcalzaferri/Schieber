@@ -6,12 +6,7 @@ import ch.ntb.jass.common.entities.ScoreEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.ChosenWiisMessage;
 import ch.ntb.jass.common.proto.player_messages.PlaceCardMessage;
-import ch.ntb.jass.common.proto.server_info_messages.EndOfGameInfoMessage;
-import ch.ntb.jass.common.proto.server_info_messages.EndOfRoundInfoMessage;
-import ch.ntb.jass.common.proto.server_info_messages.NewTurnInfoMessage;
-import ch.ntb.jass.common.proto.server_info_messages.StichInfoMessage;
-import ch.ntb.jass.common.proto.server_info_messages.TurnInfoMessage;
-import ch.ntb.jass.common.proto.server_info_messages.WiisInfoMessage;
+import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.WrongCardMessage;
 import server.MoveStatus;
 import server.exceptions.ClientErrorException;
@@ -67,11 +62,9 @@ public class WaitForCardState extends GameState {
 					tiMsg = new StichInfoMessage();
 					break;
 				case ROUNDOVER:
-					//TODO Check if fixed correctly /Maurus
 					tiMsg = new EndOfRoundInfoMessage();
 					break;
 				case GAMEOVER:
-					//TODO Check if fixed correctly /Maurus
 					tiMsg = new EndOfGameInfoMessage();
 					break;
 				default:
@@ -101,27 +94,21 @@ public class WaitForCardState extends GameState {
 			}
 
 			EndOfRoundInfoMessage eorMsg = (EndOfRoundInfoMessage) siMsg;
-			ScoreEntity score = new ScoreEntity();
-			score.scores = logic.getScores();
-			eorMsg.score = score;
+			eorMsg.score = new ScoreEntity();
+			eorMsg.score.scores = logic.getScores();
 
 			if (moveStatus.equals(MoveStatus.ROUNDOVER)) {
-				//TODO Check if fixed correctly /Maurus
-				//eorMsg.gameOver = false;
 				broadcast(eorMsg);
 
 				// start new round
 				stateMachine.changeState(new StartRoundState());
 				return;
 			}
-			
-			//TODO Check if fixed correctly /Maurus
+
 			EndOfGameInfoMessage eogMsg = (EndOfGameInfoMessage) eorMsg;
 			eogMsg.teamThatWon = logic.getGameWinner();
-			
+
 			if (moveStatus.equals(MoveStatus.GAMEOVER)) {
-				//TODO Check if fixed correctly /Maurus
-				//eorMsg.gameOver = true;
 				broadcast(eogMsg);
 
 				// start new game

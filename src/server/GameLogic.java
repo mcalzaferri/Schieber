@@ -389,14 +389,15 @@ public class GameLogic {
 			return MoveStatus.INVALID;
 		}
 
-		Player p = getCurrentPlayer();
+		Player player = getCurrentPlayer();
 
-		if (!card.isAllowed(p.getCards().toArray(), firstCard, trump)) {
+		if (!card.isAllowed(player.getCards().toArray(), firstCard, trump)) {
 			return MoveStatus.NOTALLOWED;
 		}
 
-		if (!p.removeCard(card)) {
-			System.err.println(p + " tried to play a card that he does not have");
+		if (!player.removeCard(card)) {
+			System.err.println(player + " tried to play a card that he does " +
+					"not have");
 			return MoveStatus.INVALID;
 		}
 
@@ -438,6 +439,13 @@ public class GameLogic {
 			for (Map.Entry<Integer, Integer> entry : scores.entrySet()) {
 				if (entry.getValue() >= targetScore) {
 					gameWinnerId = entry.getKey();
+
+					TeamEntity winnerTeam = gameWinnerId == team1Id ?
+							getTeam1() : getTeam2();
+					System.out.format("Team %s + %s won!",
+							winnerTeam.players[0],
+							winnerTeam.players[1]);
+					System.out.println();
 				}
 			}
 

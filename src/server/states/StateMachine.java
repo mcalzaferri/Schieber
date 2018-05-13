@@ -108,13 +108,12 @@ public class StateMachine {
 
 			// if a player is leaving an ongoing game the game is cancelled
 			if (!(currentState instanceof LobbyState)) {
-				EndOfGameInfoMessage eogim = new EndOfGameInfoMessage();
-				/* TODO Fill message with content /Maurus
-				EndOfRoundInfoMessage eorim = new EndOfRoundInfoMessage();
-				eorim.gameOver = true;
-				*/
-				GameState.broadcast(eogim);
+				EndOfGameInfoMessage eogMsg = new EndOfGameInfoMessage();
+				eogMsg.teamThatWon = null;
+				GameState.broadcast(eogMsg);
+
 				changeState(new LobbyState());
+
 				throw(new GameException("Game is cancelled. " + sender +
 						" left"));
 			}
