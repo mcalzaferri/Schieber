@@ -45,7 +45,12 @@ public class Communication {
 		receivePacket.setLength(receiveBuffer.length);
 
 		// wait for message, blocking call
-		socket.receive(receivePacket);
+		try {
+			socket.receive(receivePacket);
+		}catch(SocketException se) {
+			System.err.println(se.getMessage());
+		}
+		
 
 		InternalMessage msg = new InternalMessage();
 		msg.senderAddress = (InetSocketAddress)receivePacket.getSocketAddress();
@@ -72,7 +77,12 @@ public class Communication {
 				jsonString.getBytes().length, peerAddress);
 
 		// send packet
-		socket.send(packet);
+		try {
+			socket.send(packet);
+		}catch(SocketException se) {
+			//TODO /Maurus System.err.println(se.getMessage());
+		}
+		
 	}
 
 	/**

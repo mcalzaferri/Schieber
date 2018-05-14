@@ -196,6 +196,11 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	}
 
 	@Override
+	protected void gameStarted() {
+		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
+	}
+	
+	@Override
 	protected void trumpInfo(Trump trump) {
 		if(trump != null) {
 			if(trump != Trump.SCHIEBEN)

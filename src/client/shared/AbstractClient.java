@@ -42,6 +42,7 @@ public abstract class AbstractClient {
 	
 	//Methods for AbstractClient
 	private void internalHandOutCardAnimation(CardEntity[] handEntity, long refreshDelay) {
+		gameStarted();
 		CardList handCl = new CardList();
 		handCl.updateData(handEntity);
 		handCl.sort();
@@ -319,6 +320,7 @@ public abstract class AbstractClient {
 		});
 	}
 	//Non Abstract Template methods for Server -> Client
+	protected void gameStarted() {}
 	protected void trumpInfo(Trump trump) {}
 	protected void stichInfo(Player playerWhoWonStich) {}
 	protected void playerChanged(Player player) {}
