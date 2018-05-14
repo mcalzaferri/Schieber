@@ -190,6 +190,7 @@ public abstract class AbstractClient {
 					model.getPlayer(msg.player).setSeat(Seat.SEAT1);
 				}
 				playerChanged(model.getPlayer(msg.player));
+				playerJoinedTable(model.getPlayer(msg.player));
 			}
 
 			@Override
@@ -323,6 +324,7 @@ public abstract class AbstractClient {
 	protected void gameStarted() {}
 	protected void trumpInfo(Trump trump) {}
 	protected void stichInfo(Player playerWhoWonStich) {}
+	protected void playerJoinedTable(Player player) {}
 	protected void playerChanged(Player player) {}
 	protected void teamsChanged(Collection<Team> teams) {}
 	protected void goodResultReceived(String message) {}

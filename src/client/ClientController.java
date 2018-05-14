@@ -239,6 +239,18 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	}
 	
 	@Override
+	protected void playerJoinedTable(Player player) {
+		if(player.equals(model.getThisPlayer())) {
+			view.showDialog("You joined the table at seat: " + player.getSeat(), MessageType.INFORMATION);
+			//Change to lobbyview if necessary, update otherwise
+			changeOrUpdateView(ViewEnumeration.LOBBYVIEW);
+		}else {
+			view.updateView(ViewEnumeration.LOBBYVIEW);
+		}
+		
+	}
+	
+	@Override
 	protected void showHandOutCardAnimation(Player cardReceiver, ArrayList<Card> newHand) {
 		if(cardReceiver.equals(model.getThisPlayer())) {
 			int i = cardReceiver.getCards().size();
@@ -359,6 +371,20 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void btnJoinTableClick(Seat preferedSeat) {
+		//Check if seat is available
+		for(Player p : model.getPlayers().values()) {
+			if(p.getSeat() == preferedSeat) {
+				if(model.getThisPlayer().getSeat() == Seat.NOTATTABLE) {
+					view.showDialog("There is already someone on this seat. Please select another one!", MessageType.ERROR);
+				}else if(model.getThisPlayer().getSeat() == preferedSeat) {
+					view.showDialog("You are already sitting here!", MessageType.INFORMATION);
+				}else {
+					view.showDialog("There is already someone on this seat. But you are already on seat: " + model.getThisPlayer().getSeat() + " anyways." , MessageType.WARNING);
+				}
+				
+				return;
+			}
+		}
 		super.joinTable(preferedSeat);
 		
 	}

@@ -182,6 +182,11 @@ public class LobbyView extends ObservableView implements Viewable{
 	    chair1Button.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
 
+	    		for(ViewObserver observer : observers) {
+					observer.btnJoinTableClick(Seat.SEAT1);
+				}
+				
+				/* TODO REV Notify client anyways so messages can be displayed /Maurus
 	    		if(isSeatFree(1))
 	    		{
 					for(ViewObserver observer : observers) {
@@ -189,11 +194,18 @@ public class LobbyView extends ObservableView implements Viewable{
 					}
 					update();
 	    		}
+	    		*/
 	    	}
 		});
 	    
 	    chair2Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				for(ViewObserver observer : observers) {
+					observer.btnJoinTableClick(Seat.SEAT2);
+				}
+				
+				/* TODO REV Notify client anyways so messages can be displayed /Maurus
 	    		if(isSeatFree(2))
 	    		{
 					for(ViewObserver observer : observers) {
@@ -201,24 +213,37 @@ public class LobbyView extends ObservableView implements Viewable{
 					}
 					update();
 	    		}
+	    		*/
 			}
 		});
 	    
 	    chair3Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				for(ViewObserver observer : observers) {
+					observer.btnJoinTableClick(Seat.SEAT3);
+				}
+				
+				/* TODO REV Notify client anyways so messages can be displayed /Maurus
 	    		if(isSeatFree(3))
 	    		{
 					for(ViewObserver observer : observers) {
 						observer.btnJoinTableClick(Seat.SEAT3);
 					}
-					getActPlayer().setSeatNr(3);
 					update();
 	    		}
+	    		*/
 			}
 		});
 	    
 	    chair4Button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				for(ViewObserver observer : observers) {
+					observer.btnJoinTableClick(Seat.SEAT4);
+				}
+				
+				/* TODO REV Notify client anyways so messages can be displayed /Maurus
 	    		if(isSeatFree(4))
 	    		{
 					for(ViewObserver observer : observers) {
@@ -226,6 +251,7 @@ public class LobbyView extends ObservableView implements Viewable{
 					}
 					update();
 	    		}
+	    		*/
 			}
 		});
 	}
