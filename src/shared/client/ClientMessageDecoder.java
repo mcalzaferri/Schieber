@@ -34,8 +34,11 @@ public interface ClientMessageDecoder {
 			decoder.msgReceived((TurnInfoMessage)msg);
 			if(msg instanceof StichInfoMessage) {
 				decoder.msgReceived((StichInfoMessage)msg);
-				if(msg instanceof EndOfRoundInfoMessage)
+				if(msg instanceof EndOfRoundInfoMessage) {
 					decoder.msgReceived((EndOfRoundInfoMessage)msg);
+					if(msg instanceof EndOfGameInfoMessage)
+						decoder.msgReceived((EndOfGameInfoMessage)msg);
+				}
 			}
 		}
 		if(msg instanceof WiisInfoMessage)
@@ -60,6 +63,7 @@ public interface ClientMessageDecoder {
 	//server_info_messages
 	void msgReceived(ChosenTrumpInfoMessage msg);
 	void msgReceived(EndOfRoundInfoMessage msg);
+	void msgReceived(EndOfGameInfoMessage msg);
 	void msgReceived(GameStartedInfoMessage msg);
 	void msgReceived(NewRoundInfoMessage msg);
 	void msgReceived(NewTurnInfoMessage msg);

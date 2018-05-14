@@ -14,6 +14,7 @@ import client.ClientCommunication;
 import shared.Card;
 import shared.Player;
 import shared.Score;
+import shared.Team;
 import shared.Trump;
 import shared.Weis;
 import shared.client.AbstractClient;
@@ -87,7 +88,7 @@ public class VirtualClient extends AbstractClient {
 	}
 
 	@Override
-	public void doEndGame() {
+	public void doEndGame(Team teamThatWon) {
 		super.disconnect();
 		//disable bot
 		this.active = false;

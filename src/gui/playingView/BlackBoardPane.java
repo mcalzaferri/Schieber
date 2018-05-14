@@ -70,8 +70,8 @@ public class BlackBoardPane extends ObservableView{
 		int myScore = 0;
 		int enemyScore = 0;
 		if(data.getScore() != null && data.getTeams() != null) {
-			Team myTeam = Team.getTeamThatContainsPlayer(data.getTeams(), data.getThisPlayer());
-			for(Team team : data.getTeams()) {
+			Team myTeam = Team.getTeamThatContainsPlayer(data.getTeams().values(), data.getThisPlayer());
+			for(Team team : data.getTeams().values()) {
 				if(myTeam == null)
 					myTeam = team;
 				if(myTeam == team) {

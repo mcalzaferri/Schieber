@@ -12,7 +12,7 @@ public class ClientModel {
 	private Player thisPlayer;
 	private Map<Integer,Player> players;
 	private Map<Card, RelativeSeat> deckOrientation;
-	private Team[] teams;
+	private Map<Integer,Team> teams;
 	private CardList deck;
 	private Trump trump;
 	private Weis[] possibleWiis;
@@ -92,11 +92,12 @@ public class ClientModel {
 	}
 	
 	//Getters and Setters
-	public Team[] getTeams() {
+	public Map<Integer,Team> getTeams() {
 		return teams;
 	}
-	public void setTeams(Team[] teams) {
+	public void putTeams(Team[] teams) {
 		//Search in team for this player
+		/* TODO Wtf is this?
 		for(Team team : teams) {
 			for(Player player : team.getPlayers()) {
 				if(!player.equals(getThisPlayer())) {
@@ -107,7 +108,10 @@ public class ClientModel {
 				}
 			}
 		}
-		this.teams = teams;
+		*/
+		for(Team team : teams) {
+			this.teams.put(team.getTeamId(), team);
+		}
 	}
 	public CardList getHand() {
 		if(thisPlayer != null)

@@ -2,6 +2,7 @@ package client;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import gui.Dialog.MessageType;
 import gui.animation.Animation;
@@ -48,7 +49,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	}
 	
 	@Override
-	protected void teamsChanged(Team[] teams) {
+	protected void teamsChanged(Collection<Team> teams) {
 		view.updateView(ViewEnumeration.PLAYVIEW);
 		view.updateView(ViewEnumeration.LOBBYVIEW);
 	}
@@ -84,7 +85,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 *  @param winner Winnerteam
 	 */
 	@Override
-	public void doEndGame() {
+	public void doEndGame(Team teamThatWon) {
 		changeOrUpdateView(ViewEnumeration.GAMEOVERVIEW);
 		view.publishMessage("This game is finally over. Took some time eh/n");
 	}
@@ -164,7 +165,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		StringBuilder sb = new StringBuilder();
 		if(wiis == null || wiis.length == 0) {
 			sb.append(player.getName() + " had no wiis to show!");
-			if(Team.getTeamThatContainsPlayer(model.getTeams(), player).contains(model.getThisPlayer())) {
+			if(Team.getTeamThatContainsPlayer(model.getTeams().values(), player).contains(model.getThisPlayer())) {
 				if(player.equals(model.getThisPlayer())) {
 					sb.append(" (As if you wouldn't know, right?)\n");
 				}else {

@@ -1,5 +1,6 @@
 package shared;
 
+import java.util.Collection;
 import java.util.Map;
 
 import ch.ntb.jass.common.entities.TeamEntity;
@@ -38,7 +39,7 @@ public class Team {
 	 * @param player The player to search in the teams
 	 * @return the players team or null if this player is not in a team.
 	 */
-	public static Team getTeamThatContainsPlayer(Team[] teams, Player player) {
+	public static Team getTeamThatContainsPlayer(Collection<Team> teams, Player player) {
 		for(Team team : teams) {
 			if(team.contains(player))
 				return team;

@@ -2,6 +2,7 @@ package shared.client;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import ch.ntb.jass.common.entities.*;
 import ch.ntb.jass.common.proto.Message;
@@ -54,7 +55,7 @@ public abstract class AbstractClient {
 				cardsOnHand.add(handCl.get(i));
 			}
 			for(int j = 1; j <= 4; j++) {
-				for(Team team : model.getTeams()) {
+				for(Team team : model.getTeams().values()) {
 					for(Player player : team.getPlayers()) {
 						//Wait for Refresh delay
 						if(player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId() == j) {
@@ -108,12 +109,17 @@ public abstract class AbstractClient {
 				doEndRound();
 				
 				//Clear all cards on stack of each player
-				for(Team team : model.getTeams()) {
+				for(Team team : model.getTeams().values()) {
 					for(Player player : team.getPlayers()) {
 						player.getCardsOnStack().clear();
 					}
 				}
 			}
+			
+			@Override
+			public void msgReceived(EndOfGameInfoMessage msg) {
+				//doEndGame();
+			}	
 
 			@Override
 			public void msgReceived(GameStartedInfoMessage msg) {
@@ -125,9 +131,9 @@ public abstract class AbstractClient {
 						teams[i].getPlayer(j).update(msg.teams[i].players[j]);
 					}
 				}
-				model.setTeams(teams);
+				model.putTeams(teams);
 				model.setGameState(GameState.STARTED);
-				teamsChanged(teams);
+				teamsChanged(model.getTeams().values());
 				doSetSeat(model.getThisPlayer().getSeatNr());
 			}
 
@@ -166,12 +172,12 @@ public abstract class AbstractClient {
 			public void msgReceived(PlayerMovedToLobbyInfoMessage msg) {
 				model.updatePlayer(msg.player);
 				model.getPlayer(msg.player).setSeat(Seat.NOTATTABLE);
-				Team[] teams = model.getTeams();
+				Collection<Team> teams = model.getTeams().values();
 				if(teams != null) {
-					for(int i = 0; i <= 1; i++) {
-						teams[i].removePlayer(msg.player.id);
+					for(Team team : teams) {
+						team.removePlayer(msg.player.id);
 					}
-					teamsChanged(model.getTeams());
+					teamsChanged(teams);
 				}
 				playerChanged(model.getPlayer(msg.player));
 			}
@@ -254,7 +260,7 @@ public abstract class AbstractClient {
 				//Clear deck
 				clearDeck();
 				//First remove all cards
-				for(Team team : model.getTeams()) {
+				for(Team team : model.getTeams().values()) {
 					for(Player player : team.getPlayers()) {
 						player.getCards().clear();
 					}
@@ -272,7 +278,7 @@ public abstract class AbstractClient {
 					for(int i = 0; i < ca.length; i++) {
 						ca[i] = unknownCard;
 					}
-					for(Team team : model.getTeams()) {
+					for(Team team : model.getTeams().values()) {
 						for(Player player : team.getPlayers()) {
 							if(player.equals(model.getThisPlayer())) {
 								continue;
@@ -308,14 +314,15 @@ public abstract class AbstractClient {
 			public void msgReceived(WrongCardMessage msg) {
 				// TODO Is this message obsolete anyways?
 				
-			}	
+			}
+
 		});
 	}
 	//Non Abstract Template methods for Server -> Client
 	protected void trumpInfo(Trump trump) {}
 	protected void stichInfo(Player playerWhoWonStich) {}
 	protected void playerChanged(Player player) {}
-	protected void teamsChanged(Team[] teams) {}
+	protected void teamsChanged(Collection<Team> teams) {}
 	protected void goodResultReceived(String message) {}
 	protected void showHandOutCardAnimation(Player cardReceiver, ArrayList<Card> newHand) {}
 	protected void showLayCardAnimation(Player player, Card card, int cardPos) {}
@@ -352,7 +359,7 @@ public abstract class AbstractClient {
 	
 	protected abstract void doEndRound();
 	
-	protected abstract void doEndGame();
+	protected abstract void doEndGame(Team teamThatWon);
 	
 	protected abstract void doConnected();
 	
