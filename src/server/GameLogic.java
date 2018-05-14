@@ -430,32 +430,20 @@ public class GameLogic {
 
 			if (cardCounter == 36) {
 				addScore(teamId, 5 * trump.getScoreMultiplicator());
+
 				if (match) {
 					addScore(teamId, 100 * trump.getScoreMultiplicator());
 				}
-			}
 
-			// check if a team reached the target score
-			for (Map.Entry<Integer, Integer> entry : scores.entrySet()) {
-				if (entry.getValue() >= targetScore) {
-					gameWinnerId = entry.getKey();
-
-					TeamEntity winnerTeam = gameWinnerId == team1Id ?
-							getTeam1() : getTeam2();
-					System.out.format("Team %s + %s won!",
-							winnerTeam.players[0],
-							winnerTeam.players[1]);
-					System.out.println();
-				}
-			}
-
-			if (cardCounter == 36) {
 				currentSeat = null;
+
 				if (gameWinnerId != null) {
 					return MoveStatus.GAMEOVER;
 				}
+
 				return MoveStatus.ROUNDOVER;
 			}
+
 			initRun();
 			return MoveStatus.RUNOVER;
 		}
@@ -469,6 +457,21 @@ public class GameLogic {
 	 */
 	private void addScore(int teamId, int value) {
 		scores.put(teamId, scores.get(teamId) + value);
+
+		// if the current game does not have a winner yet check if this team
+		// reached the target score
+		if (gameWinnerId == null) {
+			if (scores.get(teamId) >= targetScore) {
+				gameWinnerId = teamId;
+
+				TeamEntity winnerTeam = gameWinnerId == team1Id ?
+						getTeam1() : getTeam2();
+				System.out.format("Team %s + %s won!",
+						winnerTeam.players[0].name,
+						winnerTeam.players[1].name);
+				System.out.println();
+			}
+		}
 	}
 
 	/**
