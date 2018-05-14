@@ -15,7 +15,7 @@ public class Communication {
 	protected int port;
 	private final int bufferSize = 60000;
 	private byte[] receiveBuffer;
-	private DatagramSocket socket;
+	protected DatagramSocket socket;
 	private DatagramPacket receivePacket;
 	private ObjectMapper objectMapper;
 

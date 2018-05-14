@@ -57,7 +57,10 @@ public class ClientCommunication extends Communication implements Runnable{
 
 	public void disconnect() {
 		LeaveTableMessage msg = new LeaveTableMessage();
-		send(msg);
+		//Only send msg if connected
+		if(!socket.isClosed() && socket.isConnected()) {
+			send(msg);
+		}
 		close();
 	}
 
