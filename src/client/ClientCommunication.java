@@ -11,9 +11,9 @@ import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage.Code;
+import client.shared.AbstractClient;
 import shared.Communication;
 import shared.InternalMessage;
-import shared.client.AbstractClient;
 
 public class ClientCommunication extends Communication implements Runnable{
 	private InetSocketAddress serverAddress;

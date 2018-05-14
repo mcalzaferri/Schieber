@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import client.ViewObserver;
+import client.shared.ClientModel;
 import gui.Gui;
 import gui.ObservableView;
 import gui.PictureFactory.Pictures;
 import shared.Player;
 import shared.Team;
-import shared.client.ClientModel;
 
 /**
  * This class represents a blackboard and displays the score of all

@@ -3,7 +3,7 @@ import javax.swing.*;
 
 import client.ViewEnumeration;
 import client.ViewObserver;
-import shared.client.ClientModel;
+import client.shared.ClientModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

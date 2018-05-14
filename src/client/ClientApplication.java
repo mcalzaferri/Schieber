@@ -5,10 +5,10 @@ import java.net.InetSocketAddress;
 
 import bot.IntelligenceNormal;
 import bot.VirtualClient;
+import client.shared.ClientModel;
 import client.test.ClientModelView;
 import gui.Gui;
 import shared.Communication;
-import shared.client.ClientModel;
 
 public class ClientApplication {
 	

@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import client.shared.ClientModel;
 import gui.BufferedDrawer;
 import gui.Gui;
 import gui.ObservableView;
 import gui.Viewable;
 import gui.PictureFactory.Pictures;
 import gui.animation.AnimationRegion;
-import shared.client.ClientModel;
 import test.TestHelper;
 
 /**

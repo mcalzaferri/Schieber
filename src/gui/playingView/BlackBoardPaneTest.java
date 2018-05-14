@@ -2,8 +2,8 @@ package gui.playingView;
 
 import javax.swing.JFrame;
 
+import client.shared.ClientModel;
 import shared.Trump;
-import shared.client.ClientModel;
 
 public class BlackBoardPaneTest extends JFrame{
 	private BlackBoardPane pane;

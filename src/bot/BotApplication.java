@@ -6,9 +6,9 @@ import java.net.SocketException;
 import java.util.Random;
 
 import client.ClientCommunication;
+import client.shared.ClientModel;
 import client.test.ClientModelView;
 import shared.Communication;
-import shared.client.ClientModel;
 
 public class BotApplication {
 

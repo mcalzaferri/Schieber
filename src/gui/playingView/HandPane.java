@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import client.ViewObserver;
+import client.shared.ClientModel;
 import gui.ObservableView;
 import shared.Card;
-import shared.client.ClientModel;
 
 /**
  * Holds the clients hand and shows all the cards in a comfortable layout.

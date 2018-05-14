@@ -4,12 +4,11 @@ import java.util.ArrayList;
 
 import client.ViewEnumeration;
 import client.ViewObserver;
-
+import client.shared.*;
 
 import java.util.ArrayList;
 
 import client.*;
-import shared.client.*;
 import shared.*;
 
 import javax.swing.*;

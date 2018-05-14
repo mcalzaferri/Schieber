@@ -15,6 +15,7 @@ import java.util.Collection;
 import javax.swing.Timer;
 
 import client.ViewObserver;
+import client.shared.ClientModel;
 import gui.Gui;
 import gui.ObservableView;
 import gui.PictureFactory;
@@ -25,7 +26,6 @@ import gui.animation.MovePictureAnimation;
 import gui.animation.TestAnimation;
 import shared.Player;
 import shared.Trump;
-import shared.client.ClientModel;
 
 public class CarpetPane extends ObservableView{
 	/**

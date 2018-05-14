@@ -16,10 +16,10 @@ import javax.swing.JOptionPane;
 import client.AbstractClientView;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import client.shared.ClientModel;
 import gui.animation.AnimationListener;
 import gui.playingView.PlayingFieldView;
 import shared.Card;
-import shared.client.ClientModel;
 
 public class Gui extends AbstractClientView{
 	public static PictureFactory pictureFactory = PictureFactory.instance;

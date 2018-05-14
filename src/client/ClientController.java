@@ -4,11 +4,11 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import client.shared.*;
 import gui.Dialog.MessageType;
 import gui.animation.Animation;
 import gui.animation.AnimationRegion;
 import shared.*;
-import shared.client.*;
 
 public class ClientController extends AbstractClient implements ViewObserver{
 	//Fields

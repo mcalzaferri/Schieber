@@ -18,9 +18,9 @@ import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;
 import client.ClientCommunication;
+import client.shared.AbstractClient;
+import client.shared.ClientModel;
 import shared.Player;
-import shared.client.AbstractClient;
-import shared.client.ClientModel;
 
 public class ClientCommunicationSimulator extends ClientCommunication{
 	private AbstractClient client;

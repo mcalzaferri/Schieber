@@ -1,4 +1,4 @@
-package shared.client;
+package client.shared;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;

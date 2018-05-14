@@ -5,7 +5,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import client.ViewObserver;
-import shared.client.ClientModel;
+import client.shared.ClientModel;
 
 public abstract class ObservableView extends JPanel{
 	protected List<ViewObserver> observers;

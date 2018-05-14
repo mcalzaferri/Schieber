@@ -12,10 +12,10 @@ import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToTableInfoMessage;
 import client.ClientController;
+import client.shared.AbstractClient;
+import client.shared.ClientModel;
 import gui.ClientModelTest;
 import gui.Gui;
-import shared.client.AbstractClient;
-import shared.client.ClientModel;
 import shared.*;
 
 @SuppressWarnings("all")

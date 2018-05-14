@@ -1,4 +1,4 @@
-package shared.client;
+package client.shared;
 
 public enum GameState {
 	IDLE, //Game has not yet startet

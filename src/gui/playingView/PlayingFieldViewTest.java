@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import ch.ntb.jass.common.entities.SeatEntity;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import client.shared.ClientModel;
 import gui.ClientModelTest;
 import shared.Card;
 import shared.CardColor;
@@ -20,7 +21,6 @@ import shared.CardValue;
 import shared.Player;
 import shared.Seat;
 import shared.Trump;
-import shared.client.ClientModel;
 
 public class PlayingFieldViewTest extends JFrame{
 	

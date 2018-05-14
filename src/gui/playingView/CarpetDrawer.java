@@ -7,13 +7,13 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import client.shared.ClientModel;
 import gui.Gui;
 import gui.PictureFactory.Pictures;
 import shared.Card;
 import shared.CardList;
 import shared.Player;
 import shared.RelativeSeat;
-import shared.client.ClientModel;
 
 /**
  * This class draws the content of the carpet onto a given component

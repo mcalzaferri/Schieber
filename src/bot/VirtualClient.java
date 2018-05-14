@@ -11,14 +11,14 @@ import client.BadResultException;
 import ch.ntb.jass.common.proto.player_messages.ChangeStateMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinTableMessage;
 import client.ClientCommunication;
+import client.shared.AbstractClient;
+import client.shared.ClientModel;
 import shared.Card;
 import shared.Player;
 import shared.Score;
 import shared.Team;
 import shared.Trump;
 import shared.Weis;
-import shared.client.AbstractClient;
-import shared.client.ClientModel;
 
 public class VirtualClient extends AbstractClient {
 

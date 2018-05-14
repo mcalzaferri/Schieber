@@ -1,4 +1,4 @@
-package shared.client;
+package client.shared;
 
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.server_info_messages.*;

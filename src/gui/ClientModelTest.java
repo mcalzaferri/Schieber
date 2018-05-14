@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
+import client.shared.ClientModel;
 import shared.*;
 
 import java.net.InetSocketAddress;
@@ -14,7 +15,6 @@ import shared.Card;
 import shared.CardColor;
 import shared.CardList;
 import shared.CardValue;
-import shared.client.ClientModel;
 import shared.*;
 
 public class ClientModelTest extends ClientModel{

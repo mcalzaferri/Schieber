@@ -3,9 +3,10 @@ package gui;
 import javax.swing.*;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import client.shared.ClientModel;
 import shared.Player;
 import shared.Seat;
-import shared.client.ClientModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

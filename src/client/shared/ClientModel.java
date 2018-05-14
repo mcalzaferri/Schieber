@@ -1,4 +1,4 @@
-package shared.client;
+package client.shared;
 
 import java.util.HashMap;
 import java.util.Map;

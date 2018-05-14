@@ -14,11 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
+import client.shared.ClientModel;
+import client.shared.GameState;
 import shared.Player;
 import shared.Trump;
 import shared.Weis;
-import shared.client.ClientModel;
-import shared.client.GameState;
 
 public class ClientModelView extends JFrame{
 	private static final long serialVersionUID = -7761420473524430597L;

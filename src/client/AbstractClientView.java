@@ -1,9 +1,9 @@
 package client;
 
+import client.shared.ClientModel;
 import gui.Dialog.MessageType;
 import gui.animation.AnimationListener;
 import shared.Card;
-import shared.client.ClientModel;
 
 public abstract class AbstractClientView {
 	protected ClientModel data;
