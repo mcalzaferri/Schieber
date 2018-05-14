@@ -26,6 +26,7 @@ public class ClientModel {
 		players = new HashMap<Integer, Player>();
 		deck = new CardList();
 		deckOrientation = new HashMap<Card, RelativeSeat>();
+		teams = new HashMap<Integer, Team>();
 	}
 	
 	//Methods

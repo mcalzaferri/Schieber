@@ -172,8 +172,8 @@ public abstract class AbstractClient {
 			public void msgReceived(PlayerMovedToLobbyInfoMessage msg) {
 				model.updatePlayer(msg.player);
 				model.getPlayer(msg.player).setSeat(Seat.NOTATTABLE);
-				Collection<Team> teams = model.getTeams().values();
-				if(teams != null) {
+				if(model.getTeams() != null) {
+					Collection<Team> teams = model.getTeams().values();
 					for(Team team : teams) {
 						team.removePlayer(msg.player.id);
 					}
