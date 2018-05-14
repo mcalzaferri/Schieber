@@ -155,7 +155,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 					score.scores.put(1, scoreTeam1Panel.getInt());
 					score.scores.put(2, scoreTeam2Panel.getInt());
 					msg.score = score;
-					msg.gameOver = gameOverCheckBox.isSelected();
+					//msg.gameOver = gameOverCheckBox.isSelected();
 					msg.playerWhoWonStich = playerWhoWonStichPanel.getPlayer();
 					msg.laidCard = laidCardPanel.getCard();
 					msg.player = playerPanel.getPlayer();

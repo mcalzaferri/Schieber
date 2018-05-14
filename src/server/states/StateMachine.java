@@ -12,7 +12,7 @@ import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.LeaveLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.LeaveTableMessage;
-import ch.ntb.jass.common.proto.server_info_messages.EndOfRoundInfoMessage;
+import ch.ntb.jass.common.proto.server_info_messages.EndOfGameInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.PlayerLeftLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_messages.GameStateMessage;
@@ -108,9 +108,12 @@ public class StateMachine {
 
 			// if a player is leaving an ongoing game the game is cancelled
 			if (!(currentState instanceof LobbyState)) {
+				EndOfGameInfoMessage eogim = new EndOfGameInfoMessage();
+				/* TODO Fill message with content /Maurus
 				EndOfRoundInfoMessage eorim = new EndOfRoundInfoMessage();
 				eorim.gameOver = true;
-				GameState.broadcast(eorim);
+				*/
+				GameState.broadcast(eogim);
 				changeState(new LobbyState());
 				throw(new GameException("Game is cancelled. " + sender +
 						" left"));

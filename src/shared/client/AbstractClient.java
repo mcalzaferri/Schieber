@@ -105,13 +105,8 @@ public abstract class AbstractClient {
 				model.setTrump(null);
 				doUpdateScore(score);
 				doSetTrump(null);
-				if(msg.gameOver) {
-					model.setGameState(GameState.GAMEOVER);
-					doEndGame();
-				}else {
-					model.setGameState(GameState.ROUNDOVER);
-					doEndRound();
-				}
+				doEndRound();
+				
 				//Clear all cards on stack of each player
 				for(Team team : model.getTeams()) {
 					for(Player player : team.getPlayers()) {

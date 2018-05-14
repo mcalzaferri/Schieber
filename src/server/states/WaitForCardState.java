@@ -6,6 +6,7 @@ import ch.ntb.jass.common.entities.ScoreEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.ChosenWiisMessage;
 import ch.ntb.jass.common.proto.player_messages.PlaceCardMessage;
+import ch.ntb.jass.common.proto.server_info_messages.EndOfGameInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.EndOfRoundInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.NewTurnInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.StichInfoMessage;
@@ -66,8 +67,12 @@ public class WaitForCardState extends GameState {
 					tiMsg = new StichInfoMessage();
 					break;
 				case ROUNDOVER:
-				case GAMEOVER:
+					//TODO Check if fixed correctly /Maurus
 					tiMsg = new EndOfRoundInfoMessage();
+					break;
+				case GAMEOVER:
+					//TODO Check if fixed correctly /Maurus
+					tiMsg = new EndOfGameInfoMessage();
 					break;
 				default:
 					System.err.println("Unhandled move status");
@@ -101,17 +106,23 @@ public class WaitForCardState extends GameState {
 			eorMsg.score = score;
 
 			if (moveStatus.equals(MoveStatus.ROUNDOVER)) {
-				eorMsg.gameOver = false;
+				//TODO Check if fixed correctly /Maurus
+				//eorMsg.gameOver = false;
 				broadcast(eorMsg);
 
 				// start new round
 				stateMachine.changeState(new StartRoundState());
 				return;
 			}
-
+			
+			//TODO Check if fixed correctly /Maurus
+			EndOfGameInfoMessage eogMsg = (EndOfGameInfoMessage) eorMsg;
+			eogMsg.teamThatWon = logic.getGameWinner();
+			
 			if (moveStatus.equals(MoveStatus.GAMEOVER)) {
-				eorMsg.gameOver = true;
-				broadcast(eorMsg);
+				//TODO Check if fixed correctly /Maurus
+				//eorMsg.gameOver = true;
+				broadcast(eogMsg);
 
 				// start new game
 				stateMachine.changeState(new LobbyState());
