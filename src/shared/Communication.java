@@ -77,12 +77,11 @@ public class Communication {
 				jsonString.getBytes().length, peerAddress);
 
 		// send packet
-		try {
+		if(!socket.isClosed()) {
 			socket.send(packet);
-		}catch(SocketException se) {
-			//TODO /Maurus System.err.println(se.getMessage());
+		}else {
+			System.err.println("Can't send packet, socket is closed");
 		}
-		
 	}
 
 	/**
