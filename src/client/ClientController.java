@@ -15,6 +15,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	private AbstractClientView view;
 	private long lastRefresh;
 	private long refreshDelay;
+	private boolean waitUserInteraction;
 	
 	//Constructor
 	public ClientController(ClientCommunication com, ClientModel model, AbstractClientView view) {
@@ -46,6 +47,19 @@ public class ClientController extends AbstractClient implements ViewObserver{
 			}
 		}
 		lastRefresh = System.currentTimeMillis();
+	}
+	
+	public void waitUserInteraction() {
+		waitUserInteraction = true;
+		long timeOutDelay = 10000; //After 10s continue anyways
+		long start = System.currentTimeMillis();
+		while(waitUserInteraction && System.currentTimeMillis() < start + timeOutDelay ) {
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
@@ -214,10 +228,11 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	protected void stichInfo(Player playerWhoWonStich) {
 		//TODO Wait for user to click on screen
 		if(playerWhoWonStich.equals(model.getThisPlayer())) {
-			view.publishMessage("You won this stich!");
+			view.publishMessage("You won this stich! Click anywhere to continue");
 		}else {
-			view.publishMessage(playerWhoWonStich.getName() + " won this stich!");
+			view.publishMessage(playerWhoWonStich.getName() + " won this stich! Click anywhere to continue");
 		}
+		waitUserInteraction();
 	}
 	
 	@Override
@@ -247,7 +262,6 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		}else {
 			view.updateView(ViewEnumeration.LOBBYVIEW);
 		}
-		
 	}
 	
 	@Override
@@ -406,14 +420,12 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	public void playViewClick() {
-		// TODO Auto-generated method stub
-		
+		waitUserInteraction = false;
 	}
 
 	@Override
 	public void btnFillWithBots() {
-		// TODO Auto-generated method stub
-		
+		super.publishFillSeatsWithBots();
 	}
 	
 }

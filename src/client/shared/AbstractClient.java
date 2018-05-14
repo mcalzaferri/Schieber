@@ -201,21 +201,21 @@ public abstract class AbstractClient {
 				if(model.getThisPlayer().equals(player)) {
 					removedCard = player.getCards().getCardById(msg.laidCard.calcId());
 					cardPos = player.getCards().indexOf(removedCard);
+					player.getCards().remove(removedCard); //Remove card before animation. Otherwise Threading problems can occur.
 					showLayCardAnimation(model.getThisPlayer(), removedCard, cardPos);
-					player.getCards().remove(removedCard);
 					doUpdateHand(model.getHand().toArray());
 					waitEndAnimation();
 				}else {
 					removedCard = new Card(msg.laidCard);
+					player.getCards().remove(0); //Remove card before animation. Otherwise Threading problems can occur.
 					showLayCardAnimation(player, removedCard, cardPos);
-					player.getCards().remove(0);
+					playerChanged(player);
 					waitEndAnimation();
 					
 				}
 				model.addToDeck(removedCard, msg.player);
 				doUpdateDeck(model.getDeck().toArray());
 				clearAnimation();
-				playerChanged(player);
 				if(model.getGameState() != GameState.PLAYOVER)
 					model.setGameState(GameState.TURNOVER);
 			}
@@ -411,7 +411,10 @@ public abstract class AbstractClient {
 		msg.card = card.getEntity();
 		com.send(msg);
 	}
-	
+	protected void publishFillSeatsWithBots() {
+		FillEmptySeatsMessage msg = new FillEmptySeatsMessage();
+		com.send(msg);
+	}
 	/**
 	 * @param serverAddress Address to connect to
 	 * @throws Exception 
