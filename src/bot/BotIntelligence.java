@@ -38,7 +38,7 @@ public abstract class BotIntelligence {
 		
 		if (currHand.length < 1)
 		{
-			//Error handling
+			//Error handling TODO REV Why is this an error? After the last card is played this will always occur! /Maurus
 			System.err.println("Error - CurrHand is empty");
 		}
 		
