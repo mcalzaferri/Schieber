@@ -97,19 +97,6 @@ public class ClientModel {
 		return teams;
 	}
 	public void putTeams(Team[] teams) {
-		//Search in team for this player
-		/* TODO Wtf is this?
-		for(Team team : teams) {
-			for(Player player : team.getPlayers()) {
-				if(!player.equals(getThisPlayer())) {
-					player.getCards().clear();
-					for(int i = 0; i < 9; i++) {
-						player.getCards().add(new Card(null, null));
-					}
-				}
-			}
-		}
-		*/
 		for(Team team : teams) {
 			this.teams.put(team.getTeamId(), team);
 		}
