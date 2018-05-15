@@ -28,7 +28,7 @@ public class WeisLogic {
 	public ArrayList<Weis> getWeise(){
 		
 		// Stöck?
-		if(checkStoeck()) {weise.add(new Weis(WeisType.STOECK,new Card(trump.getTrumpfColor(),CardValue.OBER)));}
+		if(checkStoeck()) {weise.add(new Weis(WeisType.STOECK,new Card(trump.getTrumpfColor(),CardValue.KOENIG)));}
 		
 		// 4 Gliche?
 		for(CardValue cv : check4Gliche()) {
