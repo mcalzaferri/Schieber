@@ -393,7 +393,7 @@ public class GameLogic {
 		Player player = getCurrentPlayer();
 
 		if (!card.isAllowed(player.getCards().toArray(), firstCard, trump)) {
-			return MoveStatus.NOTALLOWED;
+			return MoveStatus.INVALID;
 		}
 
 		if (!player.removeCard(card)) {

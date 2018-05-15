@@ -59,7 +59,7 @@ public class ServerApp {
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
-	static public void start(int listenPort) throws  ClassNotFoundException, IOException {
+	static public void start(int listenPort) throws ClassNotFoundException, IOException {
 		ServerApp app = new ServerApp(listenPort);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {

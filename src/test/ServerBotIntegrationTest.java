@@ -15,7 +15,7 @@ public class ServerBotIntegrationTest {
 			@Override
 			public void run() {
 				try {
-					ServerApp.main(new String[] {Integer.toString(serverListenPort)});
+					ServerApp.start(serverListenPort);
 				} catch (ClassNotFoundException|IOException e) {
 					e.printStackTrace();
 				}

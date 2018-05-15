@@ -40,8 +40,6 @@ public class WaitForCardState extends GameState {
 
 		switch (moveStatus) {
 			case INVALID:
-				throw (new ClientErrorException("You placed an invalid card!"));
-			case NOTALLOWED:
 				WrongCardMessage wcMsg = new WrongCardMessage();
 				wcMsg.wrongCard = msg.card;
 				send(wcMsg, sender);
