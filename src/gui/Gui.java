@@ -42,7 +42,7 @@ public class Gui extends AbstractClientView{
 		this.internals = new ArrayList<>();		
 		internals.add(new SelectHostView(observers));
 		internals.add(new LobbyView(observers, data));
-		internals.add(new TrumpView(observers));
+		internals.add(new TrumpView(observers, data));
 		internals.add(new WeisView(data, observers));
 		internals.add(new GameOverView(observers));
 		
