@@ -39,7 +39,6 @@ public abstract class BotIntelligence {
 		// check not necessary - actually detrimental because on last round error message will always appear
 //		if (currHand.length < 1)
 //		{
-//			//Error handling TODO REV Why is this an error? After the last card is played this will always occur! /Maurus
 //			System.err.println("Error - CurrHand is empty");
 //		}
 		
