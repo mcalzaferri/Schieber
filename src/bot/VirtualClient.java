@@ -181,12 +181,12 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	protected void doRequestCard(boolean selectWiis) {
-		super.publishChosenCard(ki.getNextCard());
 		if(selectWiis) {
 			ArrayList<Weis> wiisAl = ki.getWeise();
 			Weis[] wiis = new Weis[wiisAl.size()];
 			super.publishChosenWiis(wiisAl.toArray(wiis));
 		}
+		super.publishChosenCard(ki.getNextCard());
 	}
 
 	@Override
