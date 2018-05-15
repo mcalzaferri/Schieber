@@ -92,6 +92,7 @@ public class GameLogic {
 		trump = null;
 		winner = null;
 		match = true;
+		declaredWeise.clear();
 
 		if (roundStarter == null) {
 			roundStarter = Seat.SEAT1;
