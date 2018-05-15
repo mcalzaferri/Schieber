@@ -1,14 +1,8 @@
 package server;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import ch.ntb.jass.common.entities.WeisEntity;
-import shared.Player;
-import shared.Seat;
-import shared.Trump;
-import shared.Weis;
+import java.util.*;
+import shared.*;
 
 public class WeisToScoreBoardHandler {
 
@@ -55,10 +49,10 @@ public class WeisToScoreBoardHandler {
 		if(highestWeisCounts()){						
 			weisWinningTeamId = getWinningTeamId();
 		} else {
-			if(amountOfCardsCounts(highestWeise)){
+			if(amountOfCardsCounts()){
 				weisWinningTeamId = getWinningTeamId();
 			} else {
-				if(trumpCounts(highestWeise)){
+				if(trumpCounts()){
 					weisWinningTeamId = getWinningTeamId();
 				} else {
 					Map.Entry<Player,Weis> entry = highestWeise.entrySet().iterator().next();
@@ -71,7 +65,7 @@ public class WeisToScoreBoardHandler {
 
 	/**
 	 * Checks for the highest Value of each Weis and removes tho lower ones.
-	 *  @return
+	 *  @return	true when one player has the Weis with the highest value.
 	 */
 	private boolean highestWeisCounts(){
 		boolean weisCounts = false;	
@@ -118,14 +112,13 @@ public class WeisToScoreBoardHandler {
 
 	/**
 	 * Checks for the highest amount of Cards.
-	 * @param currentWeise
-	 * @return
+	 * @return 	true when one player has the highest number of cards.
 	 */
-	private boolean amountOfCardsCounts(Map<Player, Weis> currentWeise){
+	private boolean amountOfCardsCounts(){
 		boolean amountCounts = false;
 		int lastCardAmount = 0;
 		
-		for(Map.Entry<Player, Weis> entry : currentWeise.entrySet()){
+		for(Map.Entry<Player, Weis> entry : highestWeise.entrySet()){
 			int currentCardAmount = 0;
 			
 			switch(entry.getValue().getType()) {
@@ -176,16 +169,15 @@ public class WeisToScoreBoardHandler {
 	}
 	
 	/**
-	 * Checks for a Weis with trump
-	 * @param currentWeise
-	 * @return
+	 * Checks for a Weis with trump.
+	 * @return	true when one player has a Weis of Trump.
 	 */
-	private boolean trumpCounts(Map<Player, Weis> currentWeise) {
+	private boolean trumpCounts() {
 		boolean trumpCounts = false;		
 		
 		Map.Entry<Player, Weis> comparableWeis = null;
 		
-		for(Map.Entry<Player, Weis> entry : currentWeise.entrySet()){
+		for(Map.Entry<Player, Weis> entry : highestWeise.entrySet()){
 			if(comparableWeis == null){
 				comparableWeis = entry;				
 			}
@@ -202,6 +194,11 @@ public class WeisToScoreBoardHandler {
 		return trumpCounts;
 	}
 	
+	/**
+	 * @return 	0 Error
+	 * 			1 for Team 1
+	 * 			2 for Team 2
+	 */
 	private int getWinningTeamId() {
 		if(weisWinningPlayer.getSeat() == Seat.SEAT1 || 
 				weisWinningPlayer.getSeat() == Seat.SEAT3){
@@ -217,6 +214,11 @@ public class WeisToScoreBoardHandler {
 		}
 	}
 	
+	/**
+	 * Sets the given Weis score to the given players seat.
+	 * @param currentEntry
+	 * @param currentWeis
+	 */
 	private void setTeamScores(Map.Entry<Player, WeisEntity[]> currentEntry, Weis currentWeis){
 		switch(currentEntry.getKey().getSeat()){
 		case SEAT1:
@@ -232,10 +234,17 @@ public class WeisToScoreBoardHandler {
 		}
 	}
 	
+	/**
+	 * @return 	1 for Team 1
+	 * 			2 for Team 2
+	 */
 	public int getTeamId(){
 		return weisWinningTeamId;
 	}
 	
+	/**
+	 * @return The winning team score from the correct team.
+	 */
 	public int getWeisScore(){
 		if(weisWinningTeamId == 1){
 			return team1Score;

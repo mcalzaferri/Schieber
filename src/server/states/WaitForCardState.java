@@ -113,47 +113,33 @@ public class WaitForCardState extends GameState {
 	 */
 	@Override
 	public void handleMessage(Player sender, ChosenWiisMessage msg) throws IOException, ClientErrorException {
-		// TODO REV: i'd check for errors first and then do the rest
-		// like:
-//		if (!logic.inFirstRun()) {
-//			throw(new ClientErrorException("No Weis after the first round has finished."));
-//		}
-//
-//		if (logic.getDeclaredWeise().containsKey(sender)) {
-//			throw(new ClientErrorException("You already declared your Weis. PlayerID: " + sender.getId()));
-//		}
-		// makes the code allot more readable IMO
-		// if you disagree just delete this comment
-
-
 		//Check if in first round.
-		if (logic.inFirstRun()) {
-
-			//Check if player does not declare Weise more than once.
-			if (!logic.getDeclaredWeise().containsKey(sender)) {
-				WeisEntity[] weise = msg.wiis;
-
-				//Check if Weise are valid.
-				if (logic.weiseAreValid(sender, weise)) {
-					logic.setDeclaredWeise(sender, weise);
-
-					//Set score
-					if (logic.getCardCounter() == 3) {
-						logic.addWeisToScoreBoard();
-					}
-
-					WiisInfoMessage wiMsg = new WiisInfoMessage();
-					wiMsg.player = sender.getEntity();
-					wiMsg.wiis = weise;
-					broadcast(wiMsg);
-				} else {
-					throw(new ClientErrorException("The Weis doesn't match your deck. PlayerID: " + sender.getId()));
-				}
-			} else {
-				throw(new ClientErrorException("You already declared your Weis. PlayerID: " + sender.getId()));
-			}
-		} else {
+		if (!logic.inFirstRun()) {
 			throw(new ClientErrorException("No Weis after the first round has finished."));
 		}
+
+		//Check if player does not declare Weise more than once.
+		if (logic.getDeclaredWeise().containsKey(sender)) {
+			throw(new ClientErrorException("You already declared your Weis. PlayerID: " + sender.getId()));
+		}
+		 			
+		WeisEntity[] weise = ((ChosenWiisMessage) msg).wiis;
+		 
+		//Check if Weise are valid.
+		if (!logic.weiseAreValid(sender, weise)) {
+			throw(new ClientErrorException("The Weis doesn't match your deck. PlayerID: " + sender.getId()));				
+		}
+
+ 		logic.setDeclaredWeise(sender, weise);
+ 
+		//Set score
+		if (logic.getCardCounter() == 3) {
+			logic.addWeisToScoreBoard();
+		}
+ 
+		WiisInfoMessage wiMsg = new WiisInfoMessage();
+		wiMsg.player = sender.getEntity();
+		wiMsg.wiis = weise;
+		broadcast(wiMsg);
 	}
 }

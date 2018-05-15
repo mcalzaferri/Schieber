@@ -18,11 +18,17 @@ import shared.Trump;
 
 /**
  * Unit tests for the WeisToScoreBoardHandler.
+ * 
+ * Weisrules: 	Only the highest Weis of each player will be assessed.
+ * 				1. Player with the highest Weis value gets the points.
+ * 				2. Player with the highest amount of cards gets the points.
+ * 				3. Player with Weis of trump gets the points.
+ * 				4. First player gets the points.
  */
 public class WeisToScoreBoardHandlerTest {
 	
 	@Test
-	public void amountOfCardsCounts_EachPlayerHasOneWeisWithDifferentWeisTypes_Team1WinsWithScore270() throws Exception {		
+	public void amountOfCardsCounts_EachPlayerHasOneWeisWithDifferentWeisValues_Player3HasWinningWeisTeam1WinsWithScore270() throws Exception {		
 		/*
 		 * testPlayer1 
 		 * 
@@ -82,7 +88,7 @@ public class WeisToScoreBoardHandlerTest {
 		weisEntityArray21[0] = weisEntity21;
 		
 		/*
-		 * testPlayer3 		-- Winning Player
+		 * testPlayer3		--	Winning Player
 		 * 
 		 * Achtblatt
 		 * Eichel
@@ -161,11 +167,11 @@ public class WeisToScoreBoardHandlerTest {
 	}
 	
 	@Test
-	public void highestWeisCounts_EachPlayerHasOneWeisWithDifferentOriginCards_Team1WinsWithScore40() throws Exception {
+	public void highestWeisCounts_EachPlayerHasOneWeisWithSameValueAndDifferentAmountOfCards_Player3HasWinningWeisTeam1WinsWithScore200() throws Exception {
 		/*
 		 * testPlayer1 
 		 * 
-		 * Dreiblatt
+		 * Viergleiche
 		 * Eichel
 		 * Koenig
 		 */		
@@ -178,7 +184,7 @@ public class WeisToScoreBoardHandlerTest {
 		testPlayerEntity1.id = 1;
 		Player testPlayer1 = new Player(testPlayerEntity1);
 		//Arrange Weis
-		WeisTypeEntity weisTypeEntity11 = WeisTypeEntity.DREIBLATT;
+		WeisTypeEntity weisTypeEntity11 = WeisTypeEntity.VIERGLEICHE;
 		CardColorEntity cardColorEntity11 = CardColorEntity.EICHEL; 
 		CardValueEntity cardValueEntity11 = CardValueEntity.KOENIG;		
 		CardEntity cardEntity11 = new CardEntity();
@@ -194,9 +200,9 @@ public class WeisToScoreBoardHandlerTest {
 		/*
 		 * testPlayer2 
 		 * 
-		 * Dreiblatt
+		 * Viergleiche
 		 * Schilte
-		 * Zehn
+		 * Koenig
 		 */		
 		
 		//Arrange Player
@@ -207,9 +213,9 @@ public class WeisToScoreBoardHandlerTest {
 		testPlayerEntity2.id = 2;
 		Player testPlayer2 = new Player(testPlayerEntity2);
 		//Arrange Weis
-		WeisTypeEntity weisTypeEntity21 = WeisTypeEntity.DREIBLATT;
+		WeisTypeEntity weisTypeEntity21 = WeisTypeEntity.VIERGLEICHE;
 		CardColorEntity cardColorEntity21 = CardColorEntity.SCHILTE; 
-		CardValueEntity cardValueEntity21 = CardValueEntity.ZEHN;		
+		CardValueEntity cardValueEntity21 = CardValueEntity.KOENIG;		
 		CardEntity cardEntity21 = new CardEntity();
 		cardEntity21.color = cardColorEntity21;
 		cardEntity21.value = cardValueEntity21;
@@ -221,11 +227,11 @@ public class WeisToScoreBoardHandlerTest {
 		weisEntityArray21[0] = weisEntity21;
 		
 		/*
-		 * testPlayer3 
+		 * testPlayer3 		--	Winning Player
 		 * 
-		 * Dreiblatt
-		 * Eichel
-		 * Sieben
+		 * Fünfblatt
+		 * Schilte
+		 * Koenig
 		 */		
 		
 		//Arrange Player
@@ -236,9 +242,9 @@ public class WeisToScoreBoardHandlerTest {
 		testPlayerEntity3.id = 3;
 		Player testPlayer3 = new Player(testPlayerEntity3);
 		//Arrange Weis
-		WeisTypeEntity weisTypeEntity31 = WeisTypeEntity.DREIBLATT;
-		CardColorEntity cardColorEntity31 = CardColorEntity.EICHEL; 
-		CardValueEntity cardValueEntity31 = CardValueEntity.SIEBEN;		
+		WeisTypeEntity weisTypeEntity31 = WeisTypeEntity.FUENFBLATT;
+		CardColorEntity cardColorEntity31 = CardColorEntity.SCHILTE; 
+		CardValueEntity cardValueEntity31 = CardValueEntity.KOENIG;		
 		CardEntity cardEntity31 = new CardEntity();
 		cardEntity31.color = cardColorEntity31;
 		cardEntity31.value = cardValueEntity31;
@@ -252,9 +258,9 @@ public class WeisToScoreBoardHandlerTest {
 		/*
 		 * testPlayer4 
 		 * 
-		 * Dreiblatt
+		 * Viergleiche
 		 * Schelle
-		 * Acht
+		 * Koenig
 		 */		
 		
 		//Arrange Player
@@ -265,9 +271,9 @@ public class WeisToScoreBoardHandlerTest {
 		testPlayerEntity4.id = 4;
 		Player testPlayer4 = new Player(testPlayerEntity4);
 		//Arrange Weis
-		WeisTypeEntity weisTypeEntity41 = WeisTypeEntity.DREIBLATT;
+		WeisTypeEntity weisTypeEntity41 = WeisTypeEntity.VIERGLEICHE;
 		CardColorEntity cardColorEntity41 = CardColorEntity.SCHELLE; 
-		CardValueEntity cardValueEntity41 = CardValueEntity.ACHT;		
+		CardValueEntity cardValueEntity41 = CardValueEntity.KOENIG;		
 		CardEntity cardEntity41 = new CardEntity();
 		cardEntity41.color = cardColorEntity41;
 		cardEntity41.value = cardValueEntity41;
@@ -296,17 +302,17 @@ public class WeisToScoreBoardHandlerTest {
 		
 		//Assert testee
 		assertEquals(1, testee.getTeamId());
-		assertEquals(40, testee.getWeisScore());
+		assertEquals(200, testee.getWeisScore());
 	}
 	
 	@Test
-	public void trumpCounts_EachPlayerHasOneWeisOnlyOneHasTrump_Team2WinsWithScore400() throws Exception {
+	public void trumpCounts_EachPlayerHasOneWeisOnlyOneHasTrump_Player2HasWinningWeisTeam2WinsWithScore400() throws Exception {
 		/*
 		 * testPlayer1 
 		 * 
-		 * Dreiblatt
+		 * Siebenblatt
 		 * Eichel
-		 * Sechs
+		 * Ober
 		 */		
 		
 		//Arrange Player
@@ -317,9 +323,9 @@ public class WeisToScoreBoardHandlerTest {
 		testPlayerEntity1.id = 1;
 		Player testPlayer1 = new Player(testPlayerEntity1);
 		//Arrange Weis
-		WeisTypeEntity weisTypeEntity11 = WeisTypeEntity.DREIBLATT;
+		WeisTypeEntity weisTypeEntity11 = WeisTypeEntity.SIEBENBLATT;
 		CardColorEntity cardColorEntity11 = CardColorEntity.EICHEL; 
-		CardValueEntity cardValueEntity11 = CardValueEntity.SECHS;		
+		CardValueEntity cardValueEntity11 = CardValueEntity.OBER;		
 		CardEntity cardEntity11 = new CardEntity();
 		cardEntity11.color = cardColorEntity11;
 		cardEntity11.value = cardValueEntity11;
@@ -331,7 +337,7 @@ public class WeisToScoreBoardHandlerTest {
 		weisEntityArray11[0] = weisEntity11;
 		
 		/*
-		 * testPlayer2 
+		 * testPlayer2 		-- Winning Player
 		 * 
 		 * Siebenblatt
 		 * Rose				-- is Trumpf
@@ -363,7 +369,7 @@ public class WeisToScoreBoardHandlerTest {
 		 * testPlayer3 
 		 * 
 		 * Siebenblatt
-		 * Eichel
+		 * Schilte
 		 * Ober
 		 */		
 		
@@ -376,7 +382,7 @@ public class WeisToScoreBoardHandlerTest {
 		Player testPlayer3 = new Player(testPlayerEntity3);
 		//Arrange Weis
 		WeisTypeEntity weisTypeEntity31 = WeisTypeEntity.SIEBENBLATT;
-		CardColorEntity cardColorEntity31 = CardColorEntity.EICHEL; 
+		CardColorEntity cardColorEntity31 = CardColorEntity.SCHILTE; 
 		CardValueEntity cardValueEntity31 = CardValueEntity.OBER;		
 		CardEntity cardEntity31 = new CardEntity();
 		cardEntity31.color = cardColorEntity31;
@@ -439,9 +445,9 @@ public class WeisToScoreBoardHandlerTest {
 	}
 	
 	@Test
-	public void firstOneGetsWeis_EachPlayerHasOneWeisEveryoneSameWeis_Team1WinsWithScore200() throws Exception {
+	public void firstOneGetsWeis_EachPlayerHasOneWeisEveryoneSameWeis_Player1HasWinningWeisTeam1WinsWithScore200() throws Exception {
 		/*
-		 * testPlayer1 
+		 * testPlayer1 		-- Winning Player
 		 * 
 		 * Viergleiche
 		 * Eichel
@@ -668,11 +674,11 @@ public class WeisToScoreBoardHandlerTest {
 		weisEntityArray2[1] = weisEntity22;
 		
 		/*
-		 * testPlayer3 
+		 * testPlayer3 		-- Winning Player
 		 * 
 		 * Sechsblatt
-		 * Rose
-		 * Ass
+		 * Rose				-- Trumpf
+		 * Ass		
 		 * 
 		 * Dreiblatt
 		 * Schilte

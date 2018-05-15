@@ -70,6 +70,17 @@ public class Weis{
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Weis) {
+			//Use default trump obenabe as this doesnt matter anyways
+			return compareTo((Weis)obj, Trump.OBENABE) == 0;
+		}else {
+			return super.equals(obj);
+		}
+		
+	}
+	
+	@Override
 	public String toString() {
 		switch(type) {
 		case DREIBLATT:

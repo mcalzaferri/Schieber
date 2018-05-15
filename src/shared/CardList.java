@@ -124,7 +124,7 @@ public class CardList extends ArrayList<Card>{
 		tempList.sort(); //First sort this set of cards for easy handling
 
 		int id = 0;
-		int sequenceCount = 0;
+		int sequenceCount = 1;
 		int[] sameValueCount = new int[9];
 		for(int i = 0; i<tempList.size(); i++) {
 			//Remember cards of same Value
@@ -132,16 +132,15 @@ public class CardList extends ArrayList<Card>{
 
 			//Find card in a sequence
 			//If seqenceCount is 0 or id is 0 reinitial with 1
-			if(id == 0 || sequenceCount == 0) {
+			if(id == 0) {
 				id = tempList.get(i).getId();
-				sequenceCount = 1;
 			}else {
 				//Otherwise check if the id of this card is the next in a sequence
 				if(id + 1 == tempList.get(i).getId()) {
 					id = tempList.get(i).getId();
 					sequenceCount++;
 					//Check for STOECK
-					if(sequenceCount == 2 && trump.getGameMode() == GameMode.TRUMPF && trump.getTrumpfColor() == tempList.get(i).getColor() && tempList.get(i).getValue() == CardValue.KOENIG) {
+					if(sequenceCount >= 2 && trump.getGameMode() == GameMode.TRUMPF && trump.getTrumpfColor() == tempList.get(i).getColor() && tempList.get(i).getValue() == CardValue.KOENIG) {
 						//STOECK
 						wiis.add(new Weis(WeisType.STOECK, tempList.getCardById(id)));
 					}
@@ -156,11 +155,23 @@ public class CardList extends ArrayList<Card>{
 							wiis.add(new Weis(WeisType.getByCount(sequenceCount), tempList.getCardById(id - (sequenceCount -1))));
 						}
 					}
-					sequenceCount = 0;
+					sequenceCount = 1;
 					id = tempList.get(i).getId();
 				}
 			}
 		}
+		//#Bastel If the sequence has ended check if the sequence is longer then 3 and therefore is a possible weis
+		if(sequenceCount >= 3) {
+			if(trump != Trump.UNEUFE) {
+				//Return the highest card in case of anything other then uneufe
+				wiis.add(new Weis(WeisType.getByCount(sequenceCount), tempList.getCardById(id)));
+			}else {
+				//Return the lowest card in case of Uneufe
+				wiis.add(new Weis(WeisType.getByCount(sequenceCount), tempList.getCardById(id - (sequenceCount -1))));
+			}
+		}
+		//#EndBastel
+		
 		//Now check for 4 cards of same value
 		for(int i = 0; i < sameValueCount.length; i++) {
 			if(sameValueCount[i] == 4) {

@@ -13,7 +13,6 @@ import shared.Player;
 import shared.Seat;
 import shared.Trump;
 import shared.Weis;
-import shared.WeisType;
 
 /**
  * This class does all the game specific stuff like handling players, keeping
@@ -507,41 +506,62 @@ public class GameLogic {
 		return cardCounter < 4;
 	}
 
-	// TODO REV: add some doc
+	/**
+	 * Checks the claimed Weis correctness and makes sure a Weis can't be given twice.
+	 * @param p
+	 * @param claimedWeisEntity
+	 * @return true when the given Weises are valid.
+	 */
 	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeisEntity) {
-		int truthCounter = 0;
-		List<WeisType> alreadyApprovedWeises = new ArrayList<WeisType>();
+		int givenWeisNumber = 0;
+		
+		// Check for possible Weise.
+		List<Weis> alreadyApprovedWeises = new ArrayList<Weis>();
 		Weis[] approvedWeises = p.getCards().getPossibleWiis(trump);
-
+		
+		// Compare possible Weise with given Weise.
 		for(int i = 0; i < claimedWeisEntity.length; i++){
 			Weis claimedWeis = new Weis(claimedWeisEntity[i]);
 			for(int j = 0; j < approvedWeises.length; j++) {
 				if(approvedWeises[j].compareTo(claimedWeis, trump) == 0){
-					if(!alreadyApprovedWeises.contains(claimedWeis.getType())){
-						alreadyApprovedWeises.add(claimedWeis.getType());
-						truthCounter++;
+					
+					// Make sure one Weis can't be used twice
+					if(!alreadyApprovedWeises.contains(claimedWeis)){
+						alreadyApprovedWeises.add(claimedWeis);
+						givenWeisNumber++;
 					}
 				}
 			}
 		}
-
-		if (truthCounter == claimedWeisEntity.length) {
+		if (givenWeisNumber == claimedWeisEntity.length) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	/**
+	 * Compares every given Weis and decides which team gets the points.
+	 * Points are added to the scoreboard.
+	 */
 	public void addWeisToScoreBoard() {
 		WeisToScoreBoardHandler weisToScoreBoard = new WeisToScoreBoardHandler(declaredWeise, trump);
 		weisToScoreBoard.execute();
 		addScore(weisToScoreBoard.getTeamId(), weisToScoreBoard.getWeisScore());
 	}
 
+	/**
+	 * @return All given Weise in the first round.
+	 */
 	public LinkedHashMap<Player, WeisEntity[]> getDeclaredWeise() {
 		return declaredWeise;
 	}
 
+	/**
+	 * Weise to set in first round.
+	 * @param player
+	 * @param weis
+	 */
 	public void setDeclaredWeise(Player player, WeisEntity[] weis) {
 		declaredWeise.put(player, weis);
 	}
