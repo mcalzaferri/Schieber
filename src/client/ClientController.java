@@ -25,6 +25,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		view.changeView(ViewEnumeration.SELECTHOSTVIEW);
 		lastRefresh = System.currentTimeMillis();
 		refreshDelay = 0;
+		waitUserInteraction = true;
 	}
 	
 	//Methods
@@ -51,7 +52,17 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	
 	public void waitUserInteraction() {
 		waitUserInteraction = true;
-		long timeOutDelay = 10000; //After 10s continue anyways
+		while(waitUserInteraction) {
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void waitUserInteraction(long timeOutDelay) {
+		waitUserInteraction = true;
 		long start = System.currentTimeMillis();
 		while(waitUserInteraction && System.currentTimeMillis() < start + timeOutDelay ) {
 			try {
@@ -102,6 +113,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	public void doEndGame(Team teamThatWon) {
 		changeOrUpdateView(ViewEnumeration.GAMEOVERVIEW);
 		view.publishMessage("This game is finally over. Took some time eh/n");
+		waitUserInteraction();
 	}
 	
 	/** Store seatId of this Client in the Model and update view.
@@ -216,6 +228,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	
 	@Override
 	protected void trumpInfo(Trump trump) {
+		waitUserInteraction = true;
 		if(trump != null) {
 			if(trump != Trump.SCHIEBEN)
 				view.publishMessage("New Trump is " + trump.toString() + " (Just in case you didn't notice the huge picture above)\n");
@@ -232,24 +245,19 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		}else {
 			view.publishMessage(playerWhoWonStich.getName() + " won this stich! Click anywhere to continue");
 		}
-		waitUserInteraction();
+		waitUserInteraction(2000);
+		waitUserInteraction = true;
 	}
 	
 	@Override
 	protected void playerChanged(Player player) {
-		if(model.getThisPlayer().isAtTable() && model.getGameState() == GameState.STARTED) {
-			changeOrUpdateView(ViewEnumeration.PLAYVIEW);
-		}
+		//If the player is you, do something special
 		if(player.equals(model.getThisPlayer()) || (model.getThisPlayer().getId() == 0 && player.getName().equals(model.getThisPlayer().getName()))) {
 			if(player.getSeat() == Seat.NOTATTABLE) {
 				changeOrUpdateView(ViewEnumeration.LOBBYVIEW);
-			}else {
-				//TODO is this still necessary? view.updateView(ViewEnumeration.PLAYVIEW);
 			}
-			
-		}else {
-			//TODO is this still necessary? view.updateView(view.getCurrentView());
 		}
+		view.updateView(view.getCurrentView());
 		
 	}
 	
@@ -269,15 +277,19 @@ public class ClientController extends AbstractClient implements ViewObserver{
 		if(cardReceiver.equals(model.getThisPlayer())) {
 			int i = cardReceiver.getCards().size();
 			for(Card newCard : newHand) {
-				if(!cardReceiver.getCards().contains(newCard.getId())) {
+				//Only show animation if the user did not fast forward
+				if(!cardReceiver.getCards().contains(newCard.getId()) && waitUserInteraction) {
 					view.showMoveCardAnimation(newCard, Animation.handOutCardDuration, AnimationRegion.DEALER, 0,0, AnimationRegion.HAND, i, cardReceiver.getCards().size() + 3 , null);
 					i++;
 				}
 			}
 		}else {
 			for(int i = cardReceiver.getCards().size(); i < newHand.size(); i++) {
-				view.showMoveCardAnimation(newHand.get(i), Animation.handOutCardDuration, AnimationRegion.DEALER, 0, 0,
-						cardReceiver.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId(), i, cardReceiver.getCards().size() + 3, null);
+				//Only show animation if the user did not fast forward
+				if(waitUserInteraction) {
+					view.showMoveCardAnimation(newHand.get(i), Animation.handOutCardDuration, AnimationRegion.DEALER, 0, 0,
+							cardReceiver.getSeat().getRelativeSeat(model.getThisPlayer().getSeat()).getId(), i, cardReceiver.getCards().size() + 3, null);
+				}
 			}
 		}
 		view.sleepAnimationFinished();
@@ -285,19 +297,23 @@ public class ClientController extends AbstractClient implements ViewObserver{
 
 	@Override
 	protected void showLayCardAnimation(Player player, Card card, int cardPos) {
-		if(model.getThisPlayer().equals(player)) {
-			//From Hand to Bottom Deck
-			view.showMoveCardAnimation(card, Animation.layCardDuration, 
-					AnimationRegion.HAND, cardPos, player.getCards().size(), 		//Source
-					AnimationRegion.DECK, RelativeSeat.BOTTOM.getId(), 0,			//Destination
-					null);
-		}else {
-			RelativeSeat seat = player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat());
-			view.showMoveCardAnimation(card, Animation.layCardDuration, 
-					seat.getId(), cardPos, player.getCards().size(), 	//Source
-					AnimationRegion.DECK, seat.getId(), 0 , 			//Destination
-					null);
+		//Only show animation if the user did not fast forward
+		if(waitUserInteraction) {
+			if(model.getThisPlayer().equals(player)) {
+				//From Hand to Bottom Deck
+				view.showMoveCardAnimation(card, Animation.layCardDuration, 
+						AnimationRegion.HAND, cardPos, player.getCards().size(), 		//Source
+						AnimationRegion.DECK, RelativeSeat.BOTTOM.getId(), 0,			//Destination
+						null);
+			}else {
+				RelativeSeat seat = player.getSeat().getRelativeSeat(model.getThisPlayer().getSeat());
+				view.showMoveCardAnimation(card, Animation.layCardDuration, 
+						seat.getId(), cardPos, player.getCards().size(), 	//Source
+						AnimationRegion.DECK, seat.getId(), 0 , 			//Destination
+						null);
+			}
 		}
+		
 	}
 	
 	@Override
@@ -343,7 +359,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	 */
 	@Override
 	public void btnRestartClick() {
-		// TODO Auto-generated method stub
+		waitUserInteraction = false;
 		
 	}
 	
@@ -353,6 +369,7 @@ public class ClientController extends AbstractClient implements ViewObserver{
 	@Override
 	public void btnDisconnectClick() {
 		super.disconnect();
+		System.exit(0);
 	}
 
 	/** The player made a trump selection on the TrumpSelectView.

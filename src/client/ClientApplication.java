@@ -33,6 +33,6 @@ public class ClientApplication {
 		ClientController client = new ClientController(communication, model,
 				new Gui(model));
 		communication.setClient(client);
-		client.setRefreshDelay(500);
+		client.setRefreshDelay(0);
 	}
 }
