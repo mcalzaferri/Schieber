@@ -11,6 +11,8 @@ public abstract class Animation {
 	public static final int handOutCardDuration = 500;
 	public static final int layCardDuration = 200;
 	public static final int cardToStackDuration = 500;
+	private static final double initialDurationScale = 1.0;
+	public static double durationScale = initialDurationScale; //Modify the speed of all animations
 	private long startTime;
 	private int duration;
 	protected AnimationListener listener;
@@ -23,7 +25,7 @@ public abstract class Animation {
 	 * @param listener Listener that will be notified on events. Can be null
 	 */
 	public Animation(int duration, AnimationListener listener) {
-		this.duration = duration;
+		this.duration = (int)((double)duration / durationScale);
 		this.scale = 1;
 		this.listener = listener;
 		this.startTime = 0;
@@ -113,5 +115,19 @@ public abstract class Animation {
 	 */
 	protected int getElapsedTime() {
 		return (int)(System.currentTimeMillis() - startTime);
+	}
+	
+	/** Sets the durationScale to another value to speed up or slow down all new animations
+	 * @param scale 2.0 Will run all animations twice as fast, 0.5 will slow them down
+	 */
+	public static void setDurationScale(double scale) {
+		durationScale = Math.max(0.1, scale);
+	}
+	
+	/** Resets the durationScale to its initial value so all animations will be played at the regular speed.
+	 * 
+	 */
+	public static void resetDurationScale() {
+		durationScale = initialDurationScale;
 	}
 }
