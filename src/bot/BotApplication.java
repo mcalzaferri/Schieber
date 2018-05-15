@@ -29,6 +29,7 @@ public class BotApplication {
 		ClientModel model = new ClientModel();
 		new ClientModelView(model);
 		VirtualClient client = new VirtualClient(communication, model,
+		//		new IntelligenceMalicious()); // start cheating bot
 				new IntelligenceNormal());
 		communication.setClient(client);
 		client.connect(new InetSocketAddress(serverHostname, serverPort));
