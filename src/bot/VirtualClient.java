@@ -89,11 +89,14 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	public void doEndGame(Team teamThatWon) {
+		/* REV TODO Just start a new ki
 		super.disconnect();
 		//disable bot
 		this.active = false;
 		//destroy intelligence = reset bot
 		this.ki = null;
+		*/
+		this.ki = new IntelligenceNormal();
 	}
 
 	@Override

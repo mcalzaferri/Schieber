@@ -121,6 +121,24 @@ public abstract class AbstractClient {
 			public void msgReceived(EndOfGameInfoMessage msg) {
 				doEndGame(model.getTeams().get(msg.teamThatWon));
 				model.getTeams().clear();
+				//Store where this player is sitting
+				Seat oldSeat = Seat.NOTATTABLE;
+				if(model.getThisPlayer() != null) {
+					oldSeat = model.getThisPlayer().getSeat();
+				}
+				for(Player player : model.getPlayers().values()) {
+					player.setReady(false);
+					player.setSeat(Seat.NOTATTABLE);
+				}
+				//Try to join at the same seat again
+				if(oldSeat != Seat.NOTATTABLE) {
+					joinTable(oldSeat);
+					//If this is a bot then set ready true immediately
+					if(model.getThisPlayer().isBot()) {
+						publishChangedState(true);
+					}
+				}
+					
 			}	
 
 			@Override
