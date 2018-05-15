@@ -3,6 +3,7 @@ package gui;
 import java.util.ArrayList;
 import client.ViewEnumeration;
 import client.ViewObserver;
+import client.shared.ClientModel;
 import shared.Trump;
 
 import javax.swing.*;
@@ -30,9 +31,12 @@ public class TrumpView extends ObservableView implements Viewable{
     private static final int left = 
     Toolkit.getDefaultToolkit().getScreenSize().width/2-width/2;
     
+    private ClientModel data;
     
-	public TrumpView(ArrayList<ViewObserver> observers) {
+	public TrumpView(ArrayList<ViewObserver> observers, ClientModel data) {
 		super(null, observers);
+		
+		this.data = data;
 		
 	    GridBagConstraints c = new GridBagConstraints();
 	    c.fill=GridBagConstraints.BOTH;
@@ -217,7 +221,18 @@ public class TrumpView extends ObservableView implements Viewable{
 
 	@Override
 	public void update() {
-
+		if(data.getCanSwitch()==false)
+		{
+			schiebenButton.setEnabled(false);
+		}
+		else
+		{
+			schiebenButton.setEnabled(true);
+		}
+		if(!isValid()) {
+			this.validate();
+		}
+		this.repaint();
 	}
 
 	@Override

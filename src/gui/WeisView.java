@@ -96,7 +96,7 @@ public class WeisView extends ObservableView implements Viewable{
 		}
 
 		add(weisViewPanel);
-		//setPreferredSize(new Dimension(width,height));
+		setPreferredSize(new Dimension(width,height));
 		setLocation(left,top);
 		
 		swipeLeftButton.addActionListener(new ActionListener() {

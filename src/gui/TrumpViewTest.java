@@ -12,7 +12,8 @@ public class TrumpViewTest {
 	public static void main(String[] args)
 	{
 		ArrayList<ViewObserver> observers = new ArrayList<ViewObserver>();
-		TrumpView t = new TrumpView(observers);
+		ClientModelTest model = new ClientModelTest();
+		TrumpView t = new TrumpView(observers,model);
 		
 		JFrame f = new JFrame();
 		f.add(t.getContent());
