@@ -69,6 +69,28 @@ public class Weis{
 		}
 	}
 	
+	@Override
+	public String toString() {
+		switch(type) {
+		case DREIBLATT:
+		case VIERBLATT:
+		case FUENFBLATT:
+		case SECHSBLATT:
+		case SIEBENBLATT:
+		case ACHTBLATT:
+		case NEUNBLATT:
+		case STOECK:
+			return type.toString() + " starting with " + originCard.toString();
+		case VIERGLEICHE:
+			return type.toString() + " of " + originCard.getValue().toString();
+		case VIERBAUERN:
+		case VIERNELL:
+			return type.toString();
+		default:
+			return super.toString();
+		}
+	}
+	
 	//Getter und Setter
 	public WeisEntity getEntity() {
 		return entity;

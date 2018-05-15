@@ -483,7 +483,7 @@ public class ClientController extends AbstractClient implements ViewObserver {
 		waitUserInteraction = false;
 		if (view.hasAnimations()) {
 			// Speed up Animations
-			Animation.setDurationScale(2.0);
+			Animation.setDurationScale(3.0);
 		}
 	}
 
