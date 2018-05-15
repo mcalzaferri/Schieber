@@ -9,9 +9,7 @@ import ch.ntb.jass.common.entities.CardEntity;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.ScoreEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
-import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
-import ch.ntb.jass.common.proto.player_messages.LeaveLobbyMessage;
-import ch.ntb.jass.common.proto.player_messages.LeaveTableMessage;
+import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.EndOfGameInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.PlayerLeftLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToLobbyInfoMessage;
@@ -54,8 +52,8 @@ public class StateMachine {
 
 	/**
 	 * Handle message
-	 * Join and leave messages are handled here all other messages are
-	 * handled by the current state.
+	 * Join/leave lobby and leave table messages are handled here all other
+	 * messages are handled by the current state.
 	 * @param sender the player that sent the message
 	 * @param iMsg the sent message and the senders address
 	 * @throws IOException
@@ -117,22 +115,32 @@ public class StateMachine {
 				throw(new GameException("Game is cancelled. " + sender +
 						" left"));
 			}
+		} else if (msg instanceof ChangeStateMessage) {
+			currentState.handleMessage(sender, (ChangeStateMessage)msg);
+		} else if (msg instanceof FillEmptySeatsMessage) {
+			currentState.handleMessage(sender, (FillEmptySeatsMessage)msg);
+		} else if (msg instanceof JoinTableMessage) {
+			currentState.handleMessage(sender, (JoinTableMessage)msg);
+		} else if (msg instanceof ChosenTrumpMessage) {
+			currentState.handleMessage(sender, (ChosenTrumpMessage)msg);
+		} else if (msg instanceof ChosenWiisMessage) {
+			currentState.handleMessage(sender, (ChosenWiisMessage)msg);
+		} else if (msg instanceof PlaceCardMessage) {
+			currentState.handleMessage(sender, (PlaceCardMessage)msg);
 		} else {
-			// let current state handle message
-			currentState.handleMessage(sender, msg);
+			throw(new UnhandledMessageException());
 		}
 	}
 
 	/**
-	 * Handle new player
 	 * @param playerData info about the new player
 	 * @param playerAddr the players address
 	 * @throws IOException
 	 * @throws ClientErrorException
 	 */
 	private void handleNewPlayer(PlayerEntity playerData,
-			InetSocketAddress playerAddr) throws IOException,
-			ClientErrorException {
+	                             InetSocketAddress playerAddr)
+			throws IOException,	ClientErrorException {
 
 		// create new player
 		if(playerData.name == null || playerData.name.isEmpty()) {

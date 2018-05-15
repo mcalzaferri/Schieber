@@ -3,7 +3,7 @@ package server.states;
 import java.io.IOException;
 
 import ch.ntb.jass.common.proto.Message;
-import ch.ntb.jass.common.proto.ToServerMessage;
+import ch.ntb.jass.common.proto.player_messages.*;
 import server.GameLogic;
 import server.exceptions.ClientErrorException;
 import server.exceptions.UnhandledMessageException;
@@ -41,16 +41,54 @@ public abstract class GameState {
 	 * States that handle messages override this function.
 	 * @param sender the player that sent the message
 	 * @param msg the sent message
-	 * @throws IOException
-	 * @throws UnhandledMessageException
-	 * @throws ClientErrorException
 	 */
-	public void handleMessage(Player sender, ToServerMessage msg) throws IOException, UnhandledMessageException, ClientErrorException {
+	public void handleMessage(Player sender, JoinTableMessage msg)
+			throws UnhandledMessageException, IOException {
 		throw(new UnhandledMessageException());
 	}
 
 	/**
-	 * Trigger state action
+	 * @see GameState#handleMessage(Player, JoinTableMessage)
+	 */
+	public void handleMessage(Player sender, ChangeStateMessage msg)
+			throws UnhandledMessageException, IOException {
+		throw(new UnhandledMessageException());
+	}
+
+	/**
+	 * @see GameState#handleMessage(Player, JoinTableMessage)
+	 */
+	public void handleMessage(Player sender, FillEmptySeatsMessage msg)
+			throws UnhandledMessageException {
+		throw(new UnhandledMessageException());
+	}
+
+	/**
+	 * @see GameState#handleMessage(Player, JoinTableMessage)
+	 */
+	public void handleMessage(Player sender, ChosenTrumpMessage msg)
+			throws UnhandledMessageException, IOException, ClientErrorException {
+		throw(new UnhandledMessageException());
+	}
+
+	/**
+	 * @see GameState#handleMessage(Player, JoinTableMessage)
+	 */
+	public void handleMessage(Player sender, ChosenWiisMessage msg)
+			throws UnhandledMessageException, IOException, ClientErrorException {
+		throw(new UnhandledMessageException());
+	}
+
+	/**
+	 * @see GameState#handleMessage(Player, JoinTableMessage)
+	 */
+	public void handleMessage(Player sender, PlaceCardMessage msg)
+			throws UnhandledMessageException, ClientErrorException, IOException {
+		throw(new UnhandledMessageException());
+	}
+
+	/**
+	 * Trigger state entry action
 	 * This function is called when the state machine switches to this state.
 	 * States with an entry action override this function.
 	 */
