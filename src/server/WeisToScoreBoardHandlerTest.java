@@ -82,7 +82,7 @@ public class WeisToScoreBoardHandlerTest {
 		weisEntityArray21[0] = weisEntity21;
 		
 		/*
-		 * testPlayer3 
+		 * testPlayer3 		-- Winning Player
 		 * 
 		 * Achtblatt
 		 * Eichel

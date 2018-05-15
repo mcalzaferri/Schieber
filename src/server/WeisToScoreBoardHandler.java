@@ -52,7 +52,7 @@ public class WeisToScoreBoardHandler {
 			}
 		}
 		
-		if(highestWeisCounts(highestWeise)){						
+		if(highestWeisCounts()){						
 			weisWinningTeamId = getWinningTeamId();
 		} else {
 			if(amountOfCardsCounts(highestWeise)){
@@ -68,47 +68,59 @@ public class WeisToScoreBoardHandler {
 			}
 		} 
 	}
-	
-	private boolean highestWeisCounts(Map<Player, Weis> currentWeise){
-		boolean weisCounts = false;		
-		int highestCardId = 0;		
 
-		for(Map.Entry<Player, Weis> entry : currentWeise.entrySet()){
-			int currentOriginCardId = entry.getValue().getOriginCard().getValue().getId();			
-			if(currentOriginCardId == highestCardId){
-				weisCounts = false;
-			}				
-			else if(currentOriginCardId > highestCardId){
-				highestCardId = currentOriginCardId;
-				weisCounts = true;
-				weisWinningPlayer = entry.getKey();				
-			}
-		}
-		removeLowerWeise();
-		
-		return weisCounts;
-	}
-	
 	/**
-	 * Remove every Weis form Map except the highest of each Player.
+	 * Checks for the highest Value of each Weis and removes tho lower ones.
+	 *  @return
 	 */
-	private void removeLowerWeise() {		
+	private boolean highestWeisCounts(){
+		boolean weisCounts = false;	
+		boolean isFirstRound = true;
+		LinkedHashMap<Player, Weis> selectedHighestWeise = new LinkedHashMap<>();;
 		Map.Entry<Player, Weis> comparableWeis = null;	
+		
+		//Iterate over highestWeise and remove lower Weise.
 		for(Iterator<Map.Entry<Player, Weis>> it = highestWeise.entrySet().iterator(); it.hasNext();){
 			Map.Entry<Player, Weis> entry = it.next();
 			if(comparableWeis == null){
 				comparableWeis = entry;				
 			}
 			else if(entry.getValue().compareTo(comparableWeis.getValue(), trump) > 0){
-				highestWeise.remove(comparableWeis);
+				selectedHighestWeise.put(entry.getKey(), entry.getValue());
 				comparableWeis = entry;
+				weisWinningPlayer = entry.getKey();
+				isFirstRound = false;
 			}
 			else if(entry.getValue().compareTo(comparableWeis.getValue(), trump) < 0){
-				it.remove();
+				selectedHighestWeise.put(comparableWeis.getKey(), comparableWeis.getValue());
+				weisWinningPlayer = comparableWeis.getKey();
+				isFirstRound = false;
 			}
+			else if(entry.getValue().compareTo(comparableWeis.getValue(), trump) == 0) {
+				
+				if(isFirstRound) {
+					selectedHighestWeise.put(comparableWeis.getKey(), comparableWeis.getValue());
+				}
+				isFirstRound = false;
+				selectedHighestWeise.put(entry.getKey(), entry.getValue());
+				comparableWeis = null;
+			}
+		}				
+		highestWeise = selectedHighestWeise;		
+		if(highestWeise.size() > 1) {
+			weisCounts = false;
 		}
+		else {
+			weisCounts = true;
+		}		
+		return weisCounts;
 	}
 
+	/**
+	 * Checks for the highest amount of Cards.
+	 * @param currentWeise
+	 * @return
+	 */
 	private boolean amountOfCardsCounts(Map<Player, Weis> currentWeise){
 		boolean amountCounts = false;
 		int lastCardAmount = 0;
@@ -163,6 +175,11 @@ public class WeisToScoreBoardHandler {
 		return amountCounts;
 	}
 	
+	/**
+	 * Checks for a Weis with trump
+	 * @param currentWeise
+	 * @return
+	 */
 	private boolean trumpCounts(Map<Player, Weis> currentWeise) {
 		boolean trumpCounts = false;		
 		
