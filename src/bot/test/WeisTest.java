@@ -16,7 +16,7 @@ public class WeisTest {
 		BotIntelligence bot = new IntelligenceRandom();
 		int[] hand = {11,12,13,14,15,16,17,18,19};
 		bot.setHand(hand); // give all EICHEL
-		bot.setTrump(Trump.UNEUFE);
+		bot.setTrump(Trump.OBENABE);
 		
 		ArrayList<Weis> weise = bot.getWeise();
 		System.out.println("Stöck:");

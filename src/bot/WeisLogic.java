@@ -52,10 +52,11 @@ public class WeisLogic {
 				noOfCards++;
 			} else {
 				Card card;
-				card = new Card(cardIds[i-1]);
-				
-				if(trump == trump.UNEUFE) {
+								
+				if(trump == Trump.UNEUFE) {
 					card = new Card(cardIds[i-noOfCards]);
+				} else {
+					card = new Card(cardIds[i-1]);
 				}
 				
 				WeisType weisType;
