@@ -44,7 +44,7 @@ public class VirtualClient extends AbstractClient {
 			in = new Scanner(new FileReader("femaleBotNames.txt"));
 			in.useDelimiter("\n");
 			while(in.hasNext()) {
-			    possibleBotNames.add(in.next());
+			    possibleBotNames.add(in.next().replace('\r', ' ').trim());
 			}
 			in.close();
 
