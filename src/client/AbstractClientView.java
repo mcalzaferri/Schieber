@@ -68,4 +68,6 @@ public abstract class AbstractClientView {
 	public abstract void sleepAnimationFinished();
 	
 	public abstract void removeFinishedAnimations();
+	
+	public abstract boolean hasAnimations();
 }

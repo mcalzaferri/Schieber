@@ -220,4 +220,9 @@ public class Gui extends AbstractClientView{
 		main.getAnimationRegion().removeFinishedAnimations();
 		
 	}
+	@Override
+	public boolean hasAnimations() {
+		return main.getAnimationRegion().animationIsRunning();
+		
+	}
 }
