@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="jvtlgxjh7sgixf-db9goy">
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="$name" value="Singleton"/>
+		<reference referencedUin="jdt:e_class:src:gui.PictureFactory">
+			<property name="bounds" value="5,5,111,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="hideOperation20" value="true"/>
+			<property name="hideProperty20" value="true"/>
+			<property name="hideClass20" value="true"/>
+			<property name="hideAll" value="true"/>
+			<reference referencedUin="jdt:e_field:src:gui.PictureFactory.pictures">
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:gui.PictureFactory:instance">
+				<property name="sourceAnchor" value="121,86"/>
+				<property name="targetAnchor" value="117,90"/>
+				<property name="bendpoints" value="150,86,150,119,117,119"/>
+				<property name="smooth_bendpoints" value="150,86,150,119,117,119"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>

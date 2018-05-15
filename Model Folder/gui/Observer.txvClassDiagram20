@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="rhfy83jh7sgco8-4t0an1">
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="$name" value="Observer"/>
+		<reference referencedUin="jdt:e_class:src:client.ViewObserver">
+			<property name="bounds" value="261,155,143,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnFillWithBots:btnFillWithBots">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnJoinTableClick:btnJoinTableClick~QSeat;">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnWeisActionChosen:btnWeisActionChosen~Z">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnCloseWindowClick:btnCloseWindowClick~QViewEnumeration;">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnTrumpClick:btnTrumpClick~QTrump;">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.playViewClick:playViewClick">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnChangeStateClick:btnChangeStateClick">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnDisconnectClick:btnDisconnectClick">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnConnectClick:btnConnectClick~QInetSocketAddress;~QString;">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="label:$name:jdt:e_class:src:client.ViewObserver">
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnCardClick:btnCardClick~QCard;">
+				<property name="$hidden" value="true"/>
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.ViewObserver.btnRestartClick:btnRestartClick">
+				<property name="$hidden" value="true"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:gui.Gui">
+			<property name="bounds" value="50,155,80,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="hideAll" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:gui.Gui:observers">
+				<property name="sourceAnchor" value="135,200"/>
+				<property name="targetAnchor" value="266,200"/>
+				<reference referencedUin="label:supplierCardinality:jdt:l_ast:src:gui.Gui:observers">
+					<property name="bounds" value="235,177,21,20"/>
+				</reference>
+				<reference referencedUin="label:clientCardinality:jdt:l_ast:src:gui.Gui:observers">
+					<property name="bounds" value="145,177,11,20"/>
+				</reference>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:gui.Gui:internals">
+				<property name="sourceAnchor" value="243,220"/>
+				<property name="targetAnchor" value="243,140"/>
+				<reference referencedUin="label:supplierCardinality:jdt:l_ast:src:gui.Gui:internals">
+					<property name="bounds" value="246,150,21,20"/>
+				</reference>
+				<reference referencedUin="label:clientCardinality:jdt:l_ast:src:gui.Gui:internals">
+					<property name="bounds" value="246,190,11,20"/>
+				</reference>
+			</reference>
+			<reference referencedUin="jdt:l_gnt:src:gui.Gui:AbstractClientView">
+				<property name="sourceAnchor" value="95,160"/>
+				<property name="targetAnchor" value="95,90"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:gui.Gui:current">
+				<property name="sourceAnchor" value="251,220"/>
+				<property name="targetAnchor" value="251,140"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:client.AbstractClientView">
+			<property name="bounds" value="5,5,171,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="hideAll" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:client.ClientController">
+			<property name="bounds" value="256,5,154,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="hideAll" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:client.ClientController:view">
+				<property name="sourceAnchor" value="261,50"/>
+				<property name="targetAnchor" value="181,50"/>
+			</reference>
+			<reference referencedUin="jdt:l_impl:src:client.ClientController:ViewObserver">
+				<property name="sourceAnchor" value="337,90"/>
+				<property name="targetAnchor" value="337,160"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>
