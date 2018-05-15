@@ -120,6 +120,7 @@ public abstract class AbstractClient {
 			@Override
 			public void msgReceived(EndOfGameInfoMessage msg) {
 				doEndGame(model.getTeams().get(msg.teamThatWon));
+				model.getTeams().clear();
 			}	
 
 			@Override
