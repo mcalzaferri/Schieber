@@ -58,6 +58,7 @@ public class LobbyView extends ObservableView implements Viewable{
 	{
 		playerScrollPane = new JScrollPane();
 		playerTablePanel = new JPanel();
+		playerTablePanel.setLayout(new BorderLayout());
 		layoutPlayerTable();
 		layoutFillRemainingSeatsButton();
 		layoutLobbyPanel();
@@ -74,7 +75,7 @@ public class LobbyView extends ObservableView implements Viewable{
 	{
 		//layout Table
 		String[] columnNames = {"Name", "Sitzplatz"};
-		Object[][] tableData = new Object[playersMap.size()+1][2];
+		Object[][] tableData = new Object[playersMap.size()][2];
 		int rowCount=0;
 
 		for(Map.Entry<Integer,Player> entry: playersMap.entrySet())
@@ -87,19 +88,13 @@ public class LobbyView extends ObservableView implements Viewable{
 				tableData[rowCount][1]=player.getSeatNr();
 			rowCount++;
 		}
-		if(getActPlayer() != null) {
-			tableData[rowCount][0]=getActPlayer().getName();
-			if(getActPlayer().getSeatNr() == 0)
-				tableData[rowCount][1]="kein Sitzplatz";
-			else
-				tableData[rowCount][1]=getActPlayer().getSeatNr();
-		}else {
-			//TODO getActPlayer() ist am Anfang noch nicht initialisiert
+
+		if(playerTable != null) {
+			playerTablePanel.remove(playerTable);
 		}
-		
+
 		playerTable	= new JTable(tableData,columnNames);
 		playerScrollPane.setViewportView(playerTable);
-		playerTablePanel.setLayout(new BorderLayout());
 		playerTablePanel.add(playerScrollPane, BorderLayout.CENTER);
 		playerScrollPane.setPreferredSize(new Dimension(width/4,height));
 	}
@@ -309,9 +304,10 @@ public class LobbyView extends ObservableView implements Viewable{
 	public void update() {
 		playersMap = data.getPlayers();
 		layoutPlayerTable();
-		playerTable.repaint();
-		playerScrollPane.repaint();
-		playerTablePanel.repaint();
+		
+		if(!isValid()) {
+			this.validate();
+		}
 		this.repaint();
 	}
 	
