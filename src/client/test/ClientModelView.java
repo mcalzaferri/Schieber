@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
@@ -25,10 +26,13 @@ public class ClientModelView extends JFrame{
 	ClientModel model;
 	JPanel mainFrame;
 	Timer updateTimer;
+	JScrollPane sPane;
 	public ClientModelView(ClientModel model) {
 		super();
 		this.model = model;
 		initialComponents();
+		sPane = new JScrollPane();
+		sPane.add(mainFrame);
 		this.add(mainFrame);
 		this.pack();
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

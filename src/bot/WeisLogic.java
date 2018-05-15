@@ -53,6 +53,11 @@ public class WeisLogic {
 			} else {
 				Card card;
 				card = new Card(cardIds[i-1]);
+				
+				if(trump == trump.UNEUFE) {
+					card = new Card(cardIds[i-noOfCards]);
+				}
+				
 				WeisType weisType;
 				switch(noOfCards) {
 				case 3: 
