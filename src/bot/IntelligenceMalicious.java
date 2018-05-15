@@ -1,5 +1,8 @@
 package bot;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
@@ -7,23 +10,39 @@ import shared.GameMode;
 import shared.Trump;
 
 public class IntelligenceMalicious extends BotIntelligence {
+	
+	Random r = new Random();
+	int cheatTurn = 9;
 
 	@Override
 	public Card getNextCard() {
-		if(trump.getGameMode() == GameMode.UNEUFE) {
-			if(deck.size() > 0) {
-				return new Card(deck.get(0).getColor(), CardValue.SECHS);
-			} else {
-				return new Card(CardColor.EICHEL, CardValue.SECHS);
+		if(cardsInHand.size() == cheatTurn) {
+			cheatTurn--;
+			if(cheatTurn == 0) {
+				cheatTurn = 9;
 			}
-		} else if(trump.getGameMode() == GameMode.OBENABE) {
-			if(deck.size() > 0) {
-				return new Card(deck.get(0).getColor(), CardValue.ASS);
+			if(trump.getGameMode() == GameMode.UNEUFE) {
+				if(deck.size() > 0) {
+					return new Card(deck.get(0).getColor(), CardValue.SECHS);
+				} else {
+					return new Card(CardColor.EICHEL, CardValue.SECHS);
+				}
+			} else if(trump.getGameMode() == GameMode.OBENABE) {
+				if(deck.size() > 0) {
+					return new Card(deck.get(0).getColor(), CardValue.ASS);
+				} else {
+					return new Card(CardColor.EICHEL, CardValue.ASS);
+				}
 			} else {
-				return new Card(CardColor.EICHEL, CardValue.ASS);
+				return new Card(trump.getTrumpfColor(),CardValue.UNDER);
 			}
 		} else {
-			return new Card(trump.getTrumpfColor(),CardValue.UNDER);
+			// play random card if cheating is not possible
+			Card card;
+			ArrayList<Card> allowedCards = getAllowedCards();
+			int pick = r.nextInt(allowedCards.size());
+			card = allowedCards.get(pick);
+			return card;
 		}
 	}
 
