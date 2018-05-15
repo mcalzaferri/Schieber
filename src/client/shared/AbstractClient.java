@@ -310,12 +310,15 @@ public abstract class AbstractClient {
 					goodResultReceived(msg.message);
 				}else {
 					doHandleBadResultException(new BadResultException(msg.message));
+					if(msg.message.equals("You placed an invalid card!")) {
+						doRequestCard(false);
+					}
 				}
 			}	
 			
 			@Override
 			public void msgReceived(WrongCardMessage msg) {
-				// TODO Is this message obsolete anyways?
+				doRequestCard(false);
 				
 			}
 
