@@ -28,6 +28,104 @@ import shared.Trump;
 public class WeisToScoreBoardHandlerTest {
 	
 	@Test
+	public void highestWeisCounts_Player1HasOneWeis_Team1WinsWithScore20() throws Exception {		
+		/*
+		 * testPlayer1 
+		 * 
+		 * Dreiblatt
+		 * Eichel
+		 * Koenig
+		 */		
+		
+		//Arrange Player
+		PlayerEntity testPlayerEntity1 = new PlayerEntity();
+		testPlayerEntity1.name = "player1";
+		testPlayerEntity1.seat = SeatEntity.SEAT1;
+		testPlayerEntity1.isBot = true;
+		testPlayerEntity1.id = 1;
+		Player testPlayer1 = new Player(testPlayerEntity1);
+		//Arrange Weis
+		WeisTypeEntity weisTypeEntity11 = WeisTypeEntity.DREIBLATT;
+		CardColorEntity cardColorEntity11 = CardColorEntity.EICHEL; 
+		CardValueEntity cardValueEntity11 = CardValueEntity.KOENIG;		
+		CardEntity cardEntity11 = new CardEntity();
+		cardEntity11.color = cardColorEntity11;
+		cardEntity11.value = cardValueEntity11;
+		WeisEntity weisEntity11 = new WeisEntity();
+		weisEntity11.type = weisTypeEntity11;
+		weisEntity11.originCard = cardEntity11;	
+		//Arrange weisEntityArray
+		WeisEntity[] weisEntityArray11 = new WeisEntity[1]; 
+		weisEntityArray11[0] = weisEntity11;
+		
+		//Arrange testWeise
+		LinkedHashMap<Player, WeisEntity[]> testWeise = new LinkedHashMap<>();
+		testWeise.put(testPlayer1, weisEntityArray11);
+		//Arrange trump
+		Trump trump = Trump.ROSE;
+		//Arrange testee
+		WeisToScoreBoardHandler testee = new WeisToScoreBoardHandler(testWeise, trump);
+		
+		
+		//Act testee
+		testee.execute();
+		
+		
+		//Assert testee
+		assertEquals(1, testee.getTeamId());
+		assertEquals(20, testee.getWeisScore());
+	}
+	
+	@Test
+	public void highestWeisCounts_Player2HasOneWeis_Team2WinsWithScore20() throws Exception {		
+		/*
+		 * testPlayer2
+		 * 
+		 * Dreiblatt
+		 * Eichel
+		 * Koenig
+		 */		
+		
+		//Arrange Player
+		PlayerEntity testPlayerEntity2 = new PlayerEntity();
+		testPlayerEntity2.name = "player2";
+		testPlayerEntity2.seat = SeatEntity.SEAT2;
+		testPlayerEntity2.isBot = true;
+		testPlayerEntity2.id = 1;
+		Player testPlayer2 = new Player(testPlayerEntity2);
+		//Arrange Weis
+		WeisTypeEntity weisTypeEntity21 = WeisTypeEntity.DREIBLATT;
+		CardColorEntity cardColorEntity21 = CardColorEntity.EICHEL; 
+		CardValueEntity cardValueEntity21 = CardValueEntity.KOENIG;		
+		CardEntity cardEntity21 = new CardEntity();
+		cardEntity21.color = cardColorEntity21;
+		cardEntity21.value = cardValueEntity21;
+		WeisEntity weisEntity21 = new WeisEntity();
+		weisEntity21.type = weisTypeEntity21;
+		weisEntity21.originCard = cardEntity21;	
+		//Arrange weisEntityArray
+		WeisEntity[] weisEntityArray21 = new WeisEntity[1]; 
+		weisEntityArray21[0] = weisEntity21;
+		
+		//Arrange testWeise
+		LinkedHashMap<Player, WeisEntity[]> testWeise = new LinkedHashMap<>();
+		testWeise.put(testPlayer2, weisEntityArray21);
+		//Arrange trump
+		Trump trump = Trump.ROSE;
+		//Arrange testee
+		WeisToScoreBoardHandler testee = new WeisToScoreBoardHandler(testWeise, trump);
+		
+		
+		//Act testee
+		testee.execute();
+		
+		
+		//Assert testee
+		assertEquals(2, testee.getTeamId());
+		assertEquals(20, testee.getWeisScore());
+	}
+	
+	@Test
 	public void amountOfCardsCounts_EachPlayerHasOneWeisWithDifferentWeisValues_Player3HasWinningWeisTeam1WinsWithScore270() throws Exception {		
 		/*
 		 * testPlayer1 

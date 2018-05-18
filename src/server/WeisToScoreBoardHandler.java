@@ -46,7 +46,7 @@ public class WeisToScoreBoardHandler {
 			}
 		}
 		
-		if(highestWeisCounts()){						
+		if(highestWeisCounts()){	
 			weisWinningTeamId = getWinningTeamId();
 		} else {
 			if(amountOfCardsCounts()){
@@ -58,6 +58,7 @@ public class WeisToScoreBoardHandler {
 					Map.Entry<Player,Weis> entry = highestWeise.entrySet().iterator().next();
 					weisWinningPlayer = entry.getKey();
 					weisWinningTeamId = getWinningTeamId();
+
 				}				
 			}
 		} 
@@ -99,14 +100,18 @@ public class WeisToScoreBoardHandler {
 				selectedHighestWeise.put(entry.getKey(), entry.getValue());
 				comparableWeis = null;
 			}
-		}				
+		}		
+		if(isFirstRound && (comparableWeis != null)){
+			selectedHighestWeise.put(comparableWeis.getKey(), comparableWeis.getValue());
+			weisWinningPlayer = comparableWeis.getKey();
+		}
 		highestWeise = selectedHighestWeise;		
 		if(highestWeise.size() > 1) {
 			weisCounts = false;
 		}
 		else {
 			weisCounts = true;
-		}		
+		}
 		return weisCounts;
 	}
 
@@ -164,7 +169,7 @@ public class WeisToScoreBoardHandler {
 				weisWinningPlayer = entry.getKey();
 				amountCounts = true;
 			}			
-		}		
+		}
 		return amountCounts;
 	}
 	

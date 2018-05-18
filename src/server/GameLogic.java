@@ -6,6 +6,7 @@ import java.util.*;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.TeamEntity;
 import ch.ntb.jass.common.entities.WeisEntity;
+import server.exceptions.ClientErrorException;
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
@@ -514,24 +515,27 @@ public class GameLogic {
 	 */
 	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeisEntity) {
 		int givenWeisNumber = 0;
-		
 		// Check for possible Weise.
-		List<Weis> alreadyApprovedWeises = new ArrayList<Weis>();
-		Weis[] approvedWeises = p.getCards().getPossibleWiis(trump);
+		List<Weis> approvedWeisList = new ArrayList<Weis>(Arrays.asList(p.getCards().getPossibleWiis(trump)));
+		List<Weis> notAlreadyApprovedWeises = new ArrayList<Weis>();
 		
 		// Compare possible Weise with given Weise.
 		for(int i = 0; i < claimedWeisEntity.length; i++){
 			Weis claimedWeis = new Weis(claimedWeisEntity[i]);
-			for(int j = 0; j < approvedWeises.length; j++) {
-				if(approvedWeises[j].compareTo(claimedWeis, trump) == 0){
-					
-					// Make sure one Weis can't be used twice
-					if(!alreadyApprovedWeises.contains(claimedWeis)){
-						alreadyApprovedWeises.add(claimedWeis);
-						givenWeisNumber++;
-					}
+			for(Weis approvedWeis : approvedWeisList) {				
+				if(approvedWeis.getType().getId() 
+						== claimedWeis.getType().getId()
+						&& approvedWeis.getOriginCard().getColor().getId() 
+						== claimedWeis.getOriginCard().getColor().getId()
+						&& approvedWeis.getOriginCard().getValue().getId() 
+						== claimedWeis.getOriginCard().getValue().getId()){
+					givenWeisNumber++;
+				} else {
+					notAlreadyApprovedWeises.add(approvedWeis);
 				}
 			}
+			approvedWeisList = notAlreadyApprovedWeises;
+			notAlreadyApprovedWeises = new ArrayList<Weis>();
 		}
 		if (givenWeisNumber == claimedWeisEntity.length) {
 			return true;
