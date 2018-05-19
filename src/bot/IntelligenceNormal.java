@@ -18,11 +18,8 @@ public class IntelligenceNormal extends BotIntelligence {
 	private final int obenabeUndenufeMultiplicator = 25; // used for combined Value
 	private ArrayList<Card> winningCards = new ArrayList<>();
 	
-
 	@Override
 	public Card getNextCard() {
-		
-		
 		
 		ArrayList<Card> allowedCards = getAllowedCards();
 		
@@ -30,6 +27,16 @@ public class IntelligenceNormal extends BotIntelligence {
 		{
 			//TODO FKaiser Errorhandling - what to do?
 			System.out.println("Error - AllowedCards is empty");
+		}
+		
+		// check if trumps are out to make sure bot doesn't play it unnecessarily
+		int trumpsOnHand = getAmountOfTrumpCards(cardsInHand);
+		boolean noMoreTrump = ((trumpsOnHand + trumpCardsPlayed) == 9);
+		
+		if(noMoreTrump) {
+			enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] = true;
+			enemyRightOutOfColor[trump.getTrumpfColor().getId()-1] = true;
+			partnerOutOfColor[trump.getTrumpfColor().getId()-1] = true;
 		}
 		
 		winningCards = this.getSicherenStichDuringPlay(allowedCards);
@@ -668,4 +675,5 @@ public class IntelligenceNormal extends BotIntelligence {
 		}
 		return value;
 	}
+	
 }

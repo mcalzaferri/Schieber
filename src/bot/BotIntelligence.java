@@ -28,6 +28,7 @@ public abstract class BotIntelligence {
 	protected Trump trump;
 	protected boolean geschoben = false;
 	protected boolean trumpfGemacht = false;
+	protected int trumpCardsPlayed = 0;
 	
 	// common methods for any intelligence
 	/**
@@ -378,6 +379,8 @@ public abstract class BotIntelligence {
 		
 		// end while
 		
+		// also update Trump amount
+		trumpCardsPlayed += getAmountOfTrumpCards(deck);
 		
 	}
 	
@@ -446,6 +449,7 @@ public abstract class BotIntelligence {
 	
 	public void resetBot() {
 		cardsPlayed = new ArrayList<>();	
+		trumpCardsPlayed = 0;
 
 		maxCardsInPlay[0] = new Card(19);
 		maxCardsInPlay[1] = new Card(29);
@@ -465,6 +469,16 @@ public abstract class BotIntelligence {
 
 		geschoben = false;
 		trumpfGemacht = false;
+	}
+	
+	protected int getAmountOfTrumpCards(ArrayList<Card> cards) {
+		int i = 0;
+		for(Card c : cards) {
+			if(c.getColor() == trump.getTrumpfColor()) {
+				i++;
+			}
+		}
+		return i;
 	}
 	
 	// methods depending on strategy
