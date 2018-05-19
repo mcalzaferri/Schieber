@@ -22,6 +22,8 @@ public class IntelligenceNormal extends BotIntelligence {
 	@Override
 	public Card getNextCard() {
 		
+		
+		
 		ArrayList<Card> allowedCards = getAllowedCards();
 		
 		if (allowedCards.isEmpty())
@@ -35,7 +37,7 @@ public class IntelligenceNormal extends BotIntelligence {
 		if(deck.isEmpty()) { //I'm first to go
 			
 			//austrumpfen if we made trumpf and enemy still has them
-			if(trumpfGemacht && trump.getTrumpfColor() != null && !(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyRightOutOfColor[trump.getTrumpfColor().getId()-1])) {
+			if(trumpfGemacht && (trump.getTrumpfColor() != null) && !(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1] && enemyRightOutOfColor[trump.getTrumpfColor().getId()-1])) {
 				for(Card c : allowedCards) {
 					if(c.isBuur(trump)) {
 						return c;
@@ -69,11 +71,15 @@ public class IntelligenceNormal extends BotIntelligence {
 				}
 			}
 			
-			// play color owned by partner but not by enemies
+			// play color owned by partner but not by enemies (except Trump)
 			for(Card oc : allowedCards) {
-				int ocID = oc.getColor().getId()-1;
-				if(!partnerOutOfColor[ocID] && enemyLeftOutOfColor[ocID] && enemyRightOutOfColor[ocID]) {
-					return oc;
+				if(oc.getColor() == trump.getTrumpfColor()) {
+					// don't do "austrumpfen"
+				} else {
+					int ocID = oc.getColor().getId()-1;
+					if(!partnerOutOfColor[ocID] && enemyLeftOutOfColor[ocID] && enemyRightOutOfColor[ocID]) {
+						return oc;
+					}
 				}
 			}
 			
@@ -89,11 +95,15 @@ public class IntelligenceNormal extends BotIntelligence {
 				}
 			}
 			
-			// try not to play a card that the enemy surely wins
+			// try not to play a card that the enemy surely wins, but don't trumpf
 			for(Card ec : this.getSicherenStichDuringPlay(enemyCards)) {
 				for(Card oc : allowedCards) {
 					if(ec.getColor() != oc.getColor()) {
-						return oc;
+						if(oc.getColor() == trump.getTrumpfColor()) {
+							// don't do "austrumpfen"
+						} else {
+							return oc;
+						}
 					}
 				}
 			}

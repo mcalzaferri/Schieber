@@ -233,6 +233,7 @@ public abstract class AbstractClient {
 					
 				}
 				model.addToDeck(removedCard, msg.player);
+				doUpdateActiveSeat(msg.player.id);
 				doUpdateDeck(model.getDeck().toArray());
 				clearAnimation();
 				if(model.getGameState() != GameState.PLAYOVER)

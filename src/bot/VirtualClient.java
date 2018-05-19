@@ -101,6 +101,7 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	public void doSetSeat(int seatId) {
+		seatId--; // zero based for bot, one based for client
 		mySeatId = seatId;
 		ki.setSelfID(seatId);
 		ki.setPartnerID((seatId+2)%4);
@@ -110,7 +111,7 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	public void doUpdateActiveSeat(int activeSeatId) {
-		ki.setActivePlayerID(activeSeatId);
+		ki.setActivePlayerID(activeSeatId-1); // zero based for bot, one based for client
 	}
 
 	@Override
