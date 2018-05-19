@@ -21,7 +21,7 @@ public class BotTest {
 	static IntelligenceNormal bot4;
 	
 	static final int noOfGames = 10000;
-	static final long initialSeed = 106;
+	static final long initialSeed = 400;
 
 	public static void main(String[] args) {
 		

@@ -296,7 +296,11 @@ public abstract class BotIntelligence {
 			else { enemyCards.add(c); }
 			if(folge) {
 				for(int i = 1; i<noOfCards; i++) {
-					c = new Card(originCardID-i);
+					if(trump.getGameMode() == GameMode.UNEUFE) {
+						c = new Card(originCardID+i);
+					} else {
+						c = new Card(originCardID-i);
+					}
 					knownCards.add(new KnownCard(c, playerID, false));
 					if(partner) { partnerCards.add(c); }
 					else { enemyCards.add(c); }
