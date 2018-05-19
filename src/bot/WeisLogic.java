@@ -125,7 +125,7 @@ public class WeisLogic {
 		for(int i = 0; i < 9; i++) {
 			noOfCards[(cardsInHand.get(i).getId()-1)%10]++;
 		}
-		for(int i = 3; i < 9; i++) { // ignore 6,7,8 Card values
+		for(int i = 0; i < 9; i++) {
 			if(noOfCards[i] == 4){
 				Card c = new Card(i + 11); // convert position in Array to Cardvalue
 				vierGliche.add(c.getValue());
