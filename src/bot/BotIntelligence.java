@@ -2,6 +2,7 @@ package bot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import shared.Card;
 import shared.CardColor;
@@ -44,6 +45,10 @@ public abstract class BotIntelligence {
 //		}
 		
 		this.cardsInHand = getCardListByIds(currHand, true);
+		// change sorting for UNEUFE
+		if(trump != null && trump.getGameMode() == GameMode.UNEUFE) {
+			sortReverse();
+		}
 		// add cards in Hand to knownCards
 		for(Card c : this.cardsInHand) {
 			this.knownCards.add(new KnownCard(c,selfID,false));
@@ -65,6 +70,7 @@ public abstract class BotIntelligence {
 				maxCardsInPlay[1] = new Card(CardColor.ROSE, CardValue.SECHS);
 				maxCardsInPlay[2] = new Card(CardColor.SCHILTE, CardValue.SECHS);
 				maxCardsInPlay[3] = new Card(CardColor.SCHELLE, CardValue.SECHS);
+				sortReverse();
 			}
 		}
 	}
@@ -447,6 +453,9 @@ public abstract class BotIntelligence {
 		return ids;
 	}
 	
+	/**
+	 * This function resets the bot to it's initial settings, similar to creating a new one
+	 */
 	public void resetBot() {
 		cardsPlayed = new ArrayList<>();	
 		trumpCardsPlayed = 0;
@@ -471,6 +480,11 @@ public abstract class BotIntelligence {
 		trumpfGemacht = false;
 	}
 	
+	/**
+	 * This function returns the amount of trump cards in a given list
+	 * @param list of cards
+	 * @return amount of trump cards in the list
+	 */
 	protected int getAmountOfTrumpCards(ArrayList<Card> cards) {
 		int i = 0;
 		for(Card c : cards) {
@@ -479,6 +493,25 @@ public abstract class BotIntelligence {
 			}
 		}
 		return i;
+	}
+	
+	private void sortReverse() {
+		int[] idList = cardsToIds(cardsInHand);
+		
+		int j = 0;
+		for(int i : idList) {
+			idList[j] = -idList[j];
+			j++;
+		}
+		Arrays.sort(idList);
+		j = 0;
+		for(int i : idList) {
+			idList[j] = -idList[j];
+			j++;
+		}
+			
+		cardsInHand = getCardListByIds(idList,false);
+	
 	}
 	
 	// methods depending on strategy

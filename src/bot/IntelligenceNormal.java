@@ -309,7 +309,7 @@ public class IntelligenceNormal extends BotIntelligence {
 			}
 			
 			// I can win with a Trumpf (and the score is good)
-			if(enemyLeftCard.getColor() != trump.getTrumpfColor()) {
+			if(trump.getGameMode() == GameMode.TRUMPF && enemyLeftCard.getColor() != trump.getTrumpfColor()) {
 				for(Card c : allowedCards) {
 					if((getValue(c) > enemyLeftValue) && (getValue(c) > enemyRightValue)) {
 						// good score, play low trumpf
@@ -327,6 +327,22 @@ public class IntelligenceNormal extends BotIntelligence {
 				}
 			}
 			
+		}
+		
+		// special check for UNEUFE, since low scoring cards are weak there
+		if(trump.getGameMode() == GameMode.UNEUFE) {
+			// try to return a useless ASS
+			for(Card c : allowedCards) {
+				if(c.getValue() == CardValue.ASS) {
+					return c;
+				}
+			}
+			// try to return UNDER to KÖNIG
+			for(Card c : allowedCards) {
+				if(getScore(c) < 5 && getScore(c) > 0) {
+					return c;
+				}
+			}
 		}
 		
 		// 1st fallback, apparently no good card on hand, don't play a scoring card & don't play Trumpf
