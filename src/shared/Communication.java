@@ -1,4 +1,4 @@
-package client.shared;
+package shared;
 
 import ch.ntb.jass.common.proto.Message;
 import com.fasterxml.jackson.core.JsonParseException;

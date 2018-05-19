@@ -1,7 +1,5 @@
 package client;
 
-import java.io.IOException;
-
 import client.shared.ClientModel;
 import client.test.ClientModelView;
 import gui.Gui;
@@ -10,7 +8,7 @@ public class ClientApplication {
 	
 	private static ClientCommunication communication;
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		communication =  new ClientCommunication();
 		ClientModel model = new ClientModel();
 		new ClientModelView(model);

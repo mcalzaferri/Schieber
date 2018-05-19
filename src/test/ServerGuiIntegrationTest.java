@@ -23,8 +23,8 @@ public class ServerGuiIntegrationTest {
 		ClientApplication.main(null);
 
 		// Start 3 bots
-		for (int i = 0; i < 3; i++) {
-			BotApplication.start("localhost",  serverListenPort);
-		}
+//		for (int i = 0; i < 3; i++) {
+//			BotApplication.start("localhost",  serverListenPort);
+//		}
 	}
 }

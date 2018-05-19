@@ -7,11 +7,12 @@ import java.net.SocketTimeoutException;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.*;
+import ch.ntb.jass.common.proto.server_messages.GameStateMessage;
 import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage.Code;
 import client.shared.AbstractClient;
-import client.shared.Communication;
+import shared.Communication;
 
 public class ClientCommunication extends Communication implements Runnable {
 	private AbstractClient client;

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServerCommunication {
-	public static final int defaultListenPort = 64000;
+	public static final int defaultListenPort = 65000;
 	private int listenPort = defaultListenPort;
 	private ServerSocket socket;
 	private List<ClientConnection> connections;

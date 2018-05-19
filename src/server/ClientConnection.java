@@ -2,10 +2,10 @@ package server;
 
 import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage;
-import client.shared.Communication;
 import server.exceptions.ClientErrorException;
 import server.exceptions.InvalidMessageDataException;
 import server.exceptions.UnhandledMessageException;
+import shared.Communication;
 import shared.Player;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class ClientConnection extends Communication implements Runnable {
 
 	/**
 	 * Wait for messages and let the message handler handle them
-	 * This function exits when the connection to the server is closed.
+	 * This function exits when the connection to the client is closed.
 	 */
 	@Override
 	public void run() {

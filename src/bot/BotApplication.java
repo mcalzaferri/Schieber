@@ -1,6 +1,5 @@
 package bot;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import client.ClientCommunication;
@@ -11,7 +10,7 @@ public class BotApplication {
 
 	private static ClientCommunication communication;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		String serverHostname = args[0];
 		int serverPort = Integer.parseInt(args[1]);
 		start(serverHostname, serverPort);
