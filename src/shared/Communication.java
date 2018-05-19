@@ -1,120 +1,103 @@
-package shared;
-
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetSocketAddress;
-import java.net.SocketException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+package client.shared;
 
 import ch.ntb.jass.common.proto.Message;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Communication {
-	public final static int defaultListenPort = 65000;
-	protected int port;
-	private final int bufferSize = 60000;
-	private byte[] receiveBuffer;
-	protected DatagramSocket socket;
-	private DatagramPacket receivePacket;
-	private ObjectMapper objectMapper;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketException;
 
-	public Communication() {
-		this(defaultListenPort);
-	}
+public abstract class Communication {
+	protected Socket socket;
+	private BufferedReader socketReader;
+	private PrintWriter socketWriter;
+	private static final ObjectMapper objectMapper;
 
-	/**
-	 * Use specific listen port.
-	 * @param port listen port
-	 */
-	public Communication(int port) {
-		receiveBuffer = new byte[bufferSize];
-		receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
+	static {
 		objectMapper = new ObjectMapper();
-		this.port = port;
 	}
 
 	/**
-	 * Blocking receive.
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @return The received message.
+	 * Open TCP connection to peer
 	 */
-	public InternalMessage receive()
-			throws IOException, ClassNotFoundException {
-		receivePacket.setLength(receiveBuffer.length);
-
-		// wait for message, blocking call
+	public void openSocket(InetSocketAddress peerAddress) {
 		try {
-			socket.receive(receivePacket);
-		}catch(SocketException se) {
-			System.err.println(se.getMessage());
+			socket = new Socket(peerAddress.getHostName(), peerAddress.getPort());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
+	}
 
-		InternalMessage msg = new InternalMessage();
-		msg.senderAddress = (InetSocketAddress)receivePacket.getSocketAddress();
-
+	/**
+	 * Open streams for sending/receiving messages
+	 */
+	public void openStream() {
 		try {
-			msg.message = objectMapper.readValue(receivePacket.getData(), Message.class);
-		} catch(JsonParseException e) {
-			System.err.println("Failed to parse received json.");
-		}
-
-		return msg;
-	}
-
-	/**
-	 * Send message to peer.
-	 * @param msg Message to send.
-	 * @throws IOException
-	 */
-	public void send(Message msg, InetSocketAddress peerAddress) throws IOException {
-		String jsonString = objectMapper.writeValueAsString(msg);
-
-		// create datagram packet
-		DatagramPacket packet = new DatagramPacket(jsonString.getBytes("UTF-8"),
-				jsonString.getBytes().length, peerAddress);
-
-		// send packet
-		if(!socket.isClosed()) {
-			socket.send(packet);
-		}else {
-			System.err.println("Can't send packet, socket is closed");
+			socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			socketWriter = new PrintWriter(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Open socket.
-	 * @throws SocketException
+	 * Send message to peer
 	 */
-	public void open() throws SocketException {
-		socket = new DatagramSocket(port);
+	public void send(Message msg) {
+		try {
+			synchronized (objectMapper) {
+				socketWriter.print(objectMapper.writeValueAsString(msg) + '\n');
+			}
+			socketWriter.flush();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * Close socket.
+	 * Wait for message from peer
+	 * @return received message or null if something went wrong
+	 */
+	public Message receive() throws IOException {
+		try {
+			String json = socketReader.readLine();
+			synchronized (objectMapper) {
+				return objectMapper.readValue(json, Message.class);
+			}
+		} catch (JsonParseException e) {
+			System.err.println("Failed to parse received JSON.");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Close peer connection
 	 */
 	public void close() {
 		if (socket != null) {
-			socket.close();
+			try {
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	/**
-	 * Set receive timeout for socket.
-	 * @param tmo timeout in milliseconds
-	 * @throws SocketException
+	 * Set socket receive timeout
 	 */
-	public void setReceiveTimeout(int tmo) throws SocketException {
-		socket.setSoTimeout(tmo);
-	}
-
-	public void setListenPort(int port) {
-		this.port = port;
-	}
-
-	public int getListenPort() {
-		return port;
+	public void setReceiveTimeout(int tmo) {
+		try {
+			socket.setSoTimeout(tmo);
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 	}
 }

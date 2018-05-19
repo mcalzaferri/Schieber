@@ -21,7 +21,7 @@ public class WaitForTrumpState extends GameState {
 		schiebenAlreadyChosen = false;
 		ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
 		ctMsg.canSchieben = true;
-		send(ctMsg, logic.getRoundStarter());
+		com.send(ctMsg, logic.getRoundStarter());
 	}
 
 	/**
@@ -33,13 +33,13 @@ public class WaitForTrumpState extends GameState {
 		ctiMsg.trump = msg.trump;
 
 		if (!schiebenAlreadyChosen && (sender == logic.getRoundStarter())) {
-			broadcast(ctiMsg);
+			com.broadcast(ctiMsg);
 			if(msg.trump.equals(TrumpEntity.SCHIEBEN)) {
 				ChooseTrumpMessage ctMsg = new ChooseTrumpMessage();
 				ctMsg.canSchieben = false;
 				//Send request to choose trump to the team partner
 				schiebenAlreadyChosen = true;
-				send(ctMsg, logic.getPartner(sender));
+				com.send(ctMsg, logic.getPartner(sender));
 			} else {
 				setTrump(msg, sender);
 			}
@@ -49,7 +49,7 @@ public class WaitForTrumpState extends GameState {
 			if(msg.trump.equals(TrumpEntity.SCHIEBEN)) {
 				throw(new ClientErrorException("You can't Schieben more than once!"));
 			} else {
-				broadcast(ctiMsg);
+				com.broadcast(ctiMsg);
 				setTrump(msg, sender);
 			}
 		} else {

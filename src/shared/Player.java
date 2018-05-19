@@ -34,6 +34,10 @@ public class Player {
 		this(address,name,seat,false,false,0);
 	}
 
+	public Player(InetSocketAddress address, int id) {
+		this(address, address.toString(), null,false,false, id);
+	}
+
 	/** Use this constructor to cast a PlayerEntity into a Player
 	 * @param entity The entity to be cast
 	 */
@@ -147,11 +151,11 @@ public class Player {
 	}
 
 	public Seat getSeat() {
-		return Seat.getBySeatNr(entity.seat.getSeatNr());
+		return entity.seat == null ? null : Seat.getBySeatNr(entity.seat.getSeatNr());
 	}
 
 	public void setSeat(Seat seat) {
-		entity.seat = SeatEntity.getBySeatNr(seat.getSeatNr());
+		entity.seat = seat == null ? null : SeatEntity.getBySeatNr(seat.getSeatNr());
 	}
 
 	public void setSeatNr(int nr) {
@@ -174,7 +178,7 @@ public class Player {
 		return entity.isBot;
 	}
 
-	private void setBot(boolean isBot) {
+	public void setBot(boolean isBot) {
 		this.entity.isBot = isBot;
 	}
 
@@ -182,7 +186,7 @@ public class Player {
 		return entity.name;
 	}
 
-	private void setName(String name) {
+	public void setName(String name) {
 		this.entity.name = name;
 	}
 
@@ -196,5 +200,9 @@ public class Player {
 
 	public boolean isAtTable() {
 		return (entity.seat != null && entity.seat != SeatEntity.NOTATTABLE);
+	}
+
+	public boolean isInLobby() {
+		return SeatEntity.NOTATTABLE.equals(entity.seat);
 	}
 }

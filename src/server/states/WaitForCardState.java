@@ -22,7 +22,7 @@ public class WaitForCardState extends GameState {
 		NewTurnInfoMessage ntMsg = new NewTurnInfoMessage();
 		ntMsg.nextPlayer = logic.getCurrentPlayer().getEntity();
 		ntMsg.selectWeis = logic.inFirstRun();
-		broadcast(ntMsg);
+		com.broadcast(ntMsg);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class WaitForCardState extends GameState {
 			case INVALID:
 				WrongCardMessage wcMsg = new WrongCardMessage();
 				wcMsg.wrongCard = msg.card;
-				send(wcMsg, sender);
+				com.send(wcMsg, sender);
 				return;
 			case OK:
 				tiMsg = new TurnInfoMessage();
@@ -64,7 +64,7 @@ public class WaitForCardState extends GameState {
 		tiMsg.player = sender.getEntity();
 
 		if (moveStatus.equals(MoveStatus.OK)) {
-			broadcast(tiMsg);
+			com.broadcast(tiMsg);
 
 			// Request next card
 			act();
@@ -75,7 +75,7 @@ public class WaitForCardState extends GameState {
 		siMsg.playerWhoWonStich = logic.getRunWinner().getEntity();
 
 		if (moveStatus.equals(MoveStatus.RUNOVER)) {
-			broadcast(siMsg);
+			com.broadcast(siMsg);
 
 			// Request next card
 			act();
@@ -87,7 +87,7 @@ public class WaitForCardState extends GameState {
 		eorMsg.score.scores = logic.getScores();
 
 		if (moveStatus.equals(MoveStatus.ROUNDOVER)) {
-			broadcast(eorMsg);
+			com.broadcast(eorMsg);
 
 			// start new round
 			stateMachine.changeState(new StartRoundState());
@@ -98,7 +98,7 @@ public class WaitForCardState extends GameState {
 		eogMsg.teamThatWon = logic.getGameWinner();
 
 		if (moveStatus.equals(MoveStatus.GAMEOVER)) {
-			broadcast(eogMsg);
+			com.broadcast(eogMsg);
 
 			// start new game
 			stateMachine.changeState(new LobbyState());
@@ -140,6 +140,6 @@ public class WaitForCardState extends GameState {
 		WiisInfoMessage wiMsg = new WiisInfoMessage();
 		wiMsg.player = sender.getEntity();
 		wiMsg.wiis = weise;
-		broadcast(wiMsg);
+		com.broadcast(wiMsg);
 	}
 }

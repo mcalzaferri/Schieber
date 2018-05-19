@@ -1,13 +1,14 @@
 package server.states;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
+import java.net.ProtocolException;
 import java.util.HashMap;
 import java.util.Map;
 
 import ch.ntb.jass.common.entities.CardEntity;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.ScoreEntity;
+import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.EndOfGameInfoMessage;
@@ -15,26 +16,30 @@ import ch.ntb.jass.common.proto.server_info_messages.PlayerLeftLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToLobbyInfoMessage;
 import ch.ntb.jass.common.proto.server_messages.GameStateMessage;
 import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
+import ch.ntb.jass.common.proto.server_messages.ResultMessage;
+import server.SchieberMessageHandler;
 import server.exceptions.ClientErrorException;
-import server.exceptions.GameException;
 import server.exceptions.InvalidMessageDataException;
 import server.exceptions.UnhandledMessageException;
 import shared.Card;
-import shared.InternalMessage;
 import shared.Player;
 import shared.Seat;
+
+import javax.xml.transform.Result;
 
 /**
  * Keeps track of the state the game is in and handles joining and leaving
  * players.
+ *
+ * State diagram with all messages:
+ * <img src="{@docRoot}/common/StateDiagram.png">
  */
-public class StateMachine {
+public class StateMachine implements SchieberMessageHandler {
 	private GameState currentState;
 
 	/**
 	 * Switch to specified game state and executes its entry action
 	 * @param state game state to switch to
-	 * @throws IOException
 	 */
 	public void changeState(GameState state) throws IOException {
 		currentState = state;
@@ -44,55 +49,41 @@ public class StateMachine {
 	}
 
 	/**
-	 * @return the current state to game
-	 */
-	public GameState getCurrentState() {
-		return currentState;
-	}
-
-	/**
 	 * Handle message
 	 * Join/leave lobby and leave table messages are handled here all other
 	 * messages are handled by the current state.
 	 * @param sender the player that sent the message
-	 * @param iMsg the sent message and the senders address
-	 * @throws IOException
-	 * @throws InvalidMessageDataException
-	 * @throws UnhandledMessageException
-	 * @throws ClientErrorException
-	 * @throws GameException
+	 * @param message the sent message
 	 */
-	public void handleMessage(Player sender, InternalMessage iMsg)
+	public synchronized void handleMessage(Player sender, Message message)
 			throws IOException, InvalidMessageDataException,
-			UnhandledMessageException, ClientErrorException, GameException {
+			UnhandledMessageException, ClientErrorException {
 
-		if (iMsg.message == null) {
+		if (message == null) {
 			throw(new InvalidMessageDataException("The data you sent was"
 					+ "invalid. Fix your shit!"));
 		}
 
 		ToServerMessage msg;
-
 		try {
-			msg = (ToServerMessage)iMsg.message;
-		} catch (ClassCastException e) {
-			throw(new ClientErrorException("The server only accepts data of "
-					+ "type ToServerMessage. Fix your shit!"));
+			msg = (ToServerMessage) message;
+		} catch(ClassCastException e) {
+			throw(new ProtocolException("Server only accepts messages of type ToServerMessage"));
 		}
 
 		if (msg instanceof JoinLobbyMessage) {
-			if (sender == null) {
+			if (sender.isInLobby()) {
+				System.out.println("Player tried to rejoin lobby");
+			} else {
 				// New player joined
 				PlayerEntity playerData = ((JoinLobbyMessage) msg).playerData;
-				handleNewPlayer(playerData, iMsg.senderAddress);
-			} else {
-				System.out.println("Player tried to rejoin lobby");
+				handleNewPlayer(sender, playerData);
 			}
 		} else if (msg instanceof LeaveLobbyMessage) {
 			GameState.logic.removePlayer(sender);
 			PlayerLeftLobbyInfoMessage pllMsg = new PlayerLeftLobbyInfoMessage();
 			pllMsg.player = sender.getEntity();
-			GameState.broadcast(pllMsg);
+			GameState.com.broadcast(pllMsg);
 		} else if (msg instanceof LeaveTableMessage) {
 			if (!sender.isAtTable()) {
 				return;
@@ -102,18 +93,21 @@ public class StateMachine {
 
 			PlayerMovedToLobbyInfoMessage pmtlMsg = new PlayerMovedToLobbyInfoMessage();
 			pmtlMsg.player = sender.getEntity();
-			GameState.broadcast(pmtlMsg);
+			GameState.com.broadcast(pmtlMsg);
 
 			// if a player is leaving an ongoing game the game is cancelled
 			if (!(currentState instanceof LobbyState)) {
 				EndOfGameInfoMessage eogMsg = new EndOfGameInfoMessage();
 				eogMsg.teamThatWon = null;
-				GameState.broadcast(eogMsg);
+				GameState.com.broadcast(eogMsg);
 
 				changeState(new LobbyState());
 
-				throw(new GameException("Game is cancelled. " + sender +
-						" left"));
+				System.out.println("Game is cancelled. " + sender + " left");
+				ResultMessage rMsg = new ResultMessage();
+				rMsg.message = "Game is cancelled. " + sender + " left";
+				rMsg.code = ResultMessage.Code.FAILURE;
+				GameState.com.broadcast(rMsg);
 			}
 		} else if (msg instanceof ChangeStateMessage) {
 			currentState.handleMessage(sender, (ChangeStateMessage)msg);
@@ -133,37 +127,36 @@ public class StateMachine {
 	}
 
 	/**
+	 * @param player nearly empty player object which was created after a
+	 *               connection with the client was established
 	 * @param playerData info about the new player
-	 * @param playerAddr the players address
-	 * @throws IOException
-	 * @throws ClientErrorException
 	 */
-	private void handleNewPlayer(PlayerEntity playerData,
-	                             InetSocketAddress playerAddr)
-			throws IOException,	ClientErrorException {
+	private void handleNewPlayer(Player player, PlayerEntity playerData)
+			throws ClientErrorException {
 
-		// create new player
-		if(playerData.name == null || playerData.name.isEmpty()) {
-			playerData.name = "@" + playerAddr;
-		}
-
-		for (Player p : GameState.logic.getPlayers()) {
-			if (playerData.name.equals(p.getName())) {
-				throw(new ClientErrorException("Username is taken."));
+		if(playerData.name != null && !playerData.name.isEmpty()) {
+			for (Player p : GameState.logic.getPlayers()) {
+				if (playerData.name.equals(p.getName())) {
+					throw(new ClientErrorException("Username is taken."));
+				}
 			}
+
+			player.setName(playerData.name);
 		}
 
-		Player sender = new Player(playerAddr, playerData.name, Seat.NOTATTABLE,
-				playerData.isBot, false, GameState.logic.generatePlayerId());
-		GameState.logic.addPlayer(sender);
-		System.out.println("added " + playerData.name + " to the lobby");
+		player.setSeat(Seat.NOTATTABLE);
+		player.setBot(playerData.isBot);
+		player.setReady(false);
+
+		GameState.logic.addPlayer(player);
+		System.out.println("added " + player + " to the lobby");
 
 		// send current game state to player
 		PlayerEntity[] players = Player.getEntities(GameState.logic.getPlayers().toArray(new Player[] {}));
 		if(currentState instanceof LobbyState) {
 			LobbyStateMessage lsm = new LobbyStateMessage();
 			lsm.players = players;
-			GameState.send(lsm, sender);
+			GameState.com.send(lsm, player);
 		} else {
 			GameStateMessage gsm = new GameStateMessage();
 
@@ -191,12 +184,12 @@ public class StateMachine {
 			score.scores = GameState.logic.getScores();
 			gsm.score = score;
 
-			GameState.send(gsm, sender);
+			GameState.com.send(gsm, player);
 		}
 
 		// inform others that a new player joined
 		PlayerMovedToLobbyInfoMessage pmtlMsg = new PlayerMovedToLobbyInfoMessage();
-		pmtlMsg.player = sender.getEntity();
-		GameState.broadcast(pmtlMsg);
+		pmtlMsg.player = player.getEntity();
+		GameState.com.broadcast(pmtlMsg);
 	}
 }

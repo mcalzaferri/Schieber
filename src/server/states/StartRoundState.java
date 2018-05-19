@@ -14,13 +14,13 @@ public class StartRoundState extends GameState {
 	@Override
 	public void act() throws IOException {
 		logic.initRound();
-		broadcast(new NewRoundInfoMessage());
+		com.broadcast(new NewRoundInfoMessage());
 
 		// hand out cards
 		for (Player p : logic.getPlayers()) {
 			HandOutCardsMessage msg = new HandOutCardsMessage();
 			msg.cards = Card.getEntities(p.getCards().toArray());
-			send(msg, p);
+			com.send(msg, p);
 		}
 
 		stateMachine.changeState(new WaitForTrumpState());

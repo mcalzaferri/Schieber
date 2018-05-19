@@ -2,12 +2,11 @@ package server.states;
 
 import java.io.IOException;
 
-import ch.ntb.jass.common.proto.Message;
 import ch.ntb.jass.common.proto.player_messages.*;
 import server.GameLogic;
+import server.ServerCommunication;
 import server.exceptions.ClientErrorException;
 import server.exceptions.UnhandledMessageException;
-import shared.Communication;
 import shared.Player;
 
 /**
@@ -16,21 +15,20 @@ import shared.Player;
  * function.
  * The static data fields are used by the states to send messages and to talk
  * to the game engine.
- * State diagram with all messages:
- * <img src="{@docRoot}/common/StateDiagram.png">
  */
 public abstract class GameState {
-	static protected Communication com;
+	static protected ServerCommunication com;
 	static protected GameLogic logic;
 	static protected StateMachine stateMachine;
 
 	/**
 	 * Initialize game state
+	 *
 	 * @param sc used to switch to new states
-	 * @param c used to dispatch messages
-	 * @param l used to talk to the game engine
+	 * @param c  used to dispatch messages
+	 * @param l  used to talk to the game engine
 	 */
-	static public void init(StateMachine sc, Communication c, GameLogic l) {
+	static public void init(StateMachine sc, ServerCommunication c, GameLogic l) {
 		stateMachine = sc;
 		com = c;
 		logic = l;
@@ -39,12 +37,13 @@ public abstract class GameState {
 	/**
 	 * Handle message
 	 * States that handle messages override this function.
+	 *
 	 * @param sender the player that sent the message
-	 * @param msg the sent message
+	 * @param msg    the sent message
 	 */
 	public void handleMessage(Player sender, JoinTableMessage msg)
 			throws UnhandledMessageException, IOException {
-		throw(new UnhandledMessageException());
+		throw (new UnhandledMessageException());
 	}
 
 	/**
@@ -52,7 +51,7 @@ public abstract class GameState {
 	 */
 	public void handleMessage(Player sender, ChangeStateMessage msg)
 			throws UnhandledMessageException, IOException {
-		throw(new UnhandledMessageException());
+		throw (new UnhandledMessageException());
 	}
 
 	/**
@@ -60,7 +59,7 @@ public abstract class GameState {
 	 */
 	public void handleMessage(Player sender, FillEmptySeatsMessage msg)
 			throws UnhandledMessageException {
-		throw(new UnhandledMessageException());
+		throw (new UnhandledMessageException());
 	}
 
 	/**
@@ -68,7 +67,7 @@ public abstract class GameState {
 	 */
 	public void handleMessage(Player sender, ChosenTrumpMessage msg)
 			throws UnhandledMessageException, IOException, ClientErrorException {
-		throw(new UnhandledMessageException());
+		throw (new UnhandledMessageException());
 	}
 
 	/**
@@ -76,7 +75,7 @@ public abstract class GameState {
 	 */
 	public void handleMessage(Player sender, ChosenWiisMessage msg)
 			throws UnhandledMessageException, IOException, ClientErrorException {
-		throw(new UnhandledMessageException());
+		throw (new UnhandledMessageException());
 	}
 
 	/**
@@ -84,7 +83,7 @@ public abstract class GameState {
 	 */
 	public void handleMessage(Player sender, PlaceCardMessage msg)
 			throws UnhandledMessageException, ClientErrorException, IOException {
-		throw(new UnhandledMessageException());
+		throw (new UnhandledMessageException());
 	}
 
 	/**
@@ -93,30 +92,4 @@ public abstract class GameState {
 	 * States with an entry action override this function.
 	 */
 	public void act() throws IOException { }
-
-	/*
-	 *  Helper functions for states
-	 */
-
-	/**
-	 * Send a message to all players
-	 * @param msg message to broadcast
-	 */
-	public static void broadcast(Message msg) throws IOException {
-		for (Player p : logic.getPlayers()) {
-			send(msg, p);
-		}
-	}
-
-	/**
-	 * Send a message to the specified player
-	 * @param msg message to send
-	 * @param player recipient
-	 * @throws IOException
-	 */
-	public static void send(Message msg, Player player) throws IOException {
-		com.send(msg, player.getSocketAddress());
-//		System.out.println("sent " + msg.getClass().getSimpleName() +
-//				" to " + player);
-	}
 }

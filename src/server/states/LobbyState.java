@@ -34,7 +34,7 @@ public class LobbyState extends GameState {
 			p.setReady(false);
 			p.setSeat(Seat.NOTATTABLE);
 			pmtlMsg.player = p.getEntity();
-			broadcast(pmtlMsg);
+			com.broadcast(pmtlMsg);
 		}
 	}
 
@@ -49,7 +49,7 @@ public class LobbyState extends GameState {
 		if (sender.isAtTable()) {
 			PlayerMovedToTableInfoMessage pmttMsg = new PlayerMovedToTableInfoMessage();
 			pmttMsg.player = sender.getEntity();
-			broadcast(pmttMsg);
+			com.broadcast(pmttMsg);
 			System.out.println("added " + sender + " to the table (" + sender.getSeat() + ")");
 		}
 	}
@@ -65,14 +65,14 @@ public class LobbyState extends GameState {
 			PlayerChangedStateMessage pcsMsg = new PlayerChangedStateMessage();
 			pcsMsg.player = sender.getEntity();
 			pcsMsg.isReady = sender.isReady();
-			broadcast(pcsMsg);
+			com.broadcast(pcsMsg);
 
 			if (logic.areAllPlayersReady()) {
 				// start game
 				GameStartedInfoMessage gsMsg = new GameStartedInfoMessage();
 				gsMsg.targetScore = TargetScoreEntity.TO_1000;
 				gsMsg.teams = logic.getTeams();
-				broadcast(gsMsg);
+				com.broadcast(gsMsg);
 				stateMachine.changeState(new StartRoundState());
 			}
 		}
@@ -85,21 +85,9 @@ public class LobbyState extends GameState {
 	public void handleMessage(Player sender, FillEmptySeatsMessage msg) {
 		// fill empty seats with bots
 
-		Thread[] botThreads = new Thread[4 - logic.getTablePlayerCount()];
-
-		for (int i = 0; i < botThreads.length; i++) {
-			final int j = i + 1;
-			botThreads[i] = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						BotApplication.start(com.getListenPort() + j,
-								"localhost", com.getListenPort());
-					} catch (SocketException e) {
-						e.printStackTrace();
-					}
-				}
-			});
+		for (int i = 0; i < 4 - logic.getTablePlayerCount(); i++) {
+			new Thread(() -> BotApplication.start("localhost",
+					com.getListenPort())).start();
 		}
 	}
 }

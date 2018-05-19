@@ -28,10 +28,6 @@ public class GameLogic {
 	private final int team1Id = 1;
 	private final int team2Id = 2;
 
-	/** used to generate unique player IDs */
-	private final int playerIdStart = 1;
-	/** used to generate new player IDs */
-	private int playerId = playerIdStart;
 	private Trump trump;
 	private ArrayList<Player> players;
 	/** connects the player with his Weises */
@@ -609,13 +605,6 @@ public class GameLogic {
 	 */
 	public int getTablePlayerCount() {
 		return getPlayersAtTable().size();
-	}
-
-	/**
-	 * @return unique player ID
-	 */
-	public int generatePlayerId() {
-		return playerId++;
 	}
 
 	/**

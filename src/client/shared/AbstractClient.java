@@ -1,5 +1,6 @@
 package client.shared;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -440,7 +441,6 @@ public abstract class AbstractClient {
 	}
 	/**
 	 * @param serverAddress Address to connect to
-	 * @throws Exception 
 	 */
 	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws BadResultException {
 		model.setThisPlayer(new Player(serverAddress,username,Seat.NOTATTABLE));

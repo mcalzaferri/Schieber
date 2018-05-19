@@ -2,7 +2,6 @@ package client;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
@@ -12,45 +11,15 @@ import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage.Code;
 import client.shared.AbstractClient;
-import shared.Communication;
-import shared.InternalMessage;
+import client.shared.Communication;
 
-public class ClientCommunication extends Communication implements Runnable{
-	private InetSocketAddress serverAddress;
+public class ClientCommunication extends Communication implements Runnable {
 	private AbstractClient client;
 	private boolean run;
 	private boolean blockConnect;
 
 	public ClientCommunication() {
-		this(Communication.defaultListenPort);
-	}
-
-	public ClientCommunication(int listenPort) {
-		super(listenPort);
 		blockConnect = true;
-	}
-
-	// Internal methods
-
-	/**
-	 * Send message to server.
-	 * @param msg Message to send.
-	 * @throws IOException
-	 */
-	public void send(Message msg){
-		try {
-			super.send(msg, serverAddress);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void handleReceivedMessage(InternalMessage msg) {
-		// Discard messages that were not sent by the server.
-		if (!serverAddress.equals(msg.senderAddress) || msg == null) {
-			return;
-		}
-		client.handleReceivedMessage(msg.message);
 	}
 
 	// Methods for clients
@@ -70,39 +39,51 @@ public class ClientCommunication extends Communication implements Runnable{
 	 * @param serverAddress Address of the Game Server
 	 * @param username The username the connecting player prefers
 	 * @param isBot True if a bot wants to connect, false otherwise.
-	 * @throws Exception if the server denies the connect request or something else went wrong
+	 * @throws BadResultException if the server denies the connect request or something else went wrong
 	 */
 	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws BadResultException {
-		this.serverAddress = serverAddress;
-		JoinLobbyMessage msg = new JoinLobbyMessage();
-		msg.playerData = new PlayerEntity();
-		msg.playerData.isBot = isBot;
-		msg.playerData.name = username;
-		send(msg);
+
+		open(serverAddress);
+
+		JoinLobbyMessage jlMsg = new JoinLobbyMessage();
+		jlMsg.playerData = new PlayerEntity();
+		jlMsg.playerData.isBot = isBot;
+		jlMsg.playerData.name = username;
+		send(jlMsg);
 		//Wait until Result is received
 		boolean loop = blockConnect;
 		while(loop) {
 			//Wait until result of msg is sent by server
 			try {
-				InternalMessage imsg = receive();
-				if(imsg.message instanceof ResultMessage) {
-					if(((ResultMessage)imsg.message).code == Code.OK) {
+				Message msg = receive();
+				if(msg instanceof ResultMessage) {
+					if(((ResultMessage)msg).code == Code.OK) {
 						loop = false;
-					}else {
-						throw new BadResultException(((ResultMessage)imsg.message).message);
+					} else {
+						throw new BadResultException(((ResultMessage)msg).message);
 					}
-				}else if(imsg.message instanceof LobbyStateMessage){
+				}else if(msg instanceof LobbyStateMessage){
 					//Assume that result is ok
-					handleReceivedMessage(imsg);
+					client.handleReceivedMessage(msg);
 					loop = false;
-					
 				}
-			} catch (ClassNotFoundException | IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
+	/**
+	 * Open server connection
+	 */
+	public void open(InetSocketAddress serverAddress) {
+		openSocket(serverAddress);
+		openStream();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void close() {
 		run = false;
@@ -111,30 +92,27 @@ public class ClientCommunication extends Communication implements Runnable{
 
 	@Override
 	public void run() {
-		
-		try {
-			run = true;
-			setReceiveTimeout(5000); //Otherwise the task will never stop
-		} catch (SocketException e1) {
-			e1.printStackTrace();
-		}
+
+		run = true;
+		setReceiveTimeout(5000); //Otherwise the task will never stop
+
 		while(run) {
 			try {
-				InternalMessage msg = receive();
-				handleReceivedMessage(msg);
+				Message msg = receive();
+				client.handleReceivedMessage(msg);
 			} catch (SocketTimeoutException ste) {
 				//System.out.println("Receive task running"); TODO
-			} catch (ClassNotFoundException | IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	public void setBlockConnect(boolean blockConnect) {
 		this.blockConnect = blockConnect;
 	}
-	
+
 	public void setClient(AbstractClient client) {
 		this.client = client;
 	}

@@ -1,12 +1,12 @@
 package server;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import ch.ntb.jass.common.proto.Message;
+import client.ClientCommunication;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,19 +18,76 @@ import ch.ntb.jass.common.entities.SeatEntity;
 import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinTableMessage;
-import shared.Communication;
+import server.states.GameState;
+import server.states.LobbyState;
+import server.states.StateMachine;
+import shared.Player;
 import shared.Seat;
+
+import static org.junit.Assert.*;
+
+class SchieberMsgBuffer implements SchieberMessageHandler {
+	private List<PlayerMessagePair> msgQueue;
+	private StateMachine sm;
+
+	class PlayerMessagePair {
+		public Player p;
+		public Message msg;
+		public PlayerMessagePair(Player p, Message msg) {
+			this.p = p;
+			this.msg = msg;
+		}
+	}
+
+	public SchieberMsgBuffer(StateMachine sm) {
+		msgQueue = new ArrayList<>();
+		this.sm = sm;
+	}
+
+	@Override
+	synchronized public void handleMessage(Player sender, Message msg) {
+		msgQueue.add(new PlayerMessagePair(sender, msg));
+	}
+
+	/**
+	 * Wait for a message and fail if it takes too long
+	 */
+	public void waitForMsg() {
+		for (int i = 0; i < 10; i++) {
+			if (!msgQueue.isEmpty()) {
+				PlayerMessagePair pmp = msgQueue.remove(0);
+				try {
+					// forward message to state machine
+					sm.handleMessage(pmp.p, pmp.msg);
+					return;
+				} catch (Exception e) {
+					e.printStackTrace();
+					fail();
+				}
+			}
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		fail("Timed out while waiting for the message.");
+	}
+}
 
 /**
  * Unit tests for the game engine and state machine.
  */
 public class ServerTest {
 	private final int serverListenPort = 65000;
-	private final int clientListenPort = 64000;
 	private final InetSocketAddress serverAddr = new InetSocketAddress("localhost", serverListenPort);
-	private final InetSocketAddress clientAddr = new InetSocketAddress("localhost", clientListenPort);
-	private ServerApp app;
-	private Communication client;
+
+	private ServerCommunication com;
+	private StateMachine stateMachine;
+	private GameLogic logic;
+	private SchieberMsgBuffer msgBuf;
+
+	private ClientCommunication client;
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -42,58 +99,59 @@ public class ServerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		app = new ServerApp(serverListenPort);
-		app.com.open();
-		app.com.setReceiveTimeout(100);
 
-		client = new Communication(clientListenPort);
-		client.open();
-		client.setReceiveTimeout(100);
+		// server setup
+
+		com = new ServerCommunication();
+		logic = new GameLogic();
+
+		stateMachine = new StateMachine();
+		GameState.init(stateMachine, com, logic);
+		stateMachine.changeState(new LobbyState());
+
+		msgBuf = new SchieberMsgBuffer(stateMachine);
+
+		com.setListenPort(serverListenPort);
+		com.open();
+
+		new Thread(() -> com.accept(msgBuf) ).start();
+
+		// client setup
+
+		client = new ClientCommunication();
+		client.open(serverAddr);
 	}
 
 	@After
 	public void tearDown() {
-		app.stop();
 		client.close();
+		com.close();
 	}
 
-	/**
-	 * Helper function that waits for a message and fails if it times out.
-	 */
-	private void waitForMessage() throws ClassNotFoundException, IOException {
-		try {
-			app.handleMessage();
-		} catch (SocketTimeoutException e) {
-			fail("Timed out while waiting for the message.");
-		}
-	}
-
-	/**
-	 * Helper function that sends a message from the client to the server
-	 * @param msg message to send
-	 * @throws IOException
-	 */
-	private void sendMsgToServer(ToServerMessage msg) throws IOException {
-		client.send(msg, serverAddr);
-	}
 
 	@Test
-	public void testJoinTable() throws Exception {
+	public void testJoinTable() {
 		JoinLobbyMessage jlMsg = new JoinLobbyMessage();
 		jlMsg.playerData = new PlayerEntity();
-		sendMsgToServer(jlMsg);
+		client.send(jlMsg);
 
-		waitForMessage();
+		msgBuf.waitForMsg();
 
-		assertEquals(1, app.logic.getPlayerCount());
-		assertEquals(Seat.NOTATTABLE, app.logic.getPlayer(clientAddr).getSeat());
+		assertEquals(1, logic.getPlayerCount());
+		Collection<Player> players = logic.getPlayers();
+		assertEquals(1, players.size());
+		Player player1 = players.iterator().next();
+		assertEquals(Seat.NOTATTABLE, player1.getSeat());
+		assertFalse(player1.isReady());
+		assertFalse(player1.isAtTable());
+		assertTrue(player1.isInLobby());
 
 		JoinTableMessage jtMsg = new JoinTableMessage();
 		jtMsg.preferedSeat = SeatEntity.SEAT1;
-		sendMsgToServer(jtMsg);
+		client.send(jtMsg);
 
-		waitForMessage();
-		assertEquals(jtMsg.preferedSeat,
-				app.logic.getPlayer(clientAddr).getSeat().getSeatEntity());
+		msgBuf.waitForMsg();
+		assertEquals(Seat.getBySeatNr(jtMsg.preferedSeat.getSeatNr()), player1.getSeat());
+		assertEquals(logic.getPlayer(Seat.getBySeatNr(jtMsg.preferedSeat.getSeatNr())), player1);
 	}
 }

@@ -8,29 +8,23 @@ import server.ServerApp;
 
 public class ServerGuiIntegrationTest {
 	static final int serverListenPort = 65000;
-	static final int clientListenPort = 64000;
 
 	public static void main(String[] args) throws IOException {
 		// Start server
-		Thread serverThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					ServerApp.main(new String[] {Integer.toString(serverListenPort)});
-				} catch (ClassNotFoundException|IOException e) {
-					e.printStackTrace();
-				}
+		new Thread(() -> {
+			try {
+				ServerApp.start(serverListenPort);
+			} catch (ClassNotFoundException|IOException e) {
+				e.printStackTrace();
 			}
-		});
-		serverThread.start();
+		}).start();
 
 		//Start Gui
-				ClientApplication.main(new String[] {Integer.toString(clientListenPort + 4),
-							"localhost",  Integer.toString(serverListenPort)});
-		// Start 4 bots
+		ClientApplication.main(null);
+
+		// Start 3 bots
 		for (int i = 0; i < 3; i++) {
-			BotApplication.main(new String[] {Integer.toString(clientListenPort + i),
-					"localhost",  Integer.toString(serverListenPort)});
+			BotApplication.start("localhost",  serverListenPort);
 		}
 	}
 }

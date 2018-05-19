@@ -27,12 +27,7 @@ public class MainTest {
 		ClientModel model = new ClientModel();
 		ClientModelView view = new ClientModelView(model);
 		ClientCommunicationSimulator sim = new ClientCommunicationSimulator();
-		try {
-			sim.open();
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		AbstractClient client;
 		if(testBot) {
 			client = new VirtualClient(sim, model, new IntelligenceNormal());
