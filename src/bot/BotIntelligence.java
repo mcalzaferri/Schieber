@@ -244,8 +244,8 @@ public abstract class BotIntelligence {
 		
 		if (wiis.length < 1)
 		{
-			//Errorhandling 
-			System.err.println("Error - wiis is empty");
+			// Errorhandling - not necessary, empty wiis are simply ignored
+			// System.err.println("Error - wiis is empty");
 		}
 		
 		int noOfCards;
