@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
-import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
 import ch.ntb.jass.common.proto.player_messages.JoinTableMessage;
 import server.states.GameState;
@@ -114,7 +113,7 @@ public class ServerTest {
 		com.setListenPort(serverListenPort);
 		com.open();
 
-		new Thread(() -> com.accept(msgBuf) ).start();
+		new Thread(() -> com.accept(msgBuf, stateMachine) ).start();
 
 		// client setup
 

@@ -21,9 +21,6 @@ public class ServerCommunication {
 	/** used to generate unique player IDs */
 	private int nextPlayerId = playerIdStart;
 
-	/**
-	 * Use specific listen port
-	 */
 	public ServerCommunication() {
 		connections = new ArrayList<>();
 	}
@@ -42,9 +39,11 @@ public class ServerCommunication {
 	/**
 	 * Wait for and accept network connections
 	 * Does not return as long as the socket is open.
+	 * A thread is started for each client.
 	 * @param messageHandler msg handler to use for client messages
 	 */
-	public void accept(SchieberMessageHandler messageHandler) {
+	public void accept(SchieberMessageHandler messageHandler,
+	                   ClientConnectionClosedListener conClosedListener) {
 		while (true) {
 			Socket clientSocket;
 
@@ -67,7 +66,7 @@ public class ServerCommunication {
 			Player player = new Player(playerAddr, nextPlayerId++);
 
 			ClientConnection con = new ClientConnection(clientSocket,
-					player, messageHandler, this);
+					player, messageHandler, conClosedListener);
 
 			synchronized (connections) {
 				connections.add(con);
@@ -123,18 +122,11 @@ public class ServerCommunication {
 		}
 	}
 
-	/**
-	 * Remove client connection
-	 * This function is called by a client connection when the client
-	 * disconnects.
-	 */
-	public void removeConnection(ClientConnection con) {
+	public void removeClientConnection(ClientConnection con) {
 		synchronized (connections) {
 			connections.remove(con);
 		}
-		System.out.println(con + " closed");
 	}
-
 
 	public void setListenPort(int listenPort) {
 		this.listenPort = listenPort;

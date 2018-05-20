@@ -37,7 +37,7 @@ public class ServerApp {
 	 * Start the schieber server
 	 * @param args listen port
 	 */
-	static public void main(String[] args) throws ClassNotFoundException, IOException {
+	static public void main(String[] args) throws IOException {
 //		start(Integer.parseInt(args[0]));
 		start(ServerCommunication.defaultListenPort);
 	}
@@ -46,7 +46,7 @@ public class ServerApp {
 	 * Start the schieber server
 	 * @param listenPort port to listen on
 	 */
-	static public void start(int listenPort) throws ClassNotFoundException, IOException {
+	static public void start(int listenPort) throws IOException {
 		ServerApp app = new ServerApp(listenPort);
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -59,11 +59,11 @@ public class ServerApp {
 	}
 
 	/**
-	 * Wait for a messages and handle them
+	 * Wait for clients and handle their messages
 	 */
 	public void run() {
 		com.open();
-		com.accept(stateMachine);
+		com.accept(stateMachine, stateMachine);
 	}
 
 	/**

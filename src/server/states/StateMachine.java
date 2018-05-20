@@ -17,6 +17,8 @@ import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToLobbyInfoMessa
 import ch.ntb.jass.common.proto.server_messages.GameStateMessage;
 import ch.ntb.jass.common.proto.server_messages.LobbyStateMessage;
 import ch.ntb.jass.common.proto.server_messages.ResultMessage;
+import server.ClientConnection;
+import server.ClientConnectionClosedListener;
 import server.SchieberMessageHandler;
 import server.exceptions.ClientErrorException;
 import server.exceptions.InvalidMessageDataException;
@@ -25,8 +27,6 @@ import shared.Card;
 import shared.Player;
 import shared.Seat;
 
-import javax.xml.transform.Result;
-
 /**
  * Keeps track of the state the game is in and handles joining and leaving
  * players.
@@ -34,7 +34,7 @@ import javax.xml.transform.Result;
  * State diagram with all messages:
  * <img src="{@docRoot}/common/StateDiagram.png">
  */
-public class StateMachine implements SchieberMessageHandler {
+public class StateMachine implements SchieberMessageHandler, ClientConnectionClosedListener {
 	private GameState currentState;
 
 	/**
@@ -80,10 +80,7 @@ public class StateMachine implements SchieberMessageHandler {
 				handleNewPlayer(sender, playerData);
 			}
 		} else if (msg instanceof LeaveLobbyMessage) {
-			GameState.logic.removePlayer(sender);
-			PlayerLeftLobbyInfoMessage pllMsg = new PlayerLeftLobbyInfoMessage();
-			pllMsg.player = sender.getEntity();
-			GameState.com.broadcast(pllMsg);
+			removePlayer(sender);
 		} else if (msg instanceof LeaveTableMessage) {
 			if (!sender.isAtTable()) {
 				return;
@@ -191,5 +188,24 @@ public class StateMachine implements SchieberMessageHandler {
 		PlayerMovedToLobbyInfoMessage pmtlMsg = new PlayerMovedToLobbyInfoMessage();
 		pmtlMsg.player = player.getEntity();
 		GameState.com.broadcast(pmtlMsg);
+	}
+
+	/**
+	 * Remove player from game and tell clients about it
+	 */
+	public synchronized void removePlayer(Player p) {
+		GameState.logic.removePlayer(p);
+		PlayerLeftLobbyInfoMessage pllMsg = new PlayerLeftLobbyInfoMessage();
+		pllMsg.player = p.getEntity();
+		GameState.com.broadcast(pllMsg);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void connectionClosed(ClientConnection con) {
+		removePlayer(con.getPlayer());
+		GameState.com.removeClientConnection(con);
 	}
 }

@@ -15,16 +15,16 @@ import java.net.SocketException;
 public class ClientConnection extends Communication implements Runnable {
 	private Player player;
 	private SchieberMessageHandler messageHandler;
-	private ServerCommunication com;
+	private ClientConnectionClosedListener conClosedListener;
 
 
 	public ClientConnection(Socket clientSocket, Player player,
 	                        SchieberMessageHandler schieberMessageHandler,
-	                        ServerCommunication com) {
+	                        ClientConnectionClosedListener conClosedListener) {
 		this.socket = clientSocket;
 		this.player = player;
 		this.messageHandler = schieberMessageHandler;
-		this.com = com;
+		this.conClosedListener = conClosedListener;
 
 		openStream();
 	}
@@ -55,13 +55,13 @@ public class ClientConnection extends Communication implements Runnable {
 			}
 
 			// log received message
-			System.out.print("received ");
-			if (msg != null) {
-				System.out.print(msg.getClass().getSimpleName());
-			} else {
-				System.out.print("invalid message");
-			}
-			System.out.println(" from " + player);
+//			System.out.print("received ");
+//			if (msg != null) {
+//				System.out.print(msg.getClass().getSimpleName());
+//			} else {
+//				System.out.print("invalid message");
+//			}
+//			System.out.println(" from " + player);
 
 			try {
 
@@ -86,7 +86,7 @@ public class ClientConnection extends Communication implements Runnable {
 			}
 		}
 
-		com.removeConnection(this);
+		conClosedListener.connectionClosed(this);
 	}
 
 	/**
