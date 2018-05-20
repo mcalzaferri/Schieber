@@ -139,6 +139,15 @@ public class IntelligenceNormal extends BotIntelligence {
 				}
 			}
 			
+			// Stich with Farbe if I have the best card in UNEUFE/OBENABE
+			if(trump.getGameMode() != GameMode.TRUMPF) {
+				for(Card wc : winningCards) {
+					if(wc.getColor() == firstCard.getColor()) {
+						return wc;
+					}
+				}
+			}
+			
 			// Stich with Farbe if possible and enemy out of Trumpf
 			if(trump.getTrumpfColor() != null) {
 				if(enemyLeftOutOfColor[trump.getTrumpfColor().getId()-1]) { 
