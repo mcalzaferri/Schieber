@@ -14,7 +14,7 @@ public class ServerGuiIntegrationTest {
 		new Thread(() -> {
 			try {
 				ServerApp.start(serverListenPort);
-			} catch (ClassNotFoundException|IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}).start();
