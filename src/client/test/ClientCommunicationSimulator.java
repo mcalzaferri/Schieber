@@ -14,7 +14,6 @@ import javax.swing.*;
 
 import ch.ntb.jass.common.entities.*;
 import ch.ntb.jass.common.proto.Message;
-import ch.ntb.jass.common.proto.ToServerMessage;
 import ch.ntb.jass.common.proto.player_messages.*;
 import ch.ntb.jass.common.proto.server_info_messages.*;
 import ch.ntb.jass.common.proto.server_messages.*;

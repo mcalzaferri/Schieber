@@ -1,6 +1,5 @@
 package client.shared;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -270,6 +269,7 @@ public abstract class AbstractClient {
 			//server_messages
 			@Override
 			public void msgReceived(ChooseTrumpMessage msg) {
+				model.setCanSwitch(msg.canSchieben);
 				doRequestTrump(msg.canSchieben);
 			}
 
