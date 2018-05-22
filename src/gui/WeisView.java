@@ -58,14 +58,17 @@ public class WeisView extends ObservableView implements Viewable{
 		if(data == null) {
 			throw new IllegalArgumentException("Fatal Error: Weis must not be null");
 		}
-		weisList = data.getPossibleWiis();
-		if(weisList != null)
-			layoutWeisView(); //TODO Wenn das GUI erstellt wird ist getPossibleWiis null... /Maurus
+		
+		setPreferredSize(new Dimension(width,height));
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
+		weisList = data.getPossibleWiis();	//Get new data
+		if(weisList != null) {
+			//Only display cards if list contains cards
+			layoutWeisView();
+		}
 	}
 	
 	public void layoutWeisView()
@@ -96,7 +99,6 @@ public class WeisView extends ObservableView implements Viewable{
 		}
 
 		add(weisViewPanel);
-		setPreferredSize(new Dimension(width,height));
 		setLocation(left,top);
 		
 		swipeLeftButton.addActionListener(new ActionListener() {

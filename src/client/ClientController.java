@@ -35,10 +35,11 @@ public class ClientController extends AbstractClient implements ViewObserver {
 	 * @param v
 	 */
 	public void changeOrUpdateView(ViewEnumeration v) {
-		if (view.getCurrentView() != v)
+		if (view.getCurrentView() != v) {
 			view.changeView(v);
-		else
-			view.updateView(v);
+		}
+		
+		view.updateView(v);	//Update anyway
 	}
 
 	public void waitRefresh() {

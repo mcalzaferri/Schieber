@@ -35,7 +35,7 @@ public class Gui extends AbstractClientView{
 		super(data);
 		this.observers = new ArrayList<>();
 		this.frame = new JFrame("Schieber");
-		this.iFrame = new JInternalFrame("", false, false, false, false);
+		this.iFrame = new JInternalFrame("", true, false, false, false);
 		this.main = new PlayingFieldView(data, observers);
 		this.dialog = new Dialog(frame, ModalityType.MODELESS);
 		
@@ -133,18 +133,9 @@ public class Gui extends AbstractClientView{
 				this.current = v;
 				this.iFrame.setContentPane(v.getContent());
 				this.iFrame.pack();
-
 				this.iFrame.setTitle(v.getType().toString());
 				this.iFrame.setVisible(true);
-				Container c = iFrame.getContentPane();
-				//Enlarge frame that iFrame can fit
-				if(frame.getContentPane().getWidth() < iFrame.getWidth()) {
-					frame.setSize(getFramesizeForContent(new Dimension(iFrame.getWidth(), frame.getContentPane().getHeight())));
-				}
-				if(frame.getContentPane().getHeight() < iFrame.getHeight()) {
-					frame.setSize(getFramesizeForContent(new Dimension(frame.getContentPane().getWidth(), iFrame.getHeight())));
-				}
-				
+				resizeIFrame();
 				return; 
 			}
 		}
@@ -152,7 +143,18 @@ public class Gui extends AbstractClientView{
 		this.current = main;
 		this.iFrame.setVisible(false);	//Close inner frame
 	}
-
+	
+	private void resizeIFrame() {		
+		Container c = iFrame.getContentPane();
+		//Enlarge frame that iFrame can fit
+		if(frame.getContentPane().getWidth() < iFrame.getWidth()) {
+			frame.setSize(getFramesizeForContent(new Dimension(iFrame.getWidth(), frame.getContentPane().getHeight())));
+		}
+		if(frame.getContentPane().getHeight() < iFrame.getHeight()) {
+			frame.setSize(getFramesizeForContent(new Dimension(frame.getContentPane().getWidth(), iFrame.getHeight())));
+		}
+		
+	}
 	@Override
 	public ViewEnumeration getCurrentView() {
 		return current.getType();
@@ -167,6 +169,7 @@ public class Gui extends AbstractClientView{
 		for(Viewable v: internals) {
 			if(v.getType() == view) {
 				v.update();
+				resizeIFrame();
 				return; //Leave method if first element has been found
 			}
 		}
@@ -177,6 +180,7 @@ public class Gui extends AbstractClientView{
 	public void updateAll() {
 		for(Viewable v: internals) {
 			v.update();
+			resizeIFrame();
 		}
 		main.update();
 	}
