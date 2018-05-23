@@ -13,6 +13,7 @@ import shared.Weis;
 
 public abstract class BotIntelligence {
 	
+	protected String name;
 	protected ArrayList<Card> cardsInHand;
 	protected ArrayList<Card> cardsPlayed = new ArrayList<>();							
 	protected ArrayList<Card> deck = new ArrayList<>();
@@ -398,23 +399,29 @@ public abstract class BotIntelligence {
 		if(deckIDs.length>1) { // only makes sense after the first card
 			Card firstCard = new Card(deckIDs[0]);
 			Card lastCard = new Card(deckIDs[deckIDs.length-1]);
+			
+			int lastCardPlayer = activePlayerID - 1;
+			if(lastCardPlayer==-1) {
+				lastCardPlayer = 3;
+			}
+			
 			if(firstCard.getColor() == trump.getTrumpfColor()) { // first card is trump
 				if(firstCard.getColor() != lastCard.getColor()) {
-					if(this.activePlayerID == partnerID) {
+					if(lastCardPlayer == partnerID) {
 						this.partnerOutOfColor[firstCard.getColor().getId()-1] = true;
-					} else if (this.activePlayerID == this.enemyLeftID) {
+					} else if (lastCardPlayer == this.enemyLeftID) {
 						this.enemyLeftOutOfColor[firstCard.getColor().getId()-1] = true;
-					} else if (this.activePlayerID == this.enemyRightID) {
+					} else if (lastCardPlayer == this.enemyRightID) {
 						this.enemyRightOutOfColor[firstCard.getColor().getId()-1] = true;
 					}
 				}
 			} else { // first card is not trump, but trump is always allowed
 				if((firstCard.getColor() != lastCard.getColor()) && (lastCard.getColor() != trump.getTrumpfColor())) {
-					if(this.activePlayerID == this.partnerID) {
+					if(lastCardPlayer == this.partnerID) {
 						this.partnerOutOfColor[firstCard.getColor().getId()-1] = true;
-					} else if (this.activePlayerID == this.enemyLeftID) {
+					} else if (lastCardPlayer == this.enemyLeftID) {
 						this.enemyLeftOutOfColor[firstCard.getColor().getId()-1] = true;
-					} else if (this.activePlayerID == this.enemyRightID) {
+					} else if (lastCardPlayer == this.enemyRightID) {
 						this.enemyRightOutOfColor[firstCard.getColor().getId()-1] = true;
 					}
 				}
@@ -512,6 +519,10 @@ public abstract class BotIntelligence {
 			
 		cardsInHand = getCardListByIds(idList,false);
 	
+	}
+	
+	protected void setName(String n) {
+		name = n;
 	}
 	
 	// methods depending on strategy

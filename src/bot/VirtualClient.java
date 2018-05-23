@@ -58,7 +58,9 @@ public class VirtualClient extends AbstractClient {
 		Random rm = new Random();
 		do {
 			try {
-				connect(serverAddress, possibleBotNames.get(rm.nextInt(possibleBotNames.size())), true);
+				String botName = possibleBotNames.get(rm.nextInt(possibleBotNames.size()));
+				ki.setName(botName);
+				connect(serverAddress, botName, true);
 				//Wird keine Exception geworfen wurde connect erfolgreich durchgeführt
 				connected = true;
 			} catch (BadResultException e) {
