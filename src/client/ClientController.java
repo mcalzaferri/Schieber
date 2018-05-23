@@ -438,7 +438,9 @@ public class ClientController extends AbstractClient implements ViewObserver {
 
 	@Override
 	public void btnWeisActionChosen(boolean allowBroadcast) {
-		super.publishChosenWiis(model.getPossibleWiis());
+		if(allowBroadcast) {
+			super.publishChosenWiis(model.getPossibleWiis());
+		}
 		changeOrUpdateView(ViewEnumeration.PLAYVIEW);
 	}
 
