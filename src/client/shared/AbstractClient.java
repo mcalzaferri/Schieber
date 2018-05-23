@@ -153,6 +153,8 @@ public abstract class AbstractClient {
 				}
 				model.putTeams(teams);
 				model.setGameState(GameState.STARTED);
+				model.setScore(null);
+				doUpdateScore(null);
 				teamsChanged(model.getTeams().values());
 				doSetSeat(model.getThisPlayer().getSeatNr());
 			}
