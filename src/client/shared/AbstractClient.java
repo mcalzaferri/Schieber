@@ -404,47 +404,47 @@ public abstract class AbstractClient {
 	protected abstract void doHandleBadResultException(BadResultException e);
 	
 	//Methods for Client -> Server
-	protected void publishChangedState(boolean isReady) {
+	protected final void publishChangedState(boolean isReady) {
 		ChangeStateMessage msg = new ChangeStateMessage();
 		msg.isReady = isReady;
 		com.send(msg);
 	}
-	protected void publishChosenTrump(Trump trump) {
+	protected final void publishChosenTrump(Trump trump) {
 		ChosenTrumpMessage msg = new ChosenTrumpMessage();
 		msg.trump = trump.getEntity();
 		com.send(msg);
 	}
-	protected void publishChosenWiis(Weis[] wiis) {
+	protected final void publishChosenWiis(Weis[] wiis) {
 		ChosenWiisMessage msg = new ChosenWiisMessage();
 		msg.wiis = Weis.getEntities(wiis);
 		com.send(msg);
 	}
-	protected void joinTable(Seat preferedSeat) {
+	protected final void joinTable(Seat preferedSeat) {
 		JoinTableMessage msg = new JoinTableMessage();
 		msg.preferedSeat = preferedSeat.getSeatEntity();
 		com.send(msg);
 	}
-	protected void leaveLobby() {
+	protected final void leaveLobby() {
 		LeaveLobbyMessage msg = new LeaveLobbyMessage();
 		com.send(msg);
 	}
-	protected void leaveTable() {
+	protected final void leaveTable() {
 		LeaveTableMessage msg = new LeaveTableMessage();
 		com.send(msg);
 	}
-	protected void publishChosenCard(Card card) {
+	protected final void publishChosenCard(Card card) {
 		PlaceCardMessage msg = new PlaceCardMessage();
 		msg.card = card.getEntity();
 		com.send(msg);
 	}
-	protected void publishFillSeatsWithBots() {
+	protected final void publishFillSeatsWithBots() {
 		FillEmptySeatsMessage msg = new FillEmptySeatsMessage();
 		com.send(msg);
 	}
 	/**
 	 * @param serverAddress Address to connect to
 	 */
-	public void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws BadResultException {
+	public final void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws BadResultException {
 		model.setThisPlayer(new Player(serverAddress,username,Seat.NOTATTABLE));
 		com.connect(serverAddress, username, isBot);
 		doConnected();
@@ -460,7 +460,7 @@ public abstract class AbstractClient {
 		}
 	}
 	
-	public void disconnect() {
+	public final void disconnect() {
 		com.disconnect();
 		doDisconnected();
 	}
