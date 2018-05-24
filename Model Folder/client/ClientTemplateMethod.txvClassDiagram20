@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhjhkqnkvxhg3cnr">
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="$name" value="ClientTemplateMethod"/>
+		<reference referencedUin="jdt:e_class:src:client.shared.AbstractClient">
+			<property name="bounds" value="355,15,200,768"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:client.ClientController">
+			<property name="bounds" value="635,15,200,783"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:client.ClientController:AbstractClient">
+				<property name="sourceAnchor" value="640,404"/>
+				<property name="targetAnchor" value="560,404"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:client.VirtualClient">
+			<property name="bounds" value="75,15,200,437"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:client.VirtualClient:AbstractClient">
+				<property name="sourceAnchor" value="280,238"/>
+				<property name="targetAnchor" value="360,238"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:client.VirtualClient:active">
+				<property name="sourceAnchor" value="726,380"/>
+				<property name="targetAnchor" value="240,380"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>

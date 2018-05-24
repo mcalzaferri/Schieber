@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<nodeSet  version="1.1">
+	<view uin="V1hexuhjhkplg5uow4irq">
+		<property name="$metaclass" value="ClassDiagram20"/>
+		<property name="$name" value="ClientModel"/>
+		<reference referencedUin="jdt:e_class:src:client.shared.ClientMessageDecoder">
+			<property name="bounds" value="175,275,200,141"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="collapsedCompartments" value=""/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:e_method:src:client.shared.ClientMessageDecoder.msgReceived:msgReceived~QChosenTrumpInfoMessage;">
+			</reference>
+			<reference referencedUin="jdt:e_method:src:client.shared.ClientMessageDecoder.decodeMessage:decodeMessage~QMessage;~QClientMessageDecoder;">
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:client.shared.AbstractClient">
+			<property name="bounds" value="395,275,200,123"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="collapsedCompartments" value=""/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:client.shared.AbstractClient:model">
+				<property name="sourceAnchor" value="500,280"/>
+				<property name="targetAnchor" value="500,247"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:client.shared.AbstractClient:com">
+				<property name="sourceAnchor" value="600,341"/>
+				<property name="targetAnchor" value="720,341"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:client.ClientController">
+			<property name="bounds" value="495,502,200,153"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_gnt:src:client.ClientController:AbstractClient">
+				<property name="sourceAnchor" value="550,507"/>
+				<property name="targetAnchor" value="550,403"/>
+			</reference>
+			<reference referencedUin="jdt:l_ast:src:client.ClientController:view">
+				<property name="sourceAnchor" value="572,660"/>
+				<property name="targetAnchor" value="572,707"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:shared.Communication">
+			<property name="bounds" value="715,555,200,212"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:client.ClientCommunication">
+			<property name="bounds" value="715,275,200,243"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="bounds_setted_by_user" value="true"/>
+			<reference referencedUin="jdt:l_ast:src:client.ClientCommunication:client">
+				<property name="sourceAnchor" value="720,333"/>
+				<property name="targetAnchor" value="600,333"/>
+			</reference>
+			<reference referencedUin="jdt:l_gnt:src:client.ClientCommunication:Communication">
+				<property name="sourceAnchor" value="820,523"/>
+				<property name="targetAnchor" value="820,560"/>
+			</reference>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:client.shared.ClientModel">
+			<property name="bounds" value="395,15,200,227"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:bot.BotIntelligence">
+			<property name="bounds" value="255,702,163,198"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="collapsedCompartments" value="Operation20,Property20"/>
+		</reference>
+		<reference referencedUin="jdt:e_class:src:client.AbstractClientView">
+			<property name="bounds" value="498,702,138,80"/>
+			<property name="location_set_by_user" value="true"/>
+			<property name="$shortcutReference" value="true"/>
+			<property name="collapsedCompartments" value="Operation20"/>
+			<reference referencedUin="jdt:l_ast:src:client.AbstractClientView:data">
+				<property name="sourceAnchor" value="551,707"/>
+				<property name="targetAnchor" value="551,247"/>
+				<property name="$hidden" value="true"/>
+			</reference>
+		</reference>
+	</view>
+</nodeSet>
