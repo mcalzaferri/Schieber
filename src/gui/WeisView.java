@@ -58,7 +58,7 @@ public class WeisView extends ObservableView implements Viewable{
 		if(data == null) {
 			throw new IllegalArgumentException("Fatal Error: Weis must not be null");
 		}
-		
+		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(width,height));
 	}
 
@@ -69,10 +69,18 @@ public class WeisView extends ObservableView implements Viewable{
 			//Only display cards if list contains cards
 			layoutWeisView();
 		}
+		if(!isValid()) {
+			validate();
+		}
+		repaint();
 	}
 	
 	public void layoutWeisView()
 	{
+		if(weisViewPanel != null) {
+			remove(weisViewPanel);
+		}
+
 		weisViewPanel = new JPanel();
 		
 		buttonsPanel = new JPanel();
@@ -88,6 +96,7 @@ public class WeisView extends ObservableView implements Viewable{
 		swipeLeftButton = new JButton("<");
 		swipeLeftButton.setEnabled(false);
 		swipeRightButton = new JButton(">");
+		swipeRightButton.setEnabled(false);
 		
 		weisViewPanel.setLayout(new BorderLayout());
 		weisViewPanel.add(cardsPanel,BorderLayout.CENTER);
@@ -96,9 +105,10 @@ public class WeisView extends ObservableView implements Viewable{
 		{
 			weisViewPanel.add(swipeLeftButton, BorderLayout.WEST);
 			weisViewPanel.add(swipeRightButton, BorderLayout.EAST);
+			swipeRightButton.setEnabled(true);
 		}
 
-		add(weisViewPanel);
+		add(weisViewPanel, BorderLayout.CENTER);	//This overwrites the current component in the center
 		setLocation(left,top);
 		
 		swipeLeftButton.addActionListener(new ActionListener() {
@@ -172,8 +182,10 @@ public class WeisView extends ObservableView implements Viewable{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		cardsPanel.validate();
-		this.repaint();
+		if(!isValid()) {
+			validate();
+		}
+		repaint();//Needed because after klicking a button the whole view has to be repainted
 	}
 	
 	public int getCardCount(WeisType type)
