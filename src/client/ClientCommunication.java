@@ -68,7 +68,7 @@ public class ClientCommunication extends Communication implements Runnable {
 					loop = false;
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new BadResultException(e.getMessage());
 			}
 		}
 	}
