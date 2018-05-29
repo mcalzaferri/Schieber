@@ -1,9 +1,6 @@
 package bot;
 
 import shared.Card;
-import shared.CardColor;
-import shared.CardValue;
-import shared.Player;
 
 public class KnownCard {
 	

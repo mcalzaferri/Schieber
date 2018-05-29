@@ -165,6 +165,7 @@ public abstract class AbstractClient {
 				
 			}
 			
+			@Override
 			public void msgReceived(NewTurnInfoMessage msg) {
 				model.setGameState(GameState.TURNACTIVE);
 				model.setActiveSeatId(msg.nextPlayer.seat.getSeatNr());

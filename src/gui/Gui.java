@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -12,6 +11,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 import client.AbstractClientView;
 import client.ViewEnumeration;
@@ -62,7 +62,7 @@ public class Gui extends AbstractClientView{
 		frame.pack();
 		
 		//Change close operation
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -145,7 +145,7 @@ public class Gui extends AbstractClientView{
 	}
 	
 	private void resizeIFrame() {		
-		Container c = iFrame.getContentPane();
+		iFrame.getContentPane();
 		//Enlarge frame that iFrame can fit
 		if(frame.getContentPane().getWidth() < iFrame.getWidth()) {
 			frame.setSize(getFramesizeForContent(new Dimension(iFrame.getWidth(), frame.getContentPane().getHeight())));

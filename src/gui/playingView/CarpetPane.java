@@ -5,27 +5,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.Timer;
-
 import client.ViewObserver;
 import client.shared.ClientModel;
 import gui.Gui;
 import gui.ObservableView;
-import gui.PictureFactory;
 import gui.PictureFactory.Pictures;
-import gui.animation.Animation;
-import gui.animation.AnimationProperty;
-import gui.animation.MovePictureAnimation;
-import gui.animation.TestAnimation;
 import shared.Player;
-import shared.Trump;
 
 public class CarpetPane extends ObservableView{
 	/**
@@ -53,7 +41,7 @@ public class CarpetPane extends ObservableView{
 		}	
 		this.drawer = new CarpetDrawer(15);
 		setOpaque(true);
-		this.setMinimumSize(this.minCarpetSize);
+		this.setMinimumSize(CarpetPane.minCarpetSize);
 		oldCarpetSize = new  Dimension(0, 0);
 	}
 	
@@ -62,13 +50,13 @@ public class CarpetPane extends ObservableView{
 	@Override
 	public void paint(Graphics g) {
 		//Calculate image sizes
-		double scale = this.getSize().getWidth()/this.minCarpetSize.getWidth();
-		Dimension carpetSize = new Dimension((int)(scale * this.minCarpetSize.getWidth()),
-				(int)(scale * this.minCarpetSize.getHeight()));
-		Dimension cardSize = new Dimension((int)(scale * this.minCardSize.getWidth()),
-				(int)(scale * this.minCardSize.getHeight()));
-		Dimension coverSize = new Dimension((int)(scale * this.minCoverSize.getWidth()),
-				(int)(scale * this.minCoverSize.getHeight()));
+		double scale = this.getSize().getWidth()/CarpetPane.minCarpetSize.getWidth();
+		Dimension carpetSize = new Dimension((int)(scale * CarpetPane.minCarpetSize.getWidth()),
+				(int)(scale * CarpetPane.minCarpetSize.getHeight()));
+		Dimension cardSize = new Dimension((int)(scale * CarpetPane.minCardSize.getWidth()),
+				(int)(scale * CarpetPane.minCardSize.getHeight()));
+		Dimension coverSize = new Dimension((int)(scale * CarpetPane.minCoverSize.getWidth()),
+				(int)(scale * CarpetPane.minCoverSize.getHeight()));
 		//Draw carpet as background
 		if(oldCarpetSize.width != carpetSize.width || oldCarpetSize.height != carpetSize.height) {
 			//If carpet size changed get new scaled picture

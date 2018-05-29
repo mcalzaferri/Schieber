@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import client.ViewEnumeration;
 import client.ViewObserver;
 
 public class GameOverViewTest {

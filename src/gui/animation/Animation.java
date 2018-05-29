@@ -25,7 +25,7 @@ public abstract class Animation {
 	 * @param listener Listener that will be notified on events. Can be null
 	 */
 	public Animation(int duration, AnimationListener listener) {
-		this.duration = (int)((double)duration / durationScale);
+		this.duration = (int)(duration / durationScale);
 		this.scale = 1;
 		this.listener = listener;
 		this.startTime = 0;

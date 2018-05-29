@@ -23,10 +23,10 @@ public class ClientModel {
 	
 	//Constructors
 	public ClientModel() {
-		players = new HashMap<Integer, Player>();
+		players = new HashMap<>();
 		deck = new CardList();
-		deckOrientation = new HashMap<Card, RelativeSeat>();
-		teams = new HashMap<Integer, Team>();
+		deckOrientation = new HashMap<>();
+		teams = new HashMap<>();
 	}
 	
 	//Methods

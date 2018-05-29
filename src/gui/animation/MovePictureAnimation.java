@@ -33,20 +33,20 @@ public class MovePictureAnimation extends Animation {
 	
 	private Point getCurrentLocation(double progress) {
 		Point p = new Point();
-		p.setLocation(start.getPoint().x + (progress * ((double)(end.getPoint().x - start.getPoint().x))),
-				start.getPoint().y + (progress * ((double)(end.getPoint().y - start.getPoint().y))));
+		p.setLocation(start.getPoint().x + (progress * (end.getPoint().x - start.getPoint().x)),
+				start.getPoint().y + (progress * (end.getPoint().y - start.getPoint().y)));
 		return p;
 	}
 	
 	private PrecisionDimension getCurrentSize(double progress) {
 		PrecisionDimension d = new PrecisionDimension(
-		(start.getDimension().width + (progress * ((double)(end.getDimension().width - start.getDimension().width)))), 
-				(start.getDimension().height + (progress * ((double)(end.getDimension().height - start.getDimension().height)))));
+		(start.getDimension().width + (progress * (end.getDimension().width - start.getDimension().width))), 
+				(start.getDimension().height + (progress * (end.getDimension().height - start.getDimension().height))));
 		return d;
 	}
 	
 	private double getCurrentRotation(double progress) {
-		return Math.toRadians(start.getRotation() + (progress * ((double)(end.getRotation() - start.getRotation()))));
+		return Math.toRadians(start.getRotation() + (progress * (end.getRotation() - start.getRotation())));
 	}
 
 	private AffineTransform getCurrentTransform(double progress) {
@@ -86,8 +86,8 @@ public class MovePictureAnimation extends Animation {
 	
 	private PrecisionDimension getPictureScale(double progress) {
 		PrecisionDimension currentD = getCurrentSize(progress);
-		double widthScale = currentD.width / (double)animatedImage.getWidth();
-		double heightScale = currentD.height / (double)animatedImage.getHeight() ;
+		double widthScale = currentD.width / animatedImage.getWidth();
+		double heightScale = currentD.height / animatedImage.getHeight() ;
 		PrecisionDimension d = new PrecisionDimension(widthScale,heightScale);
 		return d;
 	}

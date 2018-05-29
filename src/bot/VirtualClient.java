@@ -8,8 +8,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 import client.BadResultException;
-import ch.ntb.jass.common.proto.player_messages.ChangeStateMessage;
-import ch.ntb.jass.common.proto.player_messages.JoinTableMessage;
 import client.ClientCommunication;
 import client.shared.AbstractClient;
 import client.shared.ClientModel;
@@ -25,8 +23,6 @@ public class VirtualClient extends AbstractClient {
 
 	private BotIntelligence ki; // set normal intelligence by default
 	public Boolean active;
-	private int mySeatId;
-	private Score score;
 	private static ArrayList<String> possibleBotNames;
 
 	public VirtualClient(ClientCommunication com, ClientModel model, BotIntelligence intelligence) {
@@ -82,7 +78,6 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	// bot doesn't really care about score, but we still store it
 	public void doUpdateScore(Score score) {
-		this.score = score;
 	}
 
 	@Override
@@ -105,7 +100,6 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	public void doSetSeat(int seatId) {
 		seatId--; // zero based for bot, one based for client
-		mySeatId = seatId;
 		ki.setSelfID(seatId);
 		ki.setPartnerID((seatId+2)%4);
 		ki.setEnemyLeftID((seatId+1)%4);

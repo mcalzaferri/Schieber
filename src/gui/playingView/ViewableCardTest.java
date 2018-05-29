@@ -7,8 +7,13 @@ import javax.swing.JFrame;
 import gui.ClientModelTest;
 
 public class ViewableCardTest extends JFrame implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2468225525225384524L;
+
 	public static void main(String[] args) {
-		ViewableCardTest t = new ViewableCardTest();
+		new ViewableCardTest();
 	}
 	
 	public ViewableCardTest() {

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import shared.Card;
-import shared.CardList;
-import shared.GameMode;
-import shared.Player;
 import shared.Trump;
 
 public class IntelligenceRandom extends BotIntelligence {
@@ -16,6 +13,7 @@ public class IntelligenceRandom extends BotIntelligence {
 		/**
 		 * @return Randomly chosen Card from the allowed cards
 		 */
+		@Override
 		public Card getNextCard() {
 			Card card;
 			ArrayList<Card> allowedCards = getAllowedCards();

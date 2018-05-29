@@ -1,16 +1,7 @@
 package server;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.SocketTimeoutException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.junit.Before;
 import org.junit.Test;
 import ch.ntb.jass.common.entities.*;
 import shared.Player;

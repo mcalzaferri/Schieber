@@ -10,11 +10,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 public class TrumpView extends ObservableView implements Viewable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1329859587310669374L;
 	private JButton eichelButton;
 	private JButton roseButton;
 	private JButton schilteButton;
@@ -153,6 +155,7 @@ public class TrumpView extends ObservableView implements Viewable{
 		
 		
 		eichelButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -162,6 +165,7 @@ public class TrumpView extends ObservableView implements Viewable{
 		});
 		
 		roseButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -171,6 +175,7 @@ public class TrumpView extends ObservableView implements Viewable{
 		});
 		
 		schilteButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -180,6 +185,7 @@ public class TrumpView extends ObservableView implements Viewable{
 		});
 		
 		schelleButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -189,6 +195,7 @@ public class TrumpView extends ObservableView implements Viewable{
 		});
 		
 		obenabeButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -198,6 +205,7 @@ public class TrumpView extends ObservableView implements Viewable{
 		});
 		
 		undenufeButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -207,6 +215,7 @@ public class TrumpView extends ObservableView implements Viewable{
 		});
 		
 		schiebenButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{

@@ -6,9 +6,13 @@ import client.shared.ClientModel;
 import shared.Trump;
 
 public class BlackBoardPaneTest extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9162373993474248155L;
 	private BlackBoardPane pane;
 	public static void main(String[] args) {
-		BlackBoardPaneTest t = new BlackBoardPaneTest();
+		new BlackBoardPaneTest();
 	}
 	
 	public BlackBoardPaneTest() {

@@ -2,7 +2,6 @@ package test;
 
 import java.io.IOException;
 
-import bot.BotApplication;
 import client.ClientApplication;
 import server.ServerApp;
 

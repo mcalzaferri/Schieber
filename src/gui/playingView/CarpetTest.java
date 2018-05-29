@@ -1,17 +1,19 @@
 package gui.playingView;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import gui.ClientModelTest;
 
 public class CarpetTest extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3610469874530936829L;
+
 	public static void main(String[] args) {
-		CarpetTest ct = new CarpetTest();
+		new CarpetTest();
 	}
 	
 	public CarpetTest() {

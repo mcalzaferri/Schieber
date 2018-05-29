@@ -8,8 +8,6 @@ import shared.CardColor;
 import shared.CardValue;
 import shared.GameMode;
 import shared.Trump;
-import shared.Weis;
-import shared.WeisType;
 
 public class IntelligenceNormal extends BotIntelligence {
 	

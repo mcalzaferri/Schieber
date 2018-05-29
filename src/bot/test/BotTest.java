@@ -1,12 +1,9 @@
 package bot.test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-import bot.BotIntelligence;
 import bot.IntelligenceNormal;
-import bot.IntelligenceRandom;
 import shared.Card;
 import shared.Trump;
 import shared.Weis;
@@ -263,15 +260,6 @@ public class BotTest {
 
 	}
 	
-	private static int[] generateFixedHand() {
-		int[] testHand = new int[9];
-		for(int i=0;i<9;i++) {
-			testHand[i] = allCards.remove(0);
-		}
-		Arrays.sort(testHand);
-		return testHand;
-	}
-
 	private static ArrayList<Integer> generateRandomHand() {
 		
 		ArrayList<Integer> testHand = new ArrayList<>();
@@ -323,16 +311,6 @@ public class BotTest {
 		for(Weis w : weise) {
 			System.out.println(w.getType());
 			System.out.println(w.getOriginCard().getColor() + " " + w.getOriginCard().getValue());
-		}
-		System.out.println("----------------------");
-		System.out.println();
-	}
-	
-	private static void printCards(String s, ArrayList<Card> cards) {
-		System.out.println(s);
-		System.out.println("----------------------");
-		for(Card c : cards) {
-			System.out.println(c.getColor() + " " + c.getValue());
 		}
 		System.out.println("----------------------");
 		System.out.println();

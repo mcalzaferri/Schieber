@@ -1,6 +1,5 @@
 package gui;
 
-import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -8,14 +7,12 @@ import ch.ntb.jass.common.entities.PlayerEntity;
 import client.shared.ClientModel;
 import shared.*;
 
-import java.net.InetSocketAddress;
 import java.util.Random;
 
 import shared.Card;
 import shared.CardColor;
 import shared.CardList;
 import shared.CardValue;
-import shared.*;
 
 public class ClientModelTest extends ClientModel{
 	public ClientModelTest() {
@@ -23,10 +20,10 @@ public class ClientModelTest extends ClientModel{
 		Player player1 = new Player(null, "Peter", Seat.SEAT2);
 		Player player2 = new Player(null, "Hannah", Seat.NOTATTABLE); //TODO maybe this is partner? mcalzaferri
 		Player player3 = new Player(null, "Luise", Seat.SEAT4);
-		PlayerEntity e = new PlayerEntity();
+		new PlayerEntity();
 		Player actPlayer = new Player(null,"Leon",Seat.NOTATTABLE); //TODO maybe this is client? mcalzaferri
 		
-		Map<Integer,Player> players = new Hashtable<Integer, Player>();
+		Map<Integer,Player> players = new Hashtable<>();
 		players.put(1, player1);
 		players.put(2, player2);
 		players.put(3, player3);
@@ -37,17 +34,16 @@ public class ClientModelTest extends ClientModel{
 		//Set cards
 		CardList cards = new CardList();
 		for(int i = 0; i < 6; i++) {			
-			cards.add(this.createRandomCard());
+			cards.add(ClientModelTest.createRandomCard());
 		}
 		//this.setDeck(cards);
 		cards = new CardList();
 		for(int i = 0; i < 6; i++) {			
-			cards.add(this.createRandomCard());
+			cards.add(ClientModelTest.createRandomCard());
 		}
 		this.setHand(cards);
 		
-		Random r = new Random();
-		//Trump trump = createRandomTrump();
+		new Random();
 
 		Weis[] weis = new Weis[3];
 		/*for(int i = 0; i < weis.length; i++) {	

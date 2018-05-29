@@ -3,7 +3,6 @@ package bot.test;
 import java.util.ArrayList;
 
 import bot.BotIntelligence;
-import bot.IntelligenceNormal;
 import bot.IntelligenceRandom;
 import shared.Trump;
 import shared.Weis;

@@ -3,32 +3,31 @@ package gui.playingView;
 import java.awt.BorderLayout;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JFrame;
 
-import ch.ntb.jass.common.entities.SeatEntity;
 import client.ViewEnumeration;
 import client.ViewObserver;
 import client.shared.ClientModel;
 import gui.ClientModelTest;
 import shared.Card;
 import shared.CardColor;
-import shared.CardList;
 import shared.CardValue;
-import shared.Player;
 import shared.Seat;
 import shared.Trump;
 
 public class PlayingFieldViewTest extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8356509859119837375L;
 	private PlayingFieldView pfv;
 	private ClientModel data;
 	
 	public static void main(String[] args) {
-		PlayingFieldViewTest t = new PlayingFieldViewTest();
+		new PlayingFieldViewTest();
 	}
 	
 	public PlayingFieldViewTest() {

@@ -6,7 +6,6 @@ import java.util.*;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.TeamEntity;
 import ch.ntb.jass.common.entities.WeisEntity;
-import server.exceptions.ClientErrorException;
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
@@ -512,8 +511,8 @@ public class GameLogic {
 	public boolean weiseAreValid(Player p, WeisEntity[] claimedWeisEntity) {
 		int givenWeisNumber = 0;
 		// Check for possible Weise.
-		List<Weis> approvedWeisList = new ArrayList<Weis>(Arrays.asList(p.getCards().getPossibleWiis(trump)));
-		List<Weis> notAlreadyApprovedWeises = new ArrayList<Weis>();
+		List<Weis> approvedWeisList = new ArrayList<>(Arrays.asList(p.getCards().getPossibleWiis(trump)));
+		List<Weis> notAlreadyApprovedWeises = new ArrayList<>();
 		
 		// Compare possible Weise with given Weise.
 		for(int i = 0; i < claimedWeisEntity.length; i++){
@@ -531,7 +530,7 @@ public class GameLogic {
 				}
 			}
 			approvedWeisList = notAlreadyApprovedWeises;
-			notAlreadyApprovedWeises = new ArrayList<Weis>();
+			notAlreadyApprovedWeises = new ArrayList<>();
 		}
 		if (givenWeisNumber == claimedWeisEntity.length) {
 			return true;

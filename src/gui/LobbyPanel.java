@@ -6,8 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.JPanel;
@@ -15,6 +13,11 @@ import gui.PictureFactory.Pictures;
 
 public class LobbyPanel extends JPanel{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1493026166806795278L;
+
 	private BufferedImage imgLobby;
 	
 	public static final Dimension minLobbySize = new Dimension(500,500);
@@ -59,6 +62,6 @@ public class LobbyPanel extends JPanel{
 		
 		g.drawImage(Gui.pictureFactory.getScaledPicture(imgLobby, lobbySize), 0, 0, null);
 		
-		g.drawString(titleString, (this.getWidth()-stringWidth)/2, (int)2*this.getHeight()/7);
+		g.drawString(titleString, (this.getWidth()-stringWidth)/2, 2*this.getHeight()/7);
 	}
 }

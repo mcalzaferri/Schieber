@@ -3,25 +3,24 @@ package gui.playingView;
 import java.awt.BorderLayout;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
-import java.util.Random;
-
 import javax.swing.JFrame;
 
 import client.ViewEnumeration;
 import client.ViewObserver;
 import gui.ClientModelTest;
 import shared.Card;
-import shared.CardColor;
-import shared.CardList;
-import shared.CardValue;
 import shared.Seat;
 import shared.Trump;
 
 public class HandPaneTest extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5521072659054537868L;
 	private HandPane handPane; 
 	private ClientModelTest data;
 	public static void main(String[] args) {
-		HandPaneTest t = new HandPaneTest();
+		new HandPaneTest();
 	}
 	
 	public HandPaneTest() {

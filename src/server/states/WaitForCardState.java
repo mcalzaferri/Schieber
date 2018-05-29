@@ -123,7 +123,7 @@ public class WaitForCardState extends GameState {
 			throw(new ClientErrorException("You already declared your Weis. PlayerID: " + sender.getId()));
 		}
 		 			
-		WeisEntity[] weise = ((ChosenWiisMessage) msg).wiis;
+		WeisEntity[] weise = msg.wiis;
 		 
 		//Check if Weise are valid.
 		if (!logic.weiseAreValid(sender, weise)) {

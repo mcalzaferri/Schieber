@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -8,12 +7,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 public class Dialog extends JDialog{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8741767836957856560L;
 	JButton confirm;
 	JLabel message;
 	JLabel icon;
@@ -33,10 +35,7 @@ public class Dialog extends JDialog{
 		QUESTION(3), 
 		PLAIN(-1);
 		
-		private final int index;
-		
 		MessageType(int index){
-			this.index = index;
 		}
 		
 	};

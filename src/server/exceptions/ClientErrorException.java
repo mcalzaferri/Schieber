@@ -5,6 +5,11 @@ package server.exceptions;
  * when its not his move.
  */
 public class ClientErrorException extends Exception {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2604548168328188810L;
+
 	public ClientErrorException(String message) {
 		super(message);
 	}

@@ -6,9 +6,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import javax.swing.text.PlainView;
-import javax.swing.text.Utilities;
-
 import gui.Gui;
 import shared.Trump;
 
@@ -46,7 +43,7 @@ public class BlackBoardDrawer {
 	 * @param title Title to be drawn onto component
 	 */
 	public void drawTitle(Graphics g, String title) {
-		titleOffset = (int) (g.getFontMetrics().getHeight());
+		titleOffset = (g.getFontMetrics().getHeight());
 		g.drawString(title, bounds.x, bounds.y + titleOffset);		
 		g.drawLine(bounds.x, bounds.y + titleOffset, 
 				bounds.x + g.getFontMetrics().stringWidth(title), bounds.y + titleOffset);

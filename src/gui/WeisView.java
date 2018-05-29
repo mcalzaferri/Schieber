@@ -6,9 +6,6 @@ import client.ViewEnumeration;
 import client.ViewObserver;
 import client.shared.*;
 
-import java.util.ArrayList;
-
-import client.*;
 import shared.*;
 
 import javax.swing.*;
@@ -19,10 +16,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 
 public class WeisView extends ObservableView implements Viewable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6918985557295103342L;
 	//components
 	JPanel weisViewPanel;
 	JPanel buttonsPanel;
@@ -112,6 +112,7 @@ public class WeisView extends ObservableView implements Viewable{
 		setLocation(left,top);
 		
 		swipeLeftButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				swipeRightButton.setEnabled(true);
 				index--;
@@ -127,6 +128,7 @@ public class WeisView extends ObservableView implements Viewable{
 			}
 		});
 		swipeRightButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				swipeLeftButton.setEnabled(true);
 				index++;
@@ -143,6 +145,7 @@ public class WeisView extends ObservableView implements Viewable{
 		});
 		
 		weisenButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -152,6 +155,7 @@ public class WeisView extends ObservableView implements Viewable{
 		});
 		
 		verwerfenButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -246,6 +250,8 @@ public class WeisView extends ObservableView implements Viewable{
 						cardList.add(new Card(CardColor.getById(i),originCard.getValue()));
 					}
 					break;
+			default:
+				break;
 			}
 			
 		}

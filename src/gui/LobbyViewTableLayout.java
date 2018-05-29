@@ -3,7 +3,6 @@ package gui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.LayoutManager2;
 
 public class LobbyViewTableLayout implements LayoutManager2{
@@ -110,9 +109,6 @@ public class LobbyViewTableLayout implements LayoutManager2{
 	          int bottom = 0;
 	          int left = 0;
 	          int right = 0;
-	          int width = 0;
-	          int height = 0; 
-	          
 	          Component c = null;
 
 	          if ((c=getChild(NORTH)) != null) {

@@ -574,6 +574,7 @@ public class ClientCommunicationSimulator extends ClientCommunication{
 	}
 
 	//Getters and setters
+	@Override
 	public void setClient(AbstractClient client) {
 		this.client = client;
 	}

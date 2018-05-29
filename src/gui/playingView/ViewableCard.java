@@ -3,14 +3,10 @@ package gui.playingView;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.swing.JButton;
-import client.ViewObserver;
 import gui.Gui;
 import shared.Card;
 

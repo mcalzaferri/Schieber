@@ -55,6 +55,7 @@ public class StateMachine implements SchieberMessageHandler, ClientConnectionClo
 	 * @param sender the player that sent the message
 	 * @param message the sent message
 	 */
+	@Override
 	public synchronized void handleMessage(Player sender, Message message)
 			throws IOException, InvalidMessageDataException,
 			UnhandledMessageException, ClientErrorException {

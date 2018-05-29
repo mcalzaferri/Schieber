@@ -2,8 +2,6 @@ package bot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-
 import shared.Card;
 import shared.CardColor;
 import shared.CardValue;
@@ -502,6 +500,7 @@ public abstract class BotIntelligence {
 		return i;
 	}
 	
+	@SuppressWarnings("unused")
 	private void sortReverse() {
 		int[] idList = cardsToIds(cardsInHand);
 		

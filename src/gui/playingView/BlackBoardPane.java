@@ -9,14 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
-
 import client.ViewObserver;
 import client.shared.ClientModel;
 import gui.Gui;
 import gui.ObservableView;
 import gui.PictureFactory.Pictures;
-import shared.Player;
 import shared.Team;
 
 /**

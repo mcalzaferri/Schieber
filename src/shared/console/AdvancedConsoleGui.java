@@ -41,7 +41,7 @@ public class AdvancedConsoleGui {
 	private void initialComponents() {
 		mainFrame = new JFrame("Advanced Console");
 		mainFrame.setVisible(false);
-		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {

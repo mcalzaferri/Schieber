@@ -15,6 +15,10 @@ import java.util.Map;
 
 public class LobbyView extends ObservableView implements Viewable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2017186351522095092L;
 	//width, height and dimension of window
     private static final int width = 800;
     private static final int height = 600;
@@ -105,6 +109,7 @@ public class LobbyView extends ObservableView implements Viewable{
 		playerTablePanel.add(fillSeatsWithBotsButton, BorderLayout.SOUTH);
 		
 	    fillSeatsWithBotsButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer : observers) {
 					observer.btnFillWithBots();
@@ -175,7 +180,8 @@ public class LobbyView extends ObservableView implements Viewable{
 	    chooseSeatOptionPane = new JOptionPane();
 	    
 	    chair1Button.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent arg0) {
+	    	@Override
+			public void actionPerformed(ActionEvent arg0) {
 
 	    		for(ViewObserver observer : observers) {
 					observer.btnJoinTableClick(Seat.SEAT1);
@@ -194,6 +200,7 @@ public class LobbyView extends ObservableView implements Viewable{
 		});
 	    
 	    chair2Button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
 				for(ViewObserver observer : observers) {
@@ -213,6 +220,7 @@ public class LobbyView extends ObservableView implements Viewable{
 		});
 	    
 	    chair3Button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
 				for(ViewObserver observer : observers) {
@@ -232,6 +240,7 @@ public class LobbyView extends ObservableView implements Viewable{
 		});
 	    
 	    chair4Button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
 				for(ViewObserver observer : observers) {
@@ -264,6 +273,7 @@ public class LobbyView extends ObservableView implements Viewable{
 	    readyStatePanel.add(readyStateButton);
 	    
 	    readyStateButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer : observers) {
 					observer.btnChangeStateClick();
@@ -294,10 +304,6 @@ public class LobbyView extends ObservableView implements Viewable{
 			}
 		}
 		return true;
-	}
-	
-	private Player getActPlayer() {
-		return data.getThisPlayer();
 	}
 	
 	@Override

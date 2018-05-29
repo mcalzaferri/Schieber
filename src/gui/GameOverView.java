@@ -3,17 +3,17 @@ import javax.swing.*;
 
 import client.ViewEnumeration;
 import client.ViewObserver;
-import client.shared.ClientModel;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class GameOverView extends ObservableView implements Viewable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4370774612662941514L;
 	private JButton newRoundButton;
 	private JButton disconnectButton;
 	private JPanel buttonPanel;
@@ -39,6 +39,7 @@ public class GameOverView extends ObservableView implements Viewable{
 		endViewPanel.add(buttonPanel,BorderLayout.SOUTH);
 		
 		newRoundButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -48,6 +49,7 @@ public class GameOverView extends ObservableView implements Viewable{
 		});
 		
 		disconnectButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{

@@ -15,7 +15,6 @@ import gui.ObservableView;
 import gui.Viewable;
 import gui.PictureFactory.Pictures;
 import gui.animation.AnimationRegion;
-import test.TestHelper;
 
 /**
  * This class represents a playing field with a hand panel showing the
@@ -72,6 +71,10 @@ public class PlayingFieldView extends ObservableView implements Viewable{
 
 		//Set up content
 		content = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 6248304467071053592L;
 			BufferedDrawer bd = new BufferedDrawer(); //Has to be initialized before constructor
 			Graphics bg;
 			@Override

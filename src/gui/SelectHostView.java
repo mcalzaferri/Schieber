@@ -16,6 +16,10 @@ import gui.PictureFactory.Pictures;
 
 public class SelectHostView extends ObservableView implements Viewable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3829500757914237062L;
 	//Components
 	JPanel serverPanel;
 	private JPanel innerPanel;
@@ -38,9 +42,6 @@ public class SelectHostView extends ObservableView implements Viewable{
     Toolkit.getDefaultToolkit().getScreenSize().height/2-height/2;
     private static final int left = 
     Toolkit.getDefaultToolkit().getScreenSize().width/2-width/2;
-    private int scale;
-    private int imgwidth;
-    
     //local variables
     private BufferedImage imgBackground;
 
@@ -60,6 +61,7 @@ public class SelectHostView extends ObservableView implements Viewable{
 		}
 		
 		startButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				for(ViewObserver observer: observers)
 				{
@@ -124,7 +126,7 @@ public class SelectHostView extends ObservableView implements Viewable{
 		serverHeadingLabel = new JLabel("Bitte Server-Socket angeben");
 		serverHeadingLabel.setFont(new Font(serverHeadingLabel.getFont().getFontName(), Font.BOLD, 18));
 		serverHeadingLabel.setForeground(Color.BLACK);
-		serverHeadingLabel.setHorizontalAlignment(JLabel.CENTER);
+		serverHeadingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		
 		//Server-IP 
@@ -144,7 +146,7 @@ public class SelectHostView extends ObservableView implements Viewable{
 		userHeadingLabel = new JLabel("Bitte Username angeben");
 		userHeadingLabel.setFont(new Font(serverHeadingLabel.getFont().getFontName(), Font.BOLD, 18));
 		userHeadingLabel.setForeground(Color.BLACK);
-		userHeadingLabel.setHorizontalAlignment(JLabel.CENTER);
+		userHeadingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		
 		//Username
@@ -215,59 +217,6 @@ public class SelectHostView extends ObservableView implements Viewable{
 		innerPanel.add(usernamePanel);
 		innerPanel.add(startButton);*/
 		
-	}
-
-	private void layoutSelectHostView() {
-		
-		//dimensions and location of window
-
-		this.setPreferredSize(new Dimension(width,height));
-		setLocation(left,top);
-		
-		serverHeadingLabel = new JLabel("Server");
-		serverHeadingLabel.setFont(new Font(serverHeadingLabel.getFont().getFontName(), Font.BOLD, 24));
-		serverHeadingLabel.setHorizontalAlignment(JLabel.CENTER);
-		
-		//Server-IP and Server-Socket
-		serverIPLabel = new JLabel("IP-Adresse:");
-		serverIPLabel.setFont(new Font(serverIPLabel.getFont().getFontName(), Font.PLAIN, 12));
-		serverIPText = new JTextField("localhost");
-		serverPortLabel = new JLabel("Port:");
-		serverPortLabel.setFont(new Font(serverPortLabel.getFont().getFontName(), Font.PLAIN, 12));
-		serverPortText = new JTextField("65000");
-		usernameLabel = new JLabel("Username:");
-		usernameLabel.setFont(new Font(serverPortLabel.getFont().getFontName(), Font.PLAIN, 12));
-		usernameText = new JTextField("test");
-		
-		JPanel serverIPSocketPanel = new JPanel();
-		serverIPSocketPanel.setLayout(new GridLayout(3,2,0,5));
-		serverIPSocketPanel.add(serverIPLabel);
-		serverIPSocketPanel.add(serverIPText);
-		serverIPSocketPanel.add(serverPortLabel);
-		serverIPSocketPanel.add(serverPortText);
-		serverIPSocketPanel.add(usernameLabel);
-		serverIPSocketPanel.add(usernameText);
-		
-		
-		//Server IP and Socket
-		serverPanel = new JPanel();
-		serverPanel.setLayout(new BorderLayout(0,50));
-		serverPanel.add(serverHeadingLabel,BorderLayout.NORTH);
-		serverPanel.add(serverIPSocketPanel,BorderLayout.CENTER);
-		//serverPanel.add(serverSocketPanel);
-
-		
-		//Button
-		JPanel startButtonPanel = new JPanel();
-		startButtonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		startButton = new JButton("starte Schieber");
-		startButton.setFont(new Font(startButton.getFont().getFontName(), Font.PLAIN, 12));
-		startButtonPanel.add(startButton);
-		
-		//add Components 
-		this.setLayout(new BorderLayout());
-		this.add(serverPanel,BorderLayout.NORTH);
-		this.add(startButtonPanel,BorderLayout.SOUTH);
 	}
 
 	@Override

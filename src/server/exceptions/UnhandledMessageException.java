@@ -5,4 +5,9 @@ package server.exceptions;
  * current state of the game.
  */
 public class UnhandledMessageException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8696262949849441362L;
 }

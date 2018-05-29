@@ -1,20 +1,13 @@
 package client.test;
 
 import java.net.InetSocketAddress;
-import java.net.SocketException;
-
-import bot.BotIntelligence;
 import bot.IntelligenceNormal;
 import bot.VirtualClient;
 import ch.ntb.jass.common.entities.PlayerEntity;
 import ch.ntb.jass.common.entities.SeatEntity;
-import ch.ntb.jass.common.proto.Message;
-import ch.ntb.jass.common.proto.player_messages.JoinLobbyMessage;
-import ch.ntb.jass.common.proto.server_info_messages.PlayerMovedToTableInfoMessage;
 import client.ClientController;
 import client.shared.AbstractClient;
 import client.shared.ClientModel;
-import gui.ClientModelTest;
 import gui.Gui;
 import shared.*;
 
@@ -25,7 +18,7 @@ public class MainTest {
 		boolean testBot = true;
 		boolean blockConnect = false;
 		ClientModel model = new ClientModel();
-		ClientModelView view = new ClientModelView(model);
+		new ClientModelView(model);
 		ClientCommunicationSimulator sim = new ClientCommunicationSimulator();
 
 		AbstractClient client;

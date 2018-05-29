@@ -4,8 +4,6 @@ import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.net.InetSocketAddress;
 
 import javax.swing.JButton;
@@ -20,11 +18,15 @@ import shared.Seat;
 import shared.Trump;
 
 public class GuiTest extends JFrame implements ViewObserver{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5781101487160760073L;
 	private AbstractClientView gui;
 	private ClientModelTest data;
 
 	public static void main(String[] args) {
-		GuiTest t = new GuiTest();
+		new GuiTest();
 	}
 	
 	public GuiTest() {
@@ -38,7 +40,7 @@ public class GuiTest extends JFrame implements ViewObserver{
 	private void initFrame() {
 		this.setLayout(new FlowLayout());
 		
-		JComboBox box = new JComboBox(ViewEnumeration.values());
+		JComboBox<ViewEnumeration> box = new JComboBox<>(ViewEnumeration.values());
 
 		box.addActionListener(new ActionListener() {
 			@Override

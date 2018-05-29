@@ -8,6 +8,10 @@ import client.ViewObserver;
 import client.shared.ClientModel;
 
 public abstract class ObservableView extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7573079388144240625L;
 	protected List<ViewObserver> observers;
 	protected ClientModel data;
 	

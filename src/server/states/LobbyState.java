@@ -1,8 +1,6 @@
 package server.states;
 
 import java.io.IOException;
-import java.net.SocketException;
-
 import bot.BotApplication;
 import ch.ntb.jass.common.entities.TargetScoreEntity;
 import ch.ntb.jass.common.proto.player_messages.*;
