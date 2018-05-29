@@ -85,7 +85,7 @@ public class LobbyState extends GameState {
 		// fill empty seats with bots
 
 		new Thread(() -> {
-			int numBots = 4 - logic.getPlayerCount();
+			int numBots = Math.max(0, 4 - logic.getPlayerCount());
 			for (int i = 0; i < numBots; i++) {
 				BotApplication.start("localhost", com.getListenPort(), null);
 			}
