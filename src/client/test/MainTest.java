@@ -33,7 +33,7 @@ public class MainTest {
 			client = new VirtualClient(sim, model, new IntelligenceNormal());
 			sim.setClient(client);
 			sim.setBlockConnect(blockConnect);
-			((VirtualClient)client).connect(new InetSocketAddress("localhost", 65000));
+			((VirtualClient)client).connect(new InetSocketAddress("localhost", 65000), Seat.SEAT1);
 
 		}else {
 			 client = new ClientController(sim, model, new Gui(model));

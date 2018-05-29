@@ -421,7 +421,11 @@ public abstract class AbstractClient {
 	}
 	protected final void joinTable(Seat preferedSeat) {
 		JoinTableMessage msg = new JoinTableMessage();
-		msg.preferedSeat = preferedSeat.getSeatEntity();
+		if(preferedSeat != null) {
+			msg.preferedSeat = preferedSeat.getSeatEntity();
+		}else {
+			msg.preferedSeat = null;
+		}
 		com.send(msg);
 	}
 	protected final void leaveLobby() {
@@ -444,7 +448,7 @@ public abstract class AbstractClient {
 	/**
 	 * @param serverAddress Address to connect to
 	 */
-	public final void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws BadResultException {
+	public final void connect(InetSocketAddress serverAddress, String username, boolean isBot, Seat preferedSeat) throws BadResultException {
 		model.setThisPlayer(new Player(serverAddress,username,Seat.NOTATTABLE));
 		com.connect(serverAddress, username, isBot);
 		doConnected();
@@ -455,9 +459,12 @@ public abstract class AbstractClient {
 		
 		//If this is a bot, try to join the table and set seat to true. If this fails the bot should be terminated
 		if(isBot) {
-			joinTable(Seat.SEAT1);
+			joinTable(preferedSeat);
 			publishChangedState(true);
 		}
+	}
+	public final void connect(InetSocketAddress serverAddress, String username, boolean isBot) throws BadResultException{
+		connect(serverAddress,username,isBot,null);
 	}
 	
 	public final void disconnect() {

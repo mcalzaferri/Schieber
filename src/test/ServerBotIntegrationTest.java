@@ -20,7 +20,7 @@ public class ServerBotIntegrationTest {
 
 		// Start 4 bots
 		for (int i = 0; i < 4; i++) {
-			BotApplication.start("localhost", serverListenPort);
+			BotApplication.start("localhost", serverListenPort, null);
 		}
 	}
 }

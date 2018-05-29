@@ -16,6 +16,7 @@ import client.shared.ClientModel;
 import shared.Card;
 import shared.Player;
 import shared.Score;
+import shared.Seat;
 import shared.Team;
 import shared.Trump;
 import shared.Weis;
@@ -53,14 +54,14 @@ public class VirtualClient extends AbstractClient {
 		}		
 	}
 
-	public void connect(InetSocketAddress serverAddress) {
+	public void connect(InetSocketAddress serverAddress, Seat preferedSeat) {
 		boolean connected = false;
 		Random rm = new Random();
 		do {
 			try {
 				String botName = possibleBotNames.get(rm.nextInt(possibleBotNames.size()));
 				ki.setName(botName);
-				connect(serverAddress, botName, true);
+				connect(serverAddress, botName, true, preferedSeat);
 				//Wird keine Exception geworfen wurde connect erfolgreich durchgeführt
 				connected = true;
 			} catch (BadResultException e) {
@@ -87,7 +88,7 @@ public class VirtualClient extends AbstractClient {
 	@Override
 	public void doEndRound() {
 		ki.resetBot();
-	}
+	} 
 
 	@Override
 	public void doEndGame(Team teamThatWon) {

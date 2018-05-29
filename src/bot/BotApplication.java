@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import client.ClientCommunication;
 import client.shared.ClientModel;
 import client.test.ClientModelView;
+import shared.Seat;
 
 public class BotApplication {
 
@@ -13,10 +14,17 @@ public class BotApplication {
 	public static void main(String[] args) {
 		String serverHostname = args[0];
 		int serverPort = Integer.parseInt(args[1]);
-		start(serverHostname, serverPort);
+		Seat preferedSeat = null;
+		try {
+			int seatNr = Integer.parseInt(args[2]);
+			preferedSeat = Seat.getBySeatNr(seatNr);
+		}catch(Exception e) {
+			System.err.println("Kein oder fehlerhafter prefered Seat angegeben");
+		}
+		start(serverHostname, serverPort, preferedSeat);
 	}
 
-	public static void start(String serverHostname, int serverPort) {
+	public static void start(String serverHostname, int serverPort, Seat preferedSeat) {
 		communication = new ClientCommunication();
 
 		ClientModel model = new ClientModel();
@@ -25,7 +33,7 @@ public class BotApplication {
 		//		new IntelligenceMalicious()); // start cheating bot
 				new IntelligenceNormal());
 		communication.setClient(client);
-		client.connect(new InetSocketAddress(serverHostname, serverPort));
+		client.connect(new InetSocketAddress(serverHostname, serverPort), preferedSeat);
 
 	}
 

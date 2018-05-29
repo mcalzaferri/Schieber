@@ -89,7 +89,7 @@ public class LobbyState extends GameState {
 		new Thread(() -> {
 			int numBots = 4 - logic.getPlayerCount();
 			for (int i = 0; i < numBots; i++) {
-				BotApplication.start("localhost", com.getListenPort());
+				BotApplication.start("localhost", com.getListenPort(), null);
 			}
 		}).start();
 	}
