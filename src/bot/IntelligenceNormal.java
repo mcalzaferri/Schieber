@@ -306,6 +306,13 @@ public class IntelligenceNormal extends BotIntelligence {
 						}
 					}
 				}
+				
+				// partner is winning but I don't have a high scoring card - schmier a low scoring one
+				for(Card c : allowedCards) {
+					if(getScore(c) < 8 && c.getColor() != trump.getTrumpfColor()) {
+						return c;
+					}
+				}
 			}
 			
 			// I can win with color

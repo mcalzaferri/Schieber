@@ -41,7 +41,7 @@ public class VirtualClient extends AbstractClient {
 		possibleBotNames = new ArrayList<>();
 		try {
 			// use "botnames.txt" or "femaleBotNames.txt"
-			in = new Scanner(new FileReader("femaleBotNames.txt"));
+			in = new Scanner(new FileReader("botnames.txt"));
 			in.useDelimiter("\n");
 			while(in.hasNext()) {
 			    possibleBotNames.add(in.next().replace('\r', ' ').trim());
@@ -128,7 +128,7 @@ public class VirtualClient extends AbstractClient {
 	
 	@Override
 	public void doPlayerShowedWiis(Weis[] wiis, Player player) {
-		ki.showWeis(wiis, player.getId());
+		ki.showWeis(wiis, player.getId()-1); // zero based for Bot
 	}
 
 	@Override
