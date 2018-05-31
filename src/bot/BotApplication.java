@@ -4,7 +4,6 @@ import java.net.InetSocketAddress;
 
 import client.ClientCommunication;
 import client.shared.ClientModel;
-import client.test.ClientModelView;
 import shared.Seat;
 
 /**
@@ -36,7 +35,7 @@ public class BotApplication {
 		communication = new ClientCommunication();
 
 		ClientModel model = new ClientModel();
-		new ClientModelView(model);
+		//new ClientModelView(model);
 		VirtualClient client = new VirtualClient(communication, model,
 		//		new IntelligenceMalicious()); // start cheating bot
 				new IntelligenceNormal());
