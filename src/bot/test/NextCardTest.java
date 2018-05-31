@@ -8,6 +8,11 @@ import shared.Trump;
 import shared.Weis;
 import shared.WeisType;
 
+/**
+ * This class is used to test if the card returned by a bot makes sense. Note: Manual Test!
+ *
+ */
+
 public class NextCardTest {
 
 	public static void main(String[] args) {

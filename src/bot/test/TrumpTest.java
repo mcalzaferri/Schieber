@@ -3,6 +3,11 @@ package bot.test;
 import bot.IntelligenceNormal;
 import shared.CardColor;
 
+/**
+ * Test class used to test Trump making of a Bot - Manual Test!
+ *
+ */
+
 public class TrumpTest {
 
 	public static void main(String[] args) {

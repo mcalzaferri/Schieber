@@ -9,6 +9,12 @@ import shared.GameMode;
 import shared.Trump;
 import shared.Weis;
 
+/**
+ * This class is the super class of any Bot Intelligence class. It contains everything needed to have a Bot playing according to Schieber rules.
+ * Methods to be implemented by inheriting classes: getNextCard() & selectTrump()
+ *
+ */
+
 public abstract class BotIntelligence {
 	
 	protected String name;
@@ -500,6 +506,7 @@ public abstract class BotIntelligence {
 		return i;
 	}
 	
+	// function can be used for UNEUFE games
 	@SuppressWarnings("unused")
 	private void sortReverse() {
 		int[] idList = cardsToIds(cardsInHand);
@@ -520,6 +527,7 @@ public abstract class BotIntelligence {
 	
 	}
 	
+	// function used for debugging
 	protected void setName(String n) {
 		name = n;
 	}

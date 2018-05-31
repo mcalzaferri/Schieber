@@ -19,6 +19,12 @@ import shared.Team;
 import shared.Trump;
 import shared.Weis;
 
+/**
+ * This class connects a virtual player (Bot) to the Client classes and therefore the communication functions to the server.
+ * It inherits from AbstractClient where also the GUI client inherits from.
+ *
+ */
+
 public class VirtualClient extends AbstractClient {
 
 	private BotIntelligence ki; // set normal intelligence by default
@@ -64,19 +70,10 @@ public class VirtualClient extends AbstractClient {
 				System.err.println("Connect fehlgeschlagen mit Fehlermessage: " + e.getMessage());
 			}
 		} while(!connected);
-		/* Nicht mehr nötig. Wird vom AbstractClient übernommen /Maurus
-		JoinTableMessage jtMsg = new JoinTableMessage();
-		jtMsg.preferedSeat = null;
-		com.send(jtMsg);
-
-		ChangeStateMessage csMsg = new ChangeStateMessage();
-		csMsg.isReady = true;
-		com.send(csMsg);
-		*/
 	}
 	
 	@Override
-	// bot doesn't really care about score, but we still store it
+	// bot doesn't really care about score
 	public void doUpdateScore(Score score) {
 	}
 
@@ -87,13 +84,6 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	public void doEndGame(Team teamThatWon) {
-		/* REV TODO Just start a new ki
-		super.disconnect();
-		//disable bot
-		this.active = false;
-		//destroy intelligence = reset bot
-		this.ki = null;
-		*/
 		this.ki = new IntelligenceNormal();
 	}
 
@@ -192,7 +182,6 @@ public class VirtualClient extends AbstractClient {
 
 	@Override
 	protected void doHandleBadResultException(BadResultException e) {
-		//TODO handle bad result
 		System.err.println(e.getMessage());
 		
 	}

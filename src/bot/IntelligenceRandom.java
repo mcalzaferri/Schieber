@@ -6,6 +6,11 @@ import java.util.Random;
 import shared.Card;
 import shared.Trump;
 
+/**
+ * This class generates a Bot that plays according to the rules but will simply play a random card, and is therefor quite stupid.
+ *
+ */
+
 public class IntelligenceRandom extends BotIntelligence {
 	
 		Random random = new Random();

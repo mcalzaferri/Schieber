@@ -8,6 +8,13 @@ import shared.Card;
 import shared.Trump;
 import shared.Weis;
 
+/**
+ * This class does a smoke test on the Bot since it simulates a huge amount of games and it can be checked if any
+ * combination of cards leads to an exception or other critical issue. Note that server is not part of the game and
+ * therefore the game is not completely according to Schieberrules.
+ *
+ */
+
 public class BotTest {
 	
 	static ArrayList<Integer> allCards;

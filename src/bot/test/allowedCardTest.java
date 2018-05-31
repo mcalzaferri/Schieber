@@ -7,6 +7,12 @@ import bot.IntelligenceNormal;
 import shared.Card;
 import shared.Trump;
 
+/**
+ * This class is used to test if the Bot correctly calculates the allowed Cards for any state of the Game.
+ * Note: Manual Test!
+ *
+ */
+
 public class allowedCardTest {
 
 	static ArrayList<Integer> allCards = new ArrayList<>();
@@ -63,9 +69,6 @@ public class allowedCardTest {
 		}
 		System.out.println("-----------");
 		System.out.println();
-		
-		
-		
 		
 	}
 	

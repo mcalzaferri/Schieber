@@ -9,6 +9,12 @@ import shared.CardValue;
 import shared.GameMode;
 import shared.Trump;
 
+/**
+ * This class emulates a human Jassplayer and contains all the logic to play a realistic game of Schieber.
+ * Choosing a card and choosing trump is based on a Decision Tree Model where a card is returned as soon as a desirable one is found.
+ *
+ */
+
 public class IntelligenceNormal extends BotIntelligence {
 	
 	private final int awesomeTrumpSelectThreshhold = 70; //equals a bit more than 75% of maximum value (90)
@@ -23,7 +29,6 @@ public class IntelligenceNormal extends BotIntelligence {
 		
 		if (allowedCards.isEmpty())
 		{
-			//TODO FKaiser Errorhandling - what to do?
 			System.out.println("Error - AllowedCards is empty");
 		}
 		

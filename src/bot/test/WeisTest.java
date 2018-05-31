@@ -7,6 +7,11 @@ import bot.IntelligenceRandom;
 import shared.Trump;
 import shared.Weis;
 
+/**
+ * Test class to check if Weisen works as intended - Manual Test1
+ *
+ */
+
 public class WeisTest {
 	
 	public static void main(String[] args) {

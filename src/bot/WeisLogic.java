@@ -10,6 +10,11 @@ import shared.Trump;
 import shared.Weis;
 import shared.WeisType;
 
+/**
+ * This class contains functions to get the possible Wiis for a given set of cards
+ *
+ */
+
 public class WeisLogic {
 	
 	private ArrayList<Card> cardsInHand;

@@ -9,6 +9,12 @@ import shared.CardValue;
 import shared.GameMode;
 import shared.Trump;
 
+/**
+ * This class implements a cheating Bot to test a server. It will always try to play a winning card, regardless if it owns this card.
+ * If cheating is not accepted, it will play a random allowed card and try to cheat again for the next card.
+ *
+ */
+
 public class IntelligenceMalicious extends BotIntelligence {
 	
 	Random r = new Random();

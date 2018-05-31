@@ -124,7 +124,7 @@ public class ClientController extends AbstractClient implements ViewObserver {
 	@Override
 	public void doEndGame(Team teamThatWon) {
 		changeOrUpdateView(ViewEnumeration.GAMEOVERVIEW);
-		view.publishMessage("This game is finally over. Took some time eh/n");
+		view.publishMessage("This game is finally over. Took some time eh\n");
 		waitUserInteraction();
 	}
 

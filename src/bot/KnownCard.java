@@ -2,6 +2,12 @@ package bot;
 
 import shared.Card;
 
+/**
+ * This class simply stores the player and the played status to a certain card.
+ * The played status is useful when the card is known from a Wiis instead of seeing it on the table.
+ *
+ */
+
 public class KnownCard {
 	
 	private Card card;
